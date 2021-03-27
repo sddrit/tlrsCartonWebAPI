@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using tlrsCartonManager.DAL.Reporsitory.IRepositiry;
+using tlrsCartonManager.DAL.Reporsitory.IRepository;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Dtos;
 

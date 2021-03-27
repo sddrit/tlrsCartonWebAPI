@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace tlrsCartonManager.DAL.Reporsitory.IRepositiry
+namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
     public interface ICustomerManagerRepository
     {

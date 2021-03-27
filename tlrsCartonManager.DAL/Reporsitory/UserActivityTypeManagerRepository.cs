@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Models;
-using tlrsCartonManager.DAL.Reporsitory.IRepositiry;
+using tlrsCartonManager.DAL.Reporsitory.IRepository;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {

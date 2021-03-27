@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
 
-namespace tlrsCartonManager.DAL.Reporsitory.IRepositiry
+namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
     public interface IUserPasswordManagerRepository
     {
