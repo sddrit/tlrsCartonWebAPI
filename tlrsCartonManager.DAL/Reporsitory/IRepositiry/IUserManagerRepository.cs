@@ -11,5 +11,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepositiry
     public interface IUserManagerRepository
     {
         Task<IEnumerable<UserDto>> GetUsersList();
+
+        
     }
 }
