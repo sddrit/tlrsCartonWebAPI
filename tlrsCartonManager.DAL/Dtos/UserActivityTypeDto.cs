@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace tlrsCartonManager.DAL.Dto
+namespace tlrsCartonManager.DAL.Dtos
 {
     public class UserActivityTypeDto
     {

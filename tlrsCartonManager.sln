@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tlrsCartonManager.Api", "tlrsCartonManager.Api\tlrsCartonManager.Api.csproj", "{5259EEBC-F684-4ABA-8DB2-5D9BC67E954A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tlrsCartonManager.Api", "tlrsCartonManager.Api\tlrsCartonManager.Api.csproj", "{5259EEBC-F684-4ABA-8DB2-5D9BC67E954A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tlrsCartonManager.DAL", "tlrsCartonManager.DAL\tlrsCartonManager.DAL.csproj", "{F22BC40A-FA8A-4B62-9ADB-41E2EFF9FFD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tlrsCartonManager.DAL", "tlrsCartonManager.DAL\tlrsCartonManager.DAL.csproj", "{F22BC40A-FA8A-4B62-9ADB-41E2EFF9FFD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tlrsCartonManager.Services", "tlrsCartonManager.Services\tlrsCartonManager.Services.csproj", "{AE94A39C-63D0-4941-B752-923B8402F563}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tlrsCartonManager.Services", "tlrsCartonManager.Services\tlrsCartonManager.Services.csproj", "{AE94A39C-63D0-4941-B752-923B8402F563}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

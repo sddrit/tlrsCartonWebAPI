@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace tlrsCartonManager.DAL.Dto
+namespace tlrsCartonManager.DAL.Dtos
 {
     public class UserActivityLoggerDto
     {
