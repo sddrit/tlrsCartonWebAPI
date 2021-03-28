@@ -33,7 +33,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
+                Expires = DateTime.Now.AddMinutes(10),
                 SigningCredentials = creds
             };
 

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tlrsCartonManager.Api.Extensions;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Reporsitory;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
@@ -31,26 +32,14 @@ namespace tlrsCartonManager.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<tlrmCartonContext>
-<<<<<<< HEAD
-            (options => options.UseSqlServer(Configuration.GetConnectionString("tlrmCartonConnection")));            
-            services.AddScoped<IUserManagerRepository, UserManagerRepository>();
-=======
-            (options => options.UseSqlServer(Configuration.GetConnectionString("tlrmCartonConnection")));
-            services.AddScoped<IUserManagerRepository, UserManagerRepository>();
-
-
->>>>>>> 4599ba5f1f89e05a73af03a93258c8d53818f106
+            services.AddApplicationServices(Configuration);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "tlrsCartonManager.Api", Version = "v1" });
             });
-            services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
-<<<<<<< HEAD
+            
 
-=======
->>>>>>> 4599ba5f1f89e05a73af03a93258c8d53818f106
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace tlrsCartonManager.DAL.Extensions
+namespace tlrsCartonManager.Api.Extensions
 {
     public static class DataTableExtension
     {
