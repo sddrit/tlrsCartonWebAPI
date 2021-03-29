@@ -295,7 +295,8 @@ namespace tlrsCartonManager.DAL.Models
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_UserPassword_UserPassword");
             });
-
+            modelBuilder.Entity<CustomerSearch>();
+            modelBuilder.Entity<BoolReturn>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 
