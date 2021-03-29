@@ -58,9 +58,6 @@ namespace tlrsCartonManager.DAL.Dtos
         public int? MainCustomerCode { get; set; } = 0;
         public int Status { get; set; } = 0;
         public int User { get; set; } = 0;
-
-
-
     }
     public class CustomerDisplayDto:CustomerDto
     {
@@ -78,7 +75,7 @@ namespace tlrsCartonManager.DAL.Dtos
     }
     public class CustomerInsertDto : CustomerDto
     {
-        public virtual ICollection<CustomerAuthorizationListDto> CustomerAuthorizationLists { get; set; } = new List<CustomerAuthorizationListDto>();
+        public virtual ICollection<CustomerAuthorizationListInsertDto> CustomerAuthorizationLists { get; set; } = new List<CustomerAuthorizationListInsertDto>();
 
     }
     public class CustomerSearchDto 

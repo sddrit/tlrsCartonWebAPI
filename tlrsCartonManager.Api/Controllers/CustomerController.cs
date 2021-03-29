@@ -44,7 +44,7 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(customerList);
         }
         [HttpPost("AddCustomer")]
-        public ActionResult AddCustomer(CustomerInsertUpdateDto customer)
+        public ActionResult AddCustomer(CustomerInsertDto customer)
         {
             return Json(_customerRepository.AddCustomer(customer));
         }

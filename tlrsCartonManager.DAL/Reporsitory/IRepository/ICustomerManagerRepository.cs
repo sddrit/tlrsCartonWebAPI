@@ -17,7 +17,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<PagedListSP<CustomerSearch>> SearchCustomer(string columnName, string columnValue,
             int pageIndex, int pageSize);
 
-        bool AddCustomer(CustomerInsertUpdateDto customerInsert);
+        bool AddCustomer(CustomerInsertDto customerInsert);
         bool UpdateCustomer(CustomerInsertUpdateDto customerUpdate);
         bool DeleteCustomer(CustomerDeleteDto customerDelete);
     }

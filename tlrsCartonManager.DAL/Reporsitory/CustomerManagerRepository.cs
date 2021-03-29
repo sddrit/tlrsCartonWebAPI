@@ -59,10 +59,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var totalRows = (int)outParam.Value;           
             return new PagedListSP<CustomerSearch>(customerList, pageIndex, pageSize, totalRows);
         }
-        public bool AddCustomer(CustomerInsertUpdateDto customerInsert)
-        {          
-           
-            return SaveCustomer(customerInsert, TransactionTypes.Insert.ToString());
+        public bool AddCustomer(CustomerInsertDto customerInsert)
+        {
+            var customerTransaction = _mapper.Map<CustomerInsertDto, CustomerInsertUpdateDto> (customerInsert);
+            return SaveCustomer(customerTransaction, TransactionTypes.Insert.ToString());
         }
         public bool UpdateCustomer(CustomerInsertUpdateDto customerUpdate)
         {
