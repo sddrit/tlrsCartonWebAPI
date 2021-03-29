@@ -33,6 +33,8 @@ namespace tlrsCartonManager.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationServices(Configuration);
+            services.AddCors();
+            services.AddIdentityServices(Configuration);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -55,6 +57,10 @@ namespace tlrsCartonManager.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(XmlConfigurationExtensions => XmlConfigurationExtensions.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+
+            app.UseAuthentication();           
 
             app.UseAuthorization();
 
