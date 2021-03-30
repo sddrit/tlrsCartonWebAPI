@@ -22,6 +22,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerAuthorizationList> CustomerAuthorizationLists { get; set; }
         public virtual DbSet<MenuRight> MenuRights { get; set; }
+        public virtual DbSet<MenuRightAttachedUser> MenuRightAttachedUsers { get; set; }
         public virtual DbSet<MenuRightForm> MenuRightForms { get; set; }
         public virtual DbSet<MenuRightFormUser> MenuRightFormUsers { get; set; }
         public virtual DbSet<MenuRightUser> MenuRightUsers { get; set; }
@@ -32,6 +33,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<UserActivityType> UserActivityTypes { get; set; }
         public virtual DbSet<UserLogger> UserLoggers { get; set; }
         public virtual DbSet<UserPassword> UserPasswords { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -186,6 +188,14 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.MenuId).ValueGeneratedNever();
             });
 
+            modelBuilder.Entity<MenuRightAttachedUser>(entity =>
+            {
+                entity.HasKey(e => e.UserMenuId)
+                    .HasName("PK_userMenuRightsAttachedUser");
+
+                entity.Property(e => e.UserMenuId).ValueGeneratedNever();
+            });
+
             modelBuilder.Entity<MenuRightForm>(entity =>
             {
                 entity.HasKey(e => e.TrackingId)
@@ -206,17 +216,11 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.TrackingId).ValueGeneratedNever();
 
-                entity.HasOne(d => d.UserFormTracking)
-                    .WithMany(p => p.MenuRightFormUsers)
-                    .HasForeignKey(d => d.UserFormTrackingId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MenuRightFormUser_MenuRightUser");
-
                 entity.HasOne(d => d.UserMenuTracking)
                     .WithMany(p => p.MenuRightFormUsers)
                     .HasForeignKey(d => d.UserMenuTrackingId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MenuRightFormUser_MenuRightFormUser");
+                    .HasConstraintName("FK_MenuRightFormUser_MenuRightAttachedUser");
             });
 
             modelBuilder.Entity<MenuRightUser>(entity =>

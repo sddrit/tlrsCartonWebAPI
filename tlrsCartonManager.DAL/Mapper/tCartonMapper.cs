@@ -27,34 +27,9 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<UserActivityLoggerDto, UserActivityLogger>();
             CreateMap<UserActivityLogger, UserActivityLoggerDto>();
+            CreateMap<MenuRightFormUser, MenuRightFormUserAttachedDto>();
+            CreateMap<MenuRightAttachedUser, MenuRightAttachedUserDto>();
 
-
-
-            CreateMap<CustomerDto, Customer>();
-            CreateMap<Customer, CustomerDto>();
-
-            CreateMap<CustomerDisplayDto, Customer>();
-            CreateMap<Customer, CustomerDisplayDto>();
-            
-            CreateMap<CustomerSearchDto, CustomerSearch>();
-            CreateMap<CustomerSearch, CustomerSearchDto>();
-
-            CreateMap<CustomerInsertUpdateDto, Customer>();
-            CreateMap<CustomerDeleteDto, Customer>();
-
-            
-             CreateMap<CustomerAuthorizationListInsertDto, CustomerAuthorizationListDto>();
-            CreateMap<CustomerAuthorizationListDto, CustomerAuthorizationListInsertDto>();
-
-            
-            
-            CreateMap<CustomerInsertDto, CustomerInsertUpdateDto>();
-
-             CreateMap<CustomerAuthorizationListDisplayDto, CustomerAuthorizationList>();
-            CreateMap<CustomerAuthorizationList, CustomerAuthorizationListDisplayDto>();
-
-            CreateMap<CustomerAuthorizationListDto, CustomerAuthorizationList>();
-           
         }
 
 

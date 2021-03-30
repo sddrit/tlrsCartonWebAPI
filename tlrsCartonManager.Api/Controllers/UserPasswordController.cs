@@ -27,7 +27,7 @@ namespace tlrsCartonManager.Api.Controllers
 
 
         [HttpPost("CreateUserPassword")]
-        public async Task<ActionResult<UserToken>> RegisterSystemUsers([FromBody]UserDto userPasswordRecords)
+        public async Task<ActionResult<UserToken>> RegisterSystemUsers([FromBody] UserDto userPasswordRecords)
         {
             using var hmac = new HMACSHA512();
 
@@ -36,14 +36,14 @@ namespace tlrsCartonManager.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (await _userPasswordRepository.UserNameAlreadyExist(userPasswordRecords.UserName)) return BadRequest("User Name is taken");           
+            if (await _userPasswordRepository.UserNameAlreadyExist(userPasswordRecords.UserName)) return BadRequest("User Name is taken");
 
 
             if (await _userPasswordRepository.UpdateSystemUserPasswordAsync(userPasswordRecords))
             {
                 return new UserToken
                 {
-                     UserId  = userPasswordRecords.UserName
+                    UserId = userPasswordRecords.UserName
                 };
             }
             else
@@ -90,6 +90,12 @@ namespace tlrsCartonManager.Api.Controllers
                 Token = _tokenServiceRepository.CreateToken(userPAssword.UserID)
 
             };
+        }
+
+        [HttpGet("{userName}/userRights")]
+        public Task<IEnumerable<MenuRightAttachedUserDto>> GetUserRoleMenuList(string userName)
+        {
+            return _userPasswordRepository.GetUserMenuRights(userName);
         }
 
 

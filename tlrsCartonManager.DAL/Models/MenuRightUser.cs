@@ -11,11 +11,6 @@ namespace tlrsCartonManager.DAL.Models
     [Table("MenuRightUser")]
     public partial class MenuRightUser
     {
-        public MenuRightUser()
-        {
-            MenuRightFormUsers = new HashSet<MenuRightFormUser>();
-        }
-
         [Key]
         [Column("trackingId")]
         public int TrackingId { get; set; }
@@ -30,7 +25,5 @@ namespace tlrsCartonManager.DAL.Models
         [ForeignKey(nameof(UserId))]
         [InverseProperty("MenuRightUsers")]
         public virtual User User { get; set; }
-        [InverseProperty(nameof(MenuRightFormUser.UserMenuTracking))]
-        public virtual ICollection<MenuRightFormUser> MenuRightFormUsers { get; set; }
     }
 }

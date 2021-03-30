@@ -8,16 +8,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace tlrsCartonManager.DAL.Models
 {
-    [Table("MenuRight")]
-    public partial class MenuRight
+    [Table("MenuRightAttachedUser")]
+    public partial class MenuRightAttachedUser
     {
-        public MenuRight()
+        public MenuRightAttachedUser()
         {
-            MenuRightForms = new HashSet<MenuRightForm>();
-            MenuRightUsers = new HashSet<MenuRightUser>();
+            MenuRightFormUsers = new HashSet<MenuRightFormUser>();
         }
 
-        [Key]
         [Column("menuId")]
         public int MenuId { get; set; }
         [Required]
@@ -39,10 +37,13 @@ namespace tlrsCartonManager.DAL.Models
         public int DivisionId { get; set; }
         [Column("finalMenu")]
         public int? FinalMenu { get; set; }
+        [Key]
+        [Column("UserMenuID")]
+        public int UserMenuId { get; set; }
+        [Column("userRoleID")]
+        public int? UserRoleId { get; set; }
 
-        [InverseProperty(nameof(MenuRightForm.Menu))]
-        public virtual ICollection<MenuRightForm> MenuRightForms { get; set; }
-        [InverseProperty(nameof(MenuRightUser.Menu))]
-        public virtual ICollection<MenuRightUser> MenuRightUsers { get; set; }
+        [InverseProperty(nameof(MenuRightFormUser.UserMenuTracking))]
+        public virtual ICollection<MenuRightFormUser> MenuRightFormUsers { get; set; }
     }
 }
