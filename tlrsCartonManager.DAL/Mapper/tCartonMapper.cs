@@ -32,7 +32,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<MenuRightAttachedUser, MenuRightAttachedUserDto>();
 
 
-
+            //ruv
             CreateMap<CustomerDto, Customer>();
             CreateMap<Customer, CustomerDto>();
 
@@ -45,10 +45,8 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CustomerInsertUpdateDto, Customer>();
             CreateMap<CustomerDeleteDto, Customer>();
 
-
             CreateMap<CustomerAuthorizationListInsertDto, CustomerAuthorizationListDto>();
             CreateMap<CustomerAuthorizationListDto, CustomerAuthorizationListInsertDto>();
-
 
 
             CreateMap<CustomerInsertDto, CustomerInsertUpdateDto>();
@@ -57,7 +55,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CustomerAuthorizationList, CustomerAuthorizationListDisplayDto>();
 
             CreateMap<CustomerAuthorizationListDto, CustomerAuthorizationList>();
-
+            //ruv
         }
 
 

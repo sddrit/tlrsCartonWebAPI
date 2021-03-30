@@ -22,12 +22,12 @@ namespace tlrsCartonManager.Api.Controllers
             _customerRepository = customerRepository;
         }
 
-        [HttpGet("getCustomerList")]
-        public async Task<ActionResult<IEnumerable<CustomerDisplayDto>>> GetCustomerList()
-        {
-            var customerList=  await _customerRepository.GetCustomerList();
-            return Ok(customerList);
-        }
+        //[HttpGet("getCustomerList")]
+        //public async Task<ActionResult<IEnumerable<CustomerDisplayDto>>> GetCustomerList()
+        //{
+        //    var customerList=  await _customerRepository.GetCustomerList();
+        //    return Ok(customerList);
+        //}
 
         [HttpGet("{customerId}")]
         public async Task<ActionResult<CustomerDisplayDto>> GetSingleSearch(int customerId)
