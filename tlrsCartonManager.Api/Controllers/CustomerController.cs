@@ -33,8 +33,11 @@ namespace tlrsCartonManager.Api.Controllers
         public async Task<ActionResult<CustomerDisplayDto>> GetSingleSearch(int customerId)
         {
             var customerList = await _customerRepository.GetCustomerById(customerId);
+            if(customerList!=null)
+                return Ok(customerList);
+            else
+                return Json("Not Found");
 
-            return Ok(customerList);
         }
         [HttpGet("{columnName}/customerView")]
         public async Task<ActionResult<CustomerSearchDto>> SearchCustomer(string columnName, string columnValue,int pageIndex, int pageSize)
@@ -53,7 +56,7 @@ namespace tlrsCartonManager.Api.Controllers
         {
             return Json(_customerRepository.UpdateCustomer(customer));
         }
-        [HttpPost("DeleteCustomer")]
+        [HttpDelete("DeleteCustomer")]
         public ActionResult DeleteCustomer(CustomerDeleteDto customer)
         {
             return Json(_customerRepository.DeleteCustomer(customer));
