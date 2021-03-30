@@ -32,7 +32,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public async  Task<IEnumerable<CustomerDisplayDto>> GetCustomerList()
         {
-            var customer = await _tcContext.Customers.Include(x => x.CustomerAuthorizationLists). //ruv
+            var customer = await _tcContext.Customers. //ruv
                ToListAsync();
             return _mapper.Map<IEnumerable<CustomerDisplayDto>>(customer);
 

@@ -18,6 +18,7 @@ namespace tlrsCartonManager.DAL.Models
         public int CustomerId { get; set; }
         [Required]
         [Column("name")]
+
         [StringLength(50)]
         public string Name { get; set; }
         [Column("department")]
