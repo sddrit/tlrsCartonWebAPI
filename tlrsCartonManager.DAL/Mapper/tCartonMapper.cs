@@ -27,6 +27,7 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<UserActivityLoggerDto, UserActivityLogger>();
             CreateMap<UserActivityLogger, UserActivityLoggerDto>();
+
             CreateMap<MenuRightFormUser, MenuRightFormUserAttachedDto>();
             CreateMap<MenuRightAttachedUser, MenuRightAttachedUserDto>();
 
