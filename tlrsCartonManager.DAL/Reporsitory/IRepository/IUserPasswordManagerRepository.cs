@@ -15,6 +15,10 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         int GetSystemUserID(string userName);
         Task<bool> UserNameAlreadyExist(string userName);
         Task<bool> UpdateSystemUserPasswordAsync(UserDto userdto);
+        Task<IEnumerable<MenuRightAttachedUserDto>> GetUserMenuRights(string  userName);
+
+
+        
 
 
     }

@@ -16,6 +16,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string EmpId { get; set; }
         public int? AppId { get; set; }
         public string UserPassword { get; set; }
+        public int UserRoleId { get; set; }
         public DateTime? LastLoginDate { get; set; }
     }
 }

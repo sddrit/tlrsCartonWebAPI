@@ -18,12 +18,11 @@ namespace tlrsCartonManager.DAL.Models
         public int UserMenuTrackingId { get; set; }
         [Column("userFormTrackingId")]
         public int UserFormTrackingId { get; set; }
+        [Column("formRightId")]
+        public int? FormRightId { get; set; }
 
-        [ForeignKey(nameof(UserFormTrackingId))]
-        [InverseProperty(nameof(MenuRightForm.MenuRightFormUsers))]
-        public virtual MenuRightForm UserFormTracking { get; set; }
         [ForeignKey(nameof(UserMenuTrackingId))]
-        [InverseProperty(nameof(MenuRightUser.MenuRightFormUsers))]
-        public virtual MenuRightUser UserMenuTracking { get; set; }
+        [InverseProperty(nameof(MenuRightAttachedUser.MenuRightFormUsers))]
+        public virtual MenuRightAttachedUser UserMenuTracking { get; set; }
     }
 }

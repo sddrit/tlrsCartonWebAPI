@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Dtos;
+using AutoMapper.QueryableExtensions;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -41,8 +42,16 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _mapper.Map<UserPasswordDto>(userPasswordLine);
         }
 
+        public async Task<IEnumerable<MenuRightAttachedUserDto>> GetUserMenuRights(string userName)
+        {
+            //Get User Role ID 
+            int user = _tcContext.Users.SingleOrDefaultAsync(x => x.UserName == userName).Result.UserRoleId;
+            //int userRoleID = user.UserRoleId;
 
-  
+            return await _tcContext.MenuRightAttachedUsers.Where(x => x.UserRoleId == user)
+               .ProjectTo<MenuRightAttachedUserDto>(_mapper.ConfigurationProvider)
+               .AsNoTracking().ToListAsync();
+        }
 
         public async Task<bool> SaveAllAsync()
         {
@@ -56,7 +65,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             systemUser.UserFullName = userdto.UserFullName;
             systemUser.AppId = userdto.AppId;
             systemUser.EmpId = userdto.EmpId;
+            systemUser.UserRoleId = userdto.UserRoleId;
             _tcContext.Users.Add(systemUser);
+
             await _tcContext.SaveChangesAsync();
             int newUserid = systemUser.UserId;
 
@@ -94,5 +105,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             return await _tcContext.Users.AnyAsync(x => x.UserName == userName);
         }
+
+
+        
+
     }
 }
