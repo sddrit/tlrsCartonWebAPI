@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <StartupObject>tlrsCartonManager.Api.Program</StartupObject>
-    <NoWin32Manifest>true</NoWin32Manifest>
+    <UserSecretsId>ceb0c9e0-5563-4d71-a6ea-371052e408e6</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
