@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace tlrsCartonManager.DAL.Dtos
 {
     public class CustomerDto
@@ -63,6 +64,9 @@ namespace tlrsCartonManager.DAL.Dtos
     {
         public int TrackingId { get; set; }
         public virtual ICollection<CustomerAuthorizationListDisplayDto> CustomerAuthorizationLists { get; set; }
+        public virtual ICollection<CustomerSubAccountListDto> CustomerSubAccountLists { get; set; }
+
+
     }
     public class CustomerInsertUpdateDto : CustomerDto    {
         public int TrackingId { get; set; }

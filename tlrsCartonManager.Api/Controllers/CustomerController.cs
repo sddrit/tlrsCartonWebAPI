@@ -46,17 +46,17 @@ namespace tlrsCartonManager.Api.Controllers
             Response.AddPaginationHeader(customerList.PageIndex, customerList.PageSize, customerList.TotalCount, customerList.TotalPages);
             return Ok(customerList);
         }
-        [HttpPost("AddCustomer")]
+        [HttpPost("Add")]
         public ActionResult AddCustomer(CustomerInsertDto customer)
         {
             return Json(_customerRepository.AddCustomer(customer));
         }
-        [HttpPost("UpdateCustomer")]
+        [HttpPost("Update")]
         public ActionResult UpdateCustomer(CustomerInsertUpdateDto customer)
         {
             return Json(_customerRepository.UpdateCustomer(customer));
         }
-        [HttpDelete("DeleteCustomer")]
+        [HttpDelete("Delete")]
         public ActionResult DeleteCustomer(CustomerDeleteDto customer)
         {
             return Json(_customerRepository.DeleteCustomer(customer));

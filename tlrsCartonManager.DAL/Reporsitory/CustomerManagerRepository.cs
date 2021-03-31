@@ -40,7 +40,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public async Task<CustomerDisplayDto> GetCustomerById(int customerId)
         {
-            return _mapper.Map<CustomerDisplayDto>(await _tcContext.Customers.Include(x => x.CustomerAuthorizationLists).SingleOrDefaultAsync(x => x.TrackingId == customerId));
+            var subAccList= _mapper.Map < IEnumerable < CustomerSubAccountListDto >> (await _tcContext.Customers.Where(x => x.MainCustomerCode == customerId && x.AccountType!="M").ToListAsync());
+            var customerList= _mapper.Map <CustomerDisplayDto>( await _tcContext.Customers.Include(x => x.CustomerAuthorizationLists).SingleOrDefaultAsync(x => x.TrackingId == customerId));
+            customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
+            return customerList;
+           
         }
         public async Task<PagedListSP<CustomerSearch>> SearchCustomer(string columnName, string columnValue, int pageIndex, int pageSize)
         {
