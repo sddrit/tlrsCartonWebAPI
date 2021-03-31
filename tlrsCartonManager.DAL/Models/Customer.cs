@@ -174,5 +174,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual ServiceCategory ServiceProvidedNavigation { get; set; }
         [InverseProperty(nameof(CustomerAuthorizationList.Customer))]
         public virtual ICollection<CustomerAuthorizationList> CustomerAuthorizationLists { get; set; }
+
+        public virtual ICollection<CustomerSubAccountList> CustomerSubAccountLists { get; set; }
     }
 }
