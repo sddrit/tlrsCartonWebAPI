@@ -59,12 +59,12 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<BillingCycle>(entity =>
             {
-                entity.HasKey(e => e.TrackingId)
+                entity.HasKey(e => e.Id)
                     .HasName("PK_CustomerBillingCycle");
 
-                entity.Property(e => e.TrackingId).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.BillingCycleDescription).IsUnicode(false);
+                entity.Property(e => e.Description).IsUnicode(false);
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -245,22 +245,22 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<Route>(entity =>
             {
-                entity.HasKey(e => e.TrackingId)
+                entity.HasKey(e => e.Id)
                     .HasName("PK_CustomerRoute");
 
-                entity.Property(e => e.TrackingId).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.RouteDescription).IsUnicode(false);
+                entity.Property(e => e.Description).IsUnicode(false);
             });
 
             modelBuilder.Entity<ServiceCategory>(entity =>
             {
-                entity.HasKey(e => e.TrackingId)
+                entity.HasKey(e => e.Id)
                     .HasName("PK_service");
 
-                entity.Property(e => e.TrackingId).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.ServiceDescription).IsUnicode(false);
+                entity.Property(e => e.Description).IsUnicode(false);
             });
 
             modelBuilder.Entity<User>(entity =>

@@ -17,12 +17,12 @@ namespace tlrsCartonManager.DAL.Models
         }
 
         [Key]
-        [Column("trackingId")]
-        public int TrackingId { get; set; }
+        [Column("id")]
+        public int Id { get; set; }
         [Required]
-        [Column("billingCycleDescription")]
+        [Column("description")]
         [StringLength(50)]
-        public string BillingCycleDescription { get; set; }
+        public string Description { get; set; }
         [Column("status")]
         public int? Status { get; set; }
 

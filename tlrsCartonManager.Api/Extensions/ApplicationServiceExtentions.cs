@@ -27,7 +27,9 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<ITokenServicesRepository, TokenServicesRepository>();
 
             services.AddScoped<ICustomerManagerRepository, CustomerManagerRepository>();
-
+            services.AddScoped<IRouteManagerRepository, RouteManagerRepository>();
+            services.AddScoped<IServiceCategoryManagerRepository, ServiceCategoryManagerRepository>();
+            services.AddScoped<IBillingCycleManagerRepository, BillingCycleManagerRepository>();
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             return services;
         }

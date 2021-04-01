@@ -9,7 +9,6 @@ namespace tlrsCartonManager.DAL.Dtos
 {
     public class CustomerDto
     {
-
         public string CustomerCode { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Address1 { get; set; } = string.Empty;
@@ -66,16 +65,15 @@ namespace tlrsCartonManager.DAL.Dtos
         public virtual ICollection<CustomerAuthorizationListDisplayDto> CustomerAuthorizationLists { get; set; }
         public virtual ICollection<CustomerSubAccountListDto> CustomerSubAccountLists { get; set; }
 
-
     }
-    public class CustomerInsertUpdateDto : CustomerDto    {
+    public class CustomerInsertUpdateDto : CustomerDto    
+    {
         public int TrackingId { get; set; }
         public virtual ICollection<CustomerAuthorizationListDto> CustomerAuthorizationLists { get; set; } = new List<CustomerAuthorizationListDto>();
     }
     public class CustomerDeleteDto 
     {
-        public int TrackingId { get; set; }
-       
+        public int TrackingId { get; set; }       
     }
     public class CustomerInsertDto : CustomerDto
     {
@@ -88,7 +86,6 @@ namespace tlrsCartonManager.DAL.Dtos
         public string CustomerCode { get; set; }
         public string Name { get; set; }
         public string Address1 { get; set; }
-
         public string AccountType { get; set; }
     }
 }
