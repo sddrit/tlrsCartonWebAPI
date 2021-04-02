@@ -53,7 +53,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 Where(x => (EF.Functions.Like(x.Name, "%" + customerName +"%") && (x.AccountType == "M"))).ToListAsync();
             return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
         }
-        public async Task<PagedListSP<CustomerSearch>> SearchCustomer(string columnName, string columnValue, int pageIndex, int pageSize)
+        public async Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnName, string columnValue, int pageIndex, int pageSize)
         {
             
             List<SqlParameter> parms = new List<SqlParameter>
@@ -67,9 +67,22 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var outParam = new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[4].ToString(),SqlDbType= SqlDbType.Int, Direction = ParameterDirection.Output };
             parms.Add(outParam);
             var customerList = await _tcContext.Set<CustomerSearch>().FromSqlRaw(CustomerStoredProcedureSearch.Sql, parms.ToArray()).ToListAsync();
-            var totalRows = (int)outParam.Value;           
-            return  new PagedListSP<CustomerSearch>(customerList, pageIndex, pageSize, totalRows);
-           
+            var totalRows = (int)outParam.Value;
+            
+            var postResponse = _mapper.Map<List<CustomerSearchDto>>(customerList);
+
+            var paginationResponse = new PagedResponse<CustomerSearchDto>
+            {
+                Data = postResponse,
+                pageNumber = pageIndex,
+                pageSize = pageSize,
+                totalCount = totalRows,
+                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+
+            };
+
+            return paginationResponse;
+
         }
         public bool AddCustomer(CustomerInsertDto customerInsert)
         {

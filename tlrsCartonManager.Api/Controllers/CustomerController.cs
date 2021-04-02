@@ -26,8 +26,7 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet("getCustomer")]
         public async Task<ActionResult<CustomerSearchDto>> SearchCustomer(string columnName, string columnValue, int pageIndex, int pageSize)
         {
-            var customerList = await _customerRepository.SearchCustomer(columnName, columnValue, pageIndex, pageSize);
-            Response.AddPaginationHeader(customerList.PageIndex, customerList.PageSize, customerList.TotalCount, customerList.TotalPages);
+            var customerList = await _customerRepository.SearchCustomer(columnName, columnValue, pageIndex, pageSize);          
 
             return Ok(customerList);
         }

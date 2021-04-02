@@ -16,7 +16,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainId(string customerName);
 
-        Task<PagedListSP<CustomerSearch>> SearchCustomer(string columnName, string columnValue,
+        Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnName, string columnValue,
             int pageIndex, int pageSize);
 
         bool AddCustomer(CustomerInsertDto customerInsert);
