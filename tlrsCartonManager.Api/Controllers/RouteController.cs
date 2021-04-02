@@ -23,7 +23,7 @@ namespace tlrsCartonManager.Api.Controllers
         }       
 
         [HttpGet]
-        public async Task<ActionResult<RouteDto>> GetCustomerList()
+        private async Task<ActionResult<RouteDto>> GetCustomerList()
         {
             var routeList = await _routeRepository.GetRouteList();
             if(routeList != null)
