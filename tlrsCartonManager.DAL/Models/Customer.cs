@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using tlrsCartonManager.DAL.Models.ResponseModels;
 
 #nullable disable
 
@@ -14,7 +13,7 @@ namespace tlrsCartonManager.DAL.Models
     {
         public Customer()
         {
-            CustomerAuthorizationLists = new HashSet<CustomerAuthorizationList>();
+            CustomerAuthorizationListHeaders = new HashSet<CustomerAuthorizationListHeader>();
         }
 
         [Key]
@@ -153,8 +152,8 @@ namespace tlrsCartonManager.DAL.Models
         public string AccountType { get; set; }
         [Column("mainCustomerCode")]
         public int? MainCustomerCode { get; set; }
-        [Column("status")]
-        public int Status { get; set; }
+        [Column("active")]
+        public bool Active { get; set; }
         [Column("createdUser")]
         public int? CreatedUser { get; set; }
         [Column("createdDate", TypeName = "datetime")]
@@ -163,6 +162,8 @@ namespace tlrsCartonManager.DAL.Models
         public int? LuUser { get; set; }
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
+        [Column("deleted")]
+        public bool Deleted { get; set; }
 
         [ForeignKey(nameof(BillingCycle))]
         [InverseProperty("Customers")]
@@ -173,10 +174,9 @@ namespace tlrsCartonManager.DAL.Models
         [ForeignKey(nameof(ServiceProvided))]
         [InverseProperty(nameof(ServiceCategory.Customers))]
         public virtual ServiceCategory ServiceProvidedNavigation { get; set; }
-        [InverseProperty(nameof(CustomerAuthorizationList.Customer))]
-        public virtual ICollection<CustomerAuthorizationList> CustomerAuthorizationLists { get; set; }
+        [InverseProperty(nameof(CustomerAuthorizationListHeader.Customer))]
+        public virtual ICollection<CustomerAuthorizationListHeader> CustomerAuthorizationListHeaders { get; set; }
 
-        public virtual ICollection<CustomerSubAccountList> CustomerSubAccountLists { get; set; }
+
     }
-   
 }

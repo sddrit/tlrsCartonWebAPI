@@ -25,6 +25,8 @@ namespace tlrsCartonManager.DAL.Models
         public string Description { get; set; }
         [Column("active")]
         public bool? Active { get; set; }
+        [Column("deleted")]
+        public bool? Deleted { get; set; }
 
         [InverseProperty(nameof(Customer.BillingCycleNavigation))]
         public virtual ICollection<Customer> Customers { get; set; }

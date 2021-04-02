@@ -11,16 +11,16 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
     public interface ICustomerManagerRepository
     {
-        Task<IEnumerable<CustomerDisplayDto>> GetCustomerList();
-        Task<CustomerDisplayDto> GetCustomerById(int customerId);
+        Task<IEnumerable<CustomerDto>> GetCustomerList();
+        Task<CustomerDto> GetCustomerById(int customerId);
 
         Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainId(string customerName);
 
         Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnName, string columnValue,
             int pageIndex, int pageSize);
 
-        bool AddCustomer(CustomerInsertDto customerInsert);
-        bool UpdateCustomer(CustomerInsertUpdateDto customerUpdate);
+        bool AddCustomer(CustomerDto customerInsert);
+        bool UpdateCustomer(CustomerDto customerUpdate);
         bool DeleteCustomer(CustomerDeleteDto customerDelete);
     }
 }

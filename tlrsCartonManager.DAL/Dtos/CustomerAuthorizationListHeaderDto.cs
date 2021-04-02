@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace tlrsCartonManager.DAL.Dtos
 {
-   public class CustomerAuthorizationListDto
+   public class CustomerAuthorizationListHeaderDto
     {
         public int TrackingId { get; set; } = 0;
         public int CustomerId { get; set; } = 0;
         public string Name { get; set; } = string.Empty;
         public string Department { get; set; } = string.Empty;
-        public string Designation { get; set; } = string.Empty;
-        public int LevelOfAuthority { get; set; } = 0;
+        public string Designation { get; set; } = string.Empty;      
         public string Email { get; set; } = string.Empty;
-        public int Status { get; set; } = 0;
+        public bool Active { get; set; } = false;
+        public bool? Deleted { get; set; } = false;
+        public virtual ICollection<CustomerAuthorizationListDetailDto> CustomerAuthorizationListDetails { get; set; }
     }
 
     public class CustomerAuthorizationListInsertDto
@@ -30,7 +31,7 @@ namespace tlrsCartonManager.DAL.Dtos
 
     }
   
-    public class CustomerAuthorizationListDisplayDto : CustomerAuthorizationListDto
+    public class CustomerAuthorizationListDisplayDto : CustomerAuthorizationListHeaderDto
     {
       
         public int CreatedUser { get; set; }

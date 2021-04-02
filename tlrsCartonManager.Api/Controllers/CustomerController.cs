@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.Api.Extensions;
 using tlrsCartonManager.DAL.Models.ResponseModels;
+using tlrsCartonManager.DAL.Models;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -31,7 +32,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getCustomerBy/{customerId}")]
-        public async Task<ActionResult<CustomerDisplayDto>> GetSingleSearch(int customerId)
+        public async Task<ActionResult<CustomerDto>> GetSingleSearch(int customerId)
         {
             var customerList = await _customerRepository.GetCustomerById(customerId);
             if(customerList!=null)

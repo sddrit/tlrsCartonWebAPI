@@ -13,19 +13,19 @@ namespace tlrsCartonManager.DAL.Models
     {
         public AuthorizationLevel()
         {
-            CustomerAuthorizationLists = new HashSet<CustomerAuthorizationList>();
+            CustomerAuthorizationListDetails = new HashSet<CustomerAuthorizationListDetail>();
         }
 
         [Key]
-        [Column("trackingId")]
-        public int TrackingId { get; set; }
-        [Column("authorizationdescription")]
+        [Column("id")]
+        public int Id { get; set; }
+        [Column("description")]
         [StringLength(100)]
-        public string Authorizationdescription { get; set; }
+        public string Description { get; set; }
         [Column("status")]
         public int? Status { get; set; }
 
-        [InverseProperty(nameof(CustomerAuthorizationList.LevelOfAuthorityNavigation))]
-        public virtual ICollection<CustomerAuthorizationList> CustomerAuthorizationLists { get; set; }
+        [InverseProperty(nameof(CustomerAuthorizationListDetail.LevelNavigation))]
+        public virtual ICollection<CustomerAuthorizationListDetail> CustomerAuthorizationListDetails { get; set; }
     }
 }

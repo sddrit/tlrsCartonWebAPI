@@ -75,15 +75,18 @@ namespace tlrsCartonManager.DAL.Utility
             "@serviceProvided",
             "@accountType",
             "@mainCustomerCode",
-            "@status",
+            "@active",
             "@user",
-            "@statementType",
-            "@authorization"
+            "@statementType"
+            //,
+            //"@authorizationHeader",
+            //"@authorizationDetail"
 
         };
         public static List<string> StoredProcedureTypeNames = new List<string>()
         {
-            "dbo.udtCustomerAuthorizationList"
+            "dbo.udtCustomerAuthorizationListHeader",
+            "dbo.udtCustomerAuthorizationListDetail"
         };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
     }

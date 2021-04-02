@@ -20,7 +20,10 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<AuthorizationLevel> AuthorizationLevels { get; set; }
         public virtual DbSet<BillingCycle> BillingCycles { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<CustomerAuthorizationList> CustomerAuthorizationLists { get; set; }
+       
+        public virtual DbSet<CustomerAuthorizationListDetail> CustomerAuthorizationListDetails { get; set; }
+        public virtual DbSet<CustomerAuthorizationListHeader> CustomerAuthorizationListHeaders { get; set; }
+        public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<MenuRight> MenuRights { get; set; }
         public virtual DbSet<MenuRightAttachedUser> MenuRightAttachedUsers { get; set; }
         public virtual DbSet<MenuRightForm> MenuRightForms { get; set; }
@@ -49,19 +52,13 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<AuthorizationLevel>(entity =>
             {
-                entity.HasKey(e => e.TrackingId)
-                    .HasName("PK_AuthorizationList");
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.TrackingId).ValueGeneratedNever();
-
-                entity.Property(e => e.Authorizationdescription).IsUnicode(false);
+                entity.Property(e => e.Description).IsUnicode(false);
             });
 
             modelBuilder.Entity<BillingCycle>(entity =>
             {
-                entity.HasKey(e => e.Id)
-                    .HasName("PK_CustomerBillingCycle");
-
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Description).IsUnicode(false);
@@ -160,7 +157,22 @@ namespace tlrsCartonManager.DAL.Models
                     .HasConstraintName("FK_customer_serviceCategory");
             });
 
-            modelBuilder.Entity<CustomerAuthorizationList>(entity =>
+         
+
+            modelBuilder.Entity<CustomerAuthorizationListDetail>(entity =>
+            {
+                entity.HasOne(d => d.Authorization)
+                    .WithMany(p => p.CustomerAuthorizationListDetails)
+                    .HasForeignKey(d => d.AuthorizationId)
+                    .HasConstraintName("FK_CustomerAuthorizationListDetail_CustomerAuthorizationListHeader");
+
+                entity.HasOne(d => d.LevelNavigation)
+                    .WithMany(p => p.CustomerAuthorizationListDetails)
+                    .HasForeignKey(d => d.Level)
+                    .HasConstraintName("FK_CustomerAuthorizationListDetail_AuthorizationLevel");
+            });
+
+            modelBuilder.Entity<CustomerAuthorizationListHeader>(entity =>
             {
                 entity.HasKey(e => e.TrackingId)
                     .HasName("PK_customerAuthorizationList");
@@ -168,16 +180,10 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.Email).IsUnicode(false);
 
                 entity.HasOne(d => d.Customer)
-                    .WithMany(p => p.CustomerAuthorizationLists)
+                    .WithMany(p => p.CustomerAuthorizationListHeaders)
                     .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_customerAuthorizationList_customer");
-
-                entity.HasOne(d => d.LevelOfAuthorityNavigation)
-                    .WithMany(p => p.CustomerAuthorizationLists)
-                    .HasForeignKey(d => d.LevelOfAuthority)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_customerAuthorizationList_AuthorizationLevel");
             });
 
             modelBuilder.Entity<MenuRight>(entity =>
@@ -245,9 +251,6 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<Route>(entity =>
             {
-                entity.HasKey(e => e.Id)
-                    .HasName("PK_CustomerRoute");
-
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Description).IsUnicode(false);
@@ -255,9 +258,6 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<ServiceCategory>(entity =>
             {
-                entity.HasKey(e => e.Id)
-                    .HasName("PK_service");
-
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Description).IsUnicode(false);
