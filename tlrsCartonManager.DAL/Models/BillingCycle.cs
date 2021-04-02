@@ -23,8 +23,8 @@ namespace tlrsCartonManager.DAL.Models
         [Column("description")]
         [StringLength(50)]
         public string Description { get; set; }
-        [Column("status")]
-        public int? Status { get; set; }
+        [Column("active")]
+        public bool? Active { get; set; }
 
         [InverseProperty(nameof(Customer.BillingCycleNavigation))]
         public virtual ICollection<Customer> Customers { get; set; }
