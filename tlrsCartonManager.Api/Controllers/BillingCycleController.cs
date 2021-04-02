@@ -27,7 +27,7 @@ namespace tlrsCartonManager.Api.Controllers
         {
             var bcList = await _billingCycleRepository.GetBillingList();
             if(bcList != null)
-                return Ok(bcList);
+                return Json(bcList);
             else
                 return Json("Not Found");
 
