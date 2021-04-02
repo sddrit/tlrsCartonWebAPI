@@ -36,37 +36,25 @@ namespace tlrsCartonManager.DAL.Helper
     /// </summary>
     /// <typeparam name="T">T</typeparam>
     [Serializable]
-    public class PagedListSP<T> : List<T>, IPagedListSP<T>
-    {
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="source">source</param>
-        /// <param name="pageIndex">Page index</param>
-        /// <param name="pageSize">Page size</param>
-        /// <param name="getOnlyTotalCount">A value in indicating whether you want to load only total number of records. Set to "true" if you don't want to load data from database</param>
-        public PagedListSP(IQueryable<T> source, int pageIndex, int pageSize, bool getOnlyTotalCount = false)
-        {
-            var total = source.Count();
-            TotalCount = total;
-            TotalPages = total / pageSize;
+    public class PagedListSP<T> : List<T>
+    {       
+        //public PagedListSP(IQueryable<T> source, int pageIndex, int pageSize, bool getOnlyTotalCount = false)
+        //{
+        //    var total = source.Count();
+        //    TotalCount = total;
+        //    TotalPages = total / pageSize;
 
-            if (total % pageSize > 0)
-                TotalPages++;
+        //    if (total % pageSize > 0)
+        //        TotalPages++;
 
-            PageSize = pageSize;
-            PageIndex = pageIndex;
-            if (getOnlyTotalCount)
-                return;
-            AddRange(source.Skip(pageIndex * pageSize).Take(pageSize).ToList());
-        }
-
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="source">source</param>
-        /// <param name="pageIndex">Page index</param>
-        /// <param name="pageSize">Page size</param>
+        //    PageSize = pageSize;
+        //    PageIndex = pageIndex;
+        //    Items = (IList<T>)source;
+        //    if (getOnlyTotalCount)
+        //        return;
+        //    AddRange(source.Skip(pageIndex * pageSize).Take(pageSize).ToList());
+        //}
+       
         public PagedListSP(IList<T> source, int pageIndex, int pageSize)
         {
             TotalCount = source.Count;
@@ -77,16 +65,11 @@ namespace tlrsCartonManager.DAL.Helper
 
             PageSize = pageSize;
             PageIndex = pageIndex;
-            AddRange(source.Skip(pageIndex * pageSize).Take(pageSize).ToList());
+            Items = (IList<T>)source;
+            //AddRange(source.Skip(pageIndex * pageSize).Take(pageSize).ToList());
         }
 
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="source">source</param>
-        /// <param name="pageIndex">Page index</param>
-        /// <param name="pageSize">Page size</param>
-        /// <param name="totalCount">Total count</param>
+    
         public PagedListSP(IEnumerable<T> source, int pageIndex, int pageSize, int totalCount)
         {
             TotalCount = totalCount;
@@ -97,38 +80,23 @@ namespace tlrsCartonManager.DAL.Helper
 
             PageSize = pageSize;
             PageIndex = pageIndex;
+            Items = (IList<T>)source;
             AddRange(source);
         }       
 
-        /// <summary>
-        /// Page index
-        /// </summary>
+     
         public int PageIndex { get; }
-
-        /// <summary>
-        /// Page size
-        /// </summary>
+               
         public int PageSize { get; }
-
-        /// <summary>
-        /// Total count
-        /// </summary>
+        
         public int TotalCount { get; }
-
-        /// <summary>
-        /// Total pages
-        /// </summary>
+        
         public int TotalPages { get; }
-
-        /// <summary>
-        /// Has previous page
-        /// </summary>
         public bool HasPreviousPage => PageIndex > 0;
-
-        /// <summary>
-        /// Has next page
-        /// </summary>
-        public bool HasNextPage => PageIndex + 1 < TotalPages;
        
+        public bool HasNextPage => PageIndex + 1 < TotalPages;
+
+        public IList<T> Items { get; set; }
+
     }
 }

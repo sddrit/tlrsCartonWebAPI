@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using tlrsCartonManager.DAL.Models.ResponseModels;
 
 #nullable disable
 
@@ -177,4 +178,5 @@ namespace tlrsCartonManager.DAL.Models
 
         public virtual ICollection<CustomerSubAccountList> CustomerSubAccountLists { get; set; }
     }
+   
 }

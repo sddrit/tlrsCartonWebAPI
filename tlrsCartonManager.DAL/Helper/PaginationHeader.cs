@@ -19,5 +19,6 @@ namespace tlrsCartonManager.DAL.Helper
         public int ItemsPerPage { get; set; }
         public int TotalItems { get; set; }
         public int TotalPages { get; set; }
+
     }
 }

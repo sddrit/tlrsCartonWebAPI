@@ -17,4 +17,5 @@ namespace tlrsCartonManager.DAL.Models
 
         public string AccountType { get; set; }
     }
+   
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.Api.Extensions;
+using tlrsCartonManager.DAL.Models.ResponseModels;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -22,14 +23,16 @@ namespace tlrsCartonManager.Api.Controllers
             _customerRepository = customerRepository;
         }
 
-        //[HttpGet("getCustomerList")]
-        //public async Task<ActionResult<IEnumerable<CustomerDisplayDto>>> GetCustomerList()
-        //{
-        //    var customerList=  await _customerRepository.GetCustomerList();
-        //    return Ok(customerList);
-        //}
+        [HttpGet("getCustomer")]
+        public async Task<ActionResult<CustomerSearchDto>> SearchCustomer(string columnName, string columnValue, int pageIndex, int pageSize)
+        {
+            var customerList = await _customerRepository.SearchCustomer(columnName, columnValue, pageIndex, pageSize);
+            Response.AddPaginationHeader(customerList.PageIndex, customerList.PageSize, customerList.TotalCount, customerList.TotalPages);
 
-        [HttpGet("{customerId}")]
+            return Ok(customerList);
+        }
+
+        [HttpGet("getCustomerBy/{customerId}")]
         public async Task<ActionResult<CustomerDisplayDto>> GetSingleSearch(int customerId)
         {
             var customerList = await _customerRepository.GetCustomerById(customerId);
@@ -37,15 +40,18 @@ namespace tlrsCartonManager.Api.Controllers
                 return Ok(customerList);
             else
                 return Json("Not Found");
+        }
 
-        }
-        [HttpGet("{columnName}/customerView")]
-        public async Task<ActionResult<CustomerSearchDto>> SearchCustomer(string columnName, string columnValue,int pageIndex, int pageSize)
+        [HttpGet("getCustomerMainBy/{name}")]
+        public async Task<ActionResult<CustomerMainCodeSearchDto>>GetMainAccount(string name)
         {
-            var customerList = await _customerRepository.SearchCustomer(columnName, columnValue, pageIndex, pageSize);
-            Response.AddPaginationHeader(customerList.PageIndex, customerList.PageSize, customerList.TotalCount, customerList.TotalPages);
-            return Ok(customerList);
+            var customerMainList = await _customerRepository.GetCustomerByMainId(name);
+            if (customerMainList != null)
+                return Ok(customerMainList);
+            else
+                return Json("Not Found");
         }
+       
         [HttpPost]
         public ActionResult AddCustomer(CustomerInsertDto customer)
         {

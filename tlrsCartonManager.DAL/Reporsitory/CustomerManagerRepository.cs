@@ -32,26 +32,33 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public async  Task<IEnumerable<CustomerDisplayDto>> GetCustomerList()
         {
-            var customer = await _tcContext.Customers. //ruv
-               ToListAsync();
+            var customer = await _tcContext.Customers.ToListAsync();
             return _mapper.Map<IEnumerable<CustomerDisplayDto>>(customer);
 
         }
 
         public async Task<CustomerDisplayDto> GetCustomerById(int customerId)
         {
-            var subAccList= _mapper.Map < IEnumerable < CustomerSubAccountListDto >> (await _tcContext.Customers.Where(x => x.MainCustomerCode == customerId && x.AccountType!="M").ToListAsync());
-            var customerList= _mapper.Map <CustomerDisplayDto>( await _tcContext.Customers.Include(x => x.CustomerAuthorizationLists).SingleOrDefaultAsync(x => x.TrackingId == customerId));
+            var subAccList= _mapper.Map <IEnumerable< CustomerSubAccountListDto>>
+                (await _tcContext.Customers.Where(x => x.MainCustomerCode == customerId && x.AccountType!="M").ToListAsync());
+            var customerList= _mapper.Map <CustomerDisplayDto>
+                ( await _tcContext.Customers.Include(x => x.CustomerAuthorizationLists).SingleOrDefaultAsync(x => x.TrackingId == customerId));
             customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
-            return customerList;
-           
+            return customerList;           
+        }
+
+        public async Task<IEnumerable<CustomerMainCodeSearchDto>>GetCustomerByMainId(string customerName)
+        {
+            var mainAccList = await _tcContext.Customers.
+                Where(x => (EF.Functions.Like(x.Name, "%" + customerName +"%") && (x.AccountType == "M"))).ToListAsync();
+            return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
         }
         public async Task<PagedListSP<CustomerSearch>> SearchCustomer(string columnName, string columnValue, int pageIndex, int pageSize)
         {
             
             List<SqlParameter> parms = new List<SqlParameter>
             {
-               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[0].ToString(), Value = columnName },
+               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[0].ToString(), Value = columnName==null ? string.Empty :columnName },
                new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[1].ToString(), Value = columnValue==null ? string.Empty : columnValue },
                new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[2].ToString(), Value = pageIndex },
                new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[3].ToString(), Value = pageSize },
@@ -61,7 +68,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
             parms.Add(outParam);
             var customerList = await _tcContext.Set<CustomerSearch>().FromSqlRaw(CustomerStoredProcedureSearch.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;           
-            return new PagedListSP<CustomerSearch>(customerList, pageIndex, pageSize, totalRows);
+            return  new PagedListSP<CustomerSearch>(customerList, pageIndex, pageSize, totalRows);
+           
         }
         public bool AddCustomer(CustomerInsertDto customerInsert)
         {

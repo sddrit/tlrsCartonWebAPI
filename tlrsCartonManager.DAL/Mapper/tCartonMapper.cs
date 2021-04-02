@@ -71,6 +71,10 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<BillingCycleDto, BillingCycle>();
             CreateMap<BillingCycle, BillingCycleDto>();
+
+
+            CreateMap<CustomerMainCodeSearchDto, Customer>();
+            CreateMap<Customer, CustomerMainCodeSearchDto>();
             //ruv
         }
 
