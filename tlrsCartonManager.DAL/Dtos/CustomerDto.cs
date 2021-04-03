@@ -78,11 +78,11 @@ namespace tlrsCartonManager.DAL.Dtos
     {
         public int TrackingId { get; set; }       
     }
-    public class CustomerInsertDto : CustomerDto
-    {
-        public virtual ICollection<CustomerAuthorizationListInsertDto> CustomerAuthorizationLists { get; set; } = new List<CustomerAuthorizationListInsertDto>();
+    //public class CustomerInsertDto : CustomerDto
+    //{
+    //    public virtual ICollection<CustomerAuthorizationListInsertDto> CustomerAuthorizationLists { get; set; } = new List<CustomerAuthorizationListInsertDto>();
 
-    }
+    //}
     public class CustomerSearchDto 
     {
         public int TrackingId { get; set; }
