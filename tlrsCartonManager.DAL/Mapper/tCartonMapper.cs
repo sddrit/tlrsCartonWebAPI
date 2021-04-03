@@ -34,10 +34,10 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CustomerSearchDto, CustomerSearch>();
             CreateMap<CustomerSearch, CustomerSearchDto>();
 
-            CreateMap<CustomerInsertUpdateDto, Customer>();
+         
             CreateMap<CustomerDeleteDto, Customer>(); 
             
-            CreateMap<CustomerInsertDto, CustomerInsertUpdateDto>();          
+              
            
             CreateMap<CustomerSubAccountListDto, CustomerSubAccountList>();
             CreateMap<CustomerSubAccountList, CustomerSubAccountListDto>();

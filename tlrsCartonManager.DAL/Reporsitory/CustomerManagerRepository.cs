@@ -70,7 +70,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
             parms.Add(outParam);
             var customerList = await _tcContext.Set<CustomerSearch>().FromSqlRaw(CustomerStoredProcedureSearch.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
-            
+
+            #region paging
             var postResponse = _mapper.Map<List<CustomerSearchDto>>(customerList);
 
             var paginationResponse = new PagedResponse<CustomerSearchDto>
@@ -88,13 +89,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public bool AddCustomer(CustomerDto customerInsert)
         {
-           //var customerTransaction = _mapper.Map<CustomerDto, Customer>(customerInsert);
-           // _tcContext.Customers.Add(customerTransaction);           
-           // _tcContext.SaveChanges();
 
-            
-            
-            //var customerTransaction = _mapper.Map<CustomerInsertDto, CustomerInsertUpdateDto> (customerInsert);
             return SaveCustomer(customerInsert, TransactionTypes.Insert.ToString());
         }
         public bool UpdateCustomer(CustomerDto customerUpdate)
@@ -112,9 +107,31 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         private bool SaveCustomer(CustomerDto customerTransaction, string transcationType)
         {
-            //var v = customerTransaction.CustomerAuthorizationListHeaders.ToList().ToDataTable();
-            
+            #region Assign values to utds
+            //to check
+            List<CustomerAuthorizationListUtdDto> lstAuthorization = new List<CustomerAuthorizationListUtdDto>();
+            List<CustomerAuthorizationListDetailUdtDto> lstAuthorizationLevel = new List<CustomerAuthorizationListDetailUdtDto>();
 
+            var custAuth = customerTransaction.CustomerAuthorizationListHeaders.ToList();
+            int ix = 0;
+            foreach (var customerAuthItem in custAuth)
+            {
+                var b = _mapper.Map<CustomerAuthorizationListUtdDto>(customerAuthItem);
+                b.AutoId = ix + 1;
+                lstAuthorization.Add(b);
+
+                var d = _mapper.Map<List<CustomerAuthorizationListDetailUdtDto>>(customerAuthItem.CustomerAuthorizationListDetails.ToList());
+                foreach (var customerAuthlevel in d)
+                {
+                    customerAuthlevel.AutoId = b.AutoId;
+                    lstAuthorizationLevel.Add(customerAuthlevel);
+
+                }
+                ix = ix + 1;
+            }
+            #endregion
+
+            #region Sql Parameter loading
             List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[0].ToString(),
@@ -168,18 +185,26 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[47].ToString(), Value = customerTransaction.MainCustomerCode },
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[48].ToString(), Value = customerTransaction.Active },
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[49].ToString(), Value = customerTransaction.User },
-                new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[50].ToString(), Value = transcationType }              
-                //new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[51].ToString(), TypeName = CustomerStoredProcedure.StoredProcedureTypeNames[0].ToString() }
-                //SqlDbType = SqlDbType.Structured, Value = customerTransaction.CustomerAuthorizationListHeaders.ToList().ToDataTable()} ,
-                
-                //new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[52].ToString(), TypeName = CustomerStoredProcedure.StoredProcedureTypeNames[1].ToString(),
-                //SqlDbType = SqlDbType.Structured, Value = (new List<CustomerAuthorizationListDetail>()).ToDataTable()}
+                new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[50].ToString(), Value = transcationType } ,
+
+                new SqlParameter
+                {
+                   ParameterName = CustomerStoredProcedure.StoredProcedureParameters[51].ToString(),
+                   TypeName = CustomerStoredProcedure.StoredProcedureTypeNames[0].ToString(),
+                   SqlDbType = SqlDbType.Structured,
+                   Value =lstAuthorization.ToDataTable()
+                },
+                new SqlParameter
+                {
+                   ParameterName = CustomerStoredProcedure.StoredProcedureParameters[52].ToString(),
+                   TypeName = CustomerStoredProcedure.StoredProcedureTypeNames[1].ToString(),
+                   SqlDbType = SqlDbType.Structured,
+                   Value =  lstAuthorizationLevel.ToDataTable()
+                }
             };
             #endregion
 
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
-
-       
     }
-    }
+}
