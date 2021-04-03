@@ -61,7 +61,15 @@ namespace tlrsCartonManager.Api.Controllers
 
             if (!await _userPasswordRepository.ValidUserName(userPAssword.UserID))
             {
-                return Unauthorized("Invalid Username");
+                var Ok = (new
+                {
+                    Id = 1,
+                    Username = userPAssword.UserID,
+                    message = "Invalid User Name",
+
+                });
+
+                return new JsonResult(Ok);
             }
 
             var systemUserPassword = await _userPasswordRepository.GetSystemUserPasswords(userPAssword.UserID);
@@ -76,7 +84,14 @@ namespace tlrsCartonManager.Api.Controllers
             {
                 if (computedHash[i] != systemUserPassword.PasswordHash[i])
                 {
-                    return Unauthorized("Invalid Password");
+                    var Ok = (new
+                    {
+                        Id = 2,
+                        Username = userPAssword.UserID,
+                        message = "Invalid Password",
+
+                    });
+                    return new JsonResult(Ok);
                 }
             }
 
@@ -84,20 +99,23 @@ namespace tlrsCartonManager.Api.Controllers
 
             await _userPasswordRepository.UserLoginTracker(systemuserid);
 
+            IEnumerable<MenuRightAttachedUserDto> lnMenu = new List<MenuRightAttachedUserDto>();
+            lnMenu = _userPasswordRepository.GetUserMenuRights(userPAssword.UserID).Result;
             return new UserToken
             {
-                UserId = userPAssword.UserID,
-                Token = _tokenServiceRepository.CreateToken(userPAssword.UserID)
 
+                UserId = userPAssword.UserID,
+                Token = _tokenServiceRepository.CreateToken(userPAssword.UserID),
+                UserRights = lnMenu
             };
+
         }
+
 
         [HttpGet("{userName}/userRights")]
         public Task<IEnumerable<MenuRightAttachedUserDto>> GetUserRoleMenuList(string userName)
         {
             return _userPasswordRepository.GetUserMenuRights(userName);
         }
-
-
     }
 }
