@@ -77,10 +77,9 @@ namespace tlrsCartonManager.DAL.Utility
             "@mainCustomerCode",
             "@active",
             "@user",
-            "@statementType"
-            //,
-            //"@authorizationHeader",
-            //"@authorizationDetail"
+            "@statementType",
+            "@authorizationHeader",
+            "@authorizationDetail"
 
         };
         public static List<string> StoredProcedureTypeNames = new List<string>()

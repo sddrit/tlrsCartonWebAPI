@@ -33,14 +33,12 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<CustomerSearchDto, CustomerSearch>();
             CreateMap<CustomerSearch, CustomerSearchDto>();
-
-            CreateMap<CustomerInsertUpdateDto, Customer>();
-            CreateMap<CustomerDeleteDto, Customer>(); 
-            
-            CreateMap<CustomerInsertDto, CustomerInsertUpdateDto>();          
+           
+            CreateMap<CustomerDeleteDto, Customer>();               
            
             CreateMap<CustomerSubAccountListDto, CustomerSubAccountList>();
             CreateMap<CustomerSubAccountList, CustomerSubAccountListDto>();
+
             CreateMap<CustomerSubAccountListDto, Customer>();
             CreateMap<Customer, CustomerSubAccountListDto>();
 
@@ -55,25 +53,18 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CustomerMainCodeSearchDto, Customer>();
             CreateMap<Customer, CustomerMainCodeSearchDto>();
 
-           
-
-            //CreateMap<CustomerAuthorizationListInsertDto, CustomerAuthorizationListHeaderDto>();
-            //CreateMap<CustomerAuthorizationListHeaderDto, CustomerAuthorizationListInsertDto>();
-
-            //CreateMap<CustomerAuthorizationListHeaderDto, Customer>();
-            //CreateMap<Customer , CustomerAuthorizationListHeaderDto>();
-
             CreateMap<CustomerAuthorizationListHeaderDto, CustomerAuthorizationListHeader>();
-            CreateMap<CustomerAuthorizationListHeader, CustomerAuthorizationListHeaderDto>();
-
-            //CreateMap<CustomerAuthorizationListDetailDto, Customer>();
-            //CreateMap<Customer, CustomerAuthorizationListDetailDto>();
+            CreateMap<CustomerAuthorizationListHeader, CustomerAuthorizationListHeaderDto>();           
 
             CreateMap<CustomerAuthorizationListDetailDto, CustomerAuthorizationListDetail>();
             CreateMap<CustomerAuthorizationListDetail, CustomerAuthorizationListDetailDto>();
 
+            CreateMap<CustomerAuthorizationListUtdDto, CustomerAuthorizationListHeaderDto>();
+            CreateMap<CustomerAuthorizationListHeaderDto, CustomerAuthorizationListUtdDto>();
 
-           
+            CreateMap<CustomerAuthorizationListDetailUdtDto, CustomerAuthorizationListDetailDto>();
+            CreateMap<CustomerAuthorizationListDetailDto, CustomerAuthorizationListDetailUdtDto>();
+          
             //ruv
         }
 

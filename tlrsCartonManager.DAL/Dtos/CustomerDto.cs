@@ -64,25 +64,12 @@ namespace tlrsCartonManager.DAL.Dtos
         public virtual ICollection<CustomerAuthorizationListHeaderDto> CustomerAuthorizationListHeaders { get; set; } = new List<CustomerAuthorizationListHeaderDto>();
         public virtual ICollection<CustomerSubAccountListDto> CustomerSubAccountLists { get; set; } = new List<CustomerSubAccountListDto>();
 
-    }
-    //public class CustomerDisplayDto:CustomerDto
-    //{
-
-    //}
-    public class CustomerInsertUpdateDto : CustomerDto    
-    {
-        public int TrackingId { get; set; }
-        public virtual ICollection<CustomerAuthorizationListHeaderDto> CustomerAuthorizationLists { get; set; } = new List<CustomerAuthorizationListHeaderDto>();
-    }
+    }  
+   
     public class CustomerDeleteDto 
     {
         public int TrackingId { get; set; }       
-    }
-    public class CustomerInsertDto : CustomerDto
-    {
-        public virtual ICollection<CustomerAuthorizationListInsertDto> CustomerAuthorizationLists { get; set; } = new List<CustomerAuthorizationListInsertDto>();
-
-    }
+    }   
     public class CustomerSearchDto 
     {
         public int TrackingId { get; set; }
@@ -99,4 +86,5 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Name { get; set; }
     }
 
+    
 }
