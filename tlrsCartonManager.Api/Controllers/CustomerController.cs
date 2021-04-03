@@ -52,12 +52,12 @@ namespace tlrsCartonManager.Api.Controllers
         }
        
         [HttpPost]
-        public ActionResult AddCustomer(CustomerInsertDto customer)
+        public ActionResult AddCustomer(CustomerDto customer)
         {
             return Json(_customerRepository.AddCustomer(customer));
         }
         [HttpPut]
-        public ActionResult UpdateCustomer(CustomerInsertUpdateDto customer)
+        public ActionResult UpdateCustomer(CustomerDto customer)
         {
             return Json(_customerRepository.UpdateCustomer(customer));
         }

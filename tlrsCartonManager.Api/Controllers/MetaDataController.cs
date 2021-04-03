@@ -19,43 +19,26 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IRouteManagerRepository _routeRepository;
         private readonly IServiceCategoryManagerRepository _serviceRepository;
 
-        public MetaDataController(IBillingCycleManagerRepository billingCycleRepository, IRouteManagerRepository routeRepository,
-            IServiceCategoryManagerRepository serviceRepository)
+        public MetaDataController(IBillingCycleManagerRepository billingCycleRepository, IRouteManagerRepository routeRepository,IServiceCategoryManagerRepository serviceRepository)
         {
             _billingCycleRepository = billingCycleRepository;
             _routeRepository = routeRepository;
             _serviceRepository = serviceRepository;
         }       
 
-        [HttpGet("BillingCycle")]
+        [HttpGet("getCustomerMetaData")]
         public async Task<ActionResult<BillingCycleDto>> GetBillingList()
         {
-            var bcList = await _billingCycleRepository.GetBillingList();
-            if(bcList != null)
-                return Json(bcList);
-            else
-                return Json("Not Found");
-
-        }
-        [HttpGet("Route")]
-        public async Task<ActionResult<RouteDto>> GetCustomerList()
-        {
-            var routeList = await _routeRepository.GetRouteList();
-            if (routeList != null)
-                return Ok(routeList);
-            else
-                return Json("Not Found");
-
-        }
-        [HttpGet("ServiceCategory")]
-        public async Task<ActionResult<ServiceCategoryDto>> GetServiceList()
-        {
-            var seviceList = await _serviceRepository.GetServiceList();
-            if (seviceList != null)
-                return Ok(seviceList);
-            else
-                return Json("Not Found");
-
-        }
+            var billingCylce = await _billingCycleRepository.GetBillingList();
+            var route = await _routeRepository.GetRouteList();
+            var serviceCategory = await _serviceRepository.GetServiceList();
+            return Ok(
+            new
+            {
+                billingCylce,
+                route,
+                serviceCategory
+            });  
+        }         
     }
 }

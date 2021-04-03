@@ -86,6 +86,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public bool AddCustomer(CustomerDto customerInsert)
         {
+           //var customerTransaction = _mapper.Map<CustomerDto, Customer>(customerInsert);
+           // _tcContext.Customers.Add(customerTransaction);           
+           // _tcContext.SaveChanges();
+
+            
+            
             //var customerTransaction = _mapper.Map<CustomerInsertDto, CustomerInsertUpdateDto> (customerInsert);
             return SaveCustomer(customerInsert, TransactionTypes.Insert.ToString());
         }
@@ -95,7 +101,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public bool DeleteCustomer(CustomerDeleteDto customerDelete)
         {
-            var cutomerTransaction = new CustomerInsertUpdateDto
+            var cutomerTransaction = new CustomerDto
             {
                 TrackingId = customerDelete.TrackingId
             };
