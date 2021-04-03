@@ -21,26 +21,25 @@ namespace tlrsCartonManager.DAL.Dtos
         public virtual ICollection<CustomerAuthorizationListDetailDto> CustomerAuthorizationListDetails { get; set; }
     }
 
-    public class CustomerAuthorizationListUtdDto
-    {
-
-
-        public int AutoId { get; set; }
-
-        public int TrackingId { get; set; } = 0;
-
+    public class CustomerAuthorizationListInsertDto
+    {    
         public int CustomerId { get; set; } = 0;
-
         public string Name { get; set; } = string.Empty;
-
         public string Department { get; set; } = string.Empty;
-
         public string Designation { get; set; } = string.Empty;
-
+        public int LevelOfAuthority { get; set; } = 0;
         public string Email { get; set; } = string.Empty;
+        public int Status { get; set; } = 0;
 
-        public bool Active { get; set; } = false;
-
+    }
+  
+    public class CustomerAuthorizationListDisplayDto : CustomerAuthorizationListHeaderDto
+    {
+      
+        public int CreatedUser { get; set; }
+        public DateTime  CreatedDate{ get; set; }
+        public int? LuUser { get; set; }
+        public DateTime LuDate { get; set; }
     }
 
 
