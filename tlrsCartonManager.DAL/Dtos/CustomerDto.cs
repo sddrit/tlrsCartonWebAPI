@@ -12,7 +12,7 @@ namespace tlrsCartonManager.DAL.Dtos
     {
         [Key]
         public int TrackingId { get; set; } = 0;
-        public string CustomerCode { get; set; } = string.Empty;    
+        public string CustomerCode { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Address1 { get; set; } = string.Empty;
         public string Address2 { get; set; } = string.Empty;
@@ -21,7 +21,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Telephone2 { get; set; } = string.Empty;
         public string Fax { get; set; } = string.Empty;
         public string ZipCode { get; set; } = string.Empty;
-        public decimal? CountryId { get; set; } = 0;      
+        public decimal? CountryId { get; set; } = 0;
         public string Email { get; set; } = string.Empty;
         public string ContractNo { get; set; } = string.Empty;
         public DateTime? ContractStartDate { get; set; } = new DateTime(1900, 1, 1);
@@ -53,10 +53,10 @@ namespace tlrsCartonManager.DAL.Dtos
         public string SvatNo { get; set; } = string.Empty;
         public int? BillingCycle { get; set; } = 0;
         public int? Route { get; set; } = 0;
-        public bool? IsSeparateInvoice { get; set; } = false;      
+        public bool? IsSeparateInvoice { get; set; } = false;
         public string ContactPersonInv { get; set; } = string.Empty;
         public bool? SubInvoice { get; set; } = false;
-        public int? ServiceProvided { get; set; } = 0;       
+        public int? ServiceProvided { get; set; } = 0;
         public string AccountType { get; set; } = string.Empty;
         public int? MainCustomerCode { get; set; } = 0;
         public bool Active { get; set; } = false;
@@ -64,13 +64,13 @@ namespace tlrsCartonManager.DAL.Dtos
         public virtual ICollection<CustomerAuthorizationListHeaderDto> CustomerAuthorizationListHeaders { get; set; } = new List<CustomerAuthorizationListHeaderDto>();
         public virtual ICollection<CustomerSubAccountListDto> CustomerSubAccountLists { get; set; } = new List<CustomerSubAccountListDto>();
 
-    }  
-   
-    public class CustomerDeleteDto 
+    }
+
+    public class CustomerDeleteDto
     {
-        public int TrackingId { get; set; }       
-    }   
-    public class CustomerSearchDto 
+        public int TrackingId { get; set; }
+    }
+    public class CustomerSearchDto
     {
         public int TrackingId { get; set; }
         public string CustomerCode { get; set; }
@@ -86,5 +86,5 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Name { get; set; }
     }
 
-    
+
 }

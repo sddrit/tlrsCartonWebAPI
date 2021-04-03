@@ -50,7 +50,7 @@ namespace tlrsCartonManager.Api
         {
             if (env.IsDevelopment())
             {
-                app.UseMiddleware<ExcptionMiddleware>();
+                //app.UseMiddleware<ExcptionMiddleware>();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tlrsCartonManager.Api v1"));
