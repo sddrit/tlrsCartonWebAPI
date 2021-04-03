@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.Api.Extensions;
+using tlrsCartonManager.Api.Middleware;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Reporsitory;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
@@ -49,6 +50,7 @@ namespace tlrsCartonManager.Api
         {
             if (env.IsDevelopment())
             {
+                app.UseMiddleware<ExcptionMiddleware>();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tlrsCartonManager.Api v1"));

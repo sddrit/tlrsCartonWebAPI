@@ -9,6 +9,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
+using tlrsCartonManager.Api.Error;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -31,12 +33,13 @@ namespace tlrsCartonManager.Api.Controllers
         {
             using var hmac = new HMACSHA512();
 
-            if (userPasswordRecords == null)
-            {
-                return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+            {                
+                return new JsonErrorResult(new { Message = "User Model Error" }, HttpStatusCode.BadRequest);
             }
 
-            if (await _userPasswordRepository.UserNameAlreadyExist(userPasswordRecords.UserName)) return BadRequest("User Name is taken");
+            if (await _userPasswordRepository.UserNameAlreadyExist(userPasswordRecords.UserName))
+                return new JsonErrorResult(new { Message = "User Name Already Taken" }, HttpStatusCode.Conflict);
 
 
             if (await _userPasswordRepository.UpdateSystemUserPasswordAsync(userPasswordRecords))
@@ -48,8 +51,7 @@ namespace tlrsCartonManager.Api.Controllers
             }
             else
             {
-                ModelState.AddModelError("", $"Something went wrong when saving the record");
-                return StatusCode(500, ModelState);
+                return new JsonErrorResult(new { Message = "Something went wrong when saving the record" }, HttpStatusCode.InternalServerError);
             }
         }
 
@@ -61,15 +63,7 @@ namespace tlrsCartonManager.Api.Controllers
 
             if (!await _userPasswordRepository.ValidUserName(userPAssword.UserID))
             {
-                var Ok = (new
-                {
-                    Id = 1,
-                    Username = userPAssword.UserID,
-                    message = "Invalid User Name",
-
-                });
-
-                return new JsonResult(Ok);
+                return new JsonErrorResult(new { Message = "Invalid User Name" }, HttpStatusCode.NotFound);
             }
 
             var systemUserPassword = await _userPasswordRepository.GetSystemUserPasswords(userPAssword.UserID);
@@ -84,14 +78,7 @@ namespace tlrsCartonManager.Api.Controllers
             {
                 if (computedHash[i] != systemUserPassword.PasswordHash[i])
                 {
-                    var Ok = (new
-                    {
-                        Id = 2,
-                        Username = userPAssword.UserID,
-                        message = "Invalid Password",
-
-                    });
-                    return new JsonResult(Ok);
+                    return new JsonErrorResult(new { Message = "Passowrd Not Valid" }, HttpStatusCode.NotFound);
                 }
             }
 
@@ -103,7 +90,6 @@ namespace tlrsCartonManager.Api.Controllers
             lnMenu = _userPasswordRepository.GetUserMenuRights(userPAssword.UserID).Result;
             return new UserToken
             {
-
                 UserId = userPAssword.UserID,
                 Token = _tokenServiceRepository.CreateToken(userPAssword.UserID),
                 UserRights = lnMenu
