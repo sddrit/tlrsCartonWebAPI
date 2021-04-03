@@ -22,7 +22,7 @@
       }
     },
     "tlrsCartonManager.Api": {
-      "commandName": "Project",
+      "commandName": "IIS",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {

@@ -10,5 +10,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string UserId { get; set; }
 
         public string Token { get; set; }
+
+        public IEnumerable<MenuRightAttachedUserDto> UserRights { get; set; }
     }
 }
