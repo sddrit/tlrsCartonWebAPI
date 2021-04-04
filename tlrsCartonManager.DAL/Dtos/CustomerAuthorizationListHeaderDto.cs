@@ -24,28 +24,16 @@ namespace tlrsCartonManager.DAL.Dtos
 
     public class CustomerAuthorizationListUtdDto
     {
-
-
         public int AutoId { get; set; }
-
         public int TrackingId { get; set; } = 0;
-
         public int CustomerId { get; set; } = 0;
-
         public string Name { get; set; } = string.Empty;
-
         public string Department { get; set; } = string.Empty;
-
         public string Designation { get; set; } = string.Empty;
-
         public string Email { get; set; } = string.Empty;
-
         public bool Active { get; set; } = false;
-
         public string ContactNo { get; set; } = string.Empty;
 
     }
-
-
 
 }

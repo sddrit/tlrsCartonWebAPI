@@ -56,12 +56,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && (x.AccountType == "M") && x.Deleted == false)).ToListAsync();
             return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
         }
-        public async Task<PagedResponse<CustomerSearchDto>> SearchCustomer( string columnValue, int pageIndex, int pageSize)
+        public async Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnValue, int pageIndex, int pageSize)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
                new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[0].ToString(), Value = columnValue==null ? string.Empty :columnValue },
-              
+
                new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[1].ToString(), Value = pageIndex },
                new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[2].ToString(), Value = pageSize },
 

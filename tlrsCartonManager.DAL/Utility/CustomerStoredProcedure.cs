@@ -11,21 +11,18 @@ namespace tlrsCartonManager.DAL.Utility
         public static string StoredProcedureName = "customerSearch";
         public static List<string> StoredProcedureParameters = new List<string>()
         {
-            "@value",
+           "@value",
            "@pageIndex",
            "@pageSize",
            "@totalRecords"
         };
-
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) + " OUTPUT";
     }
-
-
     public static class CustomerStoredProcedure
     {
         public static string StoredProcedureName = "customerInsertUpdateDelete";
         public static List<string> StoredProcedureParameters = new List<string>()
-        {   
+        {
             "@trackingId" ,
             "@customerCode",
             "@name",
