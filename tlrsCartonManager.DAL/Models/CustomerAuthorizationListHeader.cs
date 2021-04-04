@@ -46,7 +46,7 @@ namespace tlrsCartonManager.DAL.Models
         public DateTime? LuDate { get; set; }
         [Column("deleted")]
         public bool? Deleted { get; set; }
-
+        public string ContactNo { get; set; } = string.Empty;
         [ForeignKey(nameof(CustomerId))]
         [InverseProperty("CustomerAuthorizationListHeaders")]
         public virtual Customer Customer { get; set; }
