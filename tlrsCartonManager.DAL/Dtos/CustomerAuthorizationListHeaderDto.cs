@@ -18,6 +18,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Email { get; set; } = string.Empty;
         public bool Active { get; set; } = false;
         public bool? Deleted { get; set; } = false;
+        public string ContactNo { get; set; } = string.Empty;
         public virtual ICollection<CustomerAuthorizationListDetailDto> CustomerAuthorizationListDetails { get; set; }
     }
 
@@ -40,6 +41,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Email { get; set; } = string.Empty;
 
         public bool Active { get; set; } = false;
+        public string ContactNo { get; set; } = string.Empty;
 
     }
 
