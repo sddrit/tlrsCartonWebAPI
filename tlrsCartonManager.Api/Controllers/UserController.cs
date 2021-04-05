@@ -20,10 +20,16 @@ namespace tlrsCartonManager.Api.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet("getUsersList")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUserList()
+        //[HttpGet("getUsersList")]
+        //public async Task<ActionResult<IEnumerable<UserDto>>> GetUserList()
+        //{
+        //    var userList=  await _userRepository.GetUsersList();
+        //    return Ok(userList);
+        //}
+        [HttpGet("getUser")]
+        public async Task<ActionResult<UserSerachDto>> SearchUser(string columnValue, int pageIndex, int pageSize)
         {
-            var userList=  await _userRepository.GetUsersList();
+            var userList = await _userRepository.SearchUser(columnValue, pageIndex, pageSize);
             return Ok(userList);
         }
 

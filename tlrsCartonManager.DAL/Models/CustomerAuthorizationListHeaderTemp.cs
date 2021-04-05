@@ -8,19 +8,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace tlrsCartonManager.DAL.Models
 {
-    [Table("CustomerAuthorizationListHeader")]
-    public partial class CustomerAuthorizationListHeader
+    [Table("CustomerAuthorizationListHeaderTemp")]
+    public partial class CustomerAuthorizationListHeaderTemp
     {
-        public CustomerAuthorizationListHeader()
-        {
-            CustomerAuthorizationListDetails = new HashSet<CustomerAuthorizationListDetail>();
-        }
-
         [Key]
         [Column("trackingId")]
         public int TrackingId { get; set; }
+        [Required]
         [Column("customerId")]
-        public int CustomerId { get; set; }
+        [StringLength(50)]
+        public string CustomerId { get; set; }
         [Required]
         [Column("name")]
         [StringLength(50)]
@@ -35,25 +32,24 @@ namespace tlrsCartonManager.DAL.Models
         [StringLength(50)]
         public string Email { get; set; }
         [Column("active")]
-        public bool? Active { get; set; }
+        [StringLength(50)]
+        public string Active { get; set; }
+        [Required]
         [Column("createdUser")]
-        public int CreatedUser { get; set; }
+        [StringLength(50)]
+        public string CreatedUser { get; set; }
         [Column("createdDate", TypeName = "datetime")]
         public DateTime CreatedDate { get; set; }
         [Column("luUser")]
-        public int? LuUser { get; set; }
+        [StringLength(50)]
+        public string LuUser { get; set; }
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
         [Column("deleted")]
-        public bool? Deleted { get; set; }
-        [Column("contactNo")]
-        [StringLength(10)]
-        public string ContactNo { get; set; }
-
-        [ForeignKey(nameof(CustomerId))]
-        [InverseProperty("CustomerAuthorizationListHeaders")]
-        public virtual Customer Customer { get; set; }
-        [InverseProperty(nameof(CustomerAuthorizationListDetail.Authorization))]
-        public virtual ICollection<CustomerAuthorizationListDetail> CustomerAuthorizationListDetails { get; set; }
+        [StringLength(50)]
+        public string Deleted { get; set; }
+        [Column("lineNo")]
+        [StringLength(50)]
+        public string LineNo { get; set; }
     }
 }

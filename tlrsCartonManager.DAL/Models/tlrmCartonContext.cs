@@ -19,18 +19,26 @@ namespace tlrsCartonManager.DAL.Models
 
         public virtual DbSet<AuthorizationLevel> AuthorizationLevels { get; set; }
         public virtual DbSet<BillingCycle> BillingCycles { get; set; }
+        public virtual DbSet<CalculationType> CalculationTypes { get; set; }
+        public virtual DbSet<CartonType> CartonTypes { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
-       
+        public virtual DbSet<CustomerAuthorizationListBak> CustomerAuthorizationListBaks { get; set; }
         public virtual DbSet<CustomerAuthorizationListDetail> CustomerAuthorizationListDetails { get; set; }
         public virtual DbSet<CustomerAuthorizationListHeader> CustomerAuthorizationListHeaders { get; set; }
+        public virtual DbSet<CustomerAuthorizationListHeaderTemp> CustomerAuthorizationListHeaderTemps { get; set; }
+        public virtual DbSet<CutomerInvoiceProfile> CutomerInvoiceProfiles { get; set; }
+        public virtual DbSet<InvoiceProfile> InvoiceProfiles { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<MenuRight> MenuRights { get; set; }
         public virtual DbSet<MenuRightAttachedUser> MenuRightAttachedUsers { get; set; }
         public virtual DbSet<MenuRightForm> MenuRightForms { get; set; }
         public virtual DbSet<MenuRightFormUser> MenuRightFormUsers { get; set; }
         public virtual DbSet<MenuRightUser> MenuRightUsers { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Route> Routes { get; set; }
         public virtual DbSet<ServiceCategory> ServiceCategories { get; set; }
+        public virtual DbSet<SlabTypeDetail> SlabTypeDetails { get; set; }
+        public virtual DbSet<SlabTypeHeader> SlabTypeHeaders { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserActivityLogger> UserActivityLoggers { get; set; }
         public virtual DbSet<UserActivityType> UserActivityTypes { get; set; }
@@ -62,6 +70,22 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Description).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CalculationType>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Description).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CartonType>(entity =>
+            {
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.Size).IsUnicode(false);
+
+                entity.Property(e => e.Type).IsUnicode(false);
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -157,7 +181,12 @@ namespace tlrsCartonManager.DAL.Models
                     .HasConstraintName("FK_customer_serviceCategory");
             });
 
-         
+            modelBuilder.Entity<CustomerAuthorizationListBak>(entity =>
+            {
+                entity.Property(e => e.Email).IsUnicode(false);
+
+                entity.Property(e => e.TrackingId).ValueGeneratedOnAdd();
+            });
 
             modelBuilder.Entity<CustomerAuthorizationListDetail>(entity =>
             {
@@ -177,6 +206,8 @@ namespace tlrsCartonManager.DAL.Models
                 entity.HasKey(e => e.TrackingId)
                     .HasName("PK_customerAuthorizationList");
 
+                entity.Property(e => e.ContactNo).IsUnicode(false);
+
                 entity.Property(e => e.Email).IsUnicode(false);
 
                 entity.HasOne(d => d.Customer)
@@ -184,6 +215,39 @@ namespace tlrsCartonManager.DAL.Models
                     .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_customerAuthorizationList_customer");
+            });
+
+            modelBuilder.Entity<CustomerAuthorizationListHeaderTemp>(entity =>
+            {
+                entity.HasKey(e => e.TrackingId)
+                    .HasName("PK_customerAuthorizationListtemp");
+
+                entity.Property(e => e.Email).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CutomerInvoiceProfile>(entity =>
+            {
+                entity.HasKey(e => e.TrackingId)
+                    .HasName("PK_cutomerInvoiceProfile");
+
+                entity.Property(e => e.TrackingId).ValueGeneratedNever();
+
+                entity.HasOne(d => d.InvoiceProfile)
+                    .WithMany(p => p.CutomerInvoiceProfiles)
+                    .HasForeignKey(d => d.InvoiceProfileId)
+                    .HasConstraintName("FK_CutomerInvoiceProfile_InvoiceProfile");
+
+                entity.HasOne(d => d.InvoiceProfileNavigation)
+                    .WithMany(p => p.CutomerInvoiceProfiles)
+                    .HasForeignKey(d => d.InvoiceProfileId)
+                    .HasConstraintName("FK_CutomerInvoiceProfile_Customer");
+            });
+
+            modelBuilder.Entity<InvoiceProfile>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Description).IsUnicode(false);
             });
 
             modelBuilder.Entity<MenuRight>(entity =>
@@ -249,6 +313,11 @@ namespace tlrsCartonManager.DAL.Models
                     .HasConstraintName("FK_MenuRightUser_User");
             });
 
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.Property(e => e.Description).IsUnicode(false);
+            });
+
             modelBuilder.Entity<Route>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
@@ -261,6 +330,27 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Description).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<SlabTypeDetail>(entity =>
+            {
+                entity.HasOne(d => d.IdNavigation)
+                    .WithMany(p => p.SlabTypeDetails)
+                    .HasForeignKey(d => d.Id)
+                    .HasConstraintName("FK_SlabTypeDetail_SlabTypeHeader");
+            });
+
+            modelBuilder.Entity<SlabTypeHeader>(entity =>
+            {
+                entity.HasKey(e => e.TrackingId)
+                    .HasName("PK_SlabType");
+
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.HasOne(d => d.InvoiceProfile)
+                    .WithMany(p => p.SlabTypeHeaders)
+                    .HasForeignKey(d => d.InvoiceProfileId)
+                    .HasConstraintName("FK_SlabTypeHeader_InvoiceProfile");
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -300,6 +390,7 @@ namespace tlrsCartonManager.DAL.Models
                     .HasConstraintName("FK_UserPassword_UserPassword");
             });
             modelBuilder.Entity<CustomerSearch>();
+            modelBuilder.Entity<UserSearch>();
             modelBuilder.Entity<BoolReturn>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }

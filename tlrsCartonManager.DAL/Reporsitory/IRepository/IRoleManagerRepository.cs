@@ -1,18 +1,17 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Helper;
+using tlrsCartonManager.DAL.Models;
 
 namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
-    public interface IUserManagerRepository
+    public interface IRoleManagerRepository
     {
-        Task<IEnumerable<UserDto>> GetUsersList();
-
-        Task<PagedResponse<UserSerachDto>> SearchUser(string columnValue, int pageIndex, int pageSize);
+        Task<IEnumerable<RoleDto>> GetRoleList();
+        
     }
 }

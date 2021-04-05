@@ -14,6 +14,7 @@ namespace tlrsCartonManager.DAL.Models
         public Customer()
         {
             CustomerAuthorizationListHeaders = new HashSet<CustomerAuthorizationListHeader>();
+            CutomerInvoiceProfiles = new HashSet<CutomerInvoiceProfile>();
         }
 
         [Key]
@@ -153,7 +154,7 @@ namespace tlrsCartonManager.DAL.Models
         [Column("mainCustomerCode")]
         public int? MainCustomerCode { get; set; }
         [Column("active")]
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
         [Column("createdUser")]
         public int? CreatedUser { get; set; }
         [Column("createdDate", TypeName = "datetime")]
@@ -176,7 +177,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual ServiceCategory ServiceProvidedNavigation { get; set; }
         [InverseProperty(nameof(CustomerAuthorizationListHeader.Customer))]
         public virtual ICollection<CustomerAuthorizationListHeader> CustomerAuthorizationListHeaders { get; set; }
-
-
+        [InverseProperty(nameof(CutomerInvoiceProfile.InvoiceProfileNavigation))]
+        public virtual ICollection<CutomerInvoiceProfile> CutomerInvoiceProfiles { get; set; }
     }
 }
