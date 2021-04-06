@@ -29,7 +29,7 @@ namespace tlrsCartonManager.DAL.Mapper
 
             //ruv
             CreateMap<CustomerDto, Customer>();
-            CreateMap<Customer, CustomerDto>();          
+            CreateMap<Customer, CustomerDto>();         
 
             CreateMap<CustomerSearchDto, CustomerSearch>();
             CreateMap<CustomerSearch, CustomerSearchDto>();
@@ -79,6 +79,15 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<UserSerachDto, UserSearch>();
             CreateMap<UserSearch, UserSerachDto>();
+
+            CreateMap<CartonStorageDto, CartonStorage>();
+            CreateMap<CartonStorage, CartonStorageDto>();
+
+            CreateMap<CartonStorageSearchDto, CartonStorageSearch>();
+            CreateMap<CartonStorageSearch, CartonStorageSearchDto>();
+
+            CreateMap<CartonLocationDto, CartonLocation>();
+            CreateMap<CartonLocation, CartonLocationDto>();
             //ruv
         }
 

@@ -32,7 +32,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public async  Task<IEnumerable<SlabTypeHeaderDto>> GetSlabTypeList()
         {
-            var billingCycle = await _tcContext.BillingCycles.ToListAsync();
+            var billingCycle = await _tcContext.SlabTypeHeaders.
+                Include(x => x.SlabTypeDetails).
+                ToListAsync();
             return _mapper.Map<IEnumerable<SlabTypeHeaderDto>>(billingCycle);
 
         }

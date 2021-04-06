@@ -11,6 +11,11 @@ namespace tlrsCartonManager.DAL.Models
     [Table("CartonType")]
     public partial class CartonType
     {
+        public CartonType()
+        {
+            CartonStorages = new HashSet<CartonStorage>();
+        }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -35,5 +40,8 @@ namespace tlrsCartonManager.DAL.Models
         public int? LuUser { get; set; }
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
+
+        [InverseProperty(nameof(CartonStorage.CartonTypeNavigation))]
+        public virtual ICollection<CartonStorage> CartonStorages { get; set; }
     }
 }

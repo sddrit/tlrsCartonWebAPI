@@ -20,6 +20,8 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<AuthorizationLevel> AuthorizationLevels { get; set; }
         public virtual DbSet<BillingCycle> BillingCycles { get; set; }
         public virtual DbSet<CalculationType> CalculationTypes { get; set; }
+        public virtual DbSet<CartonLocation> CartonLocations { get; set; }
+        public virtual DbSet<CartonStorage> CartonStorages { get; set; }
         public virtual DbSet<CartonType> CartonTypes { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerAuthorizationListBak> CustomerAuthorizationListBaks { get; set; }
@@ -27,6 +29,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<CustomerAuthorizationListHeader> CustomerAuthorizationListHeaders { get; set; }
         public virtual DbSet<CustomerAuthorizationListHeaderTemp> CustomerAuthorizationListHeaderTemps { get; set; }
         public virtual DbSet<CutomerInvoiceProfile> CutomerInvoiceProfiles { get; set; }
+        public virtual DbSet<DisposalTimeFrame> DisposalTimeFrames { get; set; }
         public virtual DbSet<InvoiceProfile> InvoiceProfiles { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<MenuRight> MenuRights { get; set; }
@@ -77,6 +80,62 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Description).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CartonLocation>(entity =>
+            {
+                entity.Property(e => e.BarCode).IsUnicode(false);
+
+                entity.Property(e => e.ContainerType).IsUnicode(false);
+
+                entity.Property(e => e.CorrectedBarCode).IsUnicode(false);
+
+                entity.Property(e => e.LocationCode).IsUnicode(false);
+
+                entity.Property(e => e.Remark).IsUnicode(false);
+
+                entity.Property(e => e.ScanDateTime).IsUnicode(false);
+
+                entity.HasOne(d => d.CartonNoNavigation)
+                    .WithMany(p => p.CartonLocations)
+                    .HasForeignKey(d => d.CartonNo)
+                    .HasConstraintName("FK_CartonLocation_CartonStorage");
+            });
+
+            modelBuilder.Entity<CartonStorage>(entity =>
+            {
+                entity.Property(e => e.CartonNo).ValueGeneratedNever();
+
+                entity.Property(e => e.AlternativeCartonNo).IsUnicode(false);
+
+                entity.Property(e => e.CreatedUser).IsUnicode(false);
+
+                entity.Property(e => e.LastConfirmedStatus).IsUnicode(false);
+
+                entity.Property(e => e.LastConfirmeedRequestNo).IsUnicode(false);
+
+                entity.Property(e => e.LastRequestNo).IsUnicode(false);
+
+                entity.Property(e => e.LocationCode).IsUnicode(false);
+
+                entity.Property(e => e.LuUser).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
+
+                entity.HasOne(d => d.CartonTypeNavigation)
+                    .WithMany(p => p.CartonStorages)
+                    .HasForeignKey(d => d.CartonType)
+                    .HasConstraintName("FK_CartonStorage_CartonType");
+
+                entity.HasOne(d => d.DisposalTimeFrameNavigation)
+                    .WithMany(p => p.CartonStorages)
+                    .HasForeignKey(d => d.DisposalTimeFrame)
+                    .HasConstraintName("FK_CartonStorage_DisposalTimeFrame");
+
+                entity.HasOne(d => d.LastDeliveryRouteNavigation)
+                    .WithMany(p => p.CartonStorages)
+                    .HasForeignKey(d => d.LastDeliveryRoute)
+                    .HasConstraintName("FK_CartonStorage_Route");
             });
 
             modelBuilder.Entity<CartonType>(entity =>
@@ -243,6 +302,13 @@ namespace tlrsCartonManager.DAL.Models
                     .HasConstraintName("FK_CutomerInvoiceProfile_Customer");
             });
 
+            modelBuilder.Entity<DisposalTimeFrame>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Description).IsUnicode(false);
+            });
+
             modelBuilder.Entity<InvoiceProfile>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
@@ -390,7 +456,7 @@ namespace tlrsCartonManager.DAL.Models
                     .HasConstraintName("FK_UserPassword_UserPassword");
             });
             modelBuilder.Entity<CustomerSearch>();
-            modelBuilder.Entity<UserSearch>();
+            modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<BoolReturn>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
