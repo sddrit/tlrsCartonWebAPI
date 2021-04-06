@@ -28,7 +28,7 @@ namespace tlrsCartonManager.Api.Controllers
             IBillingCycleManagerRepository billingCycleRepository, IRouteManagerRepository routeRepository,
             IServiceCategoryManagerRepository serviceRepository, ICartonTypeManagerRepository cartonTypeRepository,
             IRoleManagerRepository roleRepository
-            
+
             )
         {
             _billingCycleRepository = billingCycleRepository;
@@ -36,7 +36,7 @@ namespace tlrsCartonManager.Api.Controllers
             _serviceRepository = serviceRepository;
             _cartonTypeRepository = cartonTypeRepository;
             _roleRepository = roleRepository;
-        }       
+        }
 
         [HttpGet("getMetaData")]
         public async Task<IActionResult> GetCustomerMetaData()
@@ -54,12 +54,12 @@ namespace tlrsCartonManager.Api.Controllers
                 serviceCategory,
                 cartonType,
                 roleList
-            });  
+            });
         }
 
         [HttpGet("getCartonType")]
         public async Task<IActionResult> GetCartonMetaData()
-        {            
+        {
             var cartonType = await _cartonTypeRepository.GetCartonTypeList();
             return Ok(
             new

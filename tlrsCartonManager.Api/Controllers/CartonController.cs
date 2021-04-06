@@ -39,9 +39,9 @@ namespace tlrsCartonManager.Api.Controllers
         public async Task<ActionResult<CartonStorageDto>> GetSingleSearch(int cartonId)
         {
             var carton = await _cartonRepository.GetCartonById(cartonId);
-            if(carton != null)
+            if (carton != null)
                 return Ok(carton);
-            else              
+            else
                 return new JsonErrorResult(new { Message = "Carton Not Found" }, HttpStatusCode.NotFound);
         }
 

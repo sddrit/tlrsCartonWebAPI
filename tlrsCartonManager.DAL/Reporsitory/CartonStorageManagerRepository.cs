@@ -32,19 +32,19 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _tcContext = tccontext;
             _mapper = mapper;
             _searchManager = searchManager;
-        }       
+        }
 
         public async Task<CartonStorageDto> GetCartonById(int cartonId)
         {
             var carton = _mapper.Map<CartonStorageDto>(await _tcContext.CartonStorages.
                           Include(x => x.CartonLocations).
-                          Where(x => x.CartonNo == cartonId ).FirstOrDefaultAsync());           
+                          Where(x => x.CartonNo == cartonId).FirstOrDefaultAsync());
             return carton;
 
-        }       
-        public async Task<PagedResponse<CartonStorageSearchDto>>SearchCarton(string columnValue, int pageIndex, int pageSize)
-        {     
-            List<SqlParameter> parms = _searchManager.Search("cartonSearch",columnValue, pageIndex, pageSize, out SqlParameter outParam);
+        }
+        public async Task<PagedResponse<CartonStorageSearchDto>> SearchCarton(string columnValue, int pageIndex, int pageSize)
+        {
+            List<SqlParameter> parms = _searchManager.Search("cartonSearch", columnValue, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<CartonStorageSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging

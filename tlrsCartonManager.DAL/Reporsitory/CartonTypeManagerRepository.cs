@@ -30,7 +30,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _tcContext = tccontext;
             _mapper = mapper;
         }
-        public async  Task<IEnumerable<CartonTypeDto>> GetCartonTypeList()
+        public async Task<IEnumerable<CartonTypeDto>> GetCartonTypeList()
         {
             var cartonType = await _tcContext.CartonTypes.ToListAsync();
             return _mapper.Map<IEnumerable<CartonTypeDto>>(cartonType);
@@ -49,10 +49,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public async Task DeleteCartonType(int cartonTypeId)
         {
-           var cType= _tcContext.CartonTypes.Find(cartonTypeId);
-           cType.Deleted = true;
-           _tcContext.CartonTypes.Update(cType);
-           await _tcContext.SaveChangesAsync();
+            var cType = _tcContext.CartonTypes.Find(cartonTypeId);
+            cType.Deleted = true;
+            _tcContext.CartonTypes.Update(cType);
+            await _tcContext.SaveChangesAsync();
         }
     }
-    }
+}
