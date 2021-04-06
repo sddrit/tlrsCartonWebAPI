@@ -16,7 +16,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Name { get; set; } = string.Empty;
         public string Address1 { get; set; } = string.Empty;
         public string Address2 { get; set; } = string.Empty;
-        public string Address3 { get; set; } = string.Empty;
+        public string? Address3 { get; set; } = string.Empty;
         public string Telephone1 { get; set; } = string.Empty;
         public string Telephone2 { get; set; } = string.Empty;
         public string Fax { get; set; } = string.Empty;
