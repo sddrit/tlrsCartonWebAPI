@@ -457,6 +457,7 @@ namespace tlrsCartonManager.DAL.Models
             });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
+            modelBuilder.Entity<UserSearch>();
             modelBuilder.Entity<BoolReturn>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
