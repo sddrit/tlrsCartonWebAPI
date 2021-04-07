@@ -28,14 +28,14 @@ namespace tlrsCartonManager.Api.Controllers
             _cartonRepository = cartonRepository;
         }
 
-        [HttpGet("getCarton")]
+        [HttpGet]
         public async Task<ActionResult<CartonStorageSearchDto>> SearchCarton(string columnValue, int pageIndex, int pageSize)
         {
             var cartonList = await _cartonRepository.SearchCarton(columnValue, pageIndex, pageSize);
             return Ok(cartonList);
         }
 
-        [HttpGet("getCartonBy/{cartonId}")]
+        [HttpGet("{cartonId}")]
         public async Task<ActionResult<CartonStorageDto>> GetSingleSearch(int cartonId)
         {
             var carton = await _cartonRepository.GetCartonById(cartonId);

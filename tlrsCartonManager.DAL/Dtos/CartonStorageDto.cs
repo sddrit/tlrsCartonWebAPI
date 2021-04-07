@@ -26,10 +26,10 @@ namespace tlrsCartonManager.DAL.Dtos
         public int? LastUpdateDate { get; set; }
         public int? FirstInDate { get; set; }
         public string LastConfirmedStatus { get; set; }
-        public string LastConfirmeedRequestNo { get; set; }
+        public string LastConfirmedRequestNo { get; set; }
         public DateTime? LastOwnershipChangedDate { get; set; }
         public int? LastDeliveryRoute { get; set; }
-        public string CreatedUser { get; set; }
+        public int CreatedUserId { get; set; }
         public virtual ICollection<CartonLocationDto> CartonLocations { get; set; }
 
     }

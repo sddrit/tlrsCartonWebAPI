@@ -15,7 +15,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string BarCode { get; set; }
         public string LocationCode { get; set; }
         public string ContainerType { get; set; }
-        public bool? FromMobile { get; set; }
+        public bool? IsFromMobile { get; set; }
         public long? ScannedDate { get; set; }
         public int? ClientId { get; set; }
         public string ScanDateTime { get; set; }

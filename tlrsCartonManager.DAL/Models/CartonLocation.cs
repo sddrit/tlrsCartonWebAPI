@@ -25,8 +25,8 @@ namespace tlrsCartonManager.DAL.Models
         [Column("containerType")]
         [StringLength(50)]
         public string ContainerType { get; set; }
-        [Column("fromMobile")]
-        public bool? FromMobile { get; set; }
+        [Column("isFromMobile")]
+        public bool? IsFromMobile { get; set; }
         [Column("scannedDate")]
         public long? ScannedDate { get; set; }
         [Column("clientId")]
@@ -40,14 +40,14 @@ namespace tlrsCartonManager.DAL.Models
         [Column("correctedBarCode")]
         [StringLength(20)]
         public string CorrectedBarCode { get; set; }
-        [Column("verified")]
-        public bool? Verified { get; set; }
-        [Column("createdUser")]
-        public int? CreatedUser { get; set; }
+        [Column("isVerified")]
+        public bool? IsVerified { get; set; }
+        [Column("createdUserId")]
+        public int? CreatedUserId { get; set; }
         [Column("createdDate", TypeName = "datetime")]
         public DateTime? CreatedDate { get; set; }
-        [Column("luUser")]
-        public int? LuUser { get; set; }
+        [Column("luUserId")]
+        public int? LuUserId { get; set; }
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
 

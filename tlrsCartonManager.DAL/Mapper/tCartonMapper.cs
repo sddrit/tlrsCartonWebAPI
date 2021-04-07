@@ -88,6 +88,16 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<CartonLocationDto, CartonLocation>();
             CreateMap<CartonLocation, CartonLocationDto>();
+
+            CreateMap<RequestSearchDto, RequestSearch>();
+            CreateMap<RequestSearch, RequestSearchDto>();
+
+            CreateMap<RequestHeaderDto, RequestHeader>();
+            CreateMap<RequestHeader, RequestHeaderDto>();
+
+
+            CreateMap<RequestDetailDto, RequestDetail>();
+            CreateMap<RequestDetail, RequestDetailDto>();
             //ruv
         }
 

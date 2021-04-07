@@ -58,23 +58,21 @@ namespace tlrsCartonManager.DAL.Models
         [Column("lastConfirmedStatus")]
         [StringLength(50)]
         public string LastConfirmedStatus { get; set; }
-        [Column("lastConfirmeedRequestNo")]
+        [Column("lastConfirmedRequestNo")]
         [StringLength(20)]
-        public string LastConfirmeedRequestNo { get; set; }
+        public string LastConfirmedRequestNo { get; set; }
         [Column("lastOwnershipChangedDate", TypeName = "datetime")]
         public DateTime? LastOwnershipChangedDate { get; set; }
         [Column("lastDeliveryRoute")]
         public int? LastDeliveryRoute { get; set; }
-        [Column("createdUser")]
-        [StringLength(50)]
-        public string CreatedUser { get; set; }
         [Column("createdDate", TypeName = "datetime")]
         public DateTime? CreatedDate { get; set; }
-        [Column("luUser")]
-        [StringLength(50)]
-        public string LuUser { get; set; }
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
+        [Column("createdUserId")]
+        public int? CreatedUserId { get; set; }
+        [Column("luUserId")]
+        public int? LuUserId { get; set; }
 
         [ForeignKey(nameof(CartonType))]
         [InverseProperty("CartonStorages")]
