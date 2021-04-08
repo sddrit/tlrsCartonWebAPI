@@ -20,13 +20,13 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IBillingCycleManagerRepository _billingCycleRepository;
         private readonly IRouteManagerRepository _routeRepository;
         private readonly IServiceCategoryManagerRepository _serviceRepository;
-        private readonly ICartonTypeManagerRepository _cartonTypeRepository;
+        private readonly IStorageTypeManagerRepository _cartonTypeRepository;
         private readonly IRoleManagerRepository _roleRepository;
 
         public MetaDataController
             (
             IBillingCycleManagerRepository billingCycleRepository, IRouteManagerRepository routeRepository,
-            IServiceCategoryManagerRepository serviceRepository, ICartonTypeManagerRepository cartonTypeRepository,
+            IServiceCategoryManagerRepository serviceRepository, IStorageTypeManagerRepository cartonTypeRepository,
             IRoleManagerRepository roleRepository
 
             )
@@ -38,13 +38,13 @@ namespace tlrsCartonManager.Api.Controllers
             _roleRepository = roleRepository;
         }
 
-        [HttpGet("getMetaData")]
+        [HttpGet]
         public async Task<IActionResult> GetCustomerMetaData()
         {
             var billingCylce = await _billingCycleRepository.GetBillingList();
             var route = await _routeRepository.GetRouteList();
             var serviceCategory = await _serviceRepository.GetServiceList();
-            var cartonType = await _cartonTypeRepository.GetCartonTypeList();
+            var storageType = await _cartonTypeRepository.GetCartonTypeList();
             var roleList = await _roleRepository.GetRoleList();
             return Ok(
             new
@@ -52,36 +52,36 @@ namespace tlrsCartonManager.Api.Controllers
                 billingCylce,
                 route,
                 serviceCategory,
-                cartonType,
+                storageType,
                 roleList
             });
         }
 
-        [HttpGet("getCartonType")]
+        [HttpGet("StorageType")]
         public async Task<IActionResult> GetCartonMetaData()
         {
-            var cartonType = await _cartonTypeRepository.GetCartonTypeList();
+            var storageType = await _cartonTypeRepository.GetCartonTypeList();
             return Ok(
             new
             {
-                cartonType
+                storageType
             });
         }
 
-        [HttpPost("addCartonType")]
-        public async Task<IActionResult> AddCartonType(CartonTypeDto cartonType)
+        [HttpPost("StorageType")]
+        public async Task<IActionResult> AddCartonType(StorageTypeDto cartonType)
         {
             await _cartonTypeRepository.AddCartonType(cartonType);
             return new JsonErrorResult(new { Message = "Carton Type Created" }, HttpStatusCode.OK);
         }
 
-        [HttpPost("updateCartonType")]
-        public async Task<IActionResult> UpdateCartonType(CartonTypeDto cartonType)
+        [HttpPut("StorageType")]
+        public async Task<IActionResult> UpdateCartonType(StorageTypeDto cartonType)
         {
             await _cartonTypeRepository.UpdateCartonType(cartonType);
             return new JsonErrorResult(new { Message = "Carton Type Updated" }, HttpStatusCode.OK);
         }
-        [HttpDelete("deleteCartonType")]
+        [HttpDelete("StorageType")]
         public async Task<IActionResult> DeleteCartonType(int cartonTypeId)
         {
             await _cartonTypeRepository.DeleteCartonType(cartonTypeId);

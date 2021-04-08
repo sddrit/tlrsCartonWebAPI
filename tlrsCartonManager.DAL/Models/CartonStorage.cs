@@ -75,8 +75,8 @@ namespace tlrsCartonManager.DAL.Models
         public int? LuUserId { get; set; }
 
         [ForeignKey(nameof(CartonType))]
-        [InverseProperty("CartonStorages")]
-        public virtual CartonType CartonTypeNavigation { get; set; }
+        [InverseProperty(nameof(StorageType.CartonStorages))]
+        public virtual StorageType CartonTypeNavigation { get; set; }
         [ForeignKey(nameof(DisposalTimeFrame))]
         [InverseProperty("CartonStorages")]
         public virtual DisposalTimeFrame DisposalTimeFrameNavigation { get; set; }

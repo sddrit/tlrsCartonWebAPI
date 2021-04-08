@@ -9,11 +9,11 @@ using tlrsCartonManager.DAL.Models;
 
 namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
-    public interface ICartonTypeManagerRepository
+    public interface IStorageTypeManagerRepository
     {
-        Task<IEnumerable<CartonTypeDto>> GetCartonTypeList();
-        Task AddCartonType(CartonTypeDto cartonType);
-        Task UpdateCartonType(CartonTypeDto cartonType);
+        Task<IEnumerable<StorageTypeDto>> GetCartonTypeList();
+        Task AddCartonType(StorageTypeDto cartonType);
+        Task UpdateCartonType(StorageTypeDto cartonType);
         Task DeleteCartonType(int typeId);
 
     }

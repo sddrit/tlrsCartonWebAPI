@@ -29,10 +29,12 @@ namespace tlrsCartonManager.DAL.Dtos
         public string MobileRequestNo { get; set; }       
         public string ContactPersonName { get; set; }       
         public string DeliveryLocation { get; set; }        
-        public string DeliveryRouteId { get; set; }       
+        public int DeliveryRouteId { get; set; }       
         public string Reminder1 { get; set; }       
         public string Reminder2 { get; set; }      
-        public string Reminder3 { get; set; }    
+        public string Reminder3 { get; set; }
+        public int? UserId { get; set; }
+      
         public virtual ICollection<RequestDetailDto> RequestDetails { get; set; }
     }
     public class RequestSearchDto

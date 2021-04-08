@@ -22,7 +22,6 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<CalculationType> CalculationTypes { get; set; }
         public virtual DbSet<CartonLocation> CartonLocations { get; set; }
         public virtual DbSet<CartonStorage> CartonStorages { get; set; }
-        public virtual DbSet<CartonType> CartonTypes { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerAuthorizationListDetail> CustomerAuthorizationListDetails { get; set; }
         public virtual DbSet<CustomerAuthorizationListHeader> CustomerAuthorizationListHeaders { get; set; }
@@ -37,18 +36,22 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<MenuRightUser> MenuRightUsers { get; set; }
         public virtual DbSet<RequestDetail> RequestDetails { get; set; }
         public virtual DbSet<RequestHeader> RequestHeaders { get; set; }
+        public virtual DbSet<RequestType> RequestTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Route> Routes { get; set; }
         public virtual DbSet<Sequence> Sequences { get; set; }
+        public virtual DbSet<SequenceRequestType> SequenceRequestTypes { get; set; }
         public virtual DbSet<ServiceCategory> ServiceCategories { get; set; }
         public virtual DbSet<SlabTypeDetail> SlabTypeDetails { get; set; }
         public virtual DbSet<SlabTypeHeader> SlabTypeHeaders { get; set; }
+        public virtual DbSet<StorageType> StorageTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserActivityLogger> UserActivityLoggers { get; set; }
         public virtual DbSet<UserActivityType> UserActivityTypes { get; set; }
         public virtual DbSet<UserLogger> UserLoggers { get; set; }
         public virtual DbSet<UserPassword> UserPasswords { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
+        public virtual DbSet<WorkOrderRequestType> WorkOrderRequestTypes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -133,15 +136,6 @@ namespace tlrsCartonManager.DAL.Models
                     .WithMany(p => p.CartonStorages)
                     .HasForeignKey(d => d.LastDeliveryRoute)
                     .HasConstraintName("FK_CartonStorage_Route");
-            });
-
-            modelBuilder.Entity<CartonType>(entity =>
-            {
-                entity.Property(e => e.Description).IsUnicode(false);
-
-                entity.Property(e => e.Size).IsUnicode(false);
-
-                entity.Property(e => e.Type).IsUnicode(false);
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -409,7 +403,15 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.RequestType).IsUnicode(false);
 
-                entity.Property(e => e.StorageCategory).IsUnicode(false);
+                entity.Property(e => e.WoType).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RequestType>(entity =>
+            {
+                entity.HasKey(e => e.TypeCode)
+                    .HasName("PK_RequestType_1");
+
+                entity.Property(e => e.TypeCode).IsUnicode(false);
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -432,6 +434,13 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.SequenceType).IsUnicode(false);
 
                 entity.Property(e => e.CurrentSuffix).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<SequenceRequestType>(entity =>
+            {
+                entity.Property(e => e.TypeCode).IsUnicode(false);
+
+                entity.Property(e => e.RequestTypeCode).IsUnicode(false);
             });
 
             modelBuilder.Entity<ServiceCategory>(entity =>
@@ -460,6 +469,15 @@ namespace tlrsCartonManager.DAL.Models
                     .WithMany(p => p.SlabTypeHeaders)
                     .HasForeignKey(d => d.InvoiceProfileId)
                     .HasConstraintName("FK_SlabTypeHeader_InvoiceProfile");
+            });
+
+            modelBuilder.Entity<StorageType>(entity =>
+            {
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.Size).IsUnicode(false);
+
+                entity.Property(e => e.Type).IsUnicode(false);
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -498,11 +516,24 @@ namespace tlrsCartonManager.DAL.Models
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_UserPassword_UserPassword");
             });
+
+            modelBuilder.Entity<WorkOrderRequestType>(entity =>
+            {
+                entity.Property(e => e.TypeCode).IsUnicode(false);
+
+                entity.Property(e => e.RequestTypeCode).IsUnicode(false);
+
+                entity.HasOne(d => d.RequestTypeCodeNavigation)
+                    .WithMany(p => p.WorkOrderRequestTypes)
+                    .HasForeignKey(d => d.RequestTypeCode)
+                    .HasConstraintName("FK_WorkOrderRequestType_RequestType");
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
             modelBuilder.Entity<RequestSearch>();
             modelBuilder.Entity<BoolReturn>().HasNoKey();
+            modelBuilder.Entity<StringReturn>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 

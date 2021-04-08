@@ -10,9 +10,11 @@ using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.Api.Extensions;
 using tlrsCartonManager.DAL.Models.ResponseModels;
 using tlrsCartonManager.DAL.Models;
+using tlrsCartonManager.DAL.Utility;
 using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
+using static tlrsCartonManager.DAL.Utility.Status;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -58,6 +60,10 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPost]
         public ActionResult AddCustomer(CustomerDto customer)
         {
+            var validateMessage=_customerRepository.ValidateCustomer(customer, TransactionTypes.Insert.ToString());
+            if(!string.IsNullOrEmpty(validateMessage))
+                return  new JsonErrorResult(new { Message = validateMessage }, HttpStatusCode.NotFound);
+
             if (_customerRepository.AddCustomer(customer))           
                 return new JsonErrorResult(new { Message = "Customer Created" }, HttpStatusCode.OK);            
             else         
@@ -67,7 +73,12 @@ namespace tlrsCartonManager.Api.Controllers
         }
         [HttpPut]
         public ActionResult UpdateCustomer(CustomerDto customer)
-        {          
+        {
+            
+            var validateMessage = _customerRepository.ValidateCustomer(customer, TransactionTypes.Update.ToString());
+            if (!string.IsNullOrEmpty(validateMessage))
+                return new JsonErrorResult(new { Message = validateMessage }, HttpStatusCode.NotFound);
+
             if (_customerRepository.UpdateCustomer(customer))          
                 return new JsonErrorResult(new { Message = "Customer Updated" }, HttpStatusCode.OK);           
             else           

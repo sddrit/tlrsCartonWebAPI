@@ -30,8 +30,8 @@ namespace tlrsCartonManager.DAL.Utility
 			"@deliveryLocation",
 			"@deliveryRouteId",
 			"@statementType",
-			"@requestDetail",
-			"@requestNo"
+			"@requestDetail"
+			
 
 		};
         public static List<string> StoredProcedureTypeNames = new List<string>()
@@ -39,6 +39,7 @@ namespace tlrsCartonManager.DAL.Utility
 			"dbo.udtRequestDetail",
             
         };
-        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) + " OUTPUT";
+
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 	}
 }

@@ -44,10 +44,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             var customerList = _mapper.Map<CustomerDto>(await _tcContext.Customers.
                                 Include(x => x.CustomerAuthorizationListHeaders).
-                                ThenInclude(x => x.CustomerAuthorizationListDetails).
-                                FirstOrDefaultAsync(x => x.TrackingId == customerId));
-
-            customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
+                                ThenInclude (x => x.CustomerAuthorizationListDetails.Where(x => x.Deleted == false)).
+                                FirstOrDefaultAsync(x => x.TrackingId == customerId && x.Deleted==false));
+            if(customerList!=null)
+             customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
             return customerList;
 
         }
@@ -106,34 +106,54 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return SaveCustomer(cutomerTransaction, TransactionTypes.Delete.ToString());
         }
+        public string ValidateCustomer(CustomerDto customer, string transcationType)
+        {
+            if (transcationType == TransactionTypes.Insert.ToString())
+            {
+                if (_tcContext.Customers.Where(x => x.CustomerCode.ToUpper().Trim() == customer.CustomerCode.ToUpper().Trim()).FirstOrDefault() != null)
+                    return "Existing Customer Code Found";
+                if (_tcContext.Customers.Where(x => x.Name.ToUpper().Trim() == customer.Name.ToUpper().Trim()).FirstOrDefault() != null)
+                    return "Existing Customer Name Found";
+            }
+            if(transcationType==TransactionTypes.Update.ToString())
+            {
+                var existingCustomer = _tcContext.Customers.Where(x => x.Name.ToUpper().Trim() == customer.Name.ToUpper().Trim()).ToListAsync();
+                if(existingCustomer.Result.Where(x =>x.TrackingId != customer.TrackingId).FirstOrDefault()!=null)
+                    return "Existing Customer Name Found";
+
+            }
+
+            return string.Empty;
+        }
         private bool SaveCustomer(CustomerDto customerTransaction, string transcationType)
         {
-            #region Assign values to utds
-            //to check
-            List<CustomerAuthorizationListUtdDto> lstAuthorization = new List<CustomerAuthorizationListUtdDto>();
-            List<CustomerAuthorizationListDetailUdtDto> lstAuthorizationLevel = new List<CustomerAuthorizationListDetailUdtDto>();
+           
 
-            var custAuth = customerTransaction.CustomerAuthorizationListHeaders.ToList();
-            int ix = 0;
-            foreach (var customerAuthItem in custAuth)
-            {
-                var b = _mapper.Map<CustomerAuthorizationListUtdDto>(customerAuthItem);
-                b.AutoId = ix + 1;
-                lstAuthorization.Add(b);
+                #region Assign values to utds          
+                List<CustomerAuthorizationListUtdDto> lstAuthorization = new List<CustomerAuthorizationListUtdDto>();
+                List<CustomerAuthorizationListDetailUdtDto> lstAuthorizationLevel = new List<CustomerAuthorizationListDetailUdtDto>();
 
-                var d = _mapper.Map<List<CustomerAuthorizationListDetailUdtDto>>(customerAuthItem.CustomerAuthorizationListDetails.ToList());
-                foreach (var customerAuthlevel in d)
+                var custAuth = customerTransaction.CustomerAuthorizationListHeaders.ToList();
+                int ix = 0;
+                foreach (var customerAuthItem in custAuth)
                 {
-                    customerAuthlevel.AutoId = b.AutoId;
-                    lstAuthorizationLevel.Add(customerAuthlevel);
+                    var b = _mapper.Map<CustomerAuthorizationListUtdDto>(customerAuthItem);
+                    b.AutoId = ix + 1;
+                    lstAuthorization.Add(b);
 
+                    var d = _mapper.Map<List<CustomerAuthorizationListDetailUdtDto>>(customerAuthItem.CustomerAuthorizationListDetails.ToList());
+                    foreach (var customerAuthlevel in d)
+                    {
+                        customerAuthlevel.AutoId = b.AutoId;
+                        lstAuthorizationLevel.Add(customerAuthlevel);
+
+                    }
+                    ix = ix + 1;
                 }
-                ix = ix + 1;
-            }
-            #endregion
+                #endregion
 
-            #region Sql Parameter loading
-            List<SqlParameter> parms = new List<SqlParameter>
+                #region Sql Parameter loading
+                List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[0].ToString(),
                     Value = transcationType==TransactionTypes.Insert.ToString()? 0: customerTransaction.TrackingId },
@@ -203,9 +223,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    Value =  lstAuthorizationLevel.ToDataTable()
                 }
             };
-            #endregion
+                #endregion
 
-            return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+              return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+                 
         }
     }
 }

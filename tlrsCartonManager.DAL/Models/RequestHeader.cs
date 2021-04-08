@@ -52,9 +52,9 @@ namespace tlrsCartonManager.DAL.Models
         public int? Status { get; set; }
         [Column("cartonType")]
         public int? CartonType { get; set; }
-        [Column("storageCategory")]
+        [Column("woType")]
         [StringLength(20)]
-        public string StorageCategory { get; set; }
+        public string WoType { get; set; }
         [Column("deviceId")]
         [StringLength(50)]
         public string DeviceId { get; set; }
@@ -85,7 +85,9 @@ namespace tlrsCartonManager.DAL.Models
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
         [Column("deliveryRouteId")]
-        public int? DeliveryRouteId { get; set; }      
+        public int? DeliveryRouteId { get; set; }
+        [Column("deleted")]
+        public bool? Deleted { get; set; }
 
         [InverseProperty(nameof(RequestDetail.Request))]
         public virtual ICollection<RequestDetail> RequestDetails { get; set; }

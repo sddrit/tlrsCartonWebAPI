@@ -30,7 +30,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IRouteManagerRepository, RouteManagerRepository>();
             services.AddScoped<IServiceCategoryManagerRepository, ServiceCategoryManagerRepository>();
             services.AddScoped<IBillingCycleManagerRepository, BillingCycleManagerRepository>();
-            services.AddScoped<ICartonTypeManagerRepository, CartonTypeManagerRepository>();
+            services.AddScoped<IStorageTypeManagerRepository, StorageTypeManagerRepository>();
             services.AddScoped<IRoleManagerRepository, RoleManagerRepository>();
             services.AddScoped<ICartonStorageManagerRepository, CartonStorageManagerRepository>();
 

@@ -45,12 +45,16 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Request Not Found" }, HttpStatusCode.NotFound);
         }
 
-        //[HttpPut]
-        //public async Task<IActionResult> UpdateCartonType(CartonStorageDto carton)
-        //{
-        //    await _cartonRepository.UpdateCarton(carton);
-        //    return new JsonErrorResult(new { Message = "Carton  Updated" }, HttpStatusCode.OK);
-        //}
-        //to do request tab
+        [HttpPost]
+        public ActionResult AddRequest(RequestHeaderDto request)
+        {
+           string requestNo=  _requestRepository.AddRequest(request);
+           if(!string.IsNullOrEmpty(requestNo))
+            return new JsonErrorResult(new { Message = "Request  Created: " + requestNo }, HttpStatusCode.OK);
+           else                  
+             return new JsonErrorResult(new { Message = "Request Creation Failed" }, HttpStatusCode.NotFound);
+
+        }
+      
     }
 }

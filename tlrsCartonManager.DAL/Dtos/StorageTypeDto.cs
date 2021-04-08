@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace tlrsCartonManager.DAL.Dtos
 {
-    public class CartonTypeDto
+    public class StorageTypeDto
     {
         [Key]       
         public int Id { get; set; }     

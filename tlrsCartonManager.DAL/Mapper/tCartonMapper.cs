@@ -65,8 +65,8 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CustomerAuthorizationListDetailUdtDto, CustomerAuthorizationListDetailDto>();
             CreateMap<CustomerAuthorizationListDetailDto, CustomerAuthorizationListDetailUdtDto>();
 
-            CreateMap<CartonType, CartonTypeDto>();
-            CreateMap<CartonTypeDto, CartonType>();
+            CreateMap<StorageType, StorageTypeDto>();
+            CreateMap<StorageTypeDto, StorageType>();
 
             CreateMap<SlabTypeHeader, SlabTypeHeaderDto>();
             CreateMap<SlabTypeHeaderDto, SlabTypeHeader>();

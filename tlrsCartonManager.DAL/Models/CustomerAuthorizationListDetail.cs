@@ -18,6 +18,8 @@ namespace tlrsCartonManager.DAL.Models
         public int? AuthorizationId { get; set; }
         [Column("level")]
         public int? Level { get; set; }
+        [Column("deleted")]
+        public bool? Deleted { get; set; }
 
         [ForeignKey(nameof(AuthorizationId))]
         [InverseProperty(nameof(CustomerAuthorizationListHeader.CustomerAuthorizationListDetails))]

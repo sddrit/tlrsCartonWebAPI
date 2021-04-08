@@ -32,9 +32,9 @@ namespace tlrsCartonManager.DAL.Dtos
       
         public string FeedBack { get; set; }
       
-        public DateTime? StatusInDate { get; set; }         
+        public DateTime? StatusInDate { get; set; }
 
-        public virtual ICollection<RequestDetailDto> RequestDetails { get; set; }
+        public int? User { get; set; }
     }
 
 }

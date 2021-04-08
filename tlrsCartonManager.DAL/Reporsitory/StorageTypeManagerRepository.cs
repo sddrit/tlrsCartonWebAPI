@@ -20,38 +20,38 @@ using Newtonsoft.Json;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class CartonTypeManagerRepository : ICartonTypeManagerRepository
+    public class StorageTypeManagerRepository : IStorageTypeManagerRepository
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
 
-        public CartonTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public StorageTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
         {
             _tcContext = tccontext;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<CartonTypeDto>> GetCartonTypeList()
+        public async Task<IEnumerable<StorageTypeDto>> GetCartonTypeList()
         {
-            var cartonType = await _tcContext.CartonTypes.ToListAsync();
-            return _mapper.Map<IEnumerable<CartonTypeDto>>(cartonType);
+            var cartonType = await _tcContext.StorageTypes.ToListAsync();
+            return _mapper.Map<IEnumerable<StorageTypeDto>>(cartonType);
         }
-        public async Task AddCartonType(CartonTypeDto cartonType)
+        public async Task AddCartonType(StorageTypeDto cartonType)
         {
-            var cType = _mapper.Map<CartonType>(cartonType);
-            _tcContext.CartonTypes.Add(cType);
+            var cType = _mapper.Map<StorageType>(cartonType);
+            _tcContext.StorageTypes.Add(cType);
             await _tcContext.SaveChangesAsync();
         }
-        public async Task UpdateCartonType(CartonTypeDto cartonType)
+        public async Task UpdateCartonType(StorageTypeDto cartonType)
         {
-            var cType = _mapper.Map<CartonType>(cartonType);
-            _tcContext.CartonTypes.Update(cType);
+            var cType = _mapper.Map<StorageType>(cartonType);
+            _tcContext.StorageTypes.Update(cType);
             await _tcContext.SaveChangesAsync();
         }
         public async Task DeleteCartonType(int cartonTypeId)
         {
-            var cType = _tcContext.CartonTypes.Find(cartonTypeId);
+            var cType = _tcContext.StorageTypes.Find(cartonTypeId);
             cType.Deleted = true;
-            _tcContext.CartonTypes.Update(cType);
+            _tcContext.StorageTypes.Update(cType);
             await _tcContext.SaveChangesAsync();
         }
     }

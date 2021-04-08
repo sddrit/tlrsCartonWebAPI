@@ -48,6 +48,8 @@ namespace tlrsCartonManager.DAL.Models
         public int? LuUser { get; set; }
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
+        [Column("deleted")]
+        public bool? Deleted { get; set; }
 
         [ForeignKey(nameof(RequestId))]
         [InverseProperty(nameof(RequestHeader.RequestDetails))]

@@ -29,9 +29,9 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<CartonStorageSearchDto>> SearchCarton(string columnValue, int pageIndex, int pageSize)
+        public async Task<ActionResult<CartonStorageSearchDto>> SearchCarton(string searchText, int pageIndex, int pageSize)
         {
-            var cartonList = await _cartonRepository.SearchCarton(columnValue, pageIndex, pageSize);
+            var cartonList = await _cartonRepository.SearchCarton(searchText, pageIndex, pageSize);
             return Ok(cartonList);
         }
 

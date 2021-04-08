@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace tlrsCartonManager.DAL.Models
 {
-    [Table("CartonType")]
-    public partial class CartonType
+    [Table("StorageType")]
+    public partial class StorageType
     {
-        public CartonType()
+        public StorageType()
         {
             CartonStorages = new HashSet<CartonStorage>();
         }
