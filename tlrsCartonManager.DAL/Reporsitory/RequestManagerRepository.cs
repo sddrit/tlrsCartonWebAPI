@@ -39,10 +39,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
                                  FirstOrDefaultAsync(x => x.RequestNo == requestNo);
             return _mapper.Map<RequestHeaderDto>(request);
         }
-        public async Task<PagedResponse<RequestSearchDto>> SearchRequest(string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType,string searchText, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("requestSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
-            var cartonList = await _tcContext.Set<RequestSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            List<SqlParameter> parms = _searchManager.Search("requestSearch", requestType, searchText, pageIndex, pageSize, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<RequestSearch>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
             var postResponse = _mapper.Map<List<RequestSearchDto>>(cartonList);

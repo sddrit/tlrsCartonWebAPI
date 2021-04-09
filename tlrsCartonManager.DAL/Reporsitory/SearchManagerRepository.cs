@@ -28,6 +28,22 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
             return parms;
 
         }
-  
+        public List<SqlParameter> Search(string storedProcedure,string type, string columnValue, int pageIndex, int pageSize, out SqlParameter outParam)
+        {
+            SearchStoredProcedureByType.StoredProcedureName = storedProcedure;
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = SearchStoredProcedureByType.StoredProcedureParameters[0].ToString(), Value = type.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureByType.StoredProcedureParameters[1].ToString(), Value = columnValue.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureByType.StoredProcedureParameters[2].ToString(), Value = pageIndex },
+               new SqlParameter { ParameterName = SearchStoredProcedureByType.StoredProcedureParameters[3].ToString(), Value = pageSize },
+
+            };
+            outParam = new SqlParameter { ParameterName = SearchStoredProcedureByType.StoredProcedureParameters[4].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            parms.Add(outParam);
+            return parms;
+
+        }
+
     }
 }

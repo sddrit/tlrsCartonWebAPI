@@ -42,4 +42,5 @@ namespace tlrsCartonManager.DAL.Utility
 
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 	}
+	
 }

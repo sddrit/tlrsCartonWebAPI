@@ -12,7 +12,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface IRequestManagerRepository
     {
         Task<RequestHeaderDto> GetRequestList(string requestNo);
-        Task<PagedResponse<RequestSearchDto>> SearchRequest(string searchText, int pageIndex, int pageSize);
+        Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType,string searchText, int pageIndex, int pageSize);
         string AddRequest(RequestHeaderDto requestInsert);
         //Task UpdateCartonType(CartonTypeDto cartonType);
         //Task DeleteCartonType(int typeId);
