@@ -22,6 +22,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<CalculationType> CalculationTypes { get; set; }
         public virtual DbSet<CartonLocation> CartonLocations { get; set; }
         public virtual DbSet<CartonStorage> CartonStorages { get; set; }
+        public virtual DbSet<CartonType> CartonTypes { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerAuthorizationListDetail> CustomerAuthorizationListDetails { get; set; }
         public virtual DbSet<CustomerAuthorizationListHeader> CustomerAuthorizationListHeaders { get; set; }
@@ -136,6 +137,15 @@ namespace tlrsCartonManager.DAL.Models
                     .WithMany(p => p.CartonStorages)
                     .HasForeignKey(d => d.LastDeliveryRoute)
                     .HasConstraintName("FK_CartonStorage_Route");
+            });
+
+            modelBuilder.Entity<CartonType>(entity =>
+            {
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.Size).IsUnicode(false);
+
+                entity.Property(e => e.Type).IsUnicode(false);
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -403,6 +413,8 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.RequestType).IsUnicode(false);
 
+                entity.Property(e => e.ServiceType).IsUnicode(false);
+
                 entity.Property(e => e.WoType).IsUnicode(false);
             });
 
@@ -534,6 +546,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<RequestSearch>();
             modelBuilder.Entity<BoolReturn>().HasNoKey();
             modelBuilder.Entity<StringReturn>().HasNoKey();
+            modelBuilder.Entity<TableReturn>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 

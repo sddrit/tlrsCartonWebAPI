@@ -88,6 +88,9 @@ namespace tlrsCartonManager.DAL.Models
         public int? DeliveryRouteId { get; set; }
         [Column("deleted")]
         public bool? Deleted { get; set; }
+        [Column("serviceType")]
+        [StringLength(20)]
+        public string ServiceType { get; set; }
 
         [InverseProperty(nameof(RequestDetail.Request))]
         public virtual ICollection<RequestDetail> RequestDetails { get; set; }

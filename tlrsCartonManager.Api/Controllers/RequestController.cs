@@ -48,13 +48,21 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPost]
         public ActionResult AddRequest(RequestHeaderDto request)
         {
-           string requestNo=  _requestRepository.AddRequest(request);
-           if(!string.IsNullOrEmpty(requestNo))
-            return new JsonErrorResult(new { Message = "Request  Created: " + requestNo }, HttpStatusCode.OK);
-           else                  
-             return new JsonErrorResult(new { Message = "Request Creation Failed" }, HttpStatusCode.NotFound);
+            return Ok( _requestRepository.AddRequest(request));            
+          
+        }
+        [HttpPut]
+        public ActionResult UpdateRequest(RequestHeaderDto request)
+        {
+            return Ok(_requestRepository.UpdateRequest(request));
 
         }
-      
+        [HttpDelete]
+        public ActionResult DeleteRequest(string requestNo)
+        {
+            return Ok(_requestRepository.DeleteRequest(requestNo));
+
+        }
+
     }
 }

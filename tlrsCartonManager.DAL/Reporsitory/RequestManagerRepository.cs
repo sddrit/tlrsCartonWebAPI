@@ -61,64 +61,68 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return paginationResponse;
         }
 
-        public string  AddRequest(RequestHeaderDto requestInsert)
+        public TableResponse<TableReturn> AddRequest(RequestHeaderDto requestInsert)
         {
-            return SaveRequest(requestInsert, TransactionTypes.Insert.ToString());
+            return  SaveRequest(requestInsert, TransactionTypes.Insert.ToString());
         }
-        public string UpdateRequest(RequestHeaderDto requestUpdate)
+        public TableResponse<TableReturn> UpdateRequest(RequestHeaderDto requestUpdate)
         {
-            return SaveRequest(requestUpdate, TransactionTypes.Update.ToString());
+            return  SaveRequest(requestUpdate, TransactionTypes.Update.ToString());
         }
-        //public bool DeleteCustomer(CustomerDeleteDto customerDelete)
-        //{
-        //    var cutomerTransaction = new CustomerDto
-        //    {
-        //        TrackingId = customerDelete.TrackingId
-        //    };
+        public TableResponse<TableReturn> DeleteRequest(string requestNo)
+        {
+            var requestTransaction = new RequestHeaderDto
+            {
+                RequestNo=requestNo,
+                RequestDetails= new List<RequestDetailDto>()
+                
+            };
 
-        //    return SaveRequest(cutomerTransaction, TransactionTypes.Delete.ToString());
-        //}
-        private string SaveRequest(RequestHeaderDto requestTransaction, string transcationType)
+            return SaveRequest(requestTransaction, TransactionTypes.Delete.ToString());
+        }
+        private  TableResponse<TableReturn>SaveRequest(RequestHeaderDto requestTransaction, string transcationType)
         {            
 
             #region Sql Parameter loading
             List<SqlParameter> parms = new List<SqlParameter>
             {
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[0].ToString(),
-                    Value = transcationType==TransactionTypes.Insert.ToString()? 0: requestTransaction.CustomerId.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[1].ToString(), Value = requestTransaction.Priority.AsDbValue() },
+                
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[0].ToString(), Value = requestTransaction.RequestNo.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[1].ToString(), Value = requestTransaction.CustomerId.AsDbValue() },            
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[2].ToString(), Value = requestTransaction.DeliveryDate.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[3].ToString(), Value = requestTransaction.OrdeReceivedBy.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[4].ToString(), Value = requestTransaction.Remark.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[5].ToString(), Value = requestTransaction.CustomerReference.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[6].ToString(), Value = requestTransaction.ContactPerson.AsDbValue()},
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[7].ToString(), Value = requestTransaction.NoOfCartons.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[8].ToString(), Value = requestTransaction.RemarkCarton.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[9].ToString(), Value = requestTransaction.RequestType.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[10].ToString(), Value = requestTransaction.UserId.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[11].ToString(), Value = requestTransaction.Status.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[12].ToString(), Value = requestTransaction.CartonType.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[13].ToString(), Value = requestTransaction.StorageCategory.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[14].ToString(), Value = requestTransaction.ContactPersonName.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[15].ToString(), Value = requestTransaction.DeliveryLocation.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[16].ToString(), Value = requestTransaction.DeliveryRouteId.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[17].ToString(), Value = transcationType.AsDbValue() } ,
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[4].ToString(), Value = requestTransaction.Remark.AsDbValue() },                
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[5].ToString(), Value = requestTransaction.ContactPerson.AsDbValue()},
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[6].ToString(), Value = requestTransaction.NoOfCartons.AsDbValue() },                
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[7].ToString(), Value = requestTransaction.RequestType.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[8].ToString(), Value = requestTransaction.UserId.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[9].ToString(), Value = requestTransaction.Status.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[10].ToString(), Value = requestTransaction.ServiceType.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[11].ToString(), Value = requestTransaction.WOType.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[12].ToString(), Value = requestTransaction.ContactPersonName.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[13].ToString(), Value = requestTransaction.DeliveryLocation.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[14].ToString(), Value = requestTransaction.DeliveryRouteId.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[15].ToString(), Value = transcationType.AsDbValue() } ,
 
                 new SqlParameter
                 {
-                   ParameterName = RequestStoredProcedure.StoredProcedureParameters[18].ToString(),
+                   ParameterName = RequestStoredProcedure.StoredProcedureParameters[16].ToString(),
                    TypeName = RequestStoredProcedure.StoredProcedureTypeNames[0].ToString(),
                    SqlDbType = SqlDbType.Structured,
                    Value =requestTransaction.RequestDetails.ToList().ToDataTable()
                 },
+            };
+            #endregion
+            var resultTable=_tcContext.Set<TableReturn>().FromSqlRaw(RequestStoredProcedure.Sql, parms.ToArray()).ToList();
+            var tableResponse = new TableResponse<TableReturn>
+            {
+                Message = resultTable.Where(x => x.Reason == "OK").FirstOrDefault().OutValue,
+                ErroList = resultTable.Where(x => x.Reason != "OK").ToList()
+
 
             };
-            //var outParam = new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[18].ToString(), SqlDbType = SqlDbType.VarChar,Size=20, Direction = ParameterDirection.Output };
-            //parms.Add(outParam);
-            #endregion
-           return _tcContext.Set<StringReturn>().FromSqlRaw(RequestStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
-          
-           //return (string)outParam.Value;
+            return tableResponse;
+           
         }
 
       

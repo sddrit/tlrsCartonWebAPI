@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using tlrsCartonManager.DAL.Models;
 
 namespace tlrsCartonManager.Api.Error
 {
     public class JsonErrorResult : JsonResult
     {
         private readonly HttpStatusCode _statusCode;
-
+      
         public JsonErrorResult(object json) : this(json, HttpStatusCode.InternalServerError)
         {
         }
@@ -19,7 +20,7 @@ namespace tlrsCartonManager.Api.Error
         {
             _statusCode = statusCode;
         }
-
+     
         public override void ExecuteResult(ActionContext context)
         {
             context.HttpContext.Response.StatusCode = (int)_statusCode;

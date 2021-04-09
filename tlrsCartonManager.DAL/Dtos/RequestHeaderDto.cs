@@ -23,8 +23,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public string RemarkCarton { get; set; }      
         public string RequestType { get; set; }       
         public int? Status { get; set; }      
-        public int? CartonType { get; set; }       
-        public string StorageCategory { get; set; }       
+        public int? ServiceType { get; set; }       
+        public string WOType { get; set; }       
         public string DeviceId { get; set; }       
         public string MobileRequestNo { get; set; }       
         public string ContactPersonName { get; set; }       
