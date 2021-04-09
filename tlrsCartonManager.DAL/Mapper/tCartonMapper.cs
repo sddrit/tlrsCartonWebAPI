@@ -95,9 +95,14 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<RequestHeaderDto, RequestHeader>();
             CreateMap<RequestHeader, RequestHeaderDto>();
 
-
             CreateMap<RequestDetailDto, RequestDetail>();
             CreateMap<RequestDetail, RequestDetailDto>();
+
+            CreateMap<InvoiceHeaderDto, InvoiceHeader>();
+            CreateMap<InvoiceHeader, InvoiceHeaderDto>();
+
+            CreateMap<InvoiceDetailDto, InvoiceDetail>();
+            CreateMap<InvoiceDetail, InvoiceDetailDto>();
             //ruv
         }
 

@@ -11,26 +11,18 @@ namespace tlrsCartonManager.DAL.Models
     [Table("InvoiceProfile")]
     public partial class InvoiceProfile
     {
-        public InvoiceProfile()
-        {
-            CutomerInvoiceProfiles = new HashSet<CutomerInvoiceProfile>();
-            SlabTypeHeaders = new HashSet<SlabTypeHeader>();
-        }
-
         [Key]
-        [Column("id")]
-        public int Id { get; set; }
-        [Column("description")]
+        [Column("profileId")]
+        public int ProfileId { get; set; }
+        [Required]
+        [Column("profileDesc")]
         [StringLength(50)]
-        public string Description { get; set; }
+        public string ProfileDesc { get; set; }
+        [Column("profileType")]
+        public int ProfileType { get; set; }
         [Column("active")]
-        public int? Active { get; set; }
+        public int Active { get; set; }
         [Column("deleted")]
-        public int? Deleted { get; set; }
-
-        [InverseProperty(nameof(CutomerInvoiceProfile.InvoiceProfile))]
-        public virtual ICollection<CutomerInvoiceProfile> CutomerInvoiceProfiles { get; set; }
-        [InverseProperty(nameof(SlabTypeHeader.InvoiceProfile))]
-        public virtual ICollection<SlabTypeHeader> SlabTypeHeaders { get; set; }
+        public int Deleted { get; set; }
     }
 }

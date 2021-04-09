@@ -30,8 +30,8 @@ namespace tlrsCartonManager.DAL.Models
         public DateTime? LuDate { get; set; }
 
         [ForeignKey(nameof(InvoiceProfileId))]
-        [InverseProperty("CutomerInvoiceProfiles")]
-        public virtual InvoiceProfile InvoiceProfile { get; set; }
+        [InverseProperty(nameof(InvoiceProfileold.CutomerInvoiceProfiles))]
+        public virtual InvoiceProfileold InvoiceProfile { get; set; }
         [ForeignKey(nameof(InvoiceProfileId))]
         [InverseProperty(nameof(Customer.CutomerInvoiceProfiles))]
         public virtual Customer InvoiceProfileNavigation { get; set; }

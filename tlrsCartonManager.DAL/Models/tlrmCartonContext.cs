@@ -28,7 +28,12 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<CustomerAuthorizationListHeader> CustomerAuthorizationListHeaders { get; set; }
         public virtual DbSet<CutomerInvoiceProfile> CutomerInvoiceProfiles { get; set; }
         public virtual DbSet<DisposalTimeFrame> DisposalTimeFrames { get; set; }
+        public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
+        public virtual DbSet<InvoiceHeader> InvoiceHeaders { get; set; }
         public virtual DbSet<InvoiceProfile> InvoiceProfiles { get; set; }
+        public virtual DbSet<InvoiceProfileold> InvoiceProfileolds { get; set; }
+        public virtual DbSet<InvoiceSlabTypeDetail> InvoiceSlabTypeDetails { get; set; }
+        public virtual DbSet<InvoiceSlabTypeHeader> InvoiceSlabTypeHeaders { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<MenuRight> MenuRights { get; set; }
         public virtual DbSet<MenuRightAttachedUser> MenuRightAttachedUsers { get; set; }
@@ -43,8 +48,6 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<Sequence> Sequences { get; set; }
         public virtual DbSet<SequenceRequestType> SequenceRequestTypes { get; set; }
         public virtual DbSet<ServiceCategory> ServiceCategories { get; set; }
-        public virtual DbSet<SlabTypeDetail> SlabTypeDetails { get; set; }
-        public virtual DbSet<SlabTypeHeader> SlabTypeHeaders { get; set; }
         public virtual DbSet<StorageType> StorageTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserActivityLogger> UserActivityLoggers { get; set; }
@@ -295,11 +298,72 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.Description).IsUnicode(false);
             });
 
+            modelBuilder.Entity<InvoiceDetail>(entity =>
+            {
+                entity.Property(e => e.Descripton).IsUnicode(false);
+
+                entity.Property(e => e.InvoiceId).IsUnicode(false);
+
+                entity.Property(e => e.RateType).IsUnicode(false);
+
+                entity.Property(e => e.RequestType).IsUnicode(false);
+
+                entity.Property(e => e.WoType).IsUnicode(false);
+
+                entity.HasOne(d => d.Invoice)
+                    .WithMany(p => p.InvoiceDetails)
+                    .HasForeignKey(d => d.InvoiceId)
+                    .HasConstraintName("FK_InvoiceDetail_InvoiceHeader");
+            });
+
+            modelBuilder.Entity<InvoiceHeader>(entity =>
+            {
+                entity.Property(e => e.InvoiceId).IsUnicode(false);
+
+                entity.Property(e => e.LuUserId).IsUnicode(false);
+
+                entity.Property(e => e.TrackingId).ValueGeneratedOnAdd();
+            });
+
             modelBuilder.Entity<InvoiceProfile>(entity =>
+            {
+                entity.HasKey(e => e.ProfileId)
+                    .HasName("PK_InvoiceProfile_1");
+
+                entity.Property(e => e.ProfileId).ValueGeneratedNever();
+
+                entity.Property(e => e.ProfileDesc).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<InvoiceProfileold>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Description).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<InvoiceSlabTypeDetail>(entity =>
+            {
+                entity.HasKey(e => e.TrackingId)
+                    .HasName("PK_SlabTypeDetail");
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithMany(p => p.InvoiceSlabTypeDetails)
+                    .HasForeignKey(d => d.Id)
+                    .HasConstraintName("FK_SlabTypeDetail_SlabTypeHeader");
+            });
+
+            modelBuilder.Entity<InvoiceSlabTypeHeader>(entity =>
+            {
+                entity.HasKey(e => e.TrackingId)
+                    .HasName("PK_SlabType");
+
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.HasOne(d => d.InvoiceProfile)
+                    .WithMany(p => p.InvoiceSlabTypeHeaders)
+                    .HasForeignKey(d => d.InvoiceProfileId)
+                    .HasConstraintName("FK_SlabTypeHeader_InvoiceProfile");
             });
 
             modelBuilder.Entity<MenuRight>(entity =>
@@ -460,27 +524,6 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Description).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<SlabTypeDetail>(entity =>
-            {
-                entity.HasOne(d => d.IdNavigation)
-                    .WithMany(p => p.SlabTypeDetails)
-                    .HasForeignKey(d => d.Id)
-                    .HasConstraintName("FK_SlabTypeDetail_SlabTypeHeader");
-            });
-
-            modelBuilder.Entity<SlabTypeHeader>(entity =>
-            {
-                entity.HasKey(e => e.TrackingId)
-                    .HasName("PK_SlabType");
-
-                entity.Property(e => e.Description).IsUnicode(false);
-
-                entity.HasOne(d => d.InvoiceProfile)
-                    .WithMany(p => p.SlabTypeHeaders)
-                    .HasForeignKey(d => d.InvoiceProfileId)
-                    .HasConstraintName("FK_SlabTypeHeader_InvoiceProfile");
             });
 
             modelBuilder.Entity<StorageType>(entity =>
