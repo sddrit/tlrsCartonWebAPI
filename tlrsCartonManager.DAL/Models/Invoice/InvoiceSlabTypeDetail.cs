@@ -24,6 +24,7 @@ namespace tlrsCartonManager.DAL.Models
         public int? ToSlab { get; set; }
         [Column("rate", TypeName = "decimal(18, 2)")]
         public decimal? Rate { get; set; }
+        public int InvoiceSlabTypeHeadertrackingId { get; set; }
 
         [ForeignKey(nameof(Id))]
         [InverseProperty(nameof(InvoiceSlabTypeHeader.InvoiceSlabTypeDetails))]

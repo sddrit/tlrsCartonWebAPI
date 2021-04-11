@@ -12,9 +12,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface IInvoiceManagerRepository
     {
         Task<InvoiceHeaderDto> GetInvoiceList(string invoiceNo);
-        Task<PagedResponse<RequestSearchDto>> SearchInvoice(string searchText, int pageIndex, int pageSize);
-        TableResponse<TableReturn> AddInvoice (InvoiceHeaderDto requestInsert);
-        TableResponse<TableReturn> UpdateInvoice(InvoiceHeaderDto requestUpdate);
-        TableResponse<TableReturn> Deleteinvoice(string requestNo);
+        Task<PagedResponse<InvoiceSearchDto>> SearchInvoice(string searchText, int pageIndex, int pageSize);
+       TableResponse<InvoiceReturn> CreateInvoice(int fromDate, int toDate, int customerId);
     }
 }

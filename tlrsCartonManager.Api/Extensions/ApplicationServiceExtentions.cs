@@ -36,6 +36,7 @@ namespace tlrsCartonManager.Api.Extensions
 
             services.AddScoped<ISearchManagerRepository, SearchManagerRepository >();
             services.AddScoped<IRequestManagerRepository, RequestManagerRepository>();
+            services.AddScoped<IInvoiceManagerRepository, InvoiceManagerRepository>();
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             return services;
         }

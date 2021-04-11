@@ -10,12 +10,12 @@ namespace tlrsCartonManager.DAL.Helper
     {
         public TableResponse() { }
 
-        public TableResponse(IEnumerable<T> erroList)
+        public TableResponse(IEnumerable<T> outList)
         {
-            ErroList = erroList;
+            OutList = outList;
         }
         public string Message { get; set; }
-        public IEnumerable<T> ErroList { get; set; }
+        public IEnumerable<T> OutList { get; set; }
 
 
      

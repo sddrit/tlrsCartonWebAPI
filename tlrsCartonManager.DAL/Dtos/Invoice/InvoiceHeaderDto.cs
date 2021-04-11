@@ -25,4 +25,14 @@ namespace tlrsCartonManager.DAL.Dtos
   
         public virtual ICollection<InvoiceDetailDto> InvoiceDetails { get; set; }
     }
+    public class InvoiceSearchDto
+    {
+        public string InvoiceId { get; set; }
+        public string CustomerCode { get; set; }
+
+        public string CustomerName { get; set; }
+        public string InvoicePeriod { get; set; }
+
+
+    }
 }

@@ -117,7 +117,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var tableResponse = new TableResponse<TableReturn>
             {
                 Message = resultTable.Where(x => x.Reason == "OK").FirstOrDefault().OutValue,
-                ErroList = resultTable.Where(x => x.Reason != "OK").ToList()
+                OutList = resultTable.Where(x => x.Reason != "OK").ToList()
 
 
             };

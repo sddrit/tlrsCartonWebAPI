@@ -39,6 +39,9 @@ namespace tlrsCartonManager.DAL.Models
         public string WoType { get; set; }
         [Column("customerId")]
         public int? CustomerId { get; set; }
+        [Column("customerCode")]
+        [StringLength(50)]
+        public string CustomerCode { get; set; }
 
         [ForeignKey(nameof(InvoiceId))]
         [InverseProperty(nameof(InvoiceHeader.InvoiceDetails))]

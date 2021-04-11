@@ -14,7 +14,6 @@ namespace tlrsCartonManager.DAL.Models
         public InvoiceProfileold()
         {
             CutomerInvoiceProfiles = new HashSet<CutomerInvoiceProfile>();
-            InvoiceSlabTypeHeaders = new HashSet<InvoiceSlabTypeHeader>();
         }
 
         [Key]
@@ -30,7 +29,5 @@ namespace tlrsCartonManager.DAL.Models
 
         [InverseProperty(nameof(CutomerInvoiceProfile.InvoiceProfile))]
         public virtual ICollection<CutomerInvoiceProfile> CutomerInvoiceProfiles { get; set; }
-        [InverseProperty(nameof(InvoiceSlabTypeHeader.InvoiceProfile))]
-        public virtual ICollection<InvoiceSlabTypeHeader> InvoiceSlabTypeHeaders { get; set; }
     }
 }

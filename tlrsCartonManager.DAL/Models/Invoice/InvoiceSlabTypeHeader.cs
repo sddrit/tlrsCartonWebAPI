@@ -27,7 +27,7 @@ namespace tlrsCartonManager.DAL.Models
         [Column("invoiceChargingType")]
         public int? InvoiceChargingType { get; set; }
         [Column("invoiceProfileId")]
-        public int? InvoiceProfileId { get; set; }
+        public int InvoiceProfileId { get; set; }
         [Column("cartonType")]
         public int? CartonType { get; set; }
         [Column("active")]
@@ -42,10 +42,11 @@ namespace tlrsCartonManager.DAL.Models
         public int? LuUser { get; set; }
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
+        public int InvoiceProfileprofileid { get; set; }
 
         [ForeignKey(nameof(InvoiceProfileId))]
-        [InverseProperty(nameof(InvoiceProfileold.InvoiceSlabTypeHeaders))]
-        public virtual InvoiceProfileold InvoiceProfile { get; set; }
+        [InverseProperty("InvoiceSlabTypeHeaders")]
+        public virtual InvoiceProfile InvoiceProfile { get; set; }
         [InverseProperty(nameof(InvoiceSlabTypeDetail.IdNavigation))]
         public virtual ICollection<InvoiceSlabTypeDetail> InvoiceSlabTypeDetails { get; set; }
     }

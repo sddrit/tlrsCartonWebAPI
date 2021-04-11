@@ -22,5 +22,8 @@ namespace tlrsCartonManager.DAL.Models
         public string CurrentSuffix { get; set; }
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
+        [Column("requestTypeCode")]
+        [StringLength(50)]
+        public string RequestTypeCode { get; set; }
     }
 }

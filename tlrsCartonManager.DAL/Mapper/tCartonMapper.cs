@@ -103,6 +103,16 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<InvoiceDetailDto, InvoiceDetail>();
             CreateMap<InvoiceDetail, InvoiceDetailDto>();
+
+            CreateMap<InvoiceSearchDto, InvoiceSearch>();
+            CreateMap<InvoiceSearch, InvoiceSearchDto>();
+
+
+            CreateMap<InvoiceConfirmationDto, InvoiceConfirmation>();
+            CreateMap<InvoiceConfirmation, InvoiceConfirmationDto>();
+
+            CreateMap<InvoiceConfirmationSearchDto, InvoiceConfirmationSearch>();
+            CreateMap<InvoiceConfirmationSearch, InvoiceConfirmationSearchDto>();
             //ruv
         }
 
