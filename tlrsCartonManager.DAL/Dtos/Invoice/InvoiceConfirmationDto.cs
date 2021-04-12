@@ -10,21 +10,10 @@ namespace tlrsCartonManager.DAL.Dtos
     public class InvoiceConfirmationDto
     {
         [Key]
-        public long TrackingId { get; set; }
-        public string CartonNo { get; set; }
-        public string WoType { get; set; }
-        public int? StorageType { get; set; }
-        public int? DeliveryRouteId { get; set; }
-        public string LastRequestNo { get; set; }
-        public string CustomerCode { get; set; }
-        public int? CustomerId { get; set; }
-        public int? LastTransactionDate { get; set; }
-        public bool? Confirmed { get; set; }
-        public string ConfirmedBy { get; set; }
-        public DateTime? ConfirmedDate { get; set; }
-        public string AlternativeCartonNo { get; set; }
-        public bool? IsNew { get; set; }
-        public int? AutoBind { get; set; }
+        public string RequestNo { get; set; }
+        public string DocketNo { get; set; }
+        public DateTime ReceiveDate { get; set; }
+        public int UserId { get; set; }
 
     }
     public class InvoiceConfirmationSearchDto
@@ -34,5 +23,25 @@ namespace tlrsCartonManager.DAL.Dtos
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
         public string WOType { get; set; }
+    }
+    public class InvoiceConfirmationHeaderDto
+    {
+        public string RequestNo { get; set; }
+        public int RequestDate { get; set; }
+        public string CustomerCode { get; set; }
+        public string CustomerName { get; set; }
+        public string WOType { get; set; }
+        public ICollection<InvoiceConfirmationDetailDto> InvoiceConfirmationDetailDto { get; set; }
+    }
+    public class InvoiceConfirmationDetailDto
+    {
+        [Key]
+        public int CartonNo { get; set; }
+        public int? DisposalDate { get; set; }
+        public string DisposalTimeFrame { get; set; }      
+        public bool? Picked { get; set; }
+        public string PickListNo { get; set; }
+       public string LocationCode { get; set; }
+
     }
 }

@@ -36,5 +36,5 @@ namespace tlrsCartonManager.DAL.Dtos
 
         public int? User { get; set; }
     }
-
+    
 }

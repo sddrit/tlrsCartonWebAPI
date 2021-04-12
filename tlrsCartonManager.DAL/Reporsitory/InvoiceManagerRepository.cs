@@ -17,7 +17,7 @@ using tlrsCartonManager.DAL.Helper;
 using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
-
+using tlrsCartonManager.DAL.Models.Invoice;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -92,5 +92,66 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         }
         #endregion
+
+        #region Invoice Confirmation
+        public async Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string searchText, int pageIndex, int pageSize)
+        {
+            List<SqlParameter> parms = _searchManager.Search("invoiceConfirmationSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<InvoiceConfirmationSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var totalRows = (int)outParam.Value;
+            #region paging
+            var postResponse = _mapper.Map<List<InvoiceConfirmationSearchDto>>(cartonList);
+
+            var paginationResponse = new PagedResponse<InvoiceConfirmationSearchDto>
+            {
+                Data = postResponse,
+                pageNumber = pageIndex,
+                pageSize = pageSize,
+                totalCount = totalRows,
+                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+
+            };
+            #endregion
+
+            return paginationResponse;
+        }
+        public async Task<List<InvoiceConfirmationDetail>> GetInvoiceConfirmationDetailByRequestNo(string requestNo)
+        {            
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = InvoiceConfirmationByRequestNoStoredProcedure.StoredProcedureParameters[0].ToString(), Value = requestNo.AsDbValue() }
+               
+            };
+           
+           return await _tcContext.Set<InvoiceConfirmationDetail>().FromSqlRaw(InvoiceConfirmationByRequestNoStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+         }
+        public bool SaveInvoiceConfirmation(List<InvoiceConfirmationDto> invoiceConfirmation)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+            new SqlParameter
+            {
+                ParameterName = InvoiceConfirmationStoredProcedure.StoredProcedureParameters[0].ToString(),
+                TypeName = InvoiceConfirmationStoredProcedure.StoredProcedureTypeNames[0].ToString(),
+                SqlDbType = SqlDbType.Structured,
+                Value = invoiceConfirmation.ToList().ToDataTable()
+            }
+            };
+
+            return  _tcContext.Set<BoolReturn>().FromSqlRaw(InvoiceConfirmationStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+        }
+        public bool DeleteInvoiceConfirmation(string requestNo, string reason, int userId)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = InvoiceDisaprroveStoredProcedure.StoredProcedureParameters[0].ToString(), Value = requestNo.AsDbValue() },
+                new SqlParameter { ParameterName = InvoiceDisaprroveStoredProcedure.StoredProcedureParameters[1].ToString(), Value = reason.AsDbValue() },
+                new SqlParameter { ParameterName = InvoiceDisaprroveStoredProcedure.StoredProcedureParameters[2].ToString(), Value = userId.AsDbValue() }
+
+            };
+
+            return _tcContext.Set<BoolReturn>().FromSqlRaw(InvoiceDisaprroveStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+        }
     }
+    #endregion
 }

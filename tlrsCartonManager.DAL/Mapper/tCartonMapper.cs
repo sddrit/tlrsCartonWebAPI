@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Models;
+using tlrsCartonManager.DAL.Models.Invoice;
 
 namespace tlrsCartonManager.DAL.Mapper
 {
@@ -113,6 +114,9 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<InvoiceConfirmationSearchDto, InvoiceConfirmationSearch>();
             CreateMap<InvoiceConfirmationSearch, InvoiceConfirmationSearchDto>();
+
+            CreateMap<InvoiceConfirmationDetailDto, InvoiceConfirmationDetail>();
+            CreateMap<InvoiceConfirmationDetail, InvoiceConfirmationDetailDto>();
             //ruv
         }
 

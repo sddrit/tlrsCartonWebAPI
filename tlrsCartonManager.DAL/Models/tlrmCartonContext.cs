@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using tlrsCartonManager.DAL.Models.Invoice;
 
 #nullable disable
 
@@ -625,6 +626,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<RequestSearch>();
             modelBuilder.Entity<InvoiceSearch>();
             modelBuilder.Entity<InvoiceConfirmationSearch>();
+            modelBuilder.Entity<InvoiceConfirmationDetail>();
 
 
 
