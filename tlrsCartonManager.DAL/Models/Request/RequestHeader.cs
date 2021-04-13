@@ -91,6 +91,9 @@ namespace tlrsCartonManager.DAL.Models
         [Column("serviceType")]
         [StringLength(20)]
         public string ServiceType { get; set; }
+        [Column("docketNo")]
+        [StringLength(20)]
+        public string DocketNo { get; set; }
 
         [InverseProperty(nameof(RequestDetail.Request))]
         public virtual ICollection<RequestDetail> RequestDetails { get; set; }

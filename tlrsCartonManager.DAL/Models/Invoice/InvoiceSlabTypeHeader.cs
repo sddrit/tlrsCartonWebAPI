@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using tlrsCartonManager.DAL.Models.Invoice;
 
 #nullable disable
 
@@ -24,6 +25,7 @@ namespace tlrsCartonManager.DAL.Models
         public string Description { get; set; }
         [Column("calucationType")]
         public int? CalucationType { get; set; }
+        public int RouteCode { get; set; }
         [Column("invoiceChargingType")]
         public int? InvoiceChargingType { get; set; }
         [Column("invoiceProfileId")]

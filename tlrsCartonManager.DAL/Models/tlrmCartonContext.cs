@@ -35,6 +35,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<InvoiceHeader> InvoiceHeaders { get; set; }
         public virtual DbSet<InvoiceProfile> InvoiceProfiles { get; set; }
         public virtual DbSet<InvoiceProfileold> InvoiceProfileolds { get; set; }
+        public virtual DbSet<InvoiceSlabCalculationProcessType> InvoiceSlabCalculationProcessTypes { get; set; }
         public virtual DbSet<InvoiceSlabTypeDetail> InvoiceSlabTypeDetails { get; set; }
         public virtual DbSet<InvoiceSlabTypeHeader> InvoiceSlabTypeHeaders { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
@@ -44,6 +45,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<MenuRightFormUser> MenuRightFormUsers { get; set; }
         public virtual DbSet<MenuRightUser> MenuRightUsers { get; set; }
         public virtual DbSet<RequestDetail> RequestDetails { get; set; }
+        public virtual DbSet<RequestDisapproveHistory> RequestDisapproveHistories { get; set; }
         public virtual DbSet<RequestHeader> RequestHeaders { get; set; }
         public virtual DbSet<RequestType> RequestTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
@@ -366,6 +368,11 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.Description).IsUnicode(false);
             });
 
+            modelBuilder.Entity<InvoiceSlabCalculationProcessType>(entity =>
+            {
+                entity.Property(e => e.CakId).ValueGeneratedNever();
+            });
+
             modelBuilder.Entity<InvoiceSlabTypeDetail>(entity =>
             {
                 entity.HasKey(e => e.TrackingId)
@@ -374,7 +381,7 @@ namespace tlrsCartonManager.DAL.Models
                 entity.HasOne(d => d.IdNavigation)
                     .WithMany(p => p.InvoiceSlabTypeDetails)
                     .HasForeignKey(d => d.Id)
-                    .HasConstraintName("FK_SlabTypeDetail_SlabTypeHeader");
+                    .HasConstraintName("FK_InvoiceSlabTypeDetail_InvoiceSlabTypeHeader");
             });
 
             modelBuilder.Entity<InvoiceSlabTypeHeader>(entity =>
@@ -472,6 +479,15 @@ namespace tlrsCartonManager.DAL.Models
                     .HasConstraintName("FK_RequestDetail_RequestHeader");
             });
 
+            modelBuilder.Entity<RequestDisapproveHistory>(entity =>
+            {
+                entity.Property(e => e.CartonNos).IsUnicode(false);
+
+                entity.Property(e => e.Reason).IsUnicode(false);
+
+                entity.Property(e => e.RequestNo).IsUnicode(false);
+            });
+
             modelBuilder.Entity<RequestHeader>(entity =>
             {
                 entity.Property(e => e.ContactPerson).IsUnicode(false);
@@ -485,6 +501,8 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.DeliveryRoute).IsUnicode(false);
 
                 entity.Property(e => e.DeviceId).IsUnicode(false);
+
+                entity.Property(e => e.DocketNo).IsUnicode(false);
 
                 entity.Property(e => e.MobileRequestNo).IsUnicode(false);
 
@@ -620,20 +638,6 @@ namespace tlrsCartonManager.DAL.Models
                     .HasForeignKey(d => d.RequestTypeCode)
                     .HasConstraintName("FK_WorkOrderRequestType_RequestType");
             });
-            modelBuilder.Entity<CustomerSearch>();
-            modelBuilder.Entity<CartonStorageSearch>();
-            modelBuilder.Entity<UserSearch>();
-            modelBuilder.Entity<RequestSearch>();
-            modelBuilder.Entity<InvoiceSearch>();
-            modelBuilder.Entity<InvoiceConfirmationSearch>();
-            modelBuilder.Entity<InvoiceConfirmationDetail>();
-
-
-
-            modelBuilder.Entity<BoolReturn>().HasNoKey();
-            modelBuilder.Entity<StringReturn>().HasNoKey();
-            modelBuilder.Entity<TableReturn>().HasNoKey();
-            modelBuilder.Entity<InvoiceReturn>();
 
             OnModelCreatingPartial(modelBuilder);
         }
