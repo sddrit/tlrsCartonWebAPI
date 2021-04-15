@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Dtos.Invoice;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Invoice;
 
@@ -117,6 +118,17 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<InvoiceConfirmationDetailDto, InvoiceConfirmationDetail>();
             CreateMap<InvoiceConfirmationDetail, InvoiceConfirmationDetailDto>();
+
+            CreateMap<InvoiceProfileDto, InvoiceProfile>();
+            CreateMap<InvoiceProfile, InvoiceProfileDto>();
+
+            CreateMap<InvoiceSlabTypeHeaderDto, InvoiceSlabTypeHeader>();
+            CreateMap<InvoiceSlabTypeHeader, InvoiceSlabTypeHeaderDto>();
+
+            CreateMap<InvoiceSlabTypeDetailDto, InvoiceSlabTypeDetail>();
+            CreateMap<InvoiceSlabTypeDetail, InvoiceSlabTypeDetailDto>();
+
+
             //ruv
         }
 

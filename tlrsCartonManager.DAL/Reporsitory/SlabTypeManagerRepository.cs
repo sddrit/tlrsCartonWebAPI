@@ -19,6 +19,7 @@ using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Dtos.Invoice;
 using AutoMapper.QueryableExtensions;
+using tlrsCartonManager.DAL.Models.Invoice;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {

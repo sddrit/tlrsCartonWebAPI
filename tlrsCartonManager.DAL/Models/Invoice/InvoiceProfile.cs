@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace tlrsCartonManager.DAL.Models
+namespace tlrsCartonManager.DAL.Models.Invoice
 {
     [Table("InvoiceProfile")]
    
