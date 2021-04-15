@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tlrsCartonManager.DAL.Dtos.Invoice;
 
 namespace tlrsCartonManager.DAL.Helper
 {
@@ -28,6 +29,16 @@ namespace tlrsCartonManager.DAL.Helper
             var count = await source.CountAsync();
             var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
             return new PageList<T>(items, count, pageNumber, pageSize);
+        }
+
+        internal static Task<PageList<InvoiceProfileDto>> CreateAsync(Task<List<List<InvoiceProfileDto>>> invProfileList, int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static Task<PageList<InvoiceSlabTypeHeaderDto>> CreateAsync(List<List<InvoiceSlabTypeHeaderDto>> invSlabHeaderList, int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 

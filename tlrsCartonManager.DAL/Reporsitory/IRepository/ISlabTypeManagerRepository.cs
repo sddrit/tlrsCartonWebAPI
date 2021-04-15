@@ -13,7 +13,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface ISlabTypeManagerRepository
     {
         Task<PageList<InvoiceProfileDto>> GetInvoiceProfile(int pageIndex, int pageSize);
-        Task<IEnumerable<InvoiceSlabTypeHeaderDto>> GetInvoiceTypeslabHeader(int invProfile, int pageIndex, int pageSize);
+        Task<PageList<InvoiceSlabTypeHeaderDto>> GetInvoiceTypeslabHeader(int invProfile, int pageIndex, int pageSize);
         Task<IEnumerable<InvoiceSlabTypeDetailDto>> GetInvoiceSlabTypeDetails(int invSlabId);
         Task<InvoiceProfileDto> AddInvoiceProfile(InvoiceProfileDto invProfDto);
         Task<InvoiceSlabTypeHeaderDto> AddInvoiceSlabTypeHeader(InvoiceSlabTypeHeaderDto invSlabTypeHeader);
