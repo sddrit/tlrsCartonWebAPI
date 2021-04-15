@@ -1,0 +1,17 @@
+﻿After context update add these 
+            
+            modelBuilder.Entity<CustomerSearch>();
+            modelBuilder.Entity<CartonStorageSearch>();
+            modelBuilder.Entity<UserSearch>();
+            modelBuilder.Entity<RequestSearch>();
+            modelBuilder.Entity<InvoiceSearch>();
+            modelBuilder.Entity<InvoiceConfirmationSearch>();
+            modelBuilder.Entity<InvoiceConfirmationDetail>();
+            modelBuilder.Entity<PickListSearch>();
+
+
+
+            modelBuilder.Entity<BoolReturn>().HasNoKey();
+            modelBuilder.Entity<StringReturn>().HasNoKey();
+            modelBuilder.Entity<TableReturn>().HasNoKey();
+            modelBuilder.Entity<InvoiceReturn>();
