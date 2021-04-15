@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tlrsCartonManager.Api.Extensions;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Dtos.Invoice;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
@@ -29,9 +30,15 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<InvoiceProfileDto>> GetInvoiceProfile(int pageIndex, int pageSize)
+        public async Task<ActionResult<IEnumerable<InvoiceProfileDto>>> GetInvoiceProfile(int pageIndex, int pageSize)
         {
-            return await _slabRepo.GetInvoiceProfile(pageIndex, pageSize);
+            //return await _slabRepo.GetInvoiceProfile(pageIndex, pageSize);
+
+            var invoiceProfileDetails = await _slabRepo.GetInvoiceProfile(pageIndex, pageSize);
+
+            Response.AddPaginationHeader(invoiceProfileDetails.CurrentPage, invoiceProfileDetails.PageSize, invoiceProfileDetails.TotalCount, invoiceProfileDetails.TotalPages);
+
+            return Ok(invoiceProfileDetails);
         }
 
 

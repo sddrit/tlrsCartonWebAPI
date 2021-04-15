@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using tlrsCartonManager.DAL.Models.Invoice;
 
 #nullable disable
 
-namespace tlrsCartonManager.DAL.Models
+namespace tlrsCartonManager.DAL.Models.Invoice
 {
     [Table("InvoiceSlabTypeDetail")]
     public partial class InvoiceSlabTypeDetail
