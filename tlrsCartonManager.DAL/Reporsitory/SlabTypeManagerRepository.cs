@@ -36,16 +36,19 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public async Task<InvoiceProfileDto> AddInvoiceProfile(InvoiceProfileDto invProfDto)
         {
-            await _tcContext.InvoiceProfiles.AddRangeAsync(_mapper.Map<InvoiceProfile>(invProfDto));
+            
+                await _tcContext.InvoiceProfiles.AddRangeAsync(_mapper.Map<InvoiceProfile>(invProfDto));
 
-            if(await SaveContextAsync())
-            {
-                return invProfDto;
-            }
-            else
-            {
-                return null;
-            }
+                if (await SaveContextAsync())
+                {
+                    return invProfDto;
+                }
+                else
+                {
+                    return null;
+                }
+            
+            
 
         }
 
@@ -131,10 +134,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
         public async Task<PageList<InvoiceProfileDto>> GetInvoiceProfile(int pageIndex, int pageSize)
-        {
-            var invProfileList = _tcContext.InvoiceProfiles.ProjectTo<List<InvoiceProfileDto>>(_mapper.ConfigurationProvider).AsNoTracking().ToListAsync();
+        {           
+                var invProfileList = _tcContext.InvoiceProfiles
+                .ProjectTo<InvoiceProfileDto>(_mapper.ConfigurationProvider)
+                .AsNoTracking();           
 
-            return await PageList<InvoiceProfileDto>.CreateAsync(invProfileList, pageIndex, pageSize);
+                return await PageList<InvoiceProfileDto>.CreateAsync(invProfileList, pageIndex, pageSize);
         }
 
         public async Task<IEnumerable<InvoiceSlabTypeDetailDto>> GetInvoiceSlabTypeDetails(int invSlabId)
@@ -145,7 +150,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public async Task<PageList<InvoiceSlabTypeHeaderDto>> GetInvoiceTypeslabHeader(int invProfile, int pageIndex, int pageSize)
         {
-            var invSlabHeaderList = await _tcContext.InvoiceSlabTypeHeaders.Where(x=>x.InvoiceProfileId == invProfile).ProjectTo<List<InvoiceSlabTypeHeaderDto>>(_mapper.ConfigurationProvider).AsNoTracking().ToListAsync();
+            var invSlabHeaderList = _tcContext.InvoiceSlabTypeHeaders.Where(x=>x.InvoiceProfileId == invProfile)
+                .ProjectTo<InvoiceSlabTypeHeaderDto>(_mapper.ConfigurationProvider)
+                .AsNoTracking();
 
             return await PageList<InvoiceSlabTypeHeaderDto>.CreateAsync(invSlabHeaderList, pageIndex, pageSize);
         }

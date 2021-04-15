@@ -119,8 +119,9 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<InvoiceConfirmationDetailDto, InvoiceConfirmationDetail>();
             CreateMap<InvoiceConfirmationDetail, InvoiceConfirmationDetailDto>();
 
-            CreateMap<InvoiceProfileDto, InvoiceProfile>();
             CreateMap<InvoiceProfile, InvoiceProfileDto>();
+            CreateMap<InvoiceProfileDto, InvoiceProfile>();
+            
 
             CreateMap<InvoiceSlabTypeHeaderDto, InvoiceSlabTypeHeader>();
             CreateMap<InvoiceSlabTypeHeader, InvoiceSlabTypeHeaderDto>();

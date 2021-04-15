@@ -7,7 +7,7 @@ using tlrsCartonManager.DAL.Models.Invoice;
 
 #nullable disable
 
-namespace tlrsCartonManager.DAL.Models
+namespace tlrsCartonManager.DAL.Models.Invoice
 {
     [Table("InvoiceSlabTypeHeader")]
     public partial class InvoiceSlabTypeHeader
