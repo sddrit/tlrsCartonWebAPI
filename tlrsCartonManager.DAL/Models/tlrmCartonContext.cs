@@ -646,7 +646,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<InvoiceConfirmationSearch>();
             modelBuilder.Entity<InvoiceConfirmationDetail>();
             modelBuilder.Entity<PickListSearch>();
-
+            modelBuilder.Entity<CartonInquiry>();
 
 
             modelBuilder.Entity<BoolReturn>().HasNoKey();
