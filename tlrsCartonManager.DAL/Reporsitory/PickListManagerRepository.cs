@@ -35,17 +35,17 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _searchManager = searchManager;
         }
 
-        private TableResponse<TableReturn> SavePickList(List<PickListDto> pickListInsert,string pickListNo,string transcationType, int userId)
+        private TableResponse<TableReturn> SavePickList(List<PickListDto> pickListInsert,string pickListNo,string transcationType, int userId, string deviceId)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
                  new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[0].ToString(), Value = pickListNo.AsDbValue() } ,
                  new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[1].ToString(), Value = transcationType.AsDbValue() } ,
                  new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[2].ToString(), Value = userId.AsDbValue() } ,
-
+                 new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[3].ToString(), Value = deviceId.AsDbValue() } ,
                 new SqlParameter
                 {
-                   ParameterName = PickListStoredProcedure.StoredProcedureParameters[3].ToString(),
+                   ParameterName = PickListStoredProcedure.StoredProcedureParameters[4].ToString(),
                    TypeName = PickListStoredProcedure.StoredProcedureTypeNames[0].ToString(),
                    SqlDbType = SqlDbType.Structured,
                    Value =pickListInsert.ToList().ToDataTable()
@@ -62,9 +62,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public TableResponse<TableReturn> DeletePickList(string pickListNo, int userId )
         {
-            return SavePickList(new List<PickListDto>(), pickListNo, TransactionTypes.Delete.ToString(), userId);
+            return SavePickList(new List<PickListDto>(), pickListNo, TransactionTypes.Delete.ToString(), userId, string.Empty);
         }
-
+        public TableResponse<TableReturn> UpdatePickList(string pickListNo, int userId, string deviceId)
+        {
+            return SavePickList(new List<PickListDto>(), pickListNo, TransactionTypes.Update.ToString(), userId, deviceId);
+        }
         public async Task<PickListDto> GetPickList(string pickListNo)
         {
             var pickList = await _tcContext.PickLists.Where(x => x.PickListNo == pickListNo).FirstOrDefaultAsync();
@@ -95,7 +98,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public TableResponse<TableReturn> AddPickList(List<PickListDto> pickListInsert)
         {
-           return  SavePickList(pickListInsert,string.Empty, TransactionTypes.Insert.ToString(), 0);
+           return  SavePickList(pickListInsert,string.Empty, TransactionTypes.Insert.ToString(), 0, string.Empty);
         }
 
        

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Models.Pick;
@@ -120,6 +121,12 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<InvoiceConfirmationDetailDto, InvoiceConfirmationDetail>();
             CreateMap<InvoiceConfirmationDetail, InvoiceConfirmationDetailDto>();
+
+            CreateMap<PickListSearchDto, PickListSearch>();
+            CreateMap<PickListSearch, PickListSearchDto>();
+
+            CreateMap<PickListDto, PickList>();
+            CreateMap<PickList, PickListDto>();
             //ruv
         }
 

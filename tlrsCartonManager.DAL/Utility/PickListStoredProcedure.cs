@@ -15,6 +15,7 @@ namespace tlrsCartonManager.DAL.Utility
             "@pickListNo",
             "@statementType",
             "@userId",
+            "@deviceId",
             "@pickList"
 
 

@@ -47,14 +47,19 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddRequest(List<PickListDto> pickList)
+        public ActionResult AddPickList(List<PickListDto> pickList)
         {
             return Ok(_pickListRepository.AddPickList(pickList));            
           
         }
-       
+        [HttpPut]
+        public ActionResult UpdatePickList(string pickListNo, int userId, string deviceId)
+        {
+            return Ok(_pickListRepository.UpdatePickList(pickListNo, userId, deviceId));
+
+        }
         [HttpDelete]
-        public ActionResult DeleteRequest(string pickListNo, int userId)
+        public ActionResult DeletePickList(string pickListNo, int userId)
         {
             return Ok(_pickListRepository.DeletePickList(pickListNo, userId));
 
