@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using tlrsCartonManager.DAL.Models.Carton;
+using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Models.Pick;
 
@@ -62,6 +64,8 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<WorkOrderRequestType> WorkOrderRequestTypes { get; set; }
         public virtual DbSet<PickList> PickLists { get; set; }
+        public virtual DbSet<CartonOwnerShip> CartonOwnerShips { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -638,6 +642,16 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.WareHouseCode).IsUnicode(false);
             });
 
+            modelBuilder.Entity<CartonOwnerShip>(entity =>
+            {
+                entity.Property(e => e.FromCustomerCode).IsUnicode(false);
+
+                entity.Property(e => e.OwnershipChangedBy).IsUnicode(false);
+
+                entity.Property(e => e.ToCustomerCode).IsUnicode(false);
+            });
+
+
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -653,6 +667,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<StringReturn>().HasNoKey();
             modelBuilder.Entity<TableReturn>().HasNoKey();
             modelBuilder.Entity<InvoiceReturn>();
+            modelBuilder.Entity<DocketPrintDetail>().HasNoKey();
 
             OnModelCreatingPartial(modelBuilder);
         }

@@ -13,6 +13,7 @@ using tlrsCartonManager.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
+using tlrsCartonManager.DAL.Dtos.Carton;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -40,7 +41,12 @@ namespace tlrsCartonManager.Api.Controllers
             var cartonList = await _inquiryRepository.SearchCartonHeaderRMS1(searchText, pageIndex, pageSize);
             return Ok(cartonList);
         }
-
+        [HttpGet("CartonOverview")]
+        public async Task<ActionResult<CartonOverviewDto>> CGetCartonOverview(int cartonNo)
+        {
+            var cartonList = await _inquiryRepository.GetCartonOverview(cartonNo);
+            return Ok(cartonList);
+        }
 
     }
 }

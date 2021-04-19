@@ -8,6 +8,9 @@ namespace tlrsCartonManager.DAL.Utility
 {
     public static class SearchStoredProcedure
     {
+        public static int PageIndex = 1;
+        public static int PageSize = 10;
+
         public static string StoredProcedureName { get; set; }
         public static List<string> StoredProcedureParameters
         {

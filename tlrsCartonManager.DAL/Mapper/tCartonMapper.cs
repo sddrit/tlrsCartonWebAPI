@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Dtos.Carton;
 using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models;
+using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Models.Pick;
 
@@ -127,6 +129,9 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<PickListDto, PickList>();
             CreateMap<PickList, PickListDto>();
+
+            CreateMap<CartonOverview, CartonOverviewDto>();
+            CreateMap<CartonOverviewDto, CartonOverview>();
             //ruv
         }
 
