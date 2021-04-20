@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.DAL.Dtos.Carton;
+using tlrsCartonManager.DAL.Models.Operation;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -42,11 +43,16 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(cartonList);
         }
         [HttpGet("CartonOverview")]
-        public async Task<ActionResult<CartonOverviewDto>> CGetCartonOverview(int cartonNo)
+        public async Task<ActionResult<CartonOverviewDto>> GetCartonOverview(int cartonNo)
         {
             var cartonList = await _inquiryRepository.GetCartonOverview(cartonNo);
             return Ok(cartonList);
         }
-
+        [HttpGet("OperationOverview")]
+        public async Task<ActionResult<OperationOverview>> GetOperationOverview(int date)
+        {
+            var operationList = await _inquiryRepository.GetOperationOverview(date);
+            return Ok(operationList);
+        }
     }
 }

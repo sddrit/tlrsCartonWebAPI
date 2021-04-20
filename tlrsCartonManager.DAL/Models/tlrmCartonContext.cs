@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.Invoice;
+using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Pick;
 
 #nullable disable
@@ -669,6 +670,10 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<InvoiceReturn>();
             modelBuilder.Entity<DocketPrintDetail>().HasNoKey();
 
+            modelBuilder.Entity<CartonSummary>().HasNoKey();
+            modelBuilder.Entity<CartonUserSummary>().HasNoKey();
+            modelBuilder.Entity<CartonLocationSummary>().HasNoKey();
+            modelBuilder.Entity<RequestedDetail>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 

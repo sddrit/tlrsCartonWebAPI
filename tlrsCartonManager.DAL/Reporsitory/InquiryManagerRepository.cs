@@ -21,6 +21,7 @@ using tlrsCartonManager.DAL.Dtos.Carton;
 using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Docket;
+using tlrsCartonManager.DAL.Models.Operation;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -65,6 +66,59 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return cartonOverView;
         }
 
+        public async Task<OperationOverview> GetOperationOverview(int date)
+        {
+            OperationOverview operationOverView = new OperationOverview();
+
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = InquiryOperationOverviewStoredProcedure.StoredProcedureParameters[0].ToString(), Value = date.AsDbValue() },
+               new SqlParameter { ParameterName = InquiryOperationOverviewStoredProcedure.StoredProcedureParameters[1].ToString(), Value = SearchCriterias.CSummary.ToString() }
+
+            };
+            operationOverView.CartonSummaryList = await _tcContext.Set<CartonSummary>().FromSqlRaw(InquiryOperationOverviewStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            operationOverView.ScanBySummaryList = (ICollection<CartonUserSummary>)GetCartonUserOverview(date, SearchCriterias.SSummary.ToString());
+            operationOverView.FumigationSummaryList = (ICollection<CartonUserSummary>)GetCartonUserOverview(date, SearchCriterias.FSummary.ToString());
+
+            operationOverView.BaySummaryList = (ICollection<CartonLocationSummary>)GetCartonLocationOverview(date, SearchCriterias.BSummary.ToString());
+            operationOverView.VehicleSummaryList = (ICollection<CartonLocationSummary>)GetCartonLocationOverview(date, SearchCriterias.VSummary.ToString());
+
+            operationOverView.PalletedSummaryList = (ICollection<CartonUserSummary>)GetCartonUserOverview(date, SearchCriterias.PSummary.ToString());
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = InquiryOperationOverviewStoredProcedure.StoredProcedureParameters[0].ToString(), Value = date.AsDbValue() },
+               new SqlParameter { ParameterName = InquiryOperationOverviewStoredProcedure.StoredProcedureParameters[1].ToString(), Value = SearchCriterias.RDetail.ToString() }
+
+            };
+            operationOverView.RequestDetailList = await _tcContext.Set<RequestedDetail>().FromSqlRaw(InquiryOperationOverviewStoredProcedure.Sql, parameters.ToArray()).ToListAsync();
+            return operationOverView;
+        }
+
+        public  List<CartonUserSummary> GetCartonUserOverview(int date, string criteria)
+        {            
+
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = InquiryOperationOverviewStoredProcedure.StoredProcedureParameters[0].ToString(), Value = date.AsDbValue() },
+               new SqlParameter { ParameterName = InquiryOperationOverviewStoredProcedure.StoredProcedureParameters[1].ToString(), Value = criteria.AsDbValue() }
+
+            };
+           return  _tcContext.Set<CartonUserSummary>().FromSqlRaw(InquiryOperationOverviewStoredProcedure.Sql, parms.ToArray()).ToList();
+
+        }
+        public  List<CartonLocationSummary> GetCartonLocationOverview(int date, string criteria)
+        {
+
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = InquiryOperationOverviewStoredProcedure.StoredProcedureParameters[0].ToString(), Value = date.AsDbValue() },
+               new SqlParameter { ParameterName = InquiryOperationOverviewStoredProcedure.StoredProcedureParameters[1].ToString(), Value = criteria.AsDbValue() }
+
+            };
+            return  _tcContext.Set<CartonLocationSummary>().FromSqlRaw(InquiryOperationOverviewStoredProcedure.Sql, parms.ToArray()).ToList();
+
+        }
         public async Task<PagedResponse<CartonInquiry>> SearchCartonHeader(string columnValue, int pageIndex, int pageSize)
         {
             List<SqlParameter> parms = _searchManager.Search("cartonInquiry", columnValue, pageIndex, pageSize, out SqlParameter outParam);

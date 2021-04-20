@@ -14,11 +14,21 @@ namespace tlrsCartonManager.DAL.Utility
             InActive,
             Disable
         }
-          public enum TransactionTypes
+        public enum TransactionTypes
         {
             Insert,
             Update,
             Delete
+        }
+        public enum SearchCriterias
+        {
+            CSummary,
+            SSummary,
+            FSummary,
+            BSummary,
+            VSummary,
+            PSummary,
+            RDetail
         }
     }
 }
