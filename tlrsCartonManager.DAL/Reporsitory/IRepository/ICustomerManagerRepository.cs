@@ -13,7 +13,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     {
         Task<IEnumerable<CustomerDto>> GetCustomerList();
         Task<CustomerDto> GetCustomerById(int customerId);
-        Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainId(string customerName);
+        Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainName(string customerName);
+        Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainId(int customerId);
         Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnValue, int pageIndex, int pageSize);
         string ValidateCustomer(CustomerDto customer, string transcationType);
         bool AddCustomer(CustomerDto customerInsert);

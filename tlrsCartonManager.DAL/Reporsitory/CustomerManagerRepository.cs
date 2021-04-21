@@ -51,10 +51,16 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return customerList;
 
         }
-        public async Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainId(string customerName)
+        public async Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainName(string customerName)
         {
             var mainAccList = await _tcContext.Customers.
                 Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && (x.AccountType == "M") && x.Deleted == false)).ToListAsync();
+            return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
+        }
+        public async Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainId(int customerId)
+        {
+            var mainAccList = await _tcContext.Customers.
+                Where(x => x.TrackingId==customerId && x.AccountType == "M" && x.Deleted == false).ToListAsync();
             return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
         }
         public async Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnValue, int pageIndex, int pageSize)

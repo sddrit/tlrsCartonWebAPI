@@ -47,22 +47,30 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
         }
 
-        [HttpGet("getCustomerMainBy/{name}")]
-        public async Task<ActionResult<CustomerMainCodeSearchDto>>GetMainAccount(string name)
+        [HttpGet("MainAccountByName/{name}")]
+        public async Task<ActionResult<CustomerMainCodeSearchDto>> GetMainAccount(string name)
         {
-            var customerMainList = await _customerRepository.GetCustomerByMainId(name);
+            var customerMainList = await _customerRepository.GetCustomerByMainName(name);
             if (customerMainList != null)
                 return Ok(customerMainList);
-            else              
+            else
                 return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
         }
-       
+        [HttpGet("MainAccountById/{customerId}")]
+        public async Task<ActionResult<CustomerMainCodeSearchDto>> GetMainAccountById(int customerId)
+        {
+            var customerMainList = await _customerRepository.GetCustomerByMainId(customerId);
+            if (customerMainList != null)
+                return Ok(customerMainList);
+            else
+                return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
+        }
         [HttpPost]
         public ActionResult AddCustomer(CustomerDto customer)
         {
             var validateMessage=_customerRepository.ValidateCustomer(customer, TransactionTypes.Insert.ToString());
             if(!string.IsNullOrEmpty(validateMessage))
-                return  new JsonErrorResult(new { Message = validateMessage }, HttpStatusCode.NotFound);
+                return  new JsonErrorResult(new { Message = validateMessage }, HttpStatusCode.BadRequest);
 
             if (_customerRepository.AddCustomer(customer))           
                 return new JsonErrorResult(new { Message = "Customer Created" }, HttpStatusCode.OK);            
