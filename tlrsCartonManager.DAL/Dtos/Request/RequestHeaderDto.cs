@@ -34,7 +34,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Reminder2 { get; set; }      
         public string Reminder3 { get; set; }
         public int? UserId { get; set; }
-      
+        public string CustomerName { get; set; }
+        public string CustomerAddress { get; set; }
         public virtual ICollection<RequestDetailDto> RequestDetails { get; set; }
     }
     public class RequestSearchDto
@@ -44,4 +45,6 @@ namespace tlrsCartonManager.DAL.Dtos
         public string  CustomerName { get; set; }
         public int DeliveryDate { get; set; }
     }
+   
+  
 }

@@ -132,6 +132,11 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<CartonOverview, CartonOverviewDto>();
             CreateMap<CartonOverviewDto, CartonOverview>();
+
+            
+
+
+
             //ruv
         }
 

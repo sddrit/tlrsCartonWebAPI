@@ -22,12 +22,14 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IServiceCategoryManagerRepository _serviceRepository;
         private readonly IStorageTypeManagerRepository _cartonTypeRepository;
         private readonly IRoleManagerRepository _roleRepository;
+        private readonly IReceiveTypeManagerRepository _receiveTypeRepository;
+
 
         public MetaDataController
             (
             IBillingCycleManagerRepository billingCycleRepository, IRouteManagerRepository routeRepository,
             IServiceCategoryManagerRepository serviceRepository, IStorageTypeManagerRepository cartonTypeRepository,
-            IRoleManagerRepository roleRepository
+            IRoleManagerRepository roleRepository, IReceiveTypeManagerRepository receiveTypeRepository
 
             )
         {
@@ -36,6 +38,7 @@ namespace tlrsCartonManager.Api.Controllers
             _serviceRepository = serviceRepository;
             _cartonTypeRepository = cartonTypeRepository;
             _roleRepository = roleRepository;
+            _receiveTypeRepository = receiveTypeRepository;
         }
 
         [HttpGet]
@@ -46,6 +49,7 @@ namespace tlrsCartonManager.Api.Controllers
             var serviceCategory = await _serviceRepository.GetServiceList();
             var storageType = await _cartonTypeRepository.GetCartonTypeList();
             var roleList = await _roleRepository.GetRoleList();
+            var receiveTypeList = await _receiveTypeRepository.GetReceiveTypeList();
             return Ok(
             new
             {
@@ -53,7 +57,8 @@ namespace tlrsCartonManager.Api.Controllers
                 route,
                 serviceCategory,
                 storageType,
-                roleList
+                roleList,
+                receiveTypeList
             });
         }
 

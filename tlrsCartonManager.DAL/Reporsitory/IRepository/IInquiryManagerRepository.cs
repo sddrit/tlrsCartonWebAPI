@@ -14,9 +14,9 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
     public interface IInquiryManagerRepository
     {
-      
-        Task<PagedResponse<CartonInquiry>> SearchCartonHeader(string columnValue, int pageIndex, int pageSize);
-        Task<PagedResponse<CartonInquiry>> SearchCartonHeaderRMS1(string columnValue, int pageIndex, int pageSize);
+        Task<PagedResponse<CartonInquiry>> SearchCartonHeader(string columnValue,  int pageIndex, int pageSize);
+        Task<PagedResponse<CartonInquiry>> SearchCartonHeader(string columnValueFrom, string columnValueTo, int pageIndex, int pageSize);
+        Task<PagedResponse<CartonInquiry>> SearchCartonHeaderRMS1(string columnValueFrom, string columnValueTo, int pageIndex, int pageSize);
         Task<CartonOverviewDto> GetCartonOverview(int cartonNo);
         Task<OperationOverview> GetOperationOverview(int date);
 

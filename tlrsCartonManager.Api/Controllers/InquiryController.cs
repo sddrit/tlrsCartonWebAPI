@@ -31,15 +31,15 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("CartonHeader")]
-        public async Task<ActionResult<CartonInquiry>> SearchCartonHeader(string searchText, int pageIndex, int pageSize)
+        public async Task<ActionResult<CartonInquiry>> SearchCartonHeader(string searchTextFrom, string searchTextTo, int pageIndex, int pageSize)
         {
-            var cartonList = await _inquiryRepository.SearchCartonHeader(searchText, pageIndex, pageSize);
+            var cartonList = await _inquiryRepository.SearchCartonHeader(searchTextFrom, searchTextTo, pageIndex, pageSize);
             return Ok(cartonList);
         }
         [HttpGet("CartonHeaderRMS1")]
-        public async Task<ActionResult<CartonInquiry>> SearchCartonHeaderRMS1(string searchText, int pageIndex, int pageSize)
+        public async Task<ActionResult<CartonInquiry>> SearchCartonHeaderRMS1(string searchTextFrom, string searchTextTo, int pageIndex, int pageSize)
         {
-            var cartonList = await _inquiryRepository.SearchCartonHeaderRMS1(searchText, pageIndex, pageSize);
+            var cartonList = await _inquiryRepository.SearchCartonHeaderRMS1(searchTextFrom, searchTextTo, pageIndex, pageSize);
             return Ok(cartonList);
         }
         [HttpGet("CartonOverview")]

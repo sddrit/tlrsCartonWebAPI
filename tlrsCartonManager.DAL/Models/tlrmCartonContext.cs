@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.Invoice;
+using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Pick;
 
@@ -66,7 +67,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<WorkOrderRequestType> WorkOrderRequestTypes { get; set; }
         public virtual DbSet<PickList> PickLists { get; set; }
         public virtual DbSet<CartonOwnerShip> CartonOwnerShips { get; set; }
-
+        public virtual DbSet<ReceiveType> ReceiveTypes { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -650,6 +651,12 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.OwnershipChangedBy).IsUnicode(false);
 
                 entity.Property(e => e.ToCustomerCode).IsUnicode(false);
+            });
+            modelBuilder.Entity<ReceiveType>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Description).IsUnicode(false);
             });
 
 

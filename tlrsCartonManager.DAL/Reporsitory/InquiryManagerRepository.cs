@@ -119,10 +119,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return  _tcContext.Set<CartonLocationSummary>().FromSqlRaw(InquiryOperationOverviewStoredProcedure.Sql, parms.ToArray()).ToList();
 
         }
-        public async Task<PagedResponse<CartonInquiry>> SearchCartonHeader(string columnValue, int pageIndex, int pageSize)
+        public async Task<PagedResponse<CartonInquiry>> SearchCartonHeader(string columnValueFrom, string columnValueTo, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("cartonInquiry", columnValue, pageIndex, pageSize, out SqlParameter outParam);
-            var cartonList = await _tcContext.Set<CartonInquiry>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            List<SqlParameter> parms = _searchManager.SearchFromTo("cartonInquiryFromTo", columnValueFrom, columnValueTo,pageIndex, pageSize, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<CartonInquiry>().FromSqlRaw(SearchStoredProcedureFromTo.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging         
 
@@ -140,10 +140,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return paginationResponse;
         }
 
-        public async Task<PagedResponse<CartonInquiry>> SearchCartonHeaderRMS1(string columnValue, int pageIndex, int pageSize)
+        public async Task<PagedResponse<CartonInquiry>> SearchCartonHeaderRMS1(string columnValueFrom, string columnValueTo, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("cartonInquiryRMS1", columnValue, pageIndex, pageSize, out SqlParameter outParam);
-            var cartonList = await _tcContext.Set<CartonInquiry>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            List<SqlParameter> parms = _searchManager.SearchFromTo("cartonInquiryFromToRMS1", columnValueFrom, columnValueTo, pageIndex, pageSize, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<CartonInquiry>().FromSqlRaw(SearchStoredProcedureFromTo.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging         
 
@@ -159,6 +159,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
             #endregion
 
             return paginationResponse;
+        }
+
+        public Task<PagedResponse<CartonInquiry>> SearchCartonHeader(string columnValue, int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }
