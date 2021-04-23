@@ -85,6 +85,6 @@ namespace tlrsCartonManager.DAL.Dtos
         public string CustomerCode { get; set; }
         public string Name { get; set; }
     }
-
+   
 
 }

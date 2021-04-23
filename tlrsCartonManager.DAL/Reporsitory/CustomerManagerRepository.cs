@@ -57,6 +57,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && (x.AccountType == "M") && x.Deleted == false)).ToListAsync();
             return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
         }
+
         public async Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainId(int customerId)
         {
             var mainAccList = await _tcContext.Customers.
@@ -233,6 +234,19 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
               return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
                  
+        }
+
+        public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByName(string customerName)
+        {
+            var mainAccList = await _tcContext.Customers.
+               Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%")  && x.Deleted == false)).ToListAsync();
+            return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
+        }
+        public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByCode(string customerCode)
+        {
+            var mainAccList = await _tcContext.Customers.
+               Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false)).ToListAsync();
+            return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
         }
     }
 }

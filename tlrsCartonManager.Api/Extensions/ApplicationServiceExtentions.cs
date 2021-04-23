@@ -40,6 +40,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IPickListManagerRepository ,PickListManagerRepository>();
             services.AddScoped<IInquiryManagerRepository, InquiryManagerRepository>();
             services.AddScoped<IReceiveTypeManagerRepository, ReceiveTypeManagerRepository>();
+            services.AddScoped<IDisposalTimeFrameManagerRepository, DisposalTimeFrameManagerRepository>();
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             return services;
         }

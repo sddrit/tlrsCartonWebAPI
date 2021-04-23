@@ -38,13 +38,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var request = await _tcContext.RequestHeaders.
                                  Include(x => x.RequestDetails).
                                  FirstOrDefaultAsync(x => x.RequestNo == requestNo);
-
-            var customer = await _tcContext.Customers.Where(x => x.TrackingId == request.CustomerId).
-                FirstOrDefaultAsync();
             var requestDto = _mapper.Map<RequestHeaderDto>(request);
-            requestDto.CustomerName = customer.Name;
-            requestDto.CustomerAddress = customer.Address1 + " " + customer.Address2 + " " + customer.Address3;
-            return requestDto;
+            if (request != null)
+            {
+                var customer = await _tcContext.Customers.Where(x => x.TrackingId == request.CustomerId).
+                    FirstOrDefaultAsync();               
+                requestDto.CustomerName = customer.Name;
+                requestDto.CustomerAddress = customer.Address1 + " " + customer.Address2 + " " + customer.Address3;
+            }
+                return requestDto;
 
         }
         public async Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType, string searchText, int pageIndex, int pageSize)

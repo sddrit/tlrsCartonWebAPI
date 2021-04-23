@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Dtos.Carton;
+using tlrsCartonManager.DAL.Dtos.MetaData;
 using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Carton;
@@ -133,10 +134,12 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CartonOverview, CartonOverviewDto>();
             CreateMap<CartonOverviewDto, CartonOverview>();
 
-            
 
+            CreateMap<DisposalTimeFrameDto, DisposalTimeFrame>();
+            CreateMap<DisposalTimeFrame, DisposalTimeFrameDto>();
 
-
+            CreateMap<CustomerSearchDto, Customer>();
+            CreateMap<Customer, CustomerSearchDto>();
             //ruv
         }
 

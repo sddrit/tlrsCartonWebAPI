@@ -38,8 +38,25 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             var carton = _mapper.Map<CartonStorageDto>(await _tcContext.CartonStorages.
                           Include(x => x.CartonLocations).
-                          Where(x => x.CartonNo == cartonId).FirstOrDefaultAsync());
-            return carton;
+                          Where(x => x.CartonNo == cartonId)
+                          .FirstOrDefaultAsync());
+            if (carton != null)
+            {
+                var customer = await _tcContext.Customers.Where(x => x.TrackingId == carton.CustomerId).
+                    FirstOrDefaultAsync();
+                carton.CustomerName = customer.Name;
+                carton.CustomerCode = customer.CustomerCode;
+            }
+            //to be ask from sajith
+
+            //var carton =  await(from cs in _tcContext.CartonStorages
+            //               join c in _tcContext.Customers
+            //             on cs.CustomerId equals c.TrackingId
+            //               select new { cs, c.Name }).ToListAsync();
+
+
+
+            return _mapper.Map < CartonStorageDto>(carton);
 
         }
         public async Task<PagedResponse<CartonStorageSearchDto>> SearchCarton(string columnValue, int pageIndex, int pageSize)

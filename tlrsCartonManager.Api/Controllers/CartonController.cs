@@ -22,7 +22,6 @@ namespace tlrsCartonManager.Api.Controllers
     public class CartonController : Controller
     {
         private readonly ICartonStorageManagerRepository _cartonRepository;
-
         public CartonController(ICartonStorageManagerRepository cartonRepository)
         {
             _cartonRepository = cartonRepository;

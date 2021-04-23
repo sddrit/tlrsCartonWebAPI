@@ -23,13 +23,14 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IStorageTypeManagerRepository _cartonTypeRepository;
         private readonly IRoleManagerRepository _roleRepository;
         private readonly IReceiveTypeManagerRepository _receiveTypeRepository;
-
+        private readonly IDisposalTimeFrameManagerRepository _disposalTimeFrameRepository;
 
         public MetaDataController
             (
             IBillingCycleManagerRepository billingCycleRepository, IRouteManagerRepository routeRepository,
             IServiceCategoryManagerRepository serviceRepository, IStorageTypeManagerRepository cartonTypeRepository,
-            IRoleManagerRepository roleRepository, IReceiveTypeManagerRepository receiveTypeRepository
+            IRoleManagerRepository roleRepository, IReceiveTypeManagerRepository receiveTypeRepository,
+            IDisposalTimeFrameManagerRepository disposalTimeFrame
 
             )
         {
@@ -39,6 +40,7 @@ namespace tlrsCartonManager.Api.Controllers
             _cartonTypeRepository = cartonTypeRepository;
             _roleRepository = roleRepository;
             _receiveTypeRepository = receiveTypeRepository;
+            _disposalTimeFrameRepository = disposalTimeFrame;
         }
 
         [HttpGet]
@@ -50,6 +52,7 @@ namespace tlrsCartonManager.Api.Controllers
             var storageType = await _cartonTypeRepository.GetCartonTypeList();
             var roleList = await _roleRepository.GetRoleList();
             var receiveTypeList = await _receiveTypeRepository.GetReceiveTypeList();
+            var disposalTimeFrameList = await _disposalTimeFrameRepository.GetDisposalTimeFrameList();
             return Ok(
             new
             {
@@ -58,7 +61,8 @@ namespace tlrsCartonManager.Api.Controllers
                 serviceCategory,
                 storageType,
                 roleList,
-                receiveTypeList
+                receiveTypeList,
+                disposalTimeFrameList
             });
         }
 

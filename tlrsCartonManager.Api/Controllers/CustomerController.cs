@@ -37,7 +37,7 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(customerList);
         }
 
-        [HttpGet("getCustomerBy/{customerId}")]
+        [HttpGet("getCustomerById/{customerId}")]
         public async Task<ActionResult<CustomerDto>> GetSingleSearch(int customerId)
         {
             var customerList = await _customerRepository.GetCustomerById(customerId);
@@ -46,7 +46,24 @@ namespace tlrsCartonManager.Api.Controllers
             else              
                 return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
         }
-
+        [HttpGet("getCustomerByName/{customerName}")]
+        public async Task<ActionResult<CustomerSearchDto>> GetCustomerByName(string customerName)
+        {
+            var customerList = await _customerRepository.GetCustomerByName(customerName);
+            if (customerList != null)
+                return Ok(customerList);
+            else
+                return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
+        }
+        [HttpGet("getCustomerByCode/{customerCode}")]
+        public async Task<ActionResult<CustomerDto>> GetCustomerByCode(string customerCode)
+        {
+            var customerList = await _customerRepository.GetCustomerByCode(customerCode);
+            if (customerList != null)
+                return Ok(customerList);
+            else
+                return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
+        }
         [HttpGet("MainAccountByName/{name}")]
         public async Task<ActionResult<CustomerMainCodeSearchDto>> GetMainAccount(string name)
         {

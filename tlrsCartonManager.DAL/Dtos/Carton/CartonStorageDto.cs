@@ -30,6 +30,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public DateTime? LastOwnershipChangedDate { get; set; }
         public int? LastDeliveryRoute { get; set; }
         public int CreatedUserId { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerCode { get; set; }
         public virtual ICollection<CartonLocationDto> CartonLocations { get; set; }
 
     }
