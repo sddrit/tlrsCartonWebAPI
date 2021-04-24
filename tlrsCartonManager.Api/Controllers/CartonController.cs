@@ -45,10 +45,15 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCartonType(CartonStorageDto carton)
+        public IActionResult UpdateCarton(CartonStorageDto carton)
         {
-            await _cartonRepository.UpdateCarton(carton);
-            return new JsonErrorResult(new { Message = "Carton  Updated" }, HttpStatusCode.OK);
+            if (_cartonRepository.UpdateCarton(carton))
+
+                return new JsonErrorResult(new { Message = "Carton  Updated" }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = "Carton  Updation Failed" }, HttpStatusCode.NotFound);
+
+            
         }
         //to do request tab
     }

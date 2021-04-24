@@ -13,7 +13,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     {
         Task<CartonStorageDto> GetCartonById(int cartonId);
         Task<PagedResponse<CartonStorageSearchDto>> SearchCarton(string columnValue, int pageIndex, int pageSize);
-        Task UpdateCarton(CartonStorageDto carton);
+        bool UpdateCarton(CartonStorageDto carton);
 
     }
 }
