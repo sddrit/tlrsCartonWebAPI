@@ -27,6 +27,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<BillingCycle> BillingCycles { get; set; }
         public virtual DbSet<CalculationType> CalculationTypes { get; set; }
         public virtual DbSet<CartonLocation> CartonLocations { get; set; }
+       
         public virtual DbSet<CartonStorage> CartonStorages { get; set; }
         public virtual DbSet<CartonType> CartonTypes { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
@@ -658,7 +659,7 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.Description).IsUnicode(false);
             });
-
+          
 
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
@@ -676,7 +677,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<TableReturn>().HasNoKey();
             modelBuilder.Entity<InvoiceReturn>();
             modelBuilder.Entity<DocketPrintDetail>().HasNoKey();
-
+            modelBuilder.Entity<CartonRequest>().HasNoKey();
+            
             modelBuilder.Entity<CartonSummary>().HasNoKey();
             modelBuilder.Entity<CartonUserSummary>().HasNoKey();
             modelBuilder.Entity<CartonLocationSummary>().HasNoKey();

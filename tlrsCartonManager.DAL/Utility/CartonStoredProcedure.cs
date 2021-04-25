@@ -22,4 +22,14 @@ namespace tlrsCartonManager.DAL.Utility
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) ;
 
     }
+    public static class CartonRequestStoredProcedure
+    {
+        public static string StoredProcedureName = "cartonInquiryRequestHistory";
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+           "@cartonNo"
+        };
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
+    }
 }

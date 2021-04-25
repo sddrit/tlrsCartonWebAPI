@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using tlrsCartonManager.DAL.Dtos.MetaData;
+using tlrsCartonManager.DAL.Models.Carton;
 
 #nullable disable
 
@@ -86,5 +87,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual Route LastDeliveryRouteNavigation { get; set; }
         [InverseProperty(nameof(CartonLocation.CartonNoNavigation))]
         public virtual ICollection<CartonLocation> CartonLocations { get; set; }
+
+       
     }
 }

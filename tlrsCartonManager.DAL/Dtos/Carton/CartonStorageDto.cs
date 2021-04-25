@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tlrsCartonManager.DAL.Models.Carton;
 
 namespace tlrsCartonManager.DAL.Dtos
 {
@@ -33,6 +34,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string CustomerName { get; set; }
         public string CustomerCode { get; set; }
         public virtual ICollection<CartonLocationDto> CartonLocations { get; set; }
+        public virtual ICollection<CartonRequest> CartonRequests { get; set; }
 
     }
     public class CartonStorageSearchDto

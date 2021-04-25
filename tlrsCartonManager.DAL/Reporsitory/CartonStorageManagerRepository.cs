@@ -17,7 +17,7 @@ using tlrsCartonManager.DAL.Helper;
 using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
-
+using tlrsCartonManager.DAL.Models.Carton;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -36,16 +36,26 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public async Task<CartonStorageDto> GetCartonById(int cartonId)
         {
+            //to be ask from sajith whether to do in one join
             var carton = _mapper.Map<CartonStorageDto>(await _tcContext.CartonStorages.
                           Include(x => x.CartonLocations).
                           Where(x => x.CartonNo == cartonId)
                           .FirstOrDefaultAsync());
+
             if (carton != null)
             {
                 var customer = await _tcContext.Customers.Where(x => x.TrackingId == carton.CustomerId).
                     FirstOrDefaultAsync();
                 carton.CustomerName = customer.Name;
                 carton.CustomerCode = customer.CustomerCode;
+
+                List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = CartonRequestStoredProcedure.StoredProcedureParameters[0].ToString(), Value = cartonId.AsDbValue() },
+
+            };
+               carton.CartonRequests= _tcContext.Set<CartonRequest>().FromSqlRaw(CartonRequestStoredProcedure.Sql, parms.ToArray()).ToList();
+
             }
             //to be ask from sajith
 
@@ -56,7 +66,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
 
 
-            return _mapper.Map < CartonStorageDto>(carton);
+            return _mapper.Map<CartonStorageDto>(carton);
 
         }
         public async Task<PagedResponse<CartonStorageSearchDto>> SearchCarton(string columnValue, int pageIndex, int pageSize)
@@ -80,7 +90,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return paginationResponse;
         }
-        public bool  UpdateCarton(CartonStorageDto carton)
+        public bool UpdateCarton(CartonStorageDto carton)
         {
             //var c = _mapper.Map<CartonStorage>(carton);
             //_tcContext.CartonStorages.Update(c);
@@ -101,6 +111,6 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CartonStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
 
-        
+
     }
 }
