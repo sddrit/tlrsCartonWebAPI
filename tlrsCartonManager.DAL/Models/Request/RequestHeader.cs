@@ -33,18 +33,16 @@ namespace tlrsCartonManager.DAL.Models
         public int? OrdeReceivedBy { get; set; }
         [Column("remark")]
         [StringLength(200)]
-        public string Remark { get; set; }
+        public string Remarks { get; set; }
         [Column("customerReference")]
         [StringLength(50)]
         public string CustomerReference { get; set; }
         [Column("contactPerson")]
         [StringLength(50)]
-        public string ContactPerson { get; set; }
+        public string AuthorizedOfficer { get; set; }
         [Column("noOfCartons")]
-        public int? NoOfCartons { get; set; }
-        [Column("remarkCarton")]
-        [StringLength(50)]
-        public string RemarkCarton { get; set; }
+        public int? CartonCount { get; set; }
+        
         [Column("requestType")]
         [StringLength(10)]
         public string RequestType { get; set; }
@@ -54,7 +52,7 @@ namespace tlrsCartonManager.DAL.Models
         public int? CartonType { get; set; }
         [Column("woType")]
         [StringLength(20)]
-        public string WoType { get; set; }
+        public string WorkOrderType { get; set; }
         [Column("deviceId")]
         [StringLength(50)]
         public string DeviceId { get; set; }

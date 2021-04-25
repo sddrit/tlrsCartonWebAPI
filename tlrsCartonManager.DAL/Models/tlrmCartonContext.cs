@@ -482,7 +482,7 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<RequestHeader>(entity =>
             {
-                entity.Property(e => e.ContactPerson).IsUnicode(false);
+                entity.Property(e => e.AuthorizedOfficer).IsUnicode(false);
 
                 entity.Property(e => e.ContactPersonName).IsUnicode(false);
 
@@ -496,9 +496,7 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.MobileRequestNo).IsUnicode(false);
 
-                entity.Property(e => e.Remark).IsUnicode(false);
-
-                entity.Property(e => e.RemarkCarton).IsUnicode(false);
+                entity.Property(e => e.Remarks).IsUnicode(false);              
 
                 entity.Property(e => e.Reminder1).IsUnicode(false);
 
@@ -512,7 +510,7 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.ServiceType).IsUnicode(false);
 
-                entity.Property(e => e.WoType).IsUnicode(false);
+                entity.Property(e => e.WorkOrderType).IsUnicode(false);
             });
 
             modelBuilder.Entity<RequestType>(entity =>

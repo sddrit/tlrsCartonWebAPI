@@ -140,6 +140,21 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<CustomerSearchDto, Customer>();
             CreateMap<Customer, CustomerSearchDto>();
+
+            CreateMap<WorkOrderTypeDto, WorkOrderRequestType>();
+            CreateMap<WorkOrderRequestType, WorkOrderTypeDto>();
+
+            //CreateMap<CustomerAuthorizationListDto, CustomerAuthorizationListHeader>();
+            //CreateMap<CustomerAuthorizationListHeader, CustomerAuthorizationListDto>();
+
+           
+
+
+            CreateMap<CustomerAuthorizationHeader, CustomerAuthorizationListHeader>();
+            CreateMap<CustomerAuthorizationListHeader, CustomerAuthorizationHeader>();
+            
+
+
             //ruv
         }
 

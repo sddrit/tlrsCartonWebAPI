@@ -17,7 +17,8 @@ namespace tlrsCartonManager.DAL.Models
         {
         }
 
-       
+        public virtual DbSet<WorkOrderRequestType> WorkOrderRequestTypes { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -30,6 +31,12 @@ namespace tlrsCartonManager.DAL.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
+            modelBuilder.Entity<WorkOrderRequestType>(entity =>
+            {
+                entity.Property(e => e.TypeCode).IsUnicode(false);
+
+                entity.Property(e => e.RequestTypeCode).IsUnicode(false);
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }

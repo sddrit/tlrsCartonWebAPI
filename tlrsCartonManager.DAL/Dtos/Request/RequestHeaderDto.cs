@@ -16,15 +16,14 @@ namespace tlrsCartonManager.DAL.Dtos
         public int? Priority { get; set; }        
         public int? DeliveryDate { get; set; }       
         public int? OrdeReceivedBy { get; set; }       
-        public string Remark { get; set; }     
+        public string Remarks { get; set; }     
         public string CustomerReference { get; set; }      
-        public string ContactPerson { get; set; }       
-        public int? NoOfCartons { get; set; }      
-        public string RemarkCarton { get; set; }      
+        public string AuthorizedOfficer { get; set; }       
+        public int? CartonCount { get; set; }              
         public string RequestType { get; set; }       
         public int? Status { get; set; }      
         public int? ServiceType { get; set; }       
-        public string WOType { get; set; }       
+        public string WorkOrderType { get; set; }       
         public string DeviceId { get; set; }       
         public string MobileRequestNo { get; set; }       
         public string ContactPersonName { get; set; }       
@@ -37,6 +36,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public string CustomerName { get; set; }
         public string CustomerAddress { get; set; }
         public virtual ICollection<RequestDetailDto> RequestDetails { get; set; }
+
+        public virtual ICollection<CustomerAuthorizationHeaderDto> AuthorizedOfficers { get; set; }
     }
     public class RequestSearchDto
     {

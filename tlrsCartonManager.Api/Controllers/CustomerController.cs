@@ -46,6 +46,15 @@ namespace tlrsCartonManager.Api.Controllers
             else              
                 return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
         }
+        [HttpGet("getAuthorizationById/{customerId}")]
+        public async Task<ActionResult<CustomerAuthorizationHeaderDto>> GetCustomerAuthorizationList(int customerId)
+        {
+            var authorizationList = await _customerRepository.GetCustomerAuthorizationById(customerId);
+            if (authorizationList != null)
+                return Ok(authorizationList);
+            else
+                return new JsonErrorResult(new { Message = "Authorization Not Found" }, HttpStatusCode.NotFound);
+        }
         [HttpGet("getCustomerByName/{customerName}")]
         public async Task<ActionResult<CustomerSearchDto>> GetCustomerByName(string customerName)
         {

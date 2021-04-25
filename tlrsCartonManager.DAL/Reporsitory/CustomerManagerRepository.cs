@@ -51,6 +51,17 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return customerList;
 
         }
+        public async Task<List<CustomerAuthorizationHeaderDto>> GetCustomerAuthorizationById(int customerId)
+        {
+            var authorizedList = (await _tcContext.CustomerAuthorizationListHeaders.
+                                Where(x => x.CustomerId == customerId && x.Deleted ==false)
+                                 .Select(p => new CustomerAuthorizationHeaderDto()
+                                 {
+                                     TrackingId = p.TrackingId,
+                                     Name = p.Name
+                                 }).ToListAsync());       
+            return authorizedList;
+        }
         public async Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainName(string customerName)
         {
             var mainAccList = await _tcContext.Customers.
@@ -69,19 +80,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
             List<SqlParameter> parms = new List<SqlParameter>
             {
                new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[0].ToString(), Value = columnValue==null ? string.Empty :columnValue },
-
                new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[1].ToString(), Value = pageIndex },
                new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[2].ToString(), Value = pageSize },
-
             };
             var outParam = new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[3].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
             parms.Add(outParam);
             var customerList = await _tcContext.Set<CustomerSearch>().FromSqlRaw(CustomerStoredProcedureSearch.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
-
             #region paging
             var postResponse = _mapper.Map<List<CustomerSearchDto>>(customerList);
-
             var paginationResponse = new PagedResponse<CustomerSearchDto>
             {
                 Data = postResponse,
@@ -89,15 +96,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 pageSize = pageSize,
                 totalCount = totalRows,
                 totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
-
             };
             #endregion
-
             return paginationResponse;
         }
         public bool AddCustomer(CustomerDto customerInsert)
         {
-
             return SaveCustomer(customerInsert, TransactionTypes.Insert.ToString());
         }
         public bool UpdateCustomer(CustomerDto customerUpdate)
@@ -127,7 +131,6 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 var existingCustomer = _tcContext.Customers.Where(x => x.Name.ToUpper().Trim() == customer.Name.ToUpper().Trim()).ToListAsync();
                 if(existingCustomer.Result.Where(x =>x.TrackingId != customer.TrackingId).FirstOrDefault()!=null)
                     return "Existing Customer Name Found";
-
             }
 
             return string.Empty;

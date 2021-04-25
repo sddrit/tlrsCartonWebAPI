@@ -21,6 +21,12 @@ namespace tlrsCartonManager.DAL.Dtos
         public string ContactNo { get; set; } = string.Empty;
         public virtual ICollection<CustomerAuthorizationListDetailDto> CustomerAuthorizationListDetails { get; set; }
     }
+    public class CustomerAuthorizationHeaderDto
+    {
+        public int TrackingId { get; set; } = 0;       
+        public string Name { get; set; } = string.Empty;     
+      
+    }
 
     public class CustomerAuthorizationListUtdDto
     {
