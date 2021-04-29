@@ -676,7 +676,9 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<InvoiceReturn>();
             modelBuilder.Entity<DocketPrintDetail>().HasNoKey();
             modelBuilder.Entity<CartonRequest>().HasNoKey();
-            
+            modelBuilder.Entity<OperationOverviewByWoType>().HasNoKey();
+            modelBuilder.Entity<OperationOverviewByUserLocaion>().HasNoKey();
+
             modelBuilder.Entity<CartonSummary>().HasNoKey();
             modelBuilder.Entity<CartonUserSummary>().HasNoKey();
             modelBuilder.Entity<CartonLocationSummary>().HasNoKey();

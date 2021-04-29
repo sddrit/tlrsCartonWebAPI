@@ -19,6 +19,9 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<PagedResponse<CartonInquiry>> SearchCartonHeaderRMS1(string columnValueFrom, string columnValueTo, int pageIndex, int pageSize);
         Task<CartonOverviewDto> GetCartonOverview(int cartonNo);
         Task<OperationOverview> GetOperationOverview(int date);
+        Task<List<OperationOverviewByWoType>> GetOperationOverviewByWoTypeAsync(int date, string woType);
+        Task<PagedResponse<OperationOverviewByUserLocaion>> GetOperationOverviewByUserLocationAsync(int date, string user,
+            string locationCode, bool isRcLocation, bool isVehicle, string searchText, int pageIndex, int pageSize);
 
     }
 }

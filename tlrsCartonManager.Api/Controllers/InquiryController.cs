@@ -34,25 +34,59 @@ namespace tlrsCartonManager.Api.Controllers
         public async Task<ActionResult<CartonInquiry>> SearchCartonHeader(string searchTextFrom, string searchTextTo, int pageIndex, int pageSize)
         {
             var cartonList = await _inquiryRepository.SearchCartonHeader(searchTextFrom, searchTextTo, pageIndex, pageSize);
-            return Ok(cartonList);
+            if (cartonList != null)
+                return Ok(cartonList);
+            else
+                return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpGet("CartonHeaderRMS1")]
         public async Task<ActionResult<CartonInquiry>> SearchCartonHeaderRMS1(string searchTextFrom, string searchTextTo, int pageIndex, int pageSize)
         {
             var cartonList = await _inquiryRepository.SearchCartonHeaderRMS1(searchTextFrom, searchTextTo, pageIndex, pageSize);
-            return Ok(cartonList);
+            if (cartonList != null)
+                return Ok(cartonList);
+            else
+                return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpGet("CartonOverview")]
         public async Task<ActionResult<CartonOverviewDto>> GetCartonOverview(int cartonNo)
         {
             var cartonList = await _inquiryRepository.GetCartonOverview(cartonNo);
-            return Ok(cartonList);
+            if(cartonList!=null)
+                return Ok(cartonList);
+             else
+                return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpGet("OperationOverview")]
         public async Task<ActionResult<OperationOverview>> GetOperationOverview(int date)
         {
             var operationList = await _inquiryRepository.GetOperationOverview(date);
-            return Ok(operationList);
+            if(operationList!=null)
+                return Ok(operationList);
+              else
+                return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
+        }
+
+        [HttpGet("OperationOverviewByWoType")]
+        public async Task<ActionResult<OperationOverviewByWoType>> GetOperationOverviewByWoType(int date, string woType)
+        {
+            var operationList = await _inquiryRepository.GetOperationOverviewByWoTypeAsync(date, woType);
+            if(operationList!=null)
+                return Ok(operationList);
+            else
+                return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
+        }
+
+        [HttpGet("OperationOverviewByUserLocation")]
+        public async Task<ActionResult<OperationOverviewByUserLocaion>> GetOperationOverviewByUserLocation(int date, string user,
+            string locationCode,bool isRcLocation, bool isVehicle, string searchText, int pageIndex, int pageSize)
+        {
+            var operationList = await _inquiryRepository.GetOperationOverviewByUserLocationAsync(date, user,locationCode, isRcLocation, 
+                isVehicle, searchText,pageIndex, pageSize);
+            if (operationList != null)
+                return Ok(operationList);
+            else
+                return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
         }
     }
 }
