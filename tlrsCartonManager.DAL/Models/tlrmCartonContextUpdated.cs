@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using tlrsCartonManager.DAL.Models.Ownership;
 
 #nullable disable
 
@@ -17,7 +18,7 @@ namespace tlrsCartonManager.DAL.Models
         {
         }
 
-        public virtual DbSet<WorkOrderRequestType> WorkOrderRequestTypes { get; set; }
+        public virtual DbSet<CartonOwnerShip> CartonOwnerShips { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,11 +32,13 @@ namespace tlrsCartonManager.DAL.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<WorkOrderRequestType>(entity =>
+            modelBuilder.Entity<CartonOwnerShip>(entity =>
             {
-                entity.Property(e => e.TypeCode).IsUnicode(false);
+                entity.Property(e => e.FromCustomerCode).IsUnicode(false);
 
-                entity.Property(e => e.RequestTypeCode).IsUnicode(false);
+                entity.Property(e => e.OwnershipChangedBy).IsUnicode(false);
+
+                entity.Property(e => e.ToCustomerCode).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

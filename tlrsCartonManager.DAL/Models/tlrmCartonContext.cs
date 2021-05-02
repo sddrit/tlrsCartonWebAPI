@@ -1,11 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Models.Operation;
+using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
 
 #nullable disable
@@ -678,11 +680,12 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<CartonRequest>().HasNoKey();
             modelBuilder.Entity<OperationOverviewByWoType>().HasNoKey();
             modelBuilder.Entity<OperationOverviewByUserLocaion>().HasNoKey();
-
+            modelBuilder.Entity<CartonOwnershipSearch>().HasNoKey();
             modelBuilder.Entity<CartonSummary>().HasNoKey();
             modelBuilder.Entity<CartonUserSummary>().HasNoKey();
             modelBuilder.Entity<CartonLocationSummary>().HasNoKey();
             modelBuilder.Entity<RequestedDetail>().HasNoKey();
+            modelBuilder.Entity<CartonOwnershipSummary>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 
