@@ -14,10 +14,10 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface IOwnershipManagerRepository
     {
         //Task<CartonOwnerShipDto> GetCartonById(int cartonId);
-        Task<PagedResponse<CartonOwnershipSearch>> SearchOwnership(string fromValue,string toValue,string searchBy, int pageIndex, int pageSize);
+        Task<PagedResponse<CartonOwnershipSearch>> SearchOwnership(string fromValue, string toValue, string searchBy, int pageIndex, int pageSize);
 
-       List< CartonOwnershipSummary> SearchOwnershipSummary(string fromValue, string toValue, string searchBy);
-        //bool UpdateCarton(CartonOwnerShipDto carton);
+        Task<CartonOwnershipSummary> SearchOwnershipSummaryAsync(string fromValue, string toValue, string searchBy);
+        bool InsertOwnership(CartonOwnershipTransfer cartonOwnership);
 
     }
 }
