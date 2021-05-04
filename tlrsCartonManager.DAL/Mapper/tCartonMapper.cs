@@ -152,6 +152,9 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CartonOwnerShip, CartonOwnerShipDto>();
             CreateMap<CartonOwnerShipDto, CartonOwnerShip>();
 
+            CreateMap<PickListPendingListItem, PickListPendingListItemDto>();
+            CreateMap<PickListPendingListItemDto, PickListPendingListItem>();
+
             //ruv
         }
 

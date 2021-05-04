@@ -101,6 +101,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
            return  SavePickList(pickListInsert,string.Empty, TransactionTypes.Insert.ToString(), 0, string.Empty);
         }
 
-       
+        public Task<PagedResponse<PickListPendingListItemDto>> GetPendingPickList(string searchText, int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

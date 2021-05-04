@@ -30,9 +30,9 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PickListSearchDto>> SearchPickList(string searchtext, int pageIndex, int pageSize)
+        public async Task<ActionResult<PickListSearchDto>> SearchPickList(string searchText, int pageIndex, int pageSize)
         {
-            var pickList = await _pickListRepository.SearchPickList(searchtext, pageIndex, pageSize);
+            var pickList = await _pickListRepository.SearchPickList(searchText, pageIndex, pageSize);
             return Ok(pickList);
         }
 
