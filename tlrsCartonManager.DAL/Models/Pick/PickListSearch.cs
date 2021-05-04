@@ -9,11 +9,9 @@ namespace tlrsCartonManager.DAL.Models.Pick
 {
     public class PickListSearch
     {
-        [Key]
-        public string PickListNo { get; set; }
-        public int CartonNo { get; set; }      
-        public string LocationCode { get; set; }
+       
+        public string PickListNo { get; set; }      
         public string LastSentDeviceId { get; set; }
-        public string RequestNo { get; set; }
+        public int  NoOfCartons { get; set; }
     }
 }
