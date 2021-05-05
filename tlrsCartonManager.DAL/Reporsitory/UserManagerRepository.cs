@@ -29,6 +29,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var users = await _tcContext.Users.ToListAsync();
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
+
+        public async Task<IEnumerable<WorkerDto>> GetWorkersList()
+        {
+            var workerList = await _tcContext.Users.Where(x => x.UserRoleId == 1).ToListAsync();
+            return _mapper.Map<IEnumerable<WorkerDto>>(workerList);
+        }
+
         public async Task<PagedResponse<UserSerachDto>> SearchUser(string columnValue, int pageIndex, int pageSize)
         {
             List<SqlParameter> parms = new List<SqlParameter>
