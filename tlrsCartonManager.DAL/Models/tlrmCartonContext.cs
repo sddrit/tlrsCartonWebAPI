@@ -72,6 +72,11 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<CartonOwnerShip> CartonOwnerShips { get; set; }
         public virtual DbSet<ReceiveType> ReceiveTypes { get; set; }
         public virtual DbSet<MobileDevice> MobileDevices { get; set; }
+        public virtual DbSet<MenuModel> MenuModels { get; set; }
+        public virtual DbSet<MenuModelOption> MenuModelOptions { get; set; }
+        public virtual DbSet<MenuModelOptionsUserRole> MenuModelOptionsUserRoles { get; set; }
+        public virtual DbSet<MenuModelUserRole> MenuModelUserRoles { get; set; }
+        public virtual DbSet<MenuRightFormName> MenuRightFormNames { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -672,6 +677,55 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.LastSynchedUser).IsUnicode(false);
             });
+
+            modelBuilder.Entity<MenuModel>(entity =>
+            {
+                entity.Property(e => e.ModelCode).ValueGeneratedNever();
+            });
+
+            modelBuilder.Entity<MenuModelOption>(entity =>
+            {
+                entity.HasKey(e => new { e.ModelId, e.FormRightId });
+
+                entity.HasOne(d => d.FormRight)
+                    .WithMany(p => p.MenuModelOptions)
+                    .HasForeignKey(d => d.FormRightId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MenuModelOptions_MenuRightFormNames");
+
+                entity.HasOne(d => d.Model)
+                    .WithMany(p => p.MenuModelOptions)
+                    .HasForeignKey(d => d.ModelId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MenuModelOptions_MenuModelOptions");
+            });
+
+            modelBuilder.Entity<MenuModelOptionsUserRole>(entity =>
+            {
+                entity.Property(e => e.TrackingId).ValueGeneratedNever();
+
+                entity.HasOne(d => d.FormRight)
+                    .WithMany(p => p.MenuModelOptionsUserRoles)
+                    .HasForeignKey(d => d.FormRightId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MenuModelOptionsUserRole_MenuRightFormNames");
+            });
+
+            modelBuilder.Entity<MenuModelUserRole>(entity =>
+            {
+                entity.HasOne(d => d.Model)
+                    .WithMany(p => p.MenuModelUserRoles)
+                    .HasForeignKey(d => d.ModelId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MenuModelUserRole_MenuModels");
+            });
+
+            modelBuilder.Entity<MenuRightFormName>(entity =>
+            {
+                entity.Property(e => e.FormRightId).ValueGeneratedNever();
+            });
+
+
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -699,6 +753,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<PickListPendingListItem>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
+
+
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
