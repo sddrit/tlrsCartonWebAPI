@@ -35,7 +35,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _searchManager = searchManager;
         }
 
-        private TableResponse<TableReturn> SavePickList(List<PickListDto> pickListInsert,string pickListNo,string transcationType, int userId, string deviceId)
+        private TableResponse<TableReturn> SavePickList(PickListHeaderDto pickListInsert,string pickListNo,string transcationType, int userId, string deviceId)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
@@ -48,7 +48,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    ParameterName = PickListStoredProcedure.StoredProcedureParameters[4].ToString(),
                    TypeName = PickListStoredProcedure.StoredProcedureTypeNames[0].ToString(),
                    SqlDbType = SqlDbType.Structured,
-                   Value =pickListInsert.ToList().ToDataTable()
+                   Value =pickListInsert.PickListDetail.ToList().ToDataTable()
                 },
             };
             var resultTable = _tcContext.Set<TableReturn>().FromSqlRaw(PickListStoredProcedure.Sql, parms.ToArray()).ToList();
@@ -62,16 +62,23 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public TableResponse<TableReturn> DeletePickList(string pickListNo, int userId )
         {
-            return SavePickList(new List<PickListDto>(), pickListNo, TransactionTypes.Delete.ToString(), userId, string.Empty);
+            return SavePickList(new PickListHeaderDto(), pickListNo, TransactionTypes.Delete.ToString(), userId, string.Empty);
         }
         public TableResponse<TableReturn> UpdatePickList(string pickListNo, int userId, string deviceId)
         {
-            return SavePickList(new List<PickListDto>(), pickListNo, TransactionTypes.Update.ToString(), userId, deviceId);
+            return SavePickList(new PickListHeaderDto(), pickListNo, TransactionTypes.Update.ToString(), userId, deviceId);
         }
-        public async Task<PickListDto> GetPickList(string pickListNo)
+        public async Task<PickListHeaderDto> GetPickList(string pickListNo)
         {
-            var pickList = await _tcContext.PickLists.Where(x => x.PickListNo == pickListNo).FirstOrDefaultAsync();
-            return _mapper.Map<PickListDto>(pickList);
+            var pickList = await _tcContext.PickLists.Where(x => x.PickListNo == pickListNo).ToListAsync();
+
+            PickListHeaderDto pickListHeader = new PickListHeaderDto();
+            pickListHeader = _mapper.Map<PickListHeaderDto>(pickList.FirstOrDefault());
+
+            pickListHeader.PickListDetail= _mapper.Map<List<PickListDetailItemDto>>(pickList);
+
+
+            return pickListHeader;
         }
 
         public async Task<PagedResponse<PickListSearchDto>> SearchPickList(string searchText, int pageIndex, int pageSize)
@@ -96,20 +103,20 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return paginationResponse;
         }        
 
-        public TableResponse<TableReturn> AddPickList(List<PickListDto> pickListInsert)
+        public TableResponse<TableReturn> AddPickList(PickListHeaderDto pickListInsert)
         {
            return  SavePickList(pickListInsert,string.Empty, TransactionTypes.Insert.ToString(), 0, string.Empty);
         }
 
-        public async Task<PagedResponse<PickListPendingListItemDto>> GetPendingPickList(string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string searchText, int pageIndex, int pageSize)
         {
             List<SqlParameter> parms = _searchManager.Search("pickListPendingSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<PickListPendingListItem>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
-            var postResponse = _mapper.Map<List<PickListPendingListItemDto>>(cartonList);
+            var postResponse = _mapper.Map<List<PickListDetailItemDto>>(cartonList);
 
-            var paginationResponse = new PagedResponse<PickListPendingListItemDto>
+            var paginationResponse = new PagedResponse<PickListDetailItemDto>
             {
                 Data = postResponse,
                 pageNumber = pageIndex,
