@@ -157,6 +157,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<PickListPendingListItemDto, PickListPendingListItem>();
 
             CreateMap<MobileDevice, MobileDeviceDto>().ReverseMap();
+            CreateMap<WorkerDto, User>().ReverseMap();
 
 
 
