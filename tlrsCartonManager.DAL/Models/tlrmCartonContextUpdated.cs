@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using tlrsCartonManager.DAL.Models.MetaData;
 
 #nullable disable
 
@@ -18,7 +17,7 @@ namespace tlrsCartonManager.DAL.Models
         {
         }
 
-        public virtual DbSet<MobileDevice> MobileDevices { get; set; }
+        public virtual DbSet<MenuRightFormName> MenuRightFormNames { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -32,16 +31,9 @@ namespace tlrsCartonManager.DAL.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<MobileDevice>(entity =>
+            modelBuilder.Entity<MenuRightFormName>(entity =>
             {
-                entity.HasKey(e => e.DeviceCode)
-                    .HasName("PK_Mobile-Devices");
-
-                entity.Property(e => e.DeviceCode).IsUnicode(false);
-
-                entity.Property(e => e.DeviceName).IsUnicode(false);
-
-                entity.Property(e => e.LastSynchedUser).IsUnicode(false);
+                entity.Property(e => e.FormRightId).ValueGeneratedNever();
             });
 
             OnModelCreatingPartial(modelBuilder);
