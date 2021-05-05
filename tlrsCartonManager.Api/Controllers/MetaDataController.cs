@@ -25,13 +25,17 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IReceiveTypeManagerRepository _receiveTypeRepository;
         private readonly IDisposalTimeFrameManagerRepository _disposalTimeFrameRepository;
         private readonly IWorkOrderTypeManagerRepository _workOrderType;
+        private readonly IMobileDeviceManagerRepository _mobileDevice;
+
+
 
         public MetaDataController
             (
             IBillingCycleManagerRepository billingCycleRepository, IRouteManagerRepository routeRepository,
             IServiceCategoryManagerRepository serviceRepository, IStorageTypeManagerRepository cartonTypeRepository,
             IRoleManagerRepository roleRepository, IReceiveTypeManagerRepository receiveTypeRepository,
-            IDisposalTimeFrameManagerRepository disposalTimeFrame, IWorkOrderTypeManagerRepository workOrderType
+            IDisposalTimeFrameManagerRepository disposalTimeFrame, IWorkOrderTypeManagerRepository workOrderType,
+            IMobileDeviceManagerRepository mobileDevice
 
             )
         {
@@ -43,6 +47,7 @@ namespace tlrsCartonManager.Api.Controllers
             _receiveTypeRepository = receiveTypeRepository;
             _disposalTimeFrameRepository = disposalTimeFrame;
             _workOrderType = workOrderType;
+            _mobileDevice = mobileDevice;
         }
 
         [HttpGet]
@@ -56,6 +61,7 @@ namespace tlrsCartonManager.Api.Controllers
             var receiveTypeList = await _receiveTypeRepository.GetReceiveTypeList();
             var disposalTimeFrameList = await _disposalTimeFrameRepository.GetDisposalTimeFrameList();
             var workOrderTypeList= await _workOrderType.GetWoTypeList();
+            var mobileDeviceList = await _mobileDevice.GetMobileDeviceList();
             return Ok(
             new
             {
@@ -66,7 +72,8 @@ namespace tlrsCartonManager.Api.Controllers
                 roleList,
                 receiveTypeList,
                 disposalTimeFrameList,
-                workOrderTypeList
+                workOrderTypeList,
+                mobileDeviceList
             });
         }
 

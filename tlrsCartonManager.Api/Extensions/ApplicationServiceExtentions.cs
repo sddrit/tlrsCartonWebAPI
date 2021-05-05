@@ -43,6 +43,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IDisposalTimeFrameManagerRepository, DisposalTimeFrameManagerRepository>();
             services.AddScoped<IWorkOrderTypeManagerRepository, WorkOrderTypeManagerRepository>();
             services.AddScoped<IOwnershipManagerRepository, OwnershipManagerRepository>();
+            services.AddScoped<IMobileDeviceManagerRepository, MobileDeviceManagerRepository>();
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             return services;
         }

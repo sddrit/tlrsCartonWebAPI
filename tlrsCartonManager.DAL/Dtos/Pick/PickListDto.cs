@@ -42,5 +42,6 @@ namespace tlrsCartonManager.DAL.Dtos.Pick
         public string Name { get; set; }
         public string CustomerAddress { get; set; }
         public int? DeliveryDate { get; set; }
+        public byte[] RowVersion { get; set; }
     }
 }

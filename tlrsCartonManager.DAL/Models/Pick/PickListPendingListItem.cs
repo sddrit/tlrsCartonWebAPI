@@ -41,5 +41,9 @@ namespace tlrsCartonManager.DAL.Models.Pick
         public string CustomerAddress { get; set; }
         [Column("deliveryDate")]
         public int? DeliveryDate { get; set; }
+
+        [Column("rowVersion")]
+        [MaxLength(8)]
+        public byte[] RowVersion { get; set; }
     }
 }
