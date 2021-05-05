@@ -131,8 +131,13 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<PickListSearchDto, PickListSearch>();
             CreateMap<PickListSearch, PickListSearchDto>();
 
+            CreateMap<PickListHeaderDto, PickList>().ReverseMap();
+            CreateMap<PickListDetailItemDto, PickList>().ReverseMap();
+
             CreateMap<PickListDto, PickList>();
             CreateMap<PickList, PickListDto>();
+
+            // CreateMap<PickList, PickListHeaderDto>();
 
             CreateMap<CartonOverview, CartonOverviewDto>();
             CreateMap<CartonOverviewDto, CartonOverview>();
@@ -153,8 +158,8 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CartonOwnerShip, CartonOwnerShipDto>();
             CreateMap<CartonOwnerShipDto, CartonOwnerShip>();
 
-            CreateMap<PickListPendingListItem, PickListPendingListItemDto>();
-            CreateMap<PickListPendingListItemDto, PickListPendingListItem>();
+            CreateMap<PickListPendingListItem, PickListDetailItemDto>();
+            CreateMap<PickListDetailItemDto, PickListPendingListItem>();
 
             CreateMap<MobileDevice, MobileDeviceDto>().ReverseMap();
             CreateMap<WorkerDto, User>().ReverseMap();

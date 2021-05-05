@@ -37,7 +37,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("{pickListNo}")]
-        public async Task<ActionResult<PickListDto>> GetSingleSearch(string pickListNo)
+        public async Task<ActionResult<PickListHeaderDto>> GetSingleSearch(string pickListNo)
         {
             var request = await _pickListRepository.GetPickList(pickListNo);
             if (request != null)
@@ -46,7 +46,7 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpGet("pendingPickList")]
-        public async Task<ActionResult<PickListPendingListItemDto>> GetPendingPickList(string searchText, int pageIndex, int pageSize)
+        public async Task<ActionResult<PickListDetailItemDto>> GetPendingPickList(string searchText, int pageIndex, int pageSize)
         {
             var request = await _pickListRepository.GetPendingPickList(searchText, pageIndex, pageSize);
             if (request != null)
@@ -55,7 +55,7 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpPost]
-        public ActionResult AddPickList(List<PickListDto> pickList)
+        public ActionResult AddPickList(PickListHeaderDto pickList)
         {
             return Ok(_pickListRepository.AddPickList(pickList));            
           
