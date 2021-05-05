@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tlrsCartonManager.DAL.Dtos.Menu;
 
 namespace tlrsCartonManager.DAL.Dtos
 {
@@ -11,6 +12,6 @@ namespace tlrsCartonManager.DAL.Dtos
 
         public string Token { get; set; }
 
-        public IEnumerable<MenuRightAttachedUserDto> UserRights { get; set; }
+        public IEnumerable<MenuModelsDto> UserRights { get; set; }
     }
 }

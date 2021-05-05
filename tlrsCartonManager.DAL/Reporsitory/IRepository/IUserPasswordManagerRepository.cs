@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Dtos.Menu;
 
 namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
@@ -15,7 +16,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         int GetSystemUserID(string userName);
         Task<bool> UserNameAlreadyExist(string userName);
         Task<bool> UpdateSystemUserPasswordAsync(UserDto userdto);
-        Task<IEnumerable<MenuRightAttachedUserDto>> GetUserMenuRights(string  userName);
+        Task<IEnumerable<MenuModelsDto>> GetUserMenuRights(string  userName);
 
 
         

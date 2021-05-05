@@ -7,6 +7,7 @@ using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Docket;
+using tlrsCartonManager.DAL.Models.Ownership;
 
 namespace tlrsCartonManager.DAL.Dtos.Carton
 {

@@ -60,6 +60,24 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
             return parms;
 
         }
+        public List<SqlParameter> SearchFromToSearchBy(string storedProcedure, string fromValue, string toValue,
+           string searchBy, int pageIndex, int pageSize, out SqlParameter outParam)
+        {
+            SearchStoredProcedureFromToSearchBy.StoredProcedureName = storedProcedure;
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchBy.StoredProcedureParameters[0].ToString(), Value = fromValue.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchBy.StoredProcedureParameters[1].ToString(), Value = toValue.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchBy.StoredProcedureParameters[2].ToString(), Value = searchBy.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchBy.StoredProcedureParameters[3].ToString(), Value = pageIndex },
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchBy.StoredProcedureParameters[4].ToString(), Value = pageSize },
+
+            };
+            outParam = new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchBy.StoredProcedureParameters[5].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            parms.Add(outParam);
+            return parms;
+
+        }
 
     }
 }

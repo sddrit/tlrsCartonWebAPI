@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace tlrsCartonManager.DAL.Models.Carton
+namespace tlrsCartonManager.DAL.Models.Ownership
 {
     [Table("CartonOwnerShip")]
     public partial class CartonOwnerShip

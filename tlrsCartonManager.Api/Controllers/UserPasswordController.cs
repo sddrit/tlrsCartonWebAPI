@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using tlrsCartonManager.Api.Error;
+using tlrsCartonManager.DAL.Dtos.Menu;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -86,7 +87,7 @@ namespace tlrsCartonManager.Api.Controllers
 
             await _userPasswordRepository.UserLoginTracker(systemuserid);
 
-            IEnumerable<MenuRightAttachedUserDto> lnMenu = new List<MenuRightAttachedUserDto>();
+            IEnumerable<MenuModelsDto> lnMenu = new List<MenuModelsDto>();
             lnMenu = _userPasswordRepository.GetUserMenuRights(userPAssword.UserID).Result;
             return new UserToken
             {
@@ -99,7 +100,7 @@ namespace tlrsCartonManager.Api.Controllers
 
 
         [HttpGet("{userName}/userRights")]
-        public Task<IEnumerable<MenuRightAttachedUserDto>> GetUserRoleMenuList(string userName)
+        public Task<IEnumerable<MenuModelsDto>> GetUserRoleMenuList(string userName)
         {
             return _userPasswordRepository.GetUserMenuRights(userName);
         }
