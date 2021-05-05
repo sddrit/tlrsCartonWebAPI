@@ -101,9 +101,26 @@ namespace tlrsCartonManager.DAL.Reporsitory
            return  SavePickList(pickListInsert,string.Empty, TransactionTypes.Insert.ToString(), 0, string.Empty);
         }
 
-        public Task<PagedResponse<PickListPendingListItemDto>> GetPendingPickList(string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<PickListPendingListItemDto>> GetPendingPickList(string searchText, int pageIndex, int pageSize)
         {
-            throw new NotImplementedException();
+            List<SqlParameter> parms = _searchManager.Search("pickListPendingSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<PickListPendingListItem>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var totalRows = (int)outParam.Value;
+            #region paging
+            var postResponse = _mapper.Map<List<PickListPendingListItemDto>>(cartonList);
+
+            var paginationResponse = new PagedResponse<PickListPendingListItemDto>
+            {
+                Data = postResponse,
+                pageNumber = pageIndex,
+                pageSize = pageSize,
+                totalCount = totalRows,
+                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+
+            };
+            #endregion
+
+            return paginationResponse;
         }
     }
 }

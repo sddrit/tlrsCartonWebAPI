@@ -11,6 +11,7 @@ using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Invoice;
+using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
 
@@ -154,6 +155,11 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<PickListPendingListItem, PickListPendingListItemDto>();
             CreateMap<PickListPendingListItemDto, PickListPendingListItem>();
+
+            CreateMap<MobileDevice, MobileDeviceDto>().ReverseMap();
+            CreateMap<WorkerDto, User>().ReverseMap();
+
+
 
             //ruv
         }

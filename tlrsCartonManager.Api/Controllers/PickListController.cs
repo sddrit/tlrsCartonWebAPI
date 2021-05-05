@@ -45,7 +45,15 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
         }
-
+        [HttpGet("pendingPickList")]
+        public async Task<ActionResult<PickListPendingListItemDto>> GetPendingPickList(string searchText, int pageIndex, int pageSize)
+        {
+            var request = await _pickListRepository.GetPendingPickList(searchText, pageIndex, pageSize);
+            if (request != null)
+                return Ok(request);
+            else
+                return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
+        }
         [HttpPost]
         public ActionResult AddPickList(List<PickListDto> pickList)
         {

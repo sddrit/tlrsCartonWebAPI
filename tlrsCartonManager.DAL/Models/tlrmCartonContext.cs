@@ -71,6 +71,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<PickList> PickLists { get; set; }
         public virtual DbSet<CartonOwnerShip> CartonOwnerShips { get; set; }
         public virtual DbSet<ReceiveType> ReceiveTypes { get; set; }
+        public virtual DbSet<MobileDevice> MobileDevices { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -659,19 +660,28 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.Description).IsUnicode(false);
             });
-          
 
+            modelBuilder.Entity<MobileDevice>(entity =>
+            {
+                entity.HasKey(e => e.DeviceCode)
+                    .HasName("PK_Mobile-Devices");
+
+                entity.Property(e => e.DeviceCode).IsUnicode(false);
+
+                entity.Property(e => e.DeviceName).IsUnicode(false);
+
+                entity.Property(e => e.LastSynchedUser).IsUnicode(false);
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
             modelBuilder.Entity<RequestSearch>();
             modelBuilder.Entity<InvoiceSearch>();
             modelBuilder.Entity<InvoiceConfirmationSearch>();
-            modelBuilder.Entity<InvoiceConfirmationDetail>();
-            modelBuilder.Entity<PickListSearch>();
+            modelBuilder.Entity<InvoiceConfirmationDetail>();            
             modelBuilder.Entity<CartonInquiry>();
 
-
+            modelBuilder.Entity<PickListSearch>().HasNoKey();
             modelBuilder.Entity<BoolReturn>().HasNoKey();
             modelBuilder.Entity<StringReturn>().HasNoKey();
             modelBuilder.Entity<TableReturn>().HasNoKey();
@@ -686,6 +696,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<CartonLocationSummary>().HasNoKey();
             modelBuilder.Entity<RequestedDetail>().HasNoKey();
             modelBuilder.Entity<CartonOwnershipSummary>().HasNoKey();
+            modelBuilder.Entity<PickListPendingListItem>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 
