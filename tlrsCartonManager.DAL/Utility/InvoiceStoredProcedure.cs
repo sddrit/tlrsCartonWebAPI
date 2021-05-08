@@ -13,9 +13,19 @@ namespace tlrsCartonManager.DAL.Utility
 		{
 			"@fromDate",
 			"@toDate",
-			"@customerId"
+			"@customerCode"
 
 		};		
+		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+	}
+	public class InvoiceStoredProcedureById
+	{
+		public static string StoredProcedureName = "invoicesearchbyid";
+		public static List<string> StoredProcedureParameters = new List<string>()
+		{
+			"@invoiceId"
+
+		};
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 	}
 	public class InvoiceConfirmationByRequestNoStoredProcedure
