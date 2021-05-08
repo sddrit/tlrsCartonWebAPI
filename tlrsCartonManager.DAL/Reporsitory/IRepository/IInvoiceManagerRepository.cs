@@ -15,7 +15,9 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         #region Invoicing
         Task<InvoiceHeaderDto> GetInvoiceList(string invoiceNo);
         Task<PagedResponse<InvoiceSearchDto>> SearchInvoice(string searchText, int pageIndex, int pageSize);
-        TableResponse<InvoiceReturn> CreateInvoice(int fromDate, int toDate, int customerId);
+        TableResponse<InvoiceReturn> CreateInvoice(int fromDate, int toDate, string customerCode);
+
+        List<InvoiceReturn> GetInvoiceById(string invoiceNo);
         #endregion
 
         #region Invoice Confirmation

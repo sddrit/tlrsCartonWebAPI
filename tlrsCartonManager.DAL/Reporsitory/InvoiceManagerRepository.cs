@@ -43,6 +43,19 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return carton;
 
         }
+        public List<InvoiceReturn> GetInvoiceById(string invoiceNo)
+        {
+            #region Sql Parameter loading
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = InvoiceStoredProcedureById.StoredProcedureParameters[0].ToString(), Value = invoiceNo.AsDbValue() }
+
+            };
+            #endregion
+
+           return  _tcContext.Set<InvoiceReturn>().FromSqlRaw(InvoiceStoredProcedureById.Sql, parms.ToArray()).ToList();        
+
+        }
         public async Task<PagedResponse<InvoiceSearchDto>> SearchInvoice(string searchText, int pageIndex, int pageSize)
         {
             List<SqlParameter> parms = _searchManager.Search("invoiceSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
@@ -64,7 +77,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return paginationResponse;
         }
-        public TableResponse<InvoiceReturn> CreateInvoice(int fromDate, int toDate, int customerId)
+        public TableResponse<InvoiceReturn> CreateInvoice(int fromDate, int toDate, string customerCode)
         {
 
             #region Sql Parameter loading
@@ -73,7 +86,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[0].ToString(), Value = fromDate.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[1].ToString(), Value = toDate.AsDbValue() },
-                new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[2].ToString(), Value = customerId.AsDbValue() },
+                new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[2].ToString(), Value = customerCode.AsDbValue() },
 
             };
             #endregion

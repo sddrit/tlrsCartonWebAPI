@@ -16,6 +16,8 @@ namespace tlrsCartonManager.DAL.Models
 
         public string CustomerName{ get; set; }
         public string InvoicePeriod { get; set; }
+
+        public decimal InvoiceValue { get; set; }
     }
 
 }

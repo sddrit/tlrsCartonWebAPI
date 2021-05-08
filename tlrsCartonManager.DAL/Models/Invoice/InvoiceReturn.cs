@@ -16,5 +16,8 @@ namespace tlrsCartonManager.DAL.Models
         public string InvoiceType { get; set; }
         public string ContactPersonInv { get; set; }
         public string PONo { get; set; }
+        public string CustomerCode { get; set; }
+        public string CustomerName { get; set; }
+        
     }
 }

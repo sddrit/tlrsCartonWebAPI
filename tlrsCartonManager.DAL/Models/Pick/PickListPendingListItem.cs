@@ -45,5 +45,8 @@ namespace tlrsCartonManager.DAL.Models.Pick
         [Column("rowVersion")]
         [MaxLength(8)]
         public byte[] RowVersion { get; set; }
+
+        [Column("trackingId")]
+        public long? TrackingId { get; set; }
     }
 }
