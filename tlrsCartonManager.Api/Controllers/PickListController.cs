@@ -46,30 +46,46 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpGet("pendingPickList")]
-        public async Task<ActionResult<PickListDetailItemDto>> GetPendingPickList(string searchText, int pageIndex, int pageSize)
+        public async Task<ActionResult<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue, string searchText, 
+            int pageIndex, int pageSize)
         {
-            var request = await _pickListRepository.GetPendingPickList(searchText, pageIndex, pageSize);
+            var request = await _pickListRepository.GetPendingPickList(fromValue, toValue, searchText, pageIndex, pageSize);
             if (request != null)
                 return Ok(request);
             else
                 return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpPost]
-        public ActionResult AddPickList(PickListHeaderDto pickList)
+        public ActionResult AddPickList(PickListResponseDto pickList)
         {
-            return Ok(_pickListRepository.AddPickList(pickList));            
-          
+           var request=_pickListRepository.AddPickList(pickList);            
+
+            if(request.Reason=="OK")
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
+
+
         }
         [HttpPut]
-        public ActionResult UpdatePickList(string pickListNo, int userId, string deviceId)
+        public ActionResult UpdatePickList(PickListResponseDto pickList)
         {
-            return Ok(_pickListRepository.UpdatePickList(pickListNo, userId, deviceId));
+            var request = _pickListRepository.UpdatePickList(pickList);
+            if (request.Reason == "OK")
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
+            
 
         }
         [HttpDelete]
-        public ActionResult DeletePickList(string pickListNo, int userId)
+        public ActionResult DeletePickList(PickListResponseDto pickList)
         {
-            return Ok(_pickListRepository.DeletePickList(pickListNo, userId));
+            var request = _pickListRepository.DeletePickList(pickList);
+            if (request.Reason == "OK")
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
 
         }
 

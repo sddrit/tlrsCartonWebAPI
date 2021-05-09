@@ -17,11 +17,25 @@ namespace tlrsCartonManager.DAL.Dtos.Pick
         public ICollection<PickListDetailItemDto> PickListDetail { get; set; }
 
     }
-
+    public class PickListResponseDto
+    {
+        public string PickListNo { get; set; }
+        public string LastSentDeviceId { get; set; }
+        public int? AssignedUserId { get; set; }
+        public ICollection<PickListResponseDetailDto> PickListDetail { get; set; }
+    }
+    public class PickListResponseDetailDto
+    {
+        public long TrackingId { get; set; }
+        public int CartonNo { get; set; }
+        public byte[] RowVersion { get; set; }  
+       
+    }
     public class PickListSearchDto
     {
         public string PickListNo { get; set; }
         public string LastSentDeviceId { get; set; }
+        public string AssignedUser { get; set; }
         public int NoOfCartons { get; set; }
     }
     public class PickListDetailItemDto
