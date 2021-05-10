@@ -27,6 +27,7 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IWorkOrderTypeManagerRepository _workOrderTypeRepository;
         private readonly IMobileDeviceManagerRepository _mobileDeviceRepository;
         private readonly IUserManagerRepository _workerRepository;
+        private readonly IPostingTypeManagerRepository _postingTypeRepository;
 
         public MetaDataController
             (
@@ -34,7 +35,8 @@ namespace tlrsCartonManager.Api.Controllers
             IServiceCategoryManagerRepository serviceRepository, IStorageTypeManagerRepository cartonTypeRepository,
             IRoleManagerRepository roleRepository, IReceiveTypeManagerRepository receiveTypeRepository,
             IDisposalTimeFrameManagerRepository disposalTimeFrame, IWorkOrderTypeManagerRepository workOrderTypeRepository,
-            IMobileDeviceManagerRepository mobileDeviceRepository, IUserManagerRepository workerRepository)
+            IMobileDeviceManagerRepository mobileDeviceRepository, IUserManagerRepository workerRepository,
+            IPostingTypeManagerRepository postingTypeRepository)
         {
             _billingCycleRepository = billingCycleRepository;
             _routeRepository = routeRepository;
@@ -46,6 +48,7 @@ namespace tlrsCartonManager.Api.Controllers
             _workOrderTypeRepository = workOrderTypeRepository;
             _mobileDeviceRepository = mobileDeviceRepository;
             _workerRepository = workerRepository;
+            _postingTypeRepository = postingTypeRepository;
         }
 
         [HttpGet]
@@ -61,6 +64,7 @@ namespace tlrsCartonManager.Api.Controllers
             var workOrderTypeList= await _workOrderTypeRepository.GetWoTypeList();
             var mobileDeviceList = await _mobileDeviceRepository.GetMobileDeviceList();
             var workerList = await _workerRepository.GetWorkersList();
+            var postingTypeList = await _postingTypeRepository.GetPostingTypeList();
             return Ok(
             new
             {
@@ -73,7 +77,8 @@ namespace tlrsCartonManager.Api.Controllers
                 disposalTimeFrameList,
                 workOrderTypeList,
                 mobileDeviceList,
-                workerList
+                workerList,
+                postingTypeList
             });
         }
 
