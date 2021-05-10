@@ -163,7 +163,7 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<MobileDevice, MobileDeviceDto>().ReverseMap();
             CreateMap<WorkerDto, User>().ReverseMap();
-
+            CreateMap<PostingTypeDto, PostingType>().ReverseMap();
 
 
             //ruv

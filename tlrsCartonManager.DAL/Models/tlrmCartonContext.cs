@@ -77,6 +77,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<MenuModelOptionsUserRole> MenuModelOptionsUserRoles { get; set; }
         public virtual DbSet<MenuModelUserRole> MenuModelUserRoles { get; set; }
         public virtual DbSet<MenuRightFormName> MenuRightFormNames { get; set; }
+        public virtual DbSet<PostingType> PostingTypes { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -726,6 +727,14 @@ namespace tlrsCartonManager.DAL.Models
             });
 
 
+            modelBuilder.Entity<PostingType>(entity =>
+            {
+                entity.Property(e => e.Code).IsUnicode(false);
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Description).IsUnicode(false);
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
