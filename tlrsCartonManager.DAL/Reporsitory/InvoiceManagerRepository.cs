@@ -18,6 +18,7 @@ using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models.Invoice;
+using tlrsCartonManager.DAL.Dtos.Invoice;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -164,6 +165,37 @@ namespace tlrsCartonManager.DAL.Reporsitory
             };
 
             return _tcContext.Set<BoolReturn>().FromSqlRaw(InvoiceDisaprroveStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+        }
+
+        public async Task<PagedResponse<InvoicePostingSearch>> SearchInvoicePosting(string searchText, int pageIndex, int pageSize)
+        {
+            List<SqlParameter> parms = _searchManager.Search("invoicePostingSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<InvoicePostingSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var totalRows = (int)outParam.Value;
+            #region paging
+            var postResponse = _mapper.Map<List<InvoicePostingSearch>>(cartonList);
+
+            var paginationResponse = new PagedResponse<InvoicePostingSearch>
+            {
+                Data = postResponse,
+                pageNumber = pageIndex,
+                pageSize = pageSize,
+                totalCount = totalRows,
+                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+
+            };
+            #endregion
+
+            return paginationResponse;
+        }
+
+        public async Task<bool> SaveInvoicePostingAsync(InvoicePostingDto invoicePosting)
+        {
+            var invoiceP = _mapper.Map<InvoicePosting>(invoicePosting);
+            _tcContext.InvoicePostings.Add(invoiceP);
+           return  await _tcContext.SaveChangesAsync()>0 ?true:false;
+
+          
         }
     }
     #endregion

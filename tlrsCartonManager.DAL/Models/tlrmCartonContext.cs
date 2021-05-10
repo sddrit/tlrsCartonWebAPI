@@ -78,6 +78,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<MenuModelUserRole> MenuModelUserRoles { get; set; }
         public virtual DbSet<MenuRightFormName> MenuRightFormNames { get; set; }
         public virtual DbSet<PostingType> PostingTypes { get; set; }
+        public virtual DbSet<InvoicePosting> InvoicePostings { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -735,6 +736,16 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.Description).IsUnicode(false);
             });
+
+            modelBuilder.Entity<InvoicePosting>(entity =>
+            {
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.PostingTypeCode).IsUnicode(false);
+
+                entity.Property(e => e.ReferenceNo).IsUnicode(false);
+            });
+
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -760,6 +771,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<RequestedDetail>().HasNoKey();
             modelBuilder.Entity<CartonOwnershipSummary>().HasNoKey();
             modelBuilder.Entity<PickListPendingListItem>().HasNoKey();
+            modelBuilder.Entity<InvoicePostingSearch>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 

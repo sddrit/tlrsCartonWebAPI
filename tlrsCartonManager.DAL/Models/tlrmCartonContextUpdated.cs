@@ -17,11 +17,7 @@ namespace tlrsCartonManager.DAL.Models
         {
         }
 
-        public virtual DbSet<MenuModel> MenuModels { get; set; }
-        public virtual DbSet<MenuModelOption> MenuModelOptions { get; set; }
-        public virtual DbSet<MenuModelOptionsUserRole> MenuModelOptionsUserRoles { get; set; }
-        public virtual DbSet<MenuModelUserRole> MenuModelUserRoles { get; set; }
-        public virtual DbSet<MenuRightFormName> MenuRightFormNames { get; set; }
+        public virtual DbSet<InvoicePosting> InvoicePostings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,51 +31,13 @@ namespace tlrsCartonManager.DAL.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<MenuModel>(entity =>
+            modelBuilder.Entity<InvoicePosting>(entity =>
             {
-                entity.Property(e => e.ModelCode).ValueGeneratedNever();
-            });
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
-            modelBuilder.Entity<MenuModelOption>(entity =>
-            {
-                entity.HasKey(e => new { e.ModelId, e.FormRightId });
+                entity.Property(e => e.PostingTypeCode).IsUnicode(false);
 
-                entity.HasOne(d => d.FormRight)
-                    .WithMany(p => p.MenuModelOptions)
-                    .HasForeignKey(d => d.FormRightId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MenuModelOptions_MenuRightFormNames");
-
-                entity.HasOne(d => d.Model)
-                    .WithMany(p => p.MenuModelOptions)
-                    .HasForeignKey(d => d.ModelId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MenuModelOptions_MenuModelOptions");
-            });
-
-            modelBuilder.Entity<MenuModelOptionsUserRole>(entity =>
-            {
-                entity.Property(e => e.TrackingId).ValueGeneratedNever();
-
-                entity.HasOne(d => d.FormRight)
-                    .WithMany(p => p.MenuModelOptionsUserRoles)
-                    .HasForeignKey(d => d.FormRightId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MenuModelOptionsUserRole_MenuRightFormNames");
-            });
-
-            modelBuilder.Entity<MenuModelUserRole>(entity =>
-            {
-                entity.HasOne(d => d.Model)
-                    .WithMany(p => p.MenuModelUserRoles)
-                    .HasForeignKey(d => d.ModelId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MenuModelUserRole_MenuModels");
-            });
-
-            modelBuilder.Entity<MenuRightFormName>(entity =>
-            {
-                entity.Property(e => e.FormRightId).ValueGeneratedNever();
+                entity.Property(e => e.ReferenceNo).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);
