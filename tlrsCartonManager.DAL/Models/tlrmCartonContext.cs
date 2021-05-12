@@ -79,6 +79,9 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<MenuRightFormName> MenuRightFormNames { get; set; }
         public virtual DbSet<PostingType> PostingTypes { get; set; }
         public virtual DbSet<InvoicePosting> InvoicePostings { get; set; }
+
+       
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -772,6 +775,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<CartonOwnershipSummary>().HasNoKey();
             modelBuilder.Entity<PickListPendingListItem>().HasNoKey();
             modelBuilder.Entity<InvoicePostingSearch>().HasNoKey();
+            modelBuilder.Entity<OriginalDocketSearch>().HasNoKey();
+
             OnModelCreatingPartial(modelBuilder);
         }
 

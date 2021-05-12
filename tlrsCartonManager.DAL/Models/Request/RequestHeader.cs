@@ -96,4 +96,30 @@ namespace tlrsCartonManager.DAL.Models
         [InverseProperty(nameof(RequestDetail.Request))]
         public virtual ICollection<RequestDetail> RequestDetails { get; set; }
     }
+    public class RequestOriginalDocket
+    {
+        [Key]
+        [Required]
+        [Column("requestNo")]
+        [StringLength(20)]
+        public string RequestNo { get; set; }
+        [Column("docketNo")]
+        [StringLength(20)]
+        public string DocketNo { get; set; }
+        [Column("luUser")]
+        public int? LuUser { get; set; }
+        [Column("luDate", TypeName = "datetime")]
+        public DateTime? LuDate { get; set; }
+
+    }
+    public class OriginalDocketSearch
+    {
+        public string RequestNo { get; set; }
+        public string CustomerCode { get; set; }
+        public string CustomerName { get; set; }
+        public string WoType { get; set; }
+        public int NoOfCartons { get; set; }
+        public int DeliveryDate { get; set; }
+        public string DocketNo { get; set; }
+    }
 }
