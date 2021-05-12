@@ -134,5 +134,43 @@ namespace tlrsCartonManager.DAL.Reporsitory
             };
             return tableResponse;
         }
+
+        public  bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+
+                new SqlParameter { ParameterName = AddDocketStoredProcedure.StoredProcedureParameters[0].ToString(),
+                    Value =  originalDocket.RequestNo.AsDbValue()},
+                new SqlParameter { ParameterName = AddDocketStoredProcedure.StoredProcedureParameters[1].ToString(),
+                    Value =  originalDocket.DocketNo.AsDbValue()},
+                new SqlParameter { ParameterName = AddDocketStoredProcedure.StoredProcedureParameters[2].ToString(),
+                    Value =  originalDocket.LuUser.AsDbValue()}
+            };
+            return _tcContext.Set<BoolReturn>().FromSqlRaw(AddDocketStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+        }
+
+        public async Task<PagedResponse<OriginalDocketSearchDto>> SearchOriginalDockets(string searchText, int pageIndex, int pageSize)
+        {
+            List<SqlParameter> parms = _searchManager.Search("originalDocketSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<OriginalDocketSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var totalRows = (int)outParam.Value;
+            #region paging
+            var postResponse = _mapper.Map<List<OriginalDocketSearchDto>>(cartonList);
+
+            var paginationResponse = new PagedResponse<OriginalDocketSearchDto>
+            {
+                Data = postResponse,
+                pageNumber = pageIndex,
+                pageSize = pageSize,
+                totalCount = totalRows,
+                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+
+            };
+            #endregion
+
+            return paginationResponse;
+        }
+
     }
 }

@@ -167,6 +167,10 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<PostingTypeDto, PostingType>().ReverseMap();
 
             CreateMap<InvoicePosting, InvoicePostingDto>().ReverseMap();
+
+            CreateMap<RequestOriginalDocket, RequestHeader>().ReverseMap();
+            CreateMap<OriginalDocketSearchDto, OriginalDocketSearch>().ReverseMap();
+
             //ruv
         }
 
