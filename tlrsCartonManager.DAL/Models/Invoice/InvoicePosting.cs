@@ -27,8 +27,14 @@ namespace tlrsCartonManager.DAL.Models
         public string ReferenceNo { get; set; }
         [Column("qty")]
         public int Qty { get; set; }
-        [Column("transactionDate")]
-        public int TransactionDate { get; set; }
+        [Column("amount")]
+        public decimal Amount { get; set; }
+        [Column("percentage")]
+        public decimal Percentage { get; set; }
+        [Column("transactionDateFrom")]
+        public int TransactionDateFrom { get; set; }
+        [Column("transactionDateTo")]
+        public int TransactionDateTo { get; set; }
         [Column("createdUserId")]
         public int CreatedUserId { get; set; }
         [Column("createdDate", TypeName = "datetime")]
@@ -40,14 +46,17 @@ namespace tlrsCartonManager.DAL.Models
     }
     public class InvoicePostingSearch
     {
-        public long TrackingId { get; set; }
+      
         public string CustomerCode { get; set; }
-        public string Name { get; set; }
-        public string PostingTypeCode { get; set; }
+        public string Name { get; set; }      
         public string Description { get; set; }
         public string ReferenceNo { get; set; }
+
         public int Qty { get; set; }
-        public int TransactionDate { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Percentage { get; set; }
+        public int TransactionDateFrom { get; set; }
+        public int TransactionDateTo { get; set; }
 
     }
 }
