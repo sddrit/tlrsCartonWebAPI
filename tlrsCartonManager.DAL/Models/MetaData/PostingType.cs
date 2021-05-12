@@ -24,5 +24,11 @@ namespace tlrsCartonManager.DAL.Models
         public bool? Active { get; set; }
         [Column("deleted")]
         public bool Deleted { get; set; }
+        [Column("isShowQty")]
+        public bool IsShowQty { get; set; }
+        [Column("isShowAmount")]
+        public bool IsShowAmount { get; set; }
+        [Column("isShowPercentage")]
+        public bool IsShowPercentage { get; set; }
     }
 }

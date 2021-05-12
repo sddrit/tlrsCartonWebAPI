@@ -14,6 +14,9 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Description { get; set; }       
         public bool? Active { get; set; }     
         public bool Deleted { get; set; }
+        public bool IsShowQty { get; set; }
+        public bool IsShowAmount { get; set; }
+        public bool IsShowPercentage { get; set; }
     }
 
 }

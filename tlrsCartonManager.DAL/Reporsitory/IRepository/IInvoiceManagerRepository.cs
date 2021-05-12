@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Dtos.Invoice;
 using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Invoice;
@@ -25,6 +26,13 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<List<InvoiceConfirmationDetail>> GetInvoiceConfirmationDetailByRequestNo(string requestNo);
         bool SaveInvoiceConfirmation(List<InvoiceConfirmationDto> invoiceConfirmation);
         bool DeleteInvoiceConfirmation(string requestNo, string reason, int userId);
+        #endregion
+
+        #region Invoice Posting
+        Task<PagedResponse<InvoicePostingSearch>> SearchInvoicePosting(string searchText, 
+            int pageIndex, int pageSize);
+        Task<bool> SaveInvoicePostingAsync(InvoicePostingDto invoicePosting);
+
         #endregion
 
     }

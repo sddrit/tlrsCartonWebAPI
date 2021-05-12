@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Dtos.Carton;
+using tlrsCartonManager.DAL.Dtos.Invoice;
 using tlrsCartonManager.DAL.Dtos.MetaData;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Dtos.Pick;
@@ -165,7 +166,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<WorkerDto, User>().ReverseMap();
             CreateMap<PostingTypeDto, PostingType>().ReverseMap();
 
-
+            CreateMap<InvoicePosting, InvoicePostingDto>().ReverseMap();
             //ruv
         }
 
