@@ -79,8 +79,9 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<MenuRightFormName> MenuRightFormNames { get; set; }
         public virtual DbSet<PostingType> PostingTypes { get; set; }
         public virtual DbSet<InvoicePosting> InvoicePostings { get; set; }
-
-       
+        public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<TaxEffectiveDate> TaxEffectiveDates { get; set; }
+        public virtual DbSet<TaxType> TaxTypes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -748,7 +749,50 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.ReferenceNo).IsUnicode(false);
             });
+            modelBuilder.Entity<Company>(entity =>
+            {
+                entity.Property(e => e.Address1).IsUnicode(false);
 
+                entity.Property(e => e.Address2).IsUnicode(false);
+
+                entity.Property(e => e.Address3).IsUnicode(false);
+
+                entity.Property(e => e.CompanyName).IsUnicode(false);
+
+                entity.Property(e => e.Country).IsUnicode(false);
+
+                entity.Property(e => e.Email).IsUnicode(false);
+
+                entity.Property(e => e.Fax).IsUnicode(false);
+
+                entity.Property(e => e.NbtNo)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.SvatNo)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.Tel).IsUnicode(false);
+
+                entity.Property(e => e.VatNo)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
+            });
+
+            modelBuilder.Entity<TaxEffectiveDate>(entity =>
+            {
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.CreatedUserId).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.TaxCode).IsUnicode(false);
+            });
+            modelBuilder.Entity<TaxType>(entity =>
+            {
+              
+                entity.Property(e => e.Code).IsUnicode(false);
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();

@@ -28,6 +28,7 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IMobileDeviceManagerRepository _mobileDeviceRepository;
         private readonly IUserManagerRepository _workerRepository;
         private readonly IPostingTypeManagerRepository _postingTypeRepository;
+        private readonly ITaxTypeManagerRepository _taxTypeManagerRepository;
 
         public MetaDataController
             (
@@ -36,7 +37,7 @@ namespace tlrsCartonManager.Api.Controllers
             IRoleManagerRepository roleRepository, IReceiveTypeManagerRepository receiveTypeRepository,
             IDisposalTimeFrameManagerRepository disposalTimeFrame, IWorkOrderTypeManagerRepository workOrderTypeRepository,
             IMobileDeviceManagerRepository mobileDeviceRepository, IUserManagerRepository workerRepository,
-            IPostingTypeManagerRepository postingTypeRepository)
+            IPostingTypeManagerRepository postingTypeRepository, ITaxTypeManagerRepository taxTypeManagerRepository)
         {
             _billingCycleRepository = billingCycleRepository;
             _routeRepository = routeRepository;
@@ -49,6 +50,7 @@ namespace tlrsCartonManager.Api.Controllers
             _mobileDeviceRepository = mobileDeviceRepository;
             _workerRepository = workerRepository;
             _postingTypeRepository = postingTypeRepository;
+            _taxTypeManagerRepository = taxTypeManagerRepository;
         }
 
         [HttpGet]
@@ -65,6 +67,7 @@ namespace tlrsCartonManager.Api.Controllers
             var mobileDeviceList = await _mobileDeviceRepository.GetMobileDeviceList();
             var workerList = await _workerRepository.GetWorkersList();
             var postingTypeList = await _postingTypeRepository.GetPostingTypeList();
+            var taxTypeList = await _taxTypeManagerRepository.GetTaxTypeList();
             return Ok(
             new
             {
@@ -78,7 +81,8 @@ namespace tlrsCartonManager.Api.Controllers
                 workOrderTypeList,
                 mobileDeviceList,
                 workerList,
-                postingTypeList
+                postingTypeList,
+                taxTypeList
             });
         }
 

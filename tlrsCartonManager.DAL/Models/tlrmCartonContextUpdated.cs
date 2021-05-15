@@ -17,7 +17,7 @@ namespace tlrsCartonManager.DAL.Models
         {
         }
 
-        public virtual DbSet<InvoicePosting> InvoicePostings { get; set; }
+        public virtual DbSet<TaxEffectiveDate> TaxEffectiveDates { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,13 +31,13 @@ namespace tlrsCartonManager.DAL.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<InvoicePosting>(entity =>
+            modelBuilder.Entity<TaxEffectiveDate>(entity =>
             {
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.PostingTypeCode).IsUnicode(false);
+                entity.Property(e => e.CreatedUserId).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.ReferenceNo).IsUnicode(false);
+                entity.Property(e => e.TaxCode).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);
