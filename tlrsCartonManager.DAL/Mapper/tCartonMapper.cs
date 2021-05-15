@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Dtos.Carton;
+using tlrsCartonManager.DAL.Dtos.Company;
 using tlrsCartonManager.DAL.Dtos.Invoice;
 using tlrsCartonManager.DAL.Dtos.MetaData;
 using tlrsCartonManager.DAL.Dtos.Ownership;
@@ -170,7 +171,9 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<RequestOriginalDocket, RequestHeader>().ReverseMap();
             CreateMap<OriginalDocketSearchDto, OriginalDocketSearch>().ReverseMap();
-
+            CreateMap<Company, CompanyDto>().ReverseMap();
+            CreateMap<TaxEffectiveDate, TaxEffectiveDateDto>().ReverseMap();
+            CreateMap<TaxType, TaxTypeDto>().ReverseMap();
             //ruv
         }
 
