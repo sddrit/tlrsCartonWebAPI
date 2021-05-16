@@ -25,17 +25,17 @@ namespace tlrsCartonManager.DAL.Reporsitory
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
-      
+
 
         public ReportManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
         {
             _tcContext = tccontext;
             _mapper = mapper;
-         
+
         }
 
         private List<SqlParameter> SendResponse(int customerId, string woType,
-            DateTime asAtDate,string reportType, bool includeSubAccount, int pageIndex, int pageSize, out SqlParameter outParam)
+            DateTime asAtDate, string reportType, bool includeSubAccount, int pageIndex, int pageSize, out SqlParameter outParam)
         {
 
             List<SqlParameter> parms = new List<SqlParameter>
@@ -56,7 +56,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    Value = pageSize },
 
             };
-             outParam = new SqlParameter
+            outParam = new SqlParameter
             {
                 ParameterName = InventoryByCustomerStoredProcedure.StoredProcedureParameters[7].ToString(),
                 SqlDbType = SqlDbType.Int,
@@ -66,13 +66,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return parms;
 
         }
-        public async Task<InventoryByCustomerReponse> GetInventoryByCustomer(int customerId, string woType, 
+        public async Task<InventoryByCustomerReponse> GetInventoryByCustomer(int customerId, string woType,
             DateTime asAtDate, bool includeSubAccount, int pageIndex, int pageSize)
         {
-            var parms = SendResponse(customerId, woType, asAtDate,InventoryReportTypes.Detail.ToString(),
-                includeSubAccount, pageIndex, pageSize,out SqlParameter outParam);
-              var inventoryList = await _tcContext.Set<InventoryByCustomer>().
-                FromSqlRaw(InventoryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var parms = SendResponse(customerId, woType, asAtDate, InventoryReportTypes.Detail.ToString(),
+                includeSubAccount, pageIndex, pageSize, out SqlParameter outParam);
+            var inventoryList = await _tcContext.Set<InventoryByCustomer>().
+              FromSqlRaw(InventoryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
             var postResponse = _mapper.Map<List<InventoryByCustomer>>(inventoryList);
@@ -88,10 +88,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
             };
             #endregion
 
-             parms = SendResponse(customerId, woType, asAtDate, InventoryReportTypes.SummaryInventory.ToString(),
-                includeSubAccount, pageIndex, pageSize, out  outParam);
-             var inventorySummaryList = await _tcContext.Set<InventoryByCustomerSummary>().
-              FromSqlRaw(InventoryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            parms = SendResponse(customerId, woType, asAtDate, InventoryReportTypes.SummaryInventory.ToString(),
+               includeSubAccount, pageIndex, pageSize, out outParam);
+            var inventorySummaryList = await _tcContext.Set<InventoryByCustomerSummary>().
+             FromSqlRaw(InventoryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
             parms = SendResponse(customerId, woType, asAtDate, InventoryReportTypes.SummaryRetreival.ToString(),
               includeSubAccount, pageIndex, pageSize, out outParam);
@@ -101,15 +101,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var inventoryByCustomer = new InventoryByCustomerReponse()
             {
                 InventoryList = paginationResponse,
-                InventorySummary=inventorySummaryList,
-                RetreivalSummary= retreivalSummaryList
+                InventorySummary = inventorySummaryList,
+                RetreivalSummary = retreivalSummaryList
 
-            };     
+            };
 
             return inventoryByCustomer;
         }
 
-     
+
     }
 }
 
