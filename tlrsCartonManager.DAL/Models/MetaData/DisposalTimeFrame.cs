@@ -26,8 +26,8 @@ namespace tlrsCartonManager.DAL.Models
         public bool? Active { get; set; }
         [Column("deleeted")]
         public bool? Deleeted { get; set; }
-        [Column("createdUser")]
-        public int? CreatedUser { get; set; }
+        [Column("createdUserId")]
+        public int? CreatedUserId { get; set; }
         [Column("createdDate", TypeName = "datetime")]
         public DateTime? CreatedDate { get; set; }
 
