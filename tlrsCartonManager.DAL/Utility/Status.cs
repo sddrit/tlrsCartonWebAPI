@@ -30,5 +30,12 @@ namespace tlrsCartonManager.DAL.Utility
             PSummary,
             RDetail
         }
+        public enum InventoryReportTypes
+        {
+           Detail,
+           SummaryInventory,
+           SummaryRetreival
+
+        }
     }
 }

@@ -9,6 +9,7 @@ using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
+using tlrsCartonManager.DAL.Models.Report;
 
 #nullable disable
 
@@ -820,7 +821,9 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<PickListPendingListItem>().HasNoKey();
             modelBuilder.Entity<InvoicePostingSearch>().HasNoKey();
             modelBuilder.Entity<OriginalDocketSearch>().HasNoKey();
-
+            modelBuilder.Entity<InventoryByCustomer>().HasNoKey();
+            modelBuilder.Entity<InventoryByCustomerSummary>().HasNoKey();
+            modelBuilder.Entity<InventoryByRetreivalSummary>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 

@@ -36,12 +36,12 @@ namespace tlrsCartonManager.DAL.Models
         public string Email { get; set; }
         [Column("active")]
         public bool? Active { get; set; }
-        [Column("createdUser")]
-        public int CreatedUser { get; set; }
+        [Column("createdUserId")]
+        public int CreatedUserId { get; set; }
         [Column("createdDate", TypeName = "datetime")]
         public DateTime CreatedDate { get; set; }
-        [Column("luUser")]
-        public int? LuUser { get; set; }
+        [Column("luUserId")]
+        public int? LuUserId { get; set; }
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
         [Column("deleted")]
