@@ -36,7 +36,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var company = _mapper.Map<CompanyDto>(_tcContext.Companies.FirstOrDefault());
             var taxEffectiveDates = _mapper.Map<List<TaxEffectiveDateDto>>(_tcContext.TaxEffectiveDates.
                 Where(x => x.Deleted == false).ToList());
-            company.TaxEffectiveDate = taxEffectiveDates;
+            if(company!=null)
+            company.TaxEffectiveDate = taxEffectiveDates==null? new List<TaxEffectiveDateDto>(): taxEffectiveDates;
             return company;
         }
 

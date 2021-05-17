@@ -17,29 +17,30 @@ namespace tlrsCartonManager.DAL.Models
         }
 
         [Key]
-        [Column("trackingId")]
-        public long TrackingId { get; set; }
-        [Required]
         [Column("requestNo")]
         [StringLength(20)]
         public string RequestNo { get; set; }
+
+        [Column("trackingId")]
+        public long TrackingId { get; set; }
+        
         [Column("customerId")]
         public int? CustomerId { get; set; }
         [Column("priority")]
         public int? Priority { get; set; }
         [Column("deliveryDate")]
         public int? DeliveryDate { get; set; }
-        [Column("ordeReceivedBy")]
-        public int? OrdeReceivedBy { get; set; }
+        [Column("orderReceivedBy")]
+        public int? OrderReceivedBy { get; set; }
         [Column("remark")]
         [StringLength(200)]
         public string Remarks { get; set; }
         [Column("customerReference")]
         [StringLength(50)]
         public string CustomerReference { get; set; }
-        [Column("contactPerson")]
+        [Column("authorizedOfficer")]
         [StringLength(50)]
-        public string AuthorizedOfficer { get; set; }
+        public int AuthorizedOfficerId { get; set; }
         [Column("noOfCartons")]
         public int? CartonCount { get; set; }
         
@@ -86,9 +87,9 @@ namespace tlrsCartonManager.DAL.Models
         public int? DeliveryRouteId { get; set; }
         [Column("deleted")]
         public bool? Deleted { get; set; }
-        [Column("serviceType")]
+        [Column("serviceTypeId")]
         [StringLength(20)]
-        public string ServiceType { get; set; }
+        public int ServiceTypeId { get; set; }
         [Column("docketNo")]
         [StringLength(20)]
         public string DocketNo { get; set; }

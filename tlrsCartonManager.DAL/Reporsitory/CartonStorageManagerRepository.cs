@@ -36,7 +36,6 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public async Task<CartonStorageDto> GetCartonById(int cartonId)
         {
-            //to be ask from sajith whether to do in one join
             var carton = _mapper.Map<CartonStorageDto>(await _tcContext.CartonStorages.
                           Include(x => x.CartonLocations).
                           Where(x => x.CartonNo == cartonId)
@@ -54,18 +53,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = CartonRequestStoredProcedure.StoredProcedureParameters[0].ToString(), Value = cartonId.AsDbValue() },
 
             };
-               carton.CartonRequests= _tcContext.Set<CartonRequest>().FromSqlRaw(CartonRequestStoredProcedure.Sql, parms.ToArray()).ToList();
+                carton.CartonRequests = _tcContext.Set<CartonRequest>().FromSqlRaw(CartonRequestStoredProcedure.Sql, parms.ToArray()).ToList();
 
             }
-            //to be ask from sajith
-
-            //var carton =  await(from cs in _tcContext.CartonStorages
-            //               join c in _tcContext.Customers
-            //             on cs.CustomerId equals c.TrackingId
-            //               select new { cs, c.Name }).ToListAsync();
-
-
-
             return _mapper.Map<CartonStorageDto>(carton);
 
         }
@@ -92,20 +82,23 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public bool UpdateCarton(CartonStorageDto carton)
         {
-            //var c = _mapper.Map<CartonStorage>(carton);
-            //_tcContext.CartonStorages.Update(c);
-            //await _tcContext.SaveChangesAsync();
-
-
+        
             List<SqlParameter> parms = new List<SqlParameter>
             {
-                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[0].ToString(), Value = carton.CartonNo.AsDbValue() },
-                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[1].ToString(), Value = carton.AlternativeCartonNo.AsDbValue()},
-                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[2].ToString(), Value = carton.CustomerCode.AsDbValue()},
-                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[3].ToString(), Value = carton.DisposalDate.AsDbValue()},
-                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[4].ToString(), Value = carton.DisposalTimeFrame.AsDbValue()},
-                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[5].ToString(), Value = carton.CartonType.AsDbValue()},
-                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[6].ToString(), Value = carton.CreatedUserId.AsDbValue()},
+                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[0].ToString(), 
+                    Value = carton.CartonNo.AsDbValue() },
+                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[1].ToString(), 
+                    Value = carton.AlternativeCartonNo.AsDbValue()},
+                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[2].ToString(), 
+                    Value = carton.CustomerCode.AsDbValue()},
+                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[3].ToString(), 
+                    Value = carton.DisposalDate.AsDbValue()},
+                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[4].ToString(), 
+                    Value = carton.DisposalTimeFrame.AsDbValue()},
+                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[5].ToString(), 
+                    Value = carton.CartonType.AsDbValue()},
+                new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[6].ToString(), 
+                    Value = carton.CreatedUserId.AsDbValue()},
 
             };
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CartonStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;

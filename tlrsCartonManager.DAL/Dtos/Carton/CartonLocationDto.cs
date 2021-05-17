@@ -14,11 +14,11 @@ namespace tlrsCartonManager.DAL.Dtos
         public int? CartonNo { get; set; }
         public string BarCode { get; set; }
         public string LocationCode { get; set; }
-        public string ContainerType { get; set; }
+        public string StorageType { get; set; }
         public bool? IsFromMobile { get; set; }
         public long? ScannedDate { get; set; }
-        public int? ClientId { get; set; }
-        public string ScanDateTime { get; set; }
+        public int? CustomerId { get; set; }
+        public DateTime ScanDateTime { get; set; }
         public string Remark { get; set; }
 
     }

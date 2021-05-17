@@ -22,18 +22,18 @@ namespace tlrsCartonManager.DAL.Models
         [Column("locationCode")]
         [StringLength(20)]
         public string LocationCode { get; set; }
-        [Column("containerType")]
+        [Column("storageType")]
         [StringLength(50)]
-        public string ContainerType { get; set; }
+        public string StorageType { get; set; }
         [Column("isFromMobile")]
         public bool? IsFromMobile { get; set; }
         [Column("scannedDate")]
         public long? ScannedDate { get; set; }
-        [Column("clientId")]
-        public int? ClientId { get; set; }
+        [Column("customerId")]
+        public int? CustomerId { get; set; }
         [Column("scanDateTime")]
         [StringLength(50)]
-        public string ScanDateTime { get; set; }
+        public DateTime ScanDateTime { get; set; }
         [Column("remark")]
         [StringLength(500)]
         public string Remark { get; set; }

@@ -43,7 +43,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                                 Where(x => x.MainCustomerCode == customerId && x.AccountType != "M" && x.Deleted == false).ToListAsync());
 
             var customerList = _mapper.Map<CustomerDto>(await _tcContext.Customers.
-                                Include(x => x.CustomerAuthorizationListHeaders).
+                                Include(x => x.CustomerAuthorizationListHeaders.Where(x=>x.Deleted==false)).
                                 ThenInclude (x => x.CustomerAuthorizationListDetails.Where(x => x.Deleted == false)).
                                 FirstOrDefaultAsync(x => x.TrackingId == customerId && x.Deleted==false));
             if(customerList!=null)
