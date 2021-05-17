@@ -10,9 +10,7 @@ namespace tlrsCartonManager.DAL.Dtos
     public class RequestDetailDto
     {
         [Key]
-        public long TrackingId { get; set; }
-  
-        public long RequestId { get; set; }
+        public long TrackingId { get; set; }       
       
         public string RequestNo { get; set; }
       

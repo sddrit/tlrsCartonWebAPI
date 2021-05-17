@@ -13,7 +13,7 @@ namespace tlrsCartonManager.DAL.Utility
         public static List<string> StoredProcedureParameters = new List<string>()
         {
 			"@requestNumber",
-			"@customerId",			
+			"@customerCode",			
 			"@deliveryDate",
 			"@ordeReceivedBy",
 			"@remark",			

@@ -121,7 +121,7 @@ namespace tlrsCartonManager.DAL.Models
             {
                 entity.Property(e => e.BarCode).IsUnicode(false);
 
-                entity.Property(e => e.ContainerType).IsUnicode(false);
+                entity.Property(e => e.StorageType).IsUnicode(false);
 
                 entity.Property(e => e.CorrectedBarCode).IsUnicode(false);
 
@@ -490,14 +490,14 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.HasOne(d => d.Request)
                     .WithMany(p => p.RequestDetails)
-                    .HasForeignKey(d => d.RequestId)
+                    .HasForeignKey(d => d.RequestNo)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RequestDetail_RequestHeader");
             });
 
             modelBuilder.Entity<RequestHeader>(entity =>
             {
-                entity.Property(e => e.AuthorizedOfficer).IsUnicode(false);
+                entity.Property(e => e.AuthorizedOfficerId).IsUnicode(false);
 
                 entity.Property(e => e.ContactPersonName).IsUnicode(false);
 
@@ -523,7 +523,7 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.RequestType).IsUnicode(false);
 
-                entity.Property(e => e.ServiceType).IsUnicode(false);
+                entity.Property(e => e.ServiceTypeId).IsUnicode(false);
 
                 entity.Property(e => e.WorkOrderType).IsUnicode(false);
             });

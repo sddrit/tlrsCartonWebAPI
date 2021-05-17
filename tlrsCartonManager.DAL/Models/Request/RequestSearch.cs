@@ -13,6 +13,7 @@ namespace tlrsCartonManager.DAL.Models
         public string RequestNo { get; set; }
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
+        public int CartonCount { get; set; }
         public int DeliveryDate { get; set; }
     }
 }
