@@ -35,7 +35,7 @@ namespace tlrsCartonManager.DAL.Models.Report
     }
     public class InventoryByCustomerReponse
     {
-        public PagedResponse<InventoryByCustomer> InventoryList { get; set; }
+        public List<InventoryByCustomer> InventoryList { get; set; }
         public List<InventoryByCustomerSummary> InventorySummary { get; set; }
         public List<InventoryByRetreivalSummary> RetreivalSummary { get; set; }
 

@@ -16,9 +16,7 @@ namespace tlrsCartonManager.DAL.Utility
                "@woType",
                "@asAtDate",
                "@includeSubAccount",
-               "@reportType",
-               "@pageIndex",
-               "@pageSize",
+               "@reportType",               
                "@totalRecords"
             };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) + " OUTPUT";
