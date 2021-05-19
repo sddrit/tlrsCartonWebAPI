@@ -32,10 +32,10 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet("getInventoryByCustomer")]
         public async Task<ActionResult<CustomerSearchDto>> GetInventoryByCustomer(
-            int customerId, string woType,DateTime asAtDate, bool includeSubAccount, int pageIndex, int pageSize)
+            int customerId, string woType,DateTime asAtDate, bool includeSubAccount)
         {
             var customerList = await _reportRepository.GetInventoryByCustomer(customerId,woType,
-               asAtDate,includeSubAccount, pageIndex, pageSize);
+               asAtDate,includeSubAccount);
             return Ok(customerList);
         }
 

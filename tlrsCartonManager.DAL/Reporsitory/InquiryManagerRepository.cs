@@ -22,6 +22,7 @@ using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.Operation;
+using tlrsCartonManager.DAL.Models.Ownership;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {

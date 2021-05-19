@@ -14,7 +14,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     {
 
         Task<InventoryByCustomerReponse> GetInventoryByCustomer(int customerId,
-            string woType, DateTime asAtDate, bool includeSubAccount,  int pageIndex, int pageSize);
+            string woType, DateTime asAtDate, bool includeSubAccount);
      
     }
 }

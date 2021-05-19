@@ -35,7 +35,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
         private List<SqlParameter> SendResponse(int customerId, string woType,
-            DateTime asAtDate, string reportType, bool includeSubAccount, int pageIndex, int pageSize, out SqlParameter outParam)
+            DateTime asAtDate, string reportType, bool includeSubAccount, out SqlParameter outParam)
         {
 
             List<SqlParameter> parms = new List<SqlParameter>
@@ -50,15 +50,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    Value = includeSubAccount.AsDbValue()},
                new SqlParameter { ParameterName = InventoryByCustomerStoredProcedure.StoredProcedureParameters[4].ToString(),
                    Value = reportType.AsDbValue()},
-               new SqlParameter { ParameterName = InventoryByCustomerStoredProcedure.StoredProcedureParameters[5].ToString(),
-                   Value = pageIndex },
-               new SqlParameter { ParameterName = InventoryByCustomerStoredProcedure.StoredProcedureParameters[6].ToString(),
-                   Value = pageSize },
+              
 
             };
             outParam = new SqlParameter
             {
-                ParameterName = InventoryByCustomerStoredProcedure.StoredProcedureParameters[7].ToString(),
+                ParameterName = InventoryByCustomerStoredProcedure.StoredProcedureParameters[5].ToString(),
                 SqlDbType = SqlDbType.Int,
                 Direction = ParameterDirection.Output
             };
@@ -67,40 +64,29 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         }
         public async Task<InventoryByCustomerReponse> GetInventoryByCustomer(int customerId, string woType,
-            DateTime asAtDate, bool includeSubAccount, int pageIndex, int pageSize)
+            DateTime asAtDate, bool includeSubAccount)
         {
             var parms = SendResponse(customerId, woType, asAtDate, InventoryReportTypes.Detail.ToString(),
-                includeSubAccount, pageIndex, pageSize, out SqlParameter outParam);
+                includeSubAccount,out SqlParameter outParam);
             var inventoryList = await _tcContext.Set<InventoryByCustomer>().
               FromSqlRaw(InventoryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
-            #region paging
-            var postResponse = _mapper.Map<List<InventoryByCustomer>>(inventoryList);
-
-            var paginationResponse = new PagedResponse<InventoryByCustomer>
-            {
-                Data = postResponse,
-                pageNumber = pageIndex,
-                pageSize = pageSize,
-                totalCount = totalRows,
-                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
-
-            };
-            #endregion
+      
+            var postResponse = _mapper.Map<List<InventoryByCustomer>>(inventoryList);           
 
             parms = SendResponse(customerId, woType, asAtDate, InventoryReportTypes.SummaryInventory.ToString(),
-               includeSubAccount, pageIndex, pageSize, out outParam);
+               includeSubAccount, out outParam);
             var inventorySummaryList = await _tcContext.Set<InventoryByCustomerSummary>().
              FromSqlRaw(InventoryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
             parms = SendResponse(customerId, woType, asAtDate, InventoryReportTypes.SummaryRetreival.ToString(),
-              includeSubAccount, pageIndex, pageSize, out outParam);
+              includeSubAccount ,out outParam);
             var retreivalSummaryList = await _tcContext.Set<InventoryByRetreivalSummary>().
              FromSqlRaw(InventoryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
             var inventoryByCustomer = new InventoryByCustomerReponse()
             {
-                InventoryList = paginationResponse,
+                InventoryList = postResponse,
                 InventorySummary = inventorySummaryList,
                 RetreivalSummary = retreivalSummaryList
 
