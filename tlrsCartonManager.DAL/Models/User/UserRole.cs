@@ -18,4 +18,5 @@ namespace tlrsCartonManager.DAL.Models
         [Column("roleId")]
         public int RoleId { get; set; }
     }
+    
 }

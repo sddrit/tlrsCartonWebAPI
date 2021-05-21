@@ -84,7 +84,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<TaxEffectiveDate> TaxEffectiveDates { get; set; }
         public virtual DbSet<TaxType> TaxTypes { get; set; }
         public virtual DbSet<ViewPickListByNo> ViewPickListByNos { get; set; }
-
+        public virtual DbSet<ViewMenu> ViewMenus { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -817,7 +817,12 @@ namespace tlrsCartonManager.DAL.Models
             {
                 entity.HasKey(e => new { e.UserId, e.RoleId });
             });
+            modelBuilder.Entity<ViewMenu>(entity =>
+            {
+                entity.ToView("viewMenu");
 
+                entity.Property(e => e.CategoryName).IsUnicode(false);
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();

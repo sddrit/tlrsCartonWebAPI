@@ -22,7 +22,10 @@ namespace tlrsCartonManager.DAL.Models
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
-
+        [Required]
+        [StringLength(50)]
+        public int Category { get; set; }
+        
         [InverseProperty(nameof(MenuModelOption.Model))]
         public virtual ICollection<MenuModelOption> MenuModelOptions { get; set; }
         [InverseProperty(nameof(MenuModelUserRole.Model))]
