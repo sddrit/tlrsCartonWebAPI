@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace tlrsCartonManager.DAL.Models
 {
+    [Table("Menu")]
     public partial class MenuModel
     {
         public MenuModel()
@@ -17,10 +18,10 @@ namespace tlrsCartonManager.DAL.Models
         }
 
         [Key]
-        public int ModelCode { get; set; }
+        public int Id { get; set; }
         [Required]
         [StringLength(50)]
-        public string ModelName { get; set; }
+        public string Name { get; set; }
 
         [InverseProperty(nameof(MenuModelOption.Model))]
         public virtual ICollection<MenuModelOption> MenuModelOptions { get; set; }

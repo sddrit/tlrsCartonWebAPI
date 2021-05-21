@@ -688,7 +688,7 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<MenuModel>(entity =>
             {
-                entity.Property(e => e.ModelCode).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<MenuModelOption>(entity =>
@@ -714,7 +714,7 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.HasOne(d => d.FormRight)
                     .WithMany(p => p.MenuModelOptionsUserRoles)
-                    .HasForeignKey(d => d.FormRightId)
+                    .HasForeignKey(d => d.ActionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MenuModelOptionsUserRole_MenuRightFormNames");
             });
@@ -723,7 +723,7 @@ namespace tlrsCartonManager.DAL.Models
             {
                 entity.HasOne(d => d.Model)
                     .WithMany(p => p.MenuModelUserRoles)
-                    .HasForeignKey(d => d.ModelId)
+                    .HasForeignKey(d => d.MenuId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MenuModelUserRole_MenuModels");
             });
@@ -812,6 +812,10 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.PickedUserName).IsUnicode(false);
 
                 entity.Property(e => e.WareHouseCode).IsUnicode(false);
+            });
+            modelBuilder.Entity<UserRole>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
             });
 
             modelBuilder.Entity<CustomerSearch>();
