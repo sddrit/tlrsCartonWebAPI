@@ -83,6 +83,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<TaxEffectiveDate> TaxEffectiveDates { get; set; }
         public virtual DbSet<TaxType> TaxTypes { get; set; }
+        public virtual DbSet<ViewPickListByNo> ViewPickListByNos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -794,6 +795,25 @@ namespace tlrsCartonManager.DAL.Models
               
                 entity.Property(e => e.Code).IsUnicode(false);
             });
+            modelBuilder.Entity<ViewPickListByNo>(entity =>
+            {
+                entity.ToView("viewPickListByNo");
+
+                entity.Property(e => e.Barcode).IsUnicode(false);
+
+                entity.Property(e => e.LastSentDeviceId).IsUnicode(false);
+
+                entity.Property(e => e.LocationCode).IsUnicode(false);
+
+                entity.Property(e => e.PickListNo).IsUnicode(false);
+
+                entity.Property(e => e.RequestNo).IsUnicode(false);
+
+                entity.Property(e => e.PickedUserName).IsUnicode(false);
+
+                entity.Property(e => e.WareHouseCode).IsUnicode(false);
+            });
+
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
