@@ -135,6 +135,8 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<PickListHeaderDto, PickList>().ReverseMap();
             CreateMap<PickListDetailItemDto, PickList>().ReverseMap();
+            CreateMap<PickListHeaderDto, ViewPickListByNo>().ReverseMap();
+            CreateMap<PickListDetailItemDto, ViewPickListByNo>().ReverseMap();
 
             CreateMap<PickListDto, PickList>();
             CreateMap<PickList, PickListDto>();

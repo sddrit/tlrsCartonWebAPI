@@ -55,6 +55,7 @@ namespace tlrsCartonManager.DAL.Dtos.Pick
 
         public long TrackingId { get; set; }
         public int PickedUserId { get; set; }
+        public string PickedUserName { get; set; }
         public bool IsPicked { get; set; }
         public long? PickDate { get; set; }
     }

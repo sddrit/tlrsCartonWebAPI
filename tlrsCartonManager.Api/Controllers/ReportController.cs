@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
 using static tlrsCartonManager.DAL.Utility.Status;
+using tlrsCartonManager.DAL.Models.Report;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -31,7 +32,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getInventoryByCustomer")]
-        public async Task<ActionResult<CustomerSearchDto>> GetInventoryByCustomer(
+        public async Task<ActionResult<InventoryByCustomerReponse>> GetInventoryByCustomer(
             int customerId, string woType,DateTime asAtDate, bool includeSubAccount)
         {
             var customerList = await _reportRepository.GetInventoryByCustomer(customerId,woType,
