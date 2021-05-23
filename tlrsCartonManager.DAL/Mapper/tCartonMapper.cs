@@ -176,6 +176,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<Company, CompanyDto>().ReverseMap();
             CreateMap<TaxEffectiveDate, TaxEffectiveDateDto>().ReverseMap();
             CreateMap<TaxType, TaxTypeDto>().ReverseMap();
+            CreateMap<RequestType, RequestTypeDto>().ReverseMap();
             //ruv
         }
 

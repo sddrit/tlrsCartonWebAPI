@@ -84,7 +84,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<TaxEffectiveDate> TaxEffectiveDates { get; set; }
         public virtual DbSet<TaxType> TaxTypes { get; set; }
         public virtual DbSet<ViewPickListByNo> ViewPickListByNos { get; set; }
-
+        public virtual DbSet<ViewPendingRequest> ViewPendingRequests { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -817,7 +817,28 @@ namespace tlrsCartonManager.DAL.Models
             {
                 entity.HasKey(e => new { e.UserId, e.RoleId });
             });
+            modelBuilder.Entity<ViewPendingRequest>(entity =>
+            {
+                entity.ToView("viewPendingRequest");
 
+                entity.Property(e => e.ContactPersonName).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryDate).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryLocation).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryRoute).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.RemarkCarton).IsUnicode(false);
+
+                entity.Property(e => e.Reminder).IsUnicode(false);
+
+                entity.Property(e => e.RequestNo).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -848,6 +869,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<InventoryByCustomer>().HasNoKey();
             modelBuilder.Entity<InventoryByCustomerSummary>().HasNoKey();
             modelBuilder.Entity<InventoryByRetreivalSummary>().HasNoKey();
+           
             OnModelCreatingPartial(modelBuilder);
         }
 
