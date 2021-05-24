@@ -56,18 +56,18 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Authorization Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpGet("getCustomerByName/{customerName}")]
-        public async Task<ActionResult<CustomerSearchDto>> GetCustomerByName(string customerName)
+        public async Task<ActionResult<CustomerSearchDto>> GetCustomerByName(string customerName, bool isAll=false)
         {
-            var customerList = await _customerRepository.GetCustomerByName(customerName);
+            var customerList = await _customerRepository.GetCustomerByName(customerName,isAll);
             if (customerList != null)
                 return Ok(customerList);
             else
                 return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpGet("getCustomerByCode/{customerCode}")]
-        public async Task<ActionResult<CustomerDto>> GetCustomerByCode(string customerCode)
+        public async Task<ActionResult<CustomerDto>> GetCustomerByCode(string customerCode, bool isAll = false)
         {
-            var customerList = await _customerRepository.GetCustomerByCode(customerCode);
+            var customerList = await _customerRepository.GetCustomerByCode(customerCode,isAll);
             if (customerList != null)
                 return Ok(customerList);
             else
@@ -131,5 +131,8 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Deletion Failed" }, HttpStatusCode.NotFound);
            
         }
+
+       
+       
     }
 }

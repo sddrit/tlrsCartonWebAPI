@@ -35,14 +35,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _searchManager = searchManager;
         }
 
-        private TableResponse<TableReturn> SavePickList(PickListHeaderDto pickListInsert,string pickListNo,string transcationType, int userId, string deviceId)
+        private TableReturn SavePickList(PickListResponseDto pickListInsert,string transcationType)
         {
+          
             List<SqlParameter> parms = new List<SqlParameter>
             {
-                 new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[0].ToString(), Value = pickListNo.AsDbValue() } ,
+                 new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[0].ToString(), Value = pickListInsert.PickListNo.AsDbValue() } ,
                  new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[1].ToString(), Value = transcationType.AsDbValue() } ,
-                 new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[2].ToString(), Value = userId.AsDbValue() } ,
-                 new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[3].ToString(), Value = deviceId.AsDbValue() } ,
+                 new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[2].ToString(), Value = pickListInsert.AssignedUserId.AsDbValue() } ,
+                 new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[3].ToString(), Value = pickListInsert.LastSentDeviceId.AsDbValue() } ,
                 new SqlParameter
                 {
                    ParameterName = PickListStoredProcedure.StoredProcedureParameters[4].ToString(),
@@ -51,26 +52,21 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    Value =pickListInsert.PickListDetail.ToList().ToDataTable()
                 },
             };
-            var resultTable = _tcContext.Set<TableReturn>().FromSqlRaw(PickListStoredProcedure.Sql, parms.ToArray()).ToList();
-            var tableResponse = new TableResponse<TableReturn>
-            {
-                Message = resultTable.Where(x => x.Reason == "OK").FirstOrDefault().OutValue,
-                OutList = resultTable.Where(x => x.Reason != "OK").ToList()
-            };
-            return tableResponse;
+           return _tcContext.Set<TableReturn>().FromSqlRaw(PickListStoredProcedure.Sql, parms.ToArray()).AsEnumerable().FirstOrDefault();
+        
         }
 
-        public TableResponse<TableReturn> DeletePickList(string pickListNo, int userId )
+        public TableReturn DeletePickList(PickListResponseDto pickListDelete)
         {
-            return SavePickList(new PickListHeaderDto(), pickListNo, TransactionTypes.Delete.ToString(), userId, string.Empty);
+            return SavePickList(pickListDelete, TransactionTypes.Delete.ToString());
         }
-        public TableResponse<TableReturn> UpdatePickList(string pickListNo, int userId, string deviceId)
-        {
-            return SavePickList(new PickListHeaderDto(), pickListNo, TransactionTypes.Update.ToString(), userId, deviceId);
+        public TableReturn UpdatePickList(PickListResponseDto pickListUpdate)
+        {           
+            return SavePickList(pickListUpdate, TransactionTypes.Update.ToString());
         }
         public async Task<PickListHeaderDto> GetPickList(string pickListNo)
         {
-            var pickList = await _tcContext.PickLists.Where(x => x.PickListNo == pickListNo).ToListAsync();
+            var pickList = await _tcContext.ViewPickListByNos.Where(x => x.PickListNo == pickListNo).ToListAsync();
 
             PickListHeaderDto pickListHeader = new PickListHeaderDto();
             pickListHeader = _mapper.Map<PickListHeaderDto>(pickList.FirstOrDefault());
@@ -103,15 +99,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return paginationResponse;
         }        
 
-        public TableResponse<TableReturn> AddPickList(PickListHeaderDto pickListInsert)
+        public TableReturn AddPickList(PickListResponseDto pickListInsert)
         {
-           return  SavePickList(pickListInsert,string.Empty, TransactionTypes.Insert.ToString(), 0, string.Empty);
+           return  SavePickList(pickListInsert, TransactionTypes.Insert.ToString());
         }
 
-        public async Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue,string searchText, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("pickListPendingSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
-            var cartonList = await _tcContext.Set<PickListPendingListItem>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            List<SqlParameter> parms = _searchManager.SearchFromToSearchBy("pickListPendingSearch", fromValue,toValue, searchText, pageIndex, pageSize, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<PickListPendingListItem>().FromSqlRaw(SearchStoredProcedureFromToSearchBy.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
             var postResponse = _mapper.Map<List<PickListDetailItemDto>>(cartonList);

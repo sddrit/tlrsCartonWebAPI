@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using tlrsCartonManager.DAL.Models.MetaData;
 
 #nullable disable
 
@@ -18,7 +17,7 @@ namespace tlrsCartonManager.DAL.Models
         {
         }
 
-        public virtual DbSet<MobileDevice> MobileDevices { get; set; }
+        public virtual DbSet<TaxEffectiveDate> TaxEffectiveDates { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -32,16 +31,13 @@ namespace tlrsCartonManager.DAL.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<MobileDevice>(entity =>
+            modelBuilder.Entity<TaxEffectiveDate>(entity =>
             {
-                entity.HasKey(e => e.DeviceCode)
-                    .HasName("PK_Mobile-Devices");
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.DeviceCode).IsUnicode(false);
+                entity.Property(e => e.CreatedUserId).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.DeviceName).IsUnicode(false);
-
-                entity.Property(e => e.LastSynchedUser).IsUnicode(false);
+                entity.Property(e => e.TaxCode).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

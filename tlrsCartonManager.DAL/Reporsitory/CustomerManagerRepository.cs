@@ -43,7 +43,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                                 Where(x => x.MainCustomerCode == customerId && x.AccountType != "M" && x.Deleted == false).ToListAsync());
 
             var customerList = _mapper.Map<CustomerDto>(await _tcContext.Customers.
-                                Include(x => x.CustomerAuthorizationListHeaders).
+                                Include(x => x.CustomerAuthorizationListHeaders.Where(x=>x.Deleted==false)).
                                 ThenInclude (x => x.CustomerAuthorizationListDetails.Where(x => x.Deleted == false)).
                                 FirstOrDefaultAsync(x => x.TrackingId == customerId && x.Deleted==false));
             if(customerList!=null)
@@ -239,15 +239,21 @@ namespace tlrsCartonManager.DAL.Reporsitory
                  
         }
 
-        public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByName(string customerName)
+        public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByName(string customerName, bool isAll)
         {
             var mainAccList = await _tcContext.Customers.
-               Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%")  && x.Deleted == false)).ToListAsync();
+               Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%")  && x.Deleted == false && x.Active == true)).ToListAsync();
+            if(isAll)
+             mainAccList = await _tcContext.Customers.
+              Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false)).ToListAsync();
             return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
         }
-        public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByCode(string customerCode)
+        public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByCode(string customerCode, bool isAll)
         {
             var mainAccList = await _tcContext.Customers.
+               Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false && x.Active == true)).ToListAsync();
+            if(isAll)
+                mainAccList = await _tcContext.Customers.
                Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false)).ToListAsync();
             return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
         }

@@ -27,14 +27,18 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IWorkOrderTypeManagerRepository _workOrderTypeRepository;
         private readonly IMobileDeviceManagerRepository _mobileDeviceRepository;
         private readonly IUserManagerRepository _workerRepository;
-
+        private readonly IPostingTypeManagerRepository _postingTypeRepository;
+        private readonly ITaxTypeManagerRepository _taxTypeManagerRepository;
+        private readonly IRequestTypeManagerRepository _requestTypeTypeManagerRepository;
         public MetaDataController
             (
             IBillingCycleManagerRepository billingCycleRepository, IRouteManagerRepository routeRepository,
             IServiceCategoryManagerRepository serviceRepository, IStorageTypeManagerRepository cartonTypeRepository,
             IRoleManagerRepository roleRepository, IReceiveTypeManagerRepository receiveTypeRepository,
             IDisposalTimeFrameManagerRepository disposalTimeFrame, IWorkOrderTypeManagerRepository workOrderTypeRepository,
-            IMobileDeviceManagerRepository mobileDeviceRepository, IUserManagerRepository workerRepository)
+            IMobileDeviceManagerRepository mobileDeviceRepository, IUserManagerRepository workerRepository,
+            IPostingTypeManagerRepository postingTypeRepository, ITaxTypeManagerRepository taxTypeManagerRepository,
+            IRequestTypeManagerRepository requestTypeTypeManagerRepository)
         {
             _billingCycleRepository = billingCycleRepository;
             _routeRepository = routeRepository;
@@ -46,6 +50,9 @@ namespace tlrsCartonManager.Api.Controllers
             _workOrderTypeRepository = workOrderTypeRepository;
             _mobileDeviceRepository = mobileDeviceRepository;
             _workerRepository = workerRepository;
+            _postingTypeRepository = postingTypeRepository;
+            _taxTypeManagerRepository = taxTypeManagerRepository;
+            _requestTypeTypeManagerRepository = requestTypeTypeManagerRepository;
         }
 
         [HttpGet]
@@ -61,6 +68,9 @@ namespace tlrsCartonManager.Api.Controllers
             var workOrderTypeList= await _workOrderTypeRepository.GetWoTypeList();
             var mobileDeviceList = await _mobileDeviceRepository.GetMobileDeviceList();
             var workerList = await _workerRepository.GetWorkersList();
+            var postingTypeList = await _postingTypeRepository.GetPostingTypeList();
+            var taxTypeList = await _taxTypeManagerRepository.GetTaxTypeList();
+            var requestTypeList = await _requestTypeTypeManagerRepository.GetRequestTypeList();
             return Ok(
             new
             {
@@ -73,7 +83,10 @@ namespace tlrsCartonManager.Api.Controllers
                 disposalTimeFrameList,
                 workOrderTypeList,
                 mobileDeviceList,
-                workerList
+                workerList,
+                postingTypeList,
+                taxTypeList,
+                requestTypeList
             });
         }
 

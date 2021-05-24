@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Dtos.Carton;
+using tlrsCartonManager.DAL.Dtos.Company;
+using tlrsCartonManager.DAL.Dtos.Invoice;
 using tlrsCartonManager.DAL.Dtos.MetaData;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Dtos.Pick;
@@ -133,6 +135,8 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<PickListHeaderDto, PickList>().ReverseMap();
             CreateMap<PickListDetailItemDto, PickList>().ReverseMap();
+            CreateMap<PickListHeaderDto, ViewPickListByNo>().ReverseMap();
+            CreateMap<PickListDetailItemDto, ViewPickListByNo>().ReverseMap();
 
             CreateMap<PickListDto, PickList>();
             CreateMap<PickList, PickListDto>();
@@ -163,9 +167,16 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<MobileDevice, MobileDeviceDto>().ReverseMap();
             CreateMap<WorkerDto, User>().ReverseMap();
+            CreateMap<PostingTypeDto, PostingType>().ReverseMap();
 
+            CreateMap<InvoicePosting, InvoicePostingDto>().ReverseMap();
 
-
+            CreateMap<RequestOriginalDocket, RequestHeader>().ReverseMap();
+            CreateMap<OriginalDocketSearchDto, OriginalDocketSearch>().ReverseMap();
+            CreateMap<Company, CompanyDto>().ReverseMap();
+            CreateMap<TaxEffectiveDate, TaxEffectiveDateDto>().ReverseMap();
+            CreateMap<TaxType, TaxTypeDto>().ReverseMap();
+            CreateMap<RequestType, RequestTypeDto>().ReverseMap();
             //ruv
         }
 

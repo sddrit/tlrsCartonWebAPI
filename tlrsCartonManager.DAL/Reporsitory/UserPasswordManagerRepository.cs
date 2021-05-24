@@ -11,6 +11,7 @@ using tlrsCartonManager.DAL.Reporsitory.IRepository;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Dtos;
 using AutoMapper.QueryableExtensions;
+using tlrsCartonManager.DAL.Dtos.Menu;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -42,16 +43,45 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _mapper.Map<UserPasswordDto>(userPasswordLine);
         }
 
-        public async Task<IEnumerable<MenuRightAttachedUserDto>> GetUserMenuRights(string userName)
+        public async Task<IEnumerable<MenuModelsDto>> GetUserMenuRights(string userName)
         {
             //Get User Role ID 
-            int user = _tcContext.Users.SingleOrDefaultAsync(x => x.UserName == userName).Result.UserRoleId;
-            //int userRoleID = user.UserRoleId;
+            List<MenuModelsDto> MenuModelList = new List<MenuModelsDto>();
+            var  userId = _tcContext.Users.SingleOrDefaultAsync(x => x.UserName == userName).Result.UserId;
+            var userRole= _tcContext.UserRoles.Where(x => x.UserId == userId).ToList();
 
-            return await _tcContext.MenuRightAttachedUsers.Where(x => x.UserRoleId == user)
-               .ProjectTo<MenuRightAttachedUserDto>(_mapper.ConfigurationProvider)
-               .AsNoTracking().ToListAsync();
+            foreach (UserRole user in userRole)
+            {
+                var menuModelUsers = await _tcContext.MenuModelUserRoles.Where(x => x.RoleId == user.RoleId).Include(x => x.Model).ToListAsync();
+
+                foreach (MenuModelUserRole menuUser in menuModelUsers)
+                {
+                    MenuModelsDto lnMenuModel = new MenuModelsDto();
+                    lnMenuModel.ModelID = menuUser.Model.Id;
+                    lnMenuModel.ModelName = menuUser.Model.Name;
+                    List<MenuModelOptionsDto> _lstMenuModelOptions = new List<MenuModelOptionsDto>();
+
+                    var userRoleModels = await _tcContext.MenuModelOptionsUserRoles.Where(x => x.UserRoleId == menuUser.RoleId).Include(x => x.FormRight).ToListAsync();
+
+                    foreach (MenuModelOptionsUserRole mnuOptUserRole in userRoleModels)
+                    {
+                        MenuModelOptionsDto lnMenuModelUserRole = new MenuModelOptionsDto();
+                        lnMenuModelUserRole.ModelID = menuUser.Model.Id;
+                        lnMenuModelUserRole.ModelOptionID = mnuOptUserRole.ActionId;
+                        lnMenuModelUserRole.ModelOptionDesc = mnuOptUserRole.FormRight.FormRightName;
+                        _lstMenuModelOptions.Add(lnMenuModelUserRole);
+                    }
+
+
+                    lnMenuModel.ModelOptions = _lstMenuModelOptions;
+                    MenuModelList.Add(lnMenuModel);
+                }
+
+            }
+            return MenuModelList;
         }
+
+
 
         public async Task<bool> SaveAllAsync()
         {

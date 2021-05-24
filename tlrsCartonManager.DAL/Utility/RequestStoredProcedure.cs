@@ -13,7 +13,7 @@ namespace tlrsCartonManager.DAL.Utility
         public static List<string> StoredProcedureParameters = new List<string>()
         {
 			"@requestNumber",
-			"@customerId",			
+			"@customerCode",			
 			"@deliveryDate",
 			"@ordeReceivedBy",
 			"@remark",			
@@ -40,5 +40,16 @@ namespace tlrsCartonManager.DAL.Utility
 
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 	}
-	
+
+	public static class AddDocketStoredProcedure
+	{
+		public static string StoredProcedureName = "originalDocketInsert";
+		public static List<string> StoredProcedureParameters = new List<string>()
+		{
+			"@requestNo",
+			"@docketNo",
+			"@userId"	
+		};	
+		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+	}
 }

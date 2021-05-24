@@ -48,9 +48,17 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPost]
         public ActionResult AddRequest(RequestHeaderDto request)
         {
-            return Ok( _requestRepository.AddRequest(request));            
+            var response = _requestRepository.AddRequest(request);
+            if (response.OutList!=null && response.OutList.Count()>0)
+                return new JsonErrorResult(response, HttpStatusCode.PartialContent);
+            else if (response.Message=="OK")
+                return Ok(response);
+            else
+                return new JsonErrorResult(new { Message =response.Message }, HttpStatusCode.InternalServerError);
+
+        }                 
           
-        }
+     
         [HttpPut]
         public ActionResult UpdateRequest(RequestHeaderDto request)
         {

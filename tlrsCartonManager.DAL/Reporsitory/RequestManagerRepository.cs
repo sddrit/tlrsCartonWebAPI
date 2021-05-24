@@ -35,13 +35,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<RequestHeaderDto> GetRequestList(string requestNo)
         {
             var request = await _tcContext.RequestHeaders.
-                                 Include(x => x.RequestDetails).
+                                 Include(x => x.RequestDetails.Where(x=>x.RequestNo==requestNo)).
                                  FirstOrDefaultAsync(x => x.RequestNo == requestNo);
             var requestDto = _mapper.Map<RequestHeaderDto>(request);
             if (request != null)
             {
                 var customer = await _tcContext.Customers.Where(x => x.TrackingId == request.CustomerId).FirstOrDefaultAsync();
                 requestDto.CustomerName = customer.Name;
+                requestDto.CustomerCode = customer.CustomerCode;
                 requestDto.CustomerAddress = customer.Address1 + " " + customer.Address2 + " " + customer.Address3;
                 var authorizationList = await _tcContext.CustomerAuthorizationListHeaders.
                     Where(x => x.CustomerId == request.CustomerId)
@@ -101,16 +102,16 @@ namespace tlrsCartonManager.DAL.Reporsitory
             {
 
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[0].ToString(), Value = requestTransaction.RequestNo.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[1].ToString(), Value = requestTransaction.CustomerId.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[1].ToString(), Value = requestTransaction.CustomerCode.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[2].ToString(), Value = requestTransaction.DeliveryDate.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[3].ToString(), Value = requestTransaction.OrdeReceivedBy.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[3].ToString(), Value = requestTransaction.OrderReceivedBy.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[4].ToString(), Value = requestTransaction.Remarks.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[5].ToString(), Value = requestTransaction.AuthorizedOfficer.AsDbValue()},
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[5].ToString(), Value = requestTransaction.AuthorizedOfficerId.AsDbValue()},
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[6].ToString(), Value = requestTransaction.CartonCount.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[7].ToString(), Value = requestTransaction.RequestType.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[8].ToString(), Value = requestTransaction.UserId.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[9].ToString(), Value = requestTransaction.Status.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[10].ToString(), Value = requestTransaction.ServiceType.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[10].ToString(), Value = requestTransaction.ServiceTypeId.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[11].ToString(), Value = requestTransaction.WorkOrderType.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[12].ToString(), Value = requestTransaction.ContactPersonName.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[13].ToString(), Value = requestTransaction.DeliveryLocation.AsDbValue() },
@@ -129,10 +130,49 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var resultTable = _tcContext.Set<TableReturn>().FromSqlRaw(RequestStoredProcedure.Sql, parms.ToArray()).ToList();
             var tableResponse = new TableResponse<TableReturn>
             {
-                Message = resultTable.Where(x => x.Reason == "OK").FirstOrDefault().OutValue,
-                OutList = resultTable.Where(x => x.Reason != "OK").ToList()
+                Message = resultTable.Where(x => x.Reason == "OK" || x.Reason=="NOK").FirstOrDefault().OutValue,
+
+                OutList = resultTable.Where(x => x.Reason != "OK" && x.Reason!="NOK").ToList()
             };
             return tableResponse;
         }
+
+        public  bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+
+                new SqlParameter { ParameterName = AddDocketStoredProcedure.StoredProcedureParameters[0].ToString(),
+                    Value =  originalDocket.RequestNo.AsDbValue()},
+                new SqlParameter { ParameterName = AddDocketStoredProcedure.StoredProcedureParameters[1].ToString(),
+                    Value =  originalDocket.DocketNo.AsDbValue()},
+                new SqlParameter { ParameterName = AddDocketStoredProcedure.StoredProcedureParameters[2].ToString(),
+                    Value =  originalDocket.LuUser.AsDbValue()}
+            };
+            return _tcContext.Set<BoolReturn>().FromSqlRaw(AddDocketStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+        }
+
+        public async Task<PagedResponse<OriginalDocketSearchDto>> SearchOriginalDockets(string searchText, int pageIndex, int pageSize)
+        {
+            List<SqlParameter> parms = _searchManager.Search("originalDocketSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<OriginalDocketSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var totalRows = (int)outParam.Value;
+            #region paging
+            var postResponse = _mapper.Map<List<OriginalDocketSearchDto>>(cartonList);
+
+            var paginationResponse = new PagedResponse<OriginalDocketSearchDto>
+            {
+                Data = postResponse,
+                pageNumber = pageIndex,
+                pageSize = pageSize,
+                totalCount = totalRows,
+                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+
+            };
+            #endregion
+
+            return paginationResponse;
+        }
+
     }
 }
