@@ -84,7 +84,8 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<TaxEffectiveDate> TaxEffectiveDates { get; set; }
         public virtual DbSet<TaxType> TaxTypes { get; set; }
         public virtual DbSet<ViewPickListByNo> ViewPickListByNos { get; set; }
-
+        public virtual DbSet<ViewPendingRequest> ViewPendingRequests { get; set; }
+        public virtual DbSet<ViewTobeDisposedCartonList> ViewTobeDisposedCartonLists { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -688,7 +689,7 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<MenuModel>(entity =>
             {
-                entity.Property(e => e.ModelCode).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<MenuModelOption>(entity =>
@@ -714,7 +715,7 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.HasOne(d => d.FormRight)
                     .WithMany(p => p.MenuModelOptionsUserRoles)
-                    .HasForeignKey(d => d.FormRightId)
+                    .HasForeignKey(d => d.ActionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MenuModelOptionsUserRole_MenuRightFormNames");
             });
@@ -723,7 +724,7 @@ namespace tlrsCartonManager.DAL.Models
             {
                 entity.HasOne(d => d.Model)
                     .WithMany(p => p.MenuModelUserRoles)
-                    .HasForeignKey(d => d.ModelId)
+                    .HasForeignKey(d => d.MenuId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MenuModelUserRole_MenuModels");
             });
@@ -813,7 +814,44 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.WareHouseCode).IsUnicode(false);
             });
+            modelBuilder.Entity<UserRole>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+            });
+            modelBuilder.Entity<ViewPendingRequest>(entity =>
+            {
+                entity.ToView("viewPendingRequest");
 
+                entity.Property(e => e.ContactPersonName).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryDate).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryLocation).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryRoute).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.RemarkCarton).IsUnicode(false);
+
+                entity.Property(e => e.Reminder).IsUnicode(false);
+
+                entity.Property(e => e.RequestNo).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
+            });
+            modelBuilder.Entity<ViewTobeDisposedCartonList>(entity =>
+            {
+                entity.ToView("viewTobeDisposedCartonList");
+
+                entity.Property(e => e.CartonNo).IsUnicode(false);
+
+                entity.Property(e => e.CustomerCode).IsUnicode(false);
+
+                entity.Property(e => e.LastRequestNo).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -844,6 +882,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<InventoryByCustomer>().HasNoKey();
             modelBuilder.Entity<InventoryByCustomerSummary>().HasNoKey();
             modelBuilder.Entity<InventoryByRetreivalSummary>().HasNoKey();
+           
             OnModelCreatingPartial(modelBuilder);
         }
 

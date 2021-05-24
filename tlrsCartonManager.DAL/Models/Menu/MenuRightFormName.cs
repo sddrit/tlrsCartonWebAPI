@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace tlrsCartonManager.DAL.Models
 {
+    [Table("MenuAction")]
     public partial class MenuRightFormName
     {
         public MenuRightFormName()
@@ -17,10 +18,10 @@ namespace tlrsCartonManager.DAL.Models
         }
 
         [Key]
-        [Column("formRightID")]
+        [Column("id")]
         public int FormRightId { get; set; }
         [Required]
-        [Column("formRightName")]
+        [Column("name")]
         [StringLength(50)]
         public string FormRightName { get; set; }
 

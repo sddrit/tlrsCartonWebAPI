@@ -12,13 +12,10 @@ namespace tlrsCartonManager.DAL.Models
     public partial class UserRole
     {
         [Key]
-        [Column("userRoleID")]
-        public int UserRoleId { get; set; }
-        [Required]
-        [Column("userRoleName")]
-        [StringLength(20)]
-        public string UserRoleName { get; set; }
-        [Column("userRoleDivision")]
-        public int UserRoleDivision { get; set; }
+        [Column("userId")]
+        public int UserId { get; set; }
+        [Key]
+        [Column("roleId")]
+        public int RoleId { get; set; }
     }
 }

@@ -40,6 +40,23 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(customerList);
         }
 
-       
+        [HttpGet("getPendingRequestSummary")]
+        public async Task<ActionResult<ViewPendingRequest>> GetPendingRequestSummary(DateTime asAtDate)
+        {
+           return Ok( await _reportRepository.GetPendingRequestSummary(asAtDate));
+          
+        }
+        [HttpGet("getDailyLogCollection")]
+        public async Task<ActionResult<ViewPendingRequest>> GetDailyLogCollection(bool asAtToday, DateTime fromDate, DateTime toDate, string route)
+        {
+            return Ok(await _reportRepository.GetDailyLogCollection(asAtToday,fromDate, toDate,route));
+
+        }
+        [HttpGet("getToBeDisposedCartonList")]
+        public async Task<ActionResult<ViewPendingRequest>> GetToBeDisposedCartonList(string customerCode,  bool includeSubAccount)
+        {
+            return Ok(await _reportRepository.GetToBeDisposedCartonList(customerCode, includeSubAccount));
+
+        }
     }
 }

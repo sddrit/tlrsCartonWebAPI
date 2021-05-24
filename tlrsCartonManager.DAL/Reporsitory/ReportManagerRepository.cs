@@ -95,7 +95,49 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return inventoryByCustomer;
         }
 
+        public async Task<IEnumerable<ViewPendingRequest>> GetPendingRequestSummary(DateTime asAtDate)
+        {
+           return await _tcContext.ViewPendingRequests.Where(x=>
+           x.DeliveryDateInt<=Convert.ToInt32( asAtDate.ToString("yyyyMMdd"))).ToListAsync();
+        }
 
+        public async Task<IEnumerable<ViewPendingRequest>> GetDailyLogCollection(bool asAtToday,DateTime fromDate, DateTime toDate, string route)
+        {          
+            if(asAtToday)
+            {
+                fromDate = new DateTime(1900, 01, 01);
+                toDate = System.DateTime.Today;
+            }
+            if (string.IsNullOrEmpty(route))
+            {
+                return await _tcContext.ViewPendingRequests
+                    .Where(x => x.DeliveryDateInt >= Convert.ToInt32(fromDate.ToString("yyyyMMdd")) &&
+                    x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd"))).ToListAsync();
+
+            }
+            else
+            {
+                return await _tcContext.ViewPendingRequests
+                    .Where(x => x.DeliveryDateInt >= Convert.ToInt32(fromDate.ToString("yyyyMMdd")) &&
+                    x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd"))&&
+                    x.DeliveryRoute==route                    
+                    ).ToListAsync();
+            }
+
+        }
+        public async Task<IEnumerable<ViewTobeDisposedCartonList>> GetToBeDisposedCartonList(string customerCode,bool includeSubAccount)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = ToBeDisposedCartonListStoredProcedure.StoredProcedureParameters[0].ToString(), Value = customerCode.AsDbValue() },
+                new SqlParameter { ParameterName = ToBeDisposedCartonListStoredProcedure.StoredProcedureParameters[1].ToString(), Value = includeSubAccount.AsDbValue() }
+
+            };
+
+            return  await _tcContext.Set<ViewTobeDisposedCartonList>().FromSqlRaw(ToBeDisposedCartonListStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            
+
+        }
     }
 }
 

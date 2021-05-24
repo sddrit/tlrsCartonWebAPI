@@ -8,18 +8,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace tlrsCartonManager.DAL.Models
 {
-    [Table("MenuModelOptionsUserRole")]
+    [Table("MenuUserRoleAction")]
     public partial class MenuModelOptionsUserRole
     {
         [Key]
-        [Column("TrackingID")]
+        [Column("trackingID")]
         public int TrackingId { get; set; }
-        [Column("UserRoleModelID")]
-        public int UserRoleModelId { get; set; }
-        [Column("FormRightID")]
-        public int FormRightId { get; set; }
+        [Column("userRoleId")]
+        public int UserRoleId { get; set; }
+        [Column("actionId")]
+        public int ActionId { get; set; }
 
-        [ForeignKey(nameof(FormRightId))]
+        [ForeignKey(nameof(ActionId))]
         [InverseProperty(nameof(MenuRightFormName.MenuModelOptionsUserRoles))]
         public virtual MenuRightFormName FormRight { get; set; }
     }

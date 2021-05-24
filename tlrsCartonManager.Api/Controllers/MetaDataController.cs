@@ -29,7 +29,7 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IUserManagerRepository _workerRepository;
         private readonly IPostingTypeManagerRepository _postingTypeRepository;
         private readonly ITaxTypeManagerRepository _taxTypeManagerRepository;
-
+        private readonly IRequestTypeManagerRepository _requestTypeTypeManagerRepository;
         public MetaDataController
             (
             IBillingCycleManagerRepository billingCycleRepository, IRouteManagerRepository routeRepository,
@@ -37,7 +37,8 @@ namespace tlrsCartonManager.Api.Controllers
             IRoleManagerRepository roleRepository, IReceiveTypeManagerRepository receiveTypeRepository,
             IDisposalTimeFrameManagerRepository disposalTimeFrame, IWorkOrderTypeManagerRepository workOrderTypeRepository,
             IMobileDeviceManagerRepository mobileDeviceRepository, IUserManagerRepository workerRepository,
-            IPostingTypeManagerRepository postingTypeRepository, ITaxTypeManagerRepository taxTypeManagerRepository)
+            IPostingTypeManagerRepository postingTypeRepository, ITaxTypeManagerRepository taxTypeManagerRepository,
+            IRequestTypeManagerRepository requestTypeTypeManagerRepository)
         {
             _billingCycleRepository = billingCycleRepository;
             _routeRepository = routeRepository;
@@ -51,6 +52,7 @@ namespace tlrsCartonManager.Api.Controllers
             _workerRepository = workerRepository;
             _postingTypeRepository = postingTypeRepository;
             _taxTypeManagerRepository = taxTypeManagerRepository;
+            _requestTypeTypeManagerRepository = requestTypeTypeManagerRepository;
         }
 
         [HttpGet]
@@ -68,6 +70,7 @@ namespace tlrsCartonManager.Api.Controllers
             var workerList = await _workerRepository.GetWorkersList();
             var postingTypeList = await _postingTypeRepository.GetPostingTypeList();
             var taxTypeList = await _taxTypeManagerRepository.GetTaxTypeList();
+            var requestTypeList = await _requestTypeTypeManagerRepository.GetRequestTypeList();
             return Ok(
             new
             {
@@ -82,7 +85,8 @@ namespace tlrsCartonManager.Api.Controllers
                 mobileDeviceList,
                 workerList,
                 postingTypeList,
-                taxTypeList
+                taxTypeList,
+                requestTypeList
             });
         }
 
