@@ -105,10 +105,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {          
             if(asAtToday)
             {
-
                 fromDate = new DateTime(1900, 01, 01);
                 toDate = System.DateTime.Today;
-
             }
             if (string.IsNullOrEmpty(route))
             {
@@ -124,8 +122,20 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd"))&&
                     x.DeliveryRoute==route                    
                     ).ToListAsync();
-
             }
+
+        }
+        public async Task<IEnumerable<ViewTobeDisposedCartonList>> GetToBeDisposedCartonList(string customerCode,bool includeSubAccount)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = ToBeDisposedCartonListStoredProcedure.StoredProcedureParameters[0].ToString(), Value = customerCode.AsDbValue() },
+                new SqlParameter { ParameterName = ToBeDisposedCartonListStoredProcedure.StoredProcedureParameters[1].ToString(), Value = includeSubAccount.AsDbValue() }
+
+            };
+
+            return  await _tcContext.Set<ViewTobeDisposedCartonList>().FromSqlRaw(ToBeDisposedCartonListStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            
 
         }
     }

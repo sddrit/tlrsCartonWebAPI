@@ -85,6 +85,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<TaxType> TaxTypes { get; set; }
         public virtual DbSet<ViewPickListByNo> ViewPickListByNos { get; set; }
         public virtual DbSet<ViewPendingRequest> ViewPendingRequests { get; set; }
+        public virtual DbSet<ViewTobeDisposedCartonList> ViewTobeDisposedCartonLists { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -838,6 +839,18 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.RequestNo).IsUnicode(false);
 
                 entity.Property(e => e.Status).IsUnicode(false);
+            });
+            modelBuilder.Entity<ViewTobeDisposedCartonList>(entity =>
+            {
+                entity.ToView("viewTobeDisposedCartonList");
+
+                entity.Property(e => e.CartonNo).IsUnicode(false);
+
+                entity.Property(e => e.CustomerCode).IsUnicode(false);
+
+                entity.Property(e => e.LastRequestNo).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
             });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();

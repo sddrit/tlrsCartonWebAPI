@@ -52,5 +52,11 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _reportRepository.GetDailyLogCollection(asAtToday,fromDate, toDate,route));
 
         }
+        [HttpGet("getToBeDisposedCartonList")]
+        public async Task<ActionResult<ViewPendingRequest>> GetToBeDisposedCartonList(string customerCode,  bool includeSubAccount)
+        {
+            return Ok(await _reportRepository.GetToBeDisposedCartonList(customerCode, includeSubAccount));
+
+        }
     }
 }

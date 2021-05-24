@@ -22,6 +22,18 @@ namespace tlrsCartonManager.DAL.Utility
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) + " OUTPUT";
 
     }
-   
+    public class ToBeDisposedCartonListStoredProcedure
+    {
+
+        public static string StoredProcedureName = "reportToBeDisposedCartonList";
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+               "@customerCode",
+               "@includeSubAccount"
+
+            };
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) ;
+
+    }
 
 }
