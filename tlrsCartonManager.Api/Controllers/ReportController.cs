@@ -41,21 +41,27 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getPendingRequestSummary")]
-        public async Task<ActionResult<ViewPendingRequest>> GetPendingRequestSummary(DateTime asAtDate)
+        public async Task<ActionResult<ViewPendingRequestPivot>> GetPendingRequestSummary(DateTime asAtDate)
         {
            return Ok( await _reportRepository.GetPendingRequestSummary(asAtDate));
           
         }
         [HttpGet("getDailyLogCollection")]
-        public async Task<ActionResult<ViewPendingRequest>> GetDailyLogCollection(bool asAtToday, DateTime fromDate, DateTime toDate, string route)
+        public async Task<ActionResult<ViewPendingRequestPivot>> GetDailyLogCollection(bool asAtToday, DateTime fromDate, DateTime toDate, string route)
         {
             return Ok(await _reportRepository.GetDailyLogCollection(asAtToday,fromDate, toDate,route));
 
         }
         [HttpGet("getToBeDisposedCartonList")]
-        public async Task<ActionResult<ViewPendingRequest>> GetToBeDisposedCartonList(string customerCode,  bool includeSubAccount)
+        public async Task<ActionResult<ViewPendingRequestPivot>> GetToBeDisposedCartonList(string customerCode,  bool includeSubAccount)
         {
             return Ok(await _reportRepository.GetToBeDisposedCartonList(customerCode, includeSubAccount));
+
+        }
+        [HttpGet("getCartonsInPendingRequest")]
+        public async Task<ActionResult<ViewPendingRequestPivot>> GetCartonsInPendingRequest(string customerCode, bool includeSubAccount)
+        {
+            return Ok(await _reportRepository.GetCartonsInPendingRequest(customerCode, includeSubAccount));
 
         }
     }

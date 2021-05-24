@@ -95,13 +95,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return inventoryByCustomer;
         }
 
-        public async Task<IEnumerable<ViewPendingRequest>> GetPendingRequestSummary(DateTime asAtDate)
+        public async Task<IEnumerable<ViewPendingRequestPivot>> GetPendingRequestSummary(DateTime asAtDate)
         {
-           return await _tcContext.ViewPendingRequests.Where(x=>
+           return await _tcContext.ViewPendingRequestPivot.Where(x=>
            x.DeliveryDateInt<=Convert.ToInt32( asAtDate.ToString("yyyyMMdd"))).ToListAsync();
         }
 
-        public async Task<IEnumerable<ViewPendingRequest>> GetDailyLogCollection(bool asAtToday,DateTime fromDate, DateTime toDate, string route)
+        public async Task<IEnumerable<ViewPendingRequestPivot>> GetDailyLogCollection(bool asAtToday,DateTime fromDate, DateTime toDate, string route)
         {          
             if(asAtToday)
             {
@@ -110,14 +110,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
             if (string.IsNullOrEmpty(route))
             {
-                return await _tcContext.ViewPendingRequests
+                return await _tcContext.ViewPendingRequestPivot
                     .Where(x => x.DeliveryDateInt >= Convert.ToInt32(fromDate.ToString("yyyyMMdd")) &&
                     x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd"))).ToListAsync();
 
             }
             else
             {
-                return await _tcContext.ViewPendingRequests
+                return await _tcContext.ViewPendingRequestPivot
                     .Where(x => x.DeliveryDateInt >= Convert.ToInt32(fromDate.ToString("yyyyMMdd")) &&
                     x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd"))&&
                     x.DeliveryRoute==route                    
@@ -135,8 +135,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
             };
 
             return  await _tcContext.Set<ViewTobeDisposedCartonList>().FromSqlRaw(ToBeDisposedCartonListStoredProcedure.Sql, parms.ToArray()).ToListAsync();
-            
-
+        }
+        public async Task<IEnumerable<ViewPendingRequest>> GetCartonsInPendingRequest(string customerCode, bool includeSubAccount)
+        {
+            var customerId = _tcContext.Customers.Where(x => x.CustomerCode == customerCode).FirstOrDefault().TrackingId;
+            if (includeSubAccount)
+                return await _tcContext.ViewPendingRequests.Where(x => x.MainCustomerCode == customerId).ToListAsync();
+            else
+                return await _tcContext.ViewPendingRequests.Where(x =>x.CustomerCode==customerCode).ToListAsync();
         }
     }
 }
