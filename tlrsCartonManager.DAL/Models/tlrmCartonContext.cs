@@ -88,6 +88,9 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewTobeDisposedCartonList> ViewTobeDisposedCartonLists { get; set; }
         public virtual DbSet<ViewPendingRequest> ViewPendingRequests { get; set; }
         public virtual DbSet<ViewCustomerTransaction> ViewCustomerTransactions { get; set; }
+        public virtual DbSet<ViewCartonsInLocation> ViewCartonsInLocations { get; set; }
+
+        public virtual DbSet<Location> Locations { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -894,6 +897,44 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.Status).IsUnicode(false);
             });
+
+            modelBuilder.Entity<ViewCartonsInLocation>(entity =>
+            {
+                entity.ToView("viewCartonsInLocations");
+
+                entity.Property(e => e.AlternativeCartonNo).IsUnicode(false);
+
+                entity.Property(e => e.LastRequestNo).IsUnicode(false);
+
+                entity.Property(e => e.LocationCode).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
+            });
+            modelBuilder.Entity<Location>(entity =>
+            {
+                entity.HasKey(e => e.Code)
+                    .HasName("PKLocation");
+
+                entity.Property(e => e.Code).IsUnicode(false);
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.IsRcLocation).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.Rms1Location)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.WarehouseCode)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -924,7 +965,11 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<InventoryByCustomer>().HasNoKey();
             modelBuilder.Entity<InventoryByCustomerSummary>().HasNoKey();
             modelBuilder.Entity<InventoryByRetreivalSummary>().HasNoKey();
-           
+            modelBuilder.Entity<RetentionTracker>().HasNoKey();
+            modelBuilder.Entity<RetentionTrackerDisposal>().HasNoKey();
+            modelBuilder.Entity<RetrievalTracker>().HasNoKey();
+            modelBuilder.Entity<LongOutstanding>().HasNoKey();
+
             OnModelCreatingPartial(modelBuilder);
         }
 

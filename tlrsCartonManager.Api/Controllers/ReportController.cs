@@ -70,5 +70,35 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _reportRepository.GetCustomerTransactions(customerCode,fromDate, toDate, includeSubAccount));
 
         }
+        [HttpGet("getCartonsInLocation")]
+        public async Task<ActionResult<ViewPendingRequestPivot>> GetCartonsInLocation(string locationCode)
+        {
+            return Ok(await _reportRepository.GetCartonsInLocation(locationCode));
+
+        }
+        [HttpGet("trackersPertainingRetension")]
+        public async Task<ActionResult<RetentionTracker>> GetRetensionTracker(string customerCode, DateTime asAtDate, bool includeSubAccount)
+        {
+            return Ok(await _reportRepository.GetRetentionTracker(customerCode, asAtDate, includeSubAccount));
+
+        }
+        [HttpGet("trackersPertainingRetensionDisposal")]
+        public async Task<ActionResult<RetentionTrackerDisposal>> GetRetensionTrackerDisposal(string customerCode, DateTime fromDate,DateTime toDate, bool includeSubAccount)
+        {
+            return Ok(await _reportRepository.GetRetentionTrackerDisposal(customerCode, fromDate,toDate, includeSubAccount));
+
+        }
+        [HttpGet("trackersPertainingRetrieval")]
+        public async Task<ActionResult<RetrievalTracker>> GetRetrievalTracker(string customerCode, DateTime fromDate, DateTime toDate, bool includeSubAccount)
+        {
+            return Ok(await _reportRepository.GetRetrievalTracker(customerCode, fromDate, toDate, includeSubAccount));
+
+        }
+        [HttpGet("trackersPertainingLongOutstanding")]
+        public async Task<ActionResult<LongOutstanding>> GetLongOutstanding(string customerCode, DateTime asAtDate, bool includeSubAccount)
+        {
+            return Ok(await _reportRepository.GetLongOutStanding(customerCode, asAtDate, includeSubAccount));
+
+        }
     }
 }
