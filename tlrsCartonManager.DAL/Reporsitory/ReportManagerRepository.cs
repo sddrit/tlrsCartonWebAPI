@@ -25,12 +25,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
+        private readonly ICustomerManagerRepository _customerManger;
 
-
-        public ReportManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public ReportManagerRepository(tlrmCartonContext tccontext, IMapper mapper,
+            ICustomerManagerRepository customerManger)
         {
             _tcContext = tccontext;
             _mapper = mapper;
+            _customerManger = customerManger;
 
         }
 
@@ -138,11 +140,25 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public async Task<IEnumerable<ViewPendingRequest>> GetCartonsInPendingRequest(string customerCode, bool includeSubAccount)
         {
-            var customerId = _tcContext.Customers.Where(x => x.CustomerCode == customerCode).FirstOrDefault().TrackingId;
+            var customerId = _customerManger.GetCustomerId(customerCode);
             if (includeSubAccount)
                 return await _tcContext.ViewPendingRequests.Where(x => x.MainCustomerCode == customerId).ToListAsync();
             else
                 return await _tcContext.ViewPendingRequests.Where(x =>x.CustomerCode==customerCode).ToListAsync();
+        }
+
+        public async Task<IEnumerable<ViewCustomerTransaction>> GetCustomerTransactions(string customerCode,DateTime fromDate, DateTime toDate, bool includeSubAccount)
+        {
+            var customerId = _customerManger.GetCustomerId(customerCode);
+            int fDate= Convert.ToInt32(fromDate.ToString("yyyyMMdd"));
+            int tDate = Convert.ToInt32(toDate.ToString("yyyyMMdd"));
+
+            if (includeSubAccount)
+                return await _tcContext.ViewCustomerTransactions.Where(x => x.MainCustomerCode == customerId &&
+                x.LastTransactionDateInt >= fDate && x.LastTransactionDateInt<=tDate).ToListAsync();
+            else
+                return await _tcContext.ViewCustomerTransactions.Where(x => x.CustomerCode == customerCode &&
+                x.LastTransactionDateInt >= fDate && x.LastTransactionDateInt <= tDate).ToListAsync();
         }
     }
 }

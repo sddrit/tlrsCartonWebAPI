@@ -64,5 +64,11 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _reportRepository.GetCartonsInPendingRequest(customerCode, includeSubAccount));
 
         }
+        [HttpGet("getCustomerTransactions")]
+        public async Task<ActionResult<ViewPendingRequestPivot>> GetCustomerTransactions(string customerCode, DateTime fromDate, DateTime toDate, bool includeSubAccount)
+        {
+            return Ok(await _reportRepository.GetCustomerTransactions(customerCode,fromDate, toDate, includeSubAccount));
+
+        }
     }
 }

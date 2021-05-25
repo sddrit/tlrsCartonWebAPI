@@ -87,6 +87,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewPendingRequestPivot> ViewPendingRequestPivot { get; set; }
         public virtual DbSet<ViewTobeDisposedCartonList> ViewTobeDisposedCartonLists { get; set; }
         public virtual DbSet<ViewPendingRequest> ViewPendingRequests { get; set; }
+        public virtual DbSet<ViewCustomerTransaction> ViewCustomerTransactions { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -879,7 +880,20 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.WoType).IsUnicode(false);
             });
+            modelBuilder.Entity<ViewCustomerTransaction>(entity =>
+            {
+                entity.ToView("viewCustomerTransactions");
 
+                entity.Property(e => e.CartonNo).IsUnicode(false);
+
+                entity.Property(e => e.CustomerCode).IsUnicode(false);
+
+                entity.Property(e => e.LastRequestNo).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
