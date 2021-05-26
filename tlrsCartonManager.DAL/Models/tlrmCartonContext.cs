@@ -24,6 +24,7 @@ namespace tlrsCartonManager.DAL.Models
         public tlrmCartonContext(DbContextOptions<tlrmCartonContext> options)
             : base(options)
         {
+            this.Database.SetCommandTimeout(0);
         }
 
         public virtual DbSet<AuthorizationLevel> AuthorizationLevels { get; set; }
