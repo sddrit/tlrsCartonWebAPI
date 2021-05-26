@@ -257,5 +257,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
                Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false)).ToListAsync();
             return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
         }
+
+        public int? GetCustomerId(string customerCode)
+        {
+            return  (int)(_tcContext.Customers.Where(x => x.CustomerCode == customerCode).FirstOrDefault()?.TrackingId??0);
+        }
     }
 }

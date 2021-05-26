@@ -25,12 +25,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
+        private readonly ICustomerManagerRepository _customerManger;
 
-
-        public ReportManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public ReportManagerRepository(tlrmCartonContext tccontext, IMapper mapper,
+            ICustomerManagerRepository customerManger)
         {
             _tcContext = tccontext;
             _mapper = mapper;
+            _customerManger = customerManger;
 
         }
 
@@ -95,13 +97,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return inventoryByCustomer;
         }
 
-        public async Task<IEnumerable<ViewPendingRequest>> GetPendingRequestSummary(DateTime asAtDate)
+        public async Task<IEnumerable<ViewPendingRequestPivot>> GetPendingRequestSummary(DateTime asAtDate)
         {
-           return await _tcContext.ViewPendingRequests.Where(x=>
+           return await _tcContext.ViewPendingRequestPivot.Where(x=>
            x.DeliveryDateInt<=Convert.ToInt32( asAtDate.ToString("yyyyMMdd"))).ToListAsync();
         }
 
-        public async Task<IEnumerable<ViewPendingRequest>> GetDailyLogCollection(bool asAtToday,DateTime fromDate, DateTime toDate, string route)
+        public async Task<IEnumerable<ViewPendingRequestPivot>> GetDailyLogCollection(bool asAtToday,DateTime fromDate, DateTime toDate, string route)
         {          
             if(asAtToday)
             {
@@ -110,14 +112,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
             if (string.IsNullOrEmpty(route))
             {
-                return await _tcContext.ViewPendingRequests
+                return await _tcContext.ViewPendingRequestPivot
                     .Where(x => x.DeliveryDateInt >= Convert.ToInt32(fromDate.ToString("yyyyMMdd")) &&
                     x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd"))).ToListAsync();
 
             }
             else
             {
-                return await _tcContext.ViewPendingRequests
+                return await _tcContext.ViewPendingRequestPivot
                     .Where(x => x.DeliveryDateInt >= Convert.ToInt32(fromDate.ToString("yyyyMMdd")) &&
                     x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd"))&&
                     x.DeliveryRoute==route                    
@@ -135,8 +137,95 @@ namespace tlrsCartonManager.DAL.Reporsitory
             };
 
             return  await _tcContext.Set<ViewTobeDisposedCartonList>().FromSqlRaw(ToBeDisposedCartonListStoredProcedure.Sql, parms.ToArray()).ToListAsync();
-            
+        }
+        public async Task<IEnumerable<ViewPendingRequest>> GetCartonsInPendingRequest(string customerCode, bool includeSubAccount)
+        {
+            var customerId = _customerManger.GetCustomerId(customerCode);
+            if (includeSubAccount)
+                return await _tcContext.ViewPendingRequests.Where(x => x.MainCustomerCode == customerId).ToListAsync();
+            else
+                return await _tcContext.ViewPendingRequests.Where(x =>x.CustomerCode==customerCode).ToListAsync();
+        }
 
+        public async Task<IEnumerable<ViewCustomerTransaction>> GetCustomerTransactions(string customerCode,DateTime fromDate, DateTime toDate, bool includeSubAccount)
+        {
+            var customerId = _customerManger.GetCustomerId(customerCode);
+            int fDate= Convert.ToInt32(fromDate.ToString("yyyyMMdd"));
+            int tDate = Convert.ToInt32(toDate.ToString("yyyyMMdd"));
+
+            if (includeSubAccount)
+                return await _tcContext.ViewCustomerTransactions.Where(x => x.MainCustomerCode == customerId &&
+                x.LastTransactionDateInt >= fDate && x.LastTransactionDateInt<=tDate).ToListAsync();
+            else
+                return await _tcContext.ViewCustomerTransactions.Where(x => x.CustomerCode == customerCode &&
+                x.LastTransactionDateInt >= fDate && x.LastTransactionDateInt <= tDate).ToListAsync();
+        }
+
+        public async Task<IEnumerable<ViewCartonsInLocation>> GetCartonsInLocation(string locationCode)
+        {
+            return await _tcContext.ViewCartonsInLocations.Where(x => x.LocationCode == locationCode).ToListAsync();
+        }
+        public async Task<IEnumerable<RetentionTracker>> GetRetentionTracker(string customerCode, DateTime asAtDate, bool includeSubAccount)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = RetentionTrackerStoredProcedure.StoredProcedureParameters[0].ToString(), 
+                    Value = customerCode.AsDbValue() },
+                new SqlParameter { ParameterName = RetentionTrackerStoredProcedure.StoredProcedureParameters[1].ToString(), 
+                    Value = includeSubAccount.AsDbValue() },
+                new SqlParameter { ParameterName = RetentionTrackerStoredProcedure.StoredProcedureParameters[2].ToString(), 
+                    Value = asAtDate.DateToInt().AsDbValue() }
+            };
+
+            return await _tcContext.Set<RetentionTracker>().FromSqlRaw(RetentionTrackerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+        }
+        public async Task<IEnumerable<RetentionTrackerDisposal>> GetRetentionTrackerDisposal(string customerCode, 
+            DateTime fromDate,DateTime toDate, bool includeSubAccount)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = RetentionTrackerDisposalStoredProcedure.StoredProcedureParameters[0].ToString(),
+                    Value = customerCode.AsDbValue() },
+                new SqlParameter { ParameterName = RetentionTrackerDisposalStoredProcedure.StoredProcedureParameters[1].ToString(),
+                    Value = includeSubAccount.AsDbValue() },
+                new SqlParameter { ParameterName = RetentionTrackerDisposalStoredProcedure.StoredProcedureParameters[2].ToString(),
+                    Value = fromDate.DateToInt().AsDbValue() },
+                new SqlParameter { ParameterName = RetentionTrackerDisposalStoredProcedure.StoredProcedureParameters[3].ToString(),
+                    Value = toDate.DateToInt().AsDbValue() }
+            };
+
+            return await _tcContext.Set<RetentionTrackerDisposal>().FromSqlRaw(RetentionTrackerDisposalStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+        }
+        public async Task<IEnumerable<RetrievalTracker>> GetRetrievalTracker(string customerCode,
+           DateTime fromDate, DateTime toDate, bool includeSubAccount)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = RetreivalTrackerStoredProcedure.StoredProcedureParameters[0].ToString(),
+                    Value = customerCode.AsDbValue() },
+                new SqlParameter { ParameterName = RetreivalTrackerStoredProcedure.StoredProcedureParameters[1].ToString(),
+                    Value = includeSubAccount.AsDbValue() },
+                new SqlParameter { ParameterName = RetreivalTrackerStoredProcedure.StoredProcedureParameters[2].ToString(),
+                    Value = fromDate.DateToInt().AsDbValue() },
+                new SqlParameter { ParameterName = RetreivalTrackerStoredProcedure.StoredProcedureParameters[3].ToString(),
+                    Value = toDate.DateToInt().AsDbValue() }
+            };
+
+            return await _tcContext.Set<RetrievalTracker>().FromSqlRaw(RetreivalTrackerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+        }
+        public async Task<IEnumerable<LongOutstanding>> GetLongOutStanding(string customerCode, DateTime asAtDate, bool includeSubAccount)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = LongOutStandingStoredProcedure.StoredProcedureParameters[0].ToString(),
+                    Value = customerCode.AsDbValue() },
+                new SqlParameter { ParameterName = LongOutStandingStoredProcedure.StoredProcedureParameters[1].ToString(),
+                    Value = includeSubAccount.AsDbValue() },
+                new SqlParameter { ParameterName = LongOutStandingStoredProcedure.StoredProcedureParameters[2].ToString(),
+                    Value = asAtDate.DateToInt().AsDbValue() }
+            };
+
+            return await _tcContext.Set<LongOutstanding>().FromSqlRaw(LongOutStandingStoredProcedure.Sql, parms.ToArray()).ToListAsync();
         }
     }
 }

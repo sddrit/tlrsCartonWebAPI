@@ -9,16 +9,14 @@ using Microsoft.EntityFrameworkCore;
 namespace tlrsCartonManager.DAL.Models
 {
     [Keyless]
-    public partial class ViewPendingRequest
+    public partial class ViewPendingRequestPivot
     {
         [Required]
         [Column("requestNo")]
         [StringLength(20)]
         public string RequestNo { get; set; }
-        [Column("woType")]
-        [StringLength(20)]
-        public string WoType { get; set; }
         [Column("customerCode")]
+        
         [StringLength(20)]
         public string CustomerCode { get; set; }
         [Column("name")]
@@ -30,13 +28,8 @@ namespace tlrsCartonManager.DAL.Models
         [Column("status")]
         [StringLength(100)]
         public string Status { get; set; }
-        [Column("docketNo")]
-        [StringLength(20)]
-        public string DocketNo { get; set; }
         [Column("deliveryDateInt")]
         public int? DeliveryDateInt { get; set; }
-        [Column("noOfCartons")]
-        public int? NoOfCartons { get; set; }
         [Column("deliveryDate")]
         [StringLength(10)]
         public string DeliveryDate { get; set; }
@@ -54,17 +47,24 @@ namespace tlrsCartonManager.DAL.Models
         public string RemarkCarton { get; set; }
         [Required]
         [Column("deliveryRoute")]
-        [StringLength(50)]
+        [StringLength(100)]
         public string DeliveryRoute { get; set; }
         [Required]
         [Column("reminder")]
         public string Reminder { get; set; }
-
-        [Column("mainCustomerCode")]
-        public int? MainCustomerCode { get; set; }
-
-
-        [Column("trackingId")]
-        public int? TrackingId { get; set; }
+        [Column("collectionCartonCount")]
+        public int CollectionCartonCount { get; set; }
+        [Column("emptyCartonCount")]
+        public int EmptyCartonCount { get; set; }
+        [Column("cityLimitCartonCount")]
+        public int CityLimitCartonCount { get; set; }
+        [Column("greaterColomboCartonCount")]
+        public int GreaterColomboCartonCount { get; set; }
+        [Column("outstationCartonCount")]
+        public int OutstationCartonCount { get; set; }
+        [Column("northernAreaoCartonCount")]
+        public int NorthernAreaoCartonCount { get; set; }
+        [Column("retrievalCartonCount")]
+        public int RetrievalCartonCount { get; set; }
     }
 }
