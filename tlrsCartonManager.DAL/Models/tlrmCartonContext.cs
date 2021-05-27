@@ -25,9 +25,12 @@ namespace tlrsCartonManager.DAL.Models
             : base(options)
         {
             this.Database.SetCommandTimeout(0);
-        }
+        }     
 
         public virtual DbSet<AuthorizationLevel> AuthorizationLevels { get; set; }
+
+       
+
         public virtual DbSet<BillingCycle> BillingCycles { get; set; }
         public virtual DbSet<CalculationType> CalculationTypes { get; set; }
         public virtual DbSet<CartonLocation> CartonLocations { get; set; }
@@ -90,8 +93,9 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewPendingRequest> ViewPendingRequests { get; set; }
         public virtual DbSet<ViewCustomerTransaction> ViewCustomerTransactions { get; set; }
         public virtual DbSet<ViewCartonsInLocation> ViewCartonsInLocations { get; set; }
-
+        public virtual DbSet<ViewInventorySummaryByCustomer> ViewInventorySummaryByCustomers { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<ViewDisposalDatesOfCustomer> ViewDisposalDatesOfCustomers { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -102,6 +106,7 @@ namespace tlrsCartonManager.DAL.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+          
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<AuthorizationLevel>(entity =>
@@ -936,6 +941,30 @@ namespace tlrsCartonManager.DAL.Models
                     .IsUnicode(false)
                     .HasDefaultValueSql("('')");
             });
+
+            modelBuilder.Entity<ViewInventorySummaryByCustomer>(entity =>
+            {
+                entity.ToView("viewInventorySummaryByCustomer");
+
+                entity.Property(e => e.ContactName).IsUnicode(false);
+
+                entity.Property(e => e.ContactTelephone1).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.ServiceProvided).IsUnicode(false);
+            });
+            modelBuilder.Entity<ViewDisposalDatesOfCustomer>(entity =>
+            {
+                entity.ToView("viewDisposalDatesOfCustomer");
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
+
+                entity.Property(e => e.StatusConfirmed).IsUnicode(false);
+            });
+
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -970,6 +999,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<RetentionTrackerDisposal>().HasNoKey();
             modelBuilder.Entity<RetrievalTracker>().HasNoKey();
             modelBuilder.Entity<LongOutstanding>().HasNoKey();
+            modelBuilder.Entity<GenericReportColumn>().HasNoKey();
 
             OnModelCreatingPartial(modelBuilder);
         }

@@ -10,16 +10,24 @@ namespace tlrsCartonManager.DAL.Models.Report
     {
         public int ColumnId { get; set; }
         public string  ColumnName { get; set; }
-        public ICollection<GenericReportFilterOption> FilterOptionList { get; set; }
+       
+    }
+    public class GenericReportData
+    {
+        public int MenuId { get; set; }
+        public ICollection<GenericReportFilterOption>  ReportFilters { get; set; }
+
     }
     public class GenericReportFilterOption
     {
-        public string Filter{ get; set; }
+        public int ColumnId { get; set; }
+        public string ColumnName { get; set; }
+        public string FilterOperator{ get; set; }
         public string FromValue { get; set; }
         public string ToValue { get; set; }
-        public string Select { get; set; }
+        public bool IsSelect { get; set; }
         public string SortBy { get; set; }
-        public string SortOrder { get; set; }
+        public int SortOrder { get; set; }
 
 
     }
