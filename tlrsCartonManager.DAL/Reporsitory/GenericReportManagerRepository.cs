@@ -35,7 +35,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public  object GetReportData(GenericReportData model)
         {           
             GenericViewNames gv;
-            GenericViewNames.TryParse(_tcContext.MenuModels.Where(x => x.Id == model.MenuId)?.FirstOrDefault()?.SqlObjectName, out gv);            
+            GenericViewNames.TryParse(_tcContext.MenuModels.Where(x => x.ReportName == model.ReportName)?.FirstOrDefault()?.SqlObjectName, out gv);            
             switch (gv)
             {
                 case
@@ -52,7 +52,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
-               new SqlParameter { ParameterName = GenericReportStoredProcedure.StoredProcedureParameters[0].ToString(), Value =model.MenuId.AsDbValue()},
+               new SqlParameter { ParameterName = GenericReportStoredProcedure.StoredProcedureParameters[0].ToString(), Value =model.ReportName.AsDbValue()},
                new SqlParameter
                {
                     ParameterName = GenericReportStoredProcedure.StoredProcedureParameters[1].ToString(),
@@ -64,11 +64,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
           return  _tcContext.Set<T>().FromSqlRaw(GenericReportStoredProcedure.Sql, parms.ToArray()).ToList();     
         }
-        public List<GenericReportColumn> GetReportColumns(int menuId) 
+        public List<GenericReportColumn> GetReportColumns(string reportName) 
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
-               new SqlParameter { ParameterName = GenericReportColumnStoredProcedure.StoredProcedureParameters[0].ToString(), Value =menuId.AsDbValue()}
+               new SqlParameter { ParameterName = GenericReportColumnStoredProcedure.StoredProcedureParameters[0].ToString(), Value =reportName.AsDbValue()}
               
             };
             return  _tcContext.Set<GenericReportColumn>().FromSqlRaw(GenericReportColumnStoredProcedure.Sql, parms.ToArray()).ToList();

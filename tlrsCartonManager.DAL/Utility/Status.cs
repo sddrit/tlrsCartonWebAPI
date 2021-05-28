@@ -41,8 +41,10 @@ namespace tlrsCartonManager.DAL.Utility
         {
             NA,
             viewInventorySummaryByCustomer,
-            viewDisposalDatesOfCustomer
-            
+            viewDisposalDatesOfCustomer,
+            viewPrintedDockets,
+            viewLocationSummary
+
 
         }
     }

@@ -23,7 +23,11 @@ namespace tlrsCartonManager.DAL.Models
         [StringLength(50)]
         public string Name { get; set; }
 
-        
+        [Required]
+        [StringLength(50)]
+        public string ReportName { get; set; }
+       
+
         [StringLength(500)]
         public string SqlObjectName { get; set; }
         

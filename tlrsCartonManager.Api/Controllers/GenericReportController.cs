@@ -40,10 +40,10 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetGenericReportColumns(int menuId)
+        public ActionResult GetGenericReportColumns(string reportName)
         {
 
-            return Ok(_reportRepository.GetReportColumns(menuId));
+            return Ok(_reportRepository.GetReportColumns(reportName));
 
         }
     }

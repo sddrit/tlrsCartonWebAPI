@@ -14,7 +14,7 @@ namespace tlrsCartonManager.DAL.Models.Report
     }
     public class GenericReportData
     {
-        public int MenuId { get; set; }
+        public string ReportName { get; set; }
         public ICollection<GenericReportFilterOption>  ReportFilters { get; set; }
 
     }

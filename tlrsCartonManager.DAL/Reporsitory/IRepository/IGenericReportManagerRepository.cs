@@ -10,6 +10,6 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface IGenericReportManagerRepository
     {
         object GetReportData(GenericReportData model);
-        List<GenericReportColumn> GetReportColumns(int menuId);
+        List<GenericReportColumn> GetReportColumns(string reportName);
     }
 }

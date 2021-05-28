@@ -28,7 +28,7 @@ namespace tlrsCartonManager.DAL.Utility
         public static string StoredProcedureName = "reportGenericColumn";
         public static List<string> StoredProcedureParameters = new List<string>()
         {
-               "@menuId"
+               "@menuName"
 
         };
        
