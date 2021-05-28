@@ -71,6 +71,7 @@ namespace tlrsCartonManager.Api.Controllers
             var postingTypeList = await _postingTypeRepository.GetPostingTypeList();
             var taxTypeList = await _taxTypeManagerRepository.GetTaxTypeList();
             var requestTypeList = await _requestTypeTypeManagerRepository.GetRequestTypeList();
+           
             return Ok(
             new
             {
@@ -87,6 +88,7 @@ namespace tlrsCartonManager.Api.Controllers
                 postingTypeList,
                 taxTypeList,
                 requestTypeList
+
             });
         }
 

@@ -50,6 +50,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IReportManagerRepository, ReportManagerRepository>();
             services.AddScoped<IRequestTypeManagerRepository, RequestTypeManagerRepository>();
             services.AddScoped<ILocationManagerRepository, LocationManagerRepository>();
+            services.AddScoped<IGenericReportManagerRepository, GenericReportManagerRepository>();
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             return services;
         }

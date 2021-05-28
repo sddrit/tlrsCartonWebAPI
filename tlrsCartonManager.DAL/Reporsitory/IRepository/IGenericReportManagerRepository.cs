@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tlrsCartonManager.DAL.Models.Report;
 
 namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
-    public interface IGenericReportManagerRepository<T>
+    public interface IGenericReportManagerRepository
     {
-        public T GetReportData(string menuName,string filterOptions);
-
+        object GetReportData(GenericReportData model);
+        List<GenericReportColumn> GetReportColumns(string reportName);
     }
 }

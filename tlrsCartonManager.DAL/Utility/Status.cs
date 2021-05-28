@@ -37,5 +37,15 @@ namespace tlrsCartonManager.DAL.Utility
            SummaryRetreival
 
         }
+        public enum GenericViewNames
+        {
+            NA,
+            viewInventorySummaryByCustomer,
+            viewDisposalDatesOfCustomer,
+            viewPrintedDockets,
+            viewLocationSummary
+
+
+        }
     }
 }
