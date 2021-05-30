@@ -85,6 +85,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<TaxType> TaxTypes { get; set; }
         public virtual DbSet<ViewPickListByNo> ViewPickListByNos { get; set; }
         public virtual DbSet<ViewMenu> ViewMenus { get; set; }
+        public virtual DbSet<ViewUserRole> ViewUserRoles { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -822,6 +823,15 @@ namespace tlrsCartonManager.DAL.Models
                 entity.ToView("viewMenu");
 
                 entity.Property(e => e.CategoryName).IsUnicode(false);
+            });
+            modelBuilder.Entity<ViewUserRole>(entity =>
+            
+            {
+                entity.ToView("viewUserRole");
+
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
             });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();

@@ -20,10 +20,10 @@ namespace tlrsCartonManager.Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    public class MenuRoleController : Controller
+    public class UserRoleController : Controller
     {
         private readonly IMenuRoleManagerRepository _menuRoleRepository;
-        public MenuRoleController(IMenuRoleManagerRepository menuRoleRepository)
+        public UserRoleController(IMenuRoleManagerRepository menuRoleRepository)
         {
             _menuRoleRepository = menuRoleRepository;
         }        
@@ -43,11 +43,40 @@ namespace tlrsCartonManager.Api.Controllers
             var roleList = await _menuRoleRepository.GetRoleList();
             return Ok(roleList);
         }
+        [HttpGet("getUserRole")]
+        public async Task<ActionResult<ViewUserRole>> GetUserRoleList()
+        {
+            var roleList = await _menuRoleRepository.GetUserRoleList();
+            return Ok(roleList);
+        }
         [HttpGet("getMenu")]
         public async Task<ActionResult<MenuModel>> GetMenuList()
         {
             var roleList = await _menuRoleRepository.GetMenuList();
             return Ok(roleList);
+        }
+        [HttpPost("AddRole")]
+        public async Task<ActionResult> AddRole(Role role)
+        {
+            var validateMessage = _menuRoleRepository.ValidateRole(role);
+            if (!string.IsNullOrEmpty(validateMessage))
+                return new JsonErrorResult(new { Message = validateMessage }, HttpStatusCode.NotFound);
+
+            if (await _menuRoleRepository.AddRole(role))
+                return new JsonErrorResult(new { Message = "Role Created" }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = "Role creation failed" }, HttpStatusCode.NotFound);
+
+        }
+        [HttpDelete("deleteRole")]
+        public async Task<ActionResult> DeleteRole(Role role)
+        {      
+
+            if (await _menuRoleRepository.DeleteRole(role))
+                return new JsonErrorResult(new { Message = "Role Deleted" }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = "Role deletion failed" }, HttpStatusCode.NotFound);
+
         }
     }
 }

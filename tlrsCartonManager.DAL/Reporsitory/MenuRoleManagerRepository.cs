@@ -65,14 +65,46 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public async Task<IEnumerable<RoleResponseListItem>> GetRoleList()
         {
-            var role = await _tcContext.Roles.ToListAsync();
+            var role = await _tcContext.Roles.Where(x=>x.Deleted==0).ToListAsync();
             return _mapper.Map<IEnumerable<RoleResponseListItem>>(role);
         }
-
+        public async Task<IEnumerable<ViewUserRole>> GetUserRoleList()
+        {
+            var role = await _tcContext.ViewUserRoles.ToListAsync();
+            return _mapper.Map<IEnumerable<ViewUserRole>>(role);
+        }
         public async Task<IEnumerable<MenuListItem>> GetMenuList()
         {
             return _mapper.Map<IEnumerable<MenuListItem>>( await _tcContext.ViewMenus.ToListAsync());
           
+        }
+        public async Task<bool> AddRole(Role role)
+        {
+            role.Active = true;
+            role.Deleted = 0;
+            role.CreatedDate = System.DateTime.Today;
+
+             _tcContext.Roles.Add(role);
+            if (await _tcContext.SaveChangesAsync() > 0)return true;          
+            else return false;
+                      
+        }
+        public async Task<bool> DeleteRole(Role role)
+        {
+            var currentRole = _tcContext.Roles.Where(x => x.Id == role.Id).FirstOrDefault();
+            currentRole.Deleted = 1;
+            _tcContext.Roles.Update(currentRole);
+            if (await _tcContext.SaveChangesAsync() > 0) return true;
+            else return false;
+
+        }
+        public string ValidateRole(Role role)
+        {
+            if (_tcContext.Roles.Where(x => x.Description == role.Description && x.Deleted==0).FirstOrDefault()!=null)
+                return "Role already exist";
+
+            return string.Empty;
+
         }
     }
 }

@@ -16,6 +16,9 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<IEnumerable<RoleResponseListItem>> GetRoleList();
         Task<IEnumerable<MenuListItem>> GetMenuList();
 
-
+        Task<IEnumerable<ViewUserRole>> GetUserRoleList();
+        string ValidateRole(Role role);
+        Task<bool> AddRole(Role role);
+        Task<bool> DeleteRole(Role role);
     }
 }
