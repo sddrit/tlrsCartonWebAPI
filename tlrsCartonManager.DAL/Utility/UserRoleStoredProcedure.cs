@@ -11,8 +11,7 @@ namespace tlrsCartonManager.DAL.Utility
         public static string StoredProcedureName = "userRoleInsertUpdateDelete";
         public static List<string> StoredProcedureParameters = new List<string>()
         {
-           "@id",
-           "@description",
+           "@id",         
            "@userId",
            "@statementType",           
            "@udtMenuUserRoleAction"
@@ -25,4 +24,15 @@ namespace tlrsCartonManager.DAL.Utility
         };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) ;
     }
+}
+
+public class UserRoleByIdStoredProcedure
+{
+    public static string StoredProcedureName = "userRolePermissionSelect";
+    public static List<string> StoredProcedureParameters = new List<string>()
+        {
+           "@id"
+        };
+   
+    public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 }

@@ -20,39 +20,56 @@ namespace tlrsCartonManager.Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    public class UserRoleController : Controller
+    public class RolePermissionController : Controller
     {
-        private readonly IMenuRoleManagerRepository _menuRoleRepository;
-        public UserRoleController(IMenuRoleManagerRepository menuRoleRepository)
+        private readonly IRolePermissionManagerRepository _menuRoleRepository;
+        public RolePermissionController(IRolePermissionManagerRepository menuRoleRepository)
         {
             _menuRoleRepository = menuRoleRepository;
         }        
 
         [HttpPost]
-        public IActionResult AddRole(RoleResponse request)
+        public IActionResult AddRolePermission(RoleResponse request)
         {
-            if (_menuRoleRepository.AddRole(request))
+            if (_menuRoleRepository.AddRolePermission(request))
 
                 return new JsonErrorResult(new { Message = "Role  Created" }, HttpStatusCode.OK);
             else
                 return new JsonErrorResult(new { Message = "Roles  Creation Failed" }, HttpStatusCode.NotFound);            
         }
+        [HttpPut]
+        public IActionResult UpdateRolePermission(RoleResponse request)
+        {
+            if (_menuRoleRepository.UpdateRolePermission(request))
+
+                return new JsonErrorResult(new { Message = "Role  Created" }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = "Roles  Creation Failed" }, HttpStatusCode.NotFound);
+        }
+
         [HttpGet("getRole")]
         public async Task<ActionResult<RoleResponseListItem>> GetRoleList()
         {
             var roleList = await _menuRoleRepository.GetRoleList();
             return Ok(roleList);
         }
-        [HttpGet("getUserRole")]
-        public async Task<ActionResult<ViewUserRole>> GetUserRoleList()
+        [HttpGet("getRolePermission")]
+        public async Task<ActionResult<RolePermissionListItem>> GetRolePermissionList()
         {
-            var roleList = await _menuRoleRepository.GetUserRoleList();
+            var roleList = await _menuRoleRepository.GeRolePermissionList();
             return Ok(roleList);
         }
-        [HttpGet("getMenu")]
-        public async Task<ActionResult<MenuModel>> GetMenuList()
+
+        [HttpGet("getRolePermission/{id}")]
+        public async Task<ActionResult<RolePermissionListItem>> GetRolePermissionListById(int id)
         {
-            var roleList = await _menuRoleRepository.GetMenuList();
+            var roleList = await _menuRoleRepository.GetRolePermissionListById(id);
+            return Ok(roleList);
+        }
+        [HttpGet("getPermissionPendingRole")]
+        public async Task<ActionResult<MenuModel>> GetPermissionPendingRoleList()
+        {
+            var roleList = await _menuRoleRepository.GetPermissionPendingRoleList();
             return Ok(roleList);
         }
         [HttpPost("AddRole")]

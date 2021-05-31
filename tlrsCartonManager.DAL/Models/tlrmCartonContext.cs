@@ -10,6 +10,7 @@ using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
 using tlrsCartonManager.DAL.Models.Report;
+using tlrsCartonManager.DAL.Models.RoleResponse;
 
 #nullable disable
 
@@ -86,6 +87,8 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewPickListByNo> ViewPickListByNos { get; set; }
         public virtual DbSet<ViewMenu> ViewMenus { get; set; }
         public virtual DbSet<ViewUserRole> ViewUserRoles { get; set; }
+
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -863,6 +866,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<InventoryByCustomer>().HasNoKey();
             modelBuilder.Entity<InventoryByCustomerSummary>().HasNoKey();
             modelBuilder.Entity<InventoryByRetreivalSummary>().HasNoKey();
+            modelBuilder.Entity<RolePermissionListItem>().HasNoKey();
+            
             OnModelCreatingPartial(modelBuilder);
         }
 

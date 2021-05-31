@@ -176,7 +176,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<TaxEffectiveDate, TaxEffectiveDateDto>().ReverseMap();
             CreateMap<TaxType, TaxTypeDto>().ReverseMap();
             CreateMap<RoleResponseListItem, Role>().ReverseMap();
-            CreateMap<MenuListItem, ViewMenu>().ReverseMap();
+            CreateMap<RolePermissionListItem, ViewMenu>().ReverseMap();
             //ruv
         }
 

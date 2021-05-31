@@ -14,49 +14,42 @@ using static tlrsCartonManager.DAL.Utility.Status;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class MenuRoleManagerRepository : IMenuRoleManagerRepository
+    public class RolePermissionManagerRepository : IRolePermissionManagerRepository
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
 
-        public MenuRoleManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public RolePermissionManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
         {
             _tcContext = tccontext;
             _mapper = mapper;
         }
-
-        public bool AddRole(RoleResponse response)
+        public bool AddRolePermission(RoleResponse response)
         {
-            List<MenuActionRoleUtd> lstMenuActionRole = new List<MenuActionRoleUtd>();
-            foreach(var item in response.MenuRoleList)
-            {    
-                foreach(var item2 in item.MenuActionRoleList)
-                {
-                    MenuActionRoleUtd menuRoleUtd = new MenuActionRoleUtd()
-                    {
-                        MenuId = item.MenuId,                       
-                    };
-                    menuRoleUtd.ActionId = item2.ActionId;
-                    lstMenuActionRole.Add(menuRoleUtd);
-                }
-            }
+           return SaveRolePermission(response, TransactionTypes.Insert.ToString());
+        }
+        public bool UpdateRolePermission(RoleResponse response)
+        {
+            return SaveRolePermission(response, TransactionTypes.Update.ToString());
+        }
+        public bool SaveRolePermission(RoleResponse response,string transactionType)
+        {           
             #region Sql Parameter loading
             List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter { ParameterName = UserRoleStoredProcedure.StoredProcedureParameters[0].ToString(),
                     Value = response.RoleId.AsDbValue() },
+               
                 new SqlParameter { ParameterName = UserRoleStoredProcedure.StoredProcedureParameters[1].ToString(),
-                    Value = response.RoleName.AsDbValue() },
-                new SqlParameter { ParameterName = UserRoleStoredProcedure.StoredProcedureParameters[2].ToString(),
                     Value = response.UserId.AsDbValue() },
-                new SqlParameter { ParameterName = UserRoleStoredProcedure.StoredProcedureParameters[3].ToString(),
-                    Value = TransactionTypes.Insert.ToString()},             
+                new SqlParameter { ParameterName = UserRoleStoredProcedure.StoredProcedureParameters[2].ToString(),
+                    Value = transactionType },            
                  new SqlParameter
                 {
-                   ParameterName = UserRoleStoredProcedure.StoredProcedureParameters[4].ToString(),
+                   ParameterName = UserRoleStoredProcedure.StoredProcedureParameters[3].ToString(),
                    TypeName = UserRoleStoredProcedure.StoredProcedureTypeNames[0].ToString(),
                    SqlDbType = SqlDbType.Structured,
-                   Value =lstMenuActionRole.ToDataTable()
+                   Value =response.RolePermissionList.ToList().ToDataTable()
                 }
             };
             #endregion
@@ -68,14 +61,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var role = await _tcContext.Roles.Where(x=>x.Deleted==0).ToListAsync();
             return _mapper.Map<IEnumerable<RoleResponseListItem>>(role);
         }
-        public async Task<IEnumerable<ViewUserRole>> GetUserRoleList()
+        public async Task<IEnumerable<ViewUserRole>> GetPermissionPendingRoleList()
         {
             var role = await _tcContext.ViewUserRoles.ToListAsync();
             return _mapper.Map<IEnumerable<ViewUserRole>>(role);
         }
-        public async Task<IEnumerable<MenuListItem>> GetMenuList()
-        {
-            return _mapper.Map<IEnumerable<MenuListItem>>( await _tcContext.ViewMenus.ToListAsync());
+        public async Task<IEnumerable<RolePermissionListItem>> GeRolePermissionList()        {
+          
+            return _mapper.Map<IEnumerable<RolePermissionListItem>>( await _tcContext.ViewMenus.ToListAsync());
           
         }
         public async Task<bool> AddRole(Role role)
@@ -105,6 +98,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return string.Empty;
 
+        }
+
+        public async Task<IEnumerable<RolePermissionListItem>> GetRolePermissionListById(int id)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = UserRoleByIdStoredProcedure.StoredProcedureParameters[0].ToString(),
+                    Value = id.AsDbValue() }                           
+            };
+
+            return await _tcContext.Set<RolePermissionListItem>().FromSqlRaw(UserRoleByIdStoredProcedure.Sql,
+                parms.ToArray()).ToListAsync();
         }
     }
 }
