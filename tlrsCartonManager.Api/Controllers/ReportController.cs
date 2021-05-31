@@ -16,6 +16,8 @@ using tlrsCartonManager.Api.Error;
 using System.Net;
 using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Models.Report;
+using tlrsCartonManager.Services.Report;
+using tlrsCartonManager.Services.Report.Core;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -25,10 +27,12 @@ namespace tlrsCartonManager.Api.Controllers
     public class ReportController : Controller
     {
         private readonly IReportManagerRepository _reportRepository;
+        private readonly ReportGeneratingService _reportGeneratingService;
 
-        public ReportController(IReportManagerRepository reportRepository)
+        public ReportController(IReportManagerRepository reportRepository, ReportGeneratingService reportGeneratingService)
         {
             _reportRepository = reportRepository;
+            _reportGeneratingService = reportGeneratingService;
         }
 
         [HttpGet("getInventoryByCustomer")]
@@ -100,5 +104,13 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _reportRepository.GetLongOutStanding(customerCode, asAtDate, includeSubAccount));
 
         }
+
+        [HttpPost("generate-report")]
+        public async Task<IActionResult> GenerateReport([FromBody]GenerateReportRequest request)
+        {
+            var excelReportData = _reportGeneratingService.GenerateReportData(request);
+            return File(excelReportData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "report.xlsx");
+        }
+
     }
 }

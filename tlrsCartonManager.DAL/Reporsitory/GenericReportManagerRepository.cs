@@ -30,24 +30,28 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             _tcContext = tccontext;
             _mapper = mapper;
-            
-        }        
-        public  object GetReportData(GenericReportData model)
-        {           
-            GenericViewNames gv;
-            GenericViewNames.TryParse(_tcContext.MenuModels.Where(x => x.ReportName == model.ReportName)?.FirstOrDefault()?.SqlObjectName, out gv);            
-            switch (gv)
+        }
+
+        public IList<IList<KeyValuePair<string, string>>> GetReportData(GenericReportData model)
+        {
+            GenericViewNames viewName;
+            GenericViewNames.TryParse(_tcContext.MenuModels.Where(x => x.ReportName == model.ReportName)?.FirstOrDefault()?.SqlObjectName, out viewName);
+
+            switch (viewName)
             {
                 case
                     GenericViewNames.viewInventorySummaryByCustomer:
-                    return GetSearchResult<ViewInventorySummaryByCustomer>(model);
+                    var inventorySummaryData = GetSearchResult<ViewInventorySummaryByCustomer>(model);
+                    return inventorySummaryData.Select(item => item.GetValues()).ToList();
                 case
                     GenericViewNames.viewDisposalDatesOfCustomer:
-                    return GetSearchResult<ViewDisposalDatesOfCustomer>(model);
+                    var viewDisposalDatesOfCustomersData = GetSearchResult<ViewDisposalDatesOfCustomer>(model);
+                    return viewDisposalDatesOfCustomersData.Select(item => item.GetValues()).ToList();
                 default:
-                    return new object();
+                    throw new Exception("Report not implemented");
             }
         }
+
         public  List<T> GetSearchResult<T>(GenericReportData model) where T :class 
         {
             List<SqlParameter> parms = new List<SqlParameter>
@@ -62,8 +66,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
                }
             };           
 
-          return  _tcContext.Set<T>().FromSqlRaw(GenericReportStoredProcedure.Sql, parms.ToArray()).ToList();     
+            return  _tcContext.Set<T>().FromSqlRaw(GenericReportStoredProcedure.Sql, parms.ToArray()).ToList();     
         }
+
         public List<GenericReportColumn> GetReportColumns(string reportName) 
         {
             List<SqlParameter> parms = new List<SqlParameter>
