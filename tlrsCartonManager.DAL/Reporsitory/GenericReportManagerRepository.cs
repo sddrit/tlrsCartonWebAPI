@@ -34,19 +34,19 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public IList<IList<KeyValuePair<string, string>>> GetReportData(GenericReportData model)
         {
-            GenericViewNames viewName;
-            GenericViewNames.TryParse(_tcContext.MenuModels.Where(x => x.ReportName == model.ReportName)?.FirstOrDefault()?.SqlObjectName, out viewName);
+            var viewName = _tcContext.MenuModels.Where(x => x.ReportName == model.ReportName)?.FirstOrDefault()?.SqlObjectName;
 
             switch (viewName)
             {
-                case
-                    GenericViewNames.viewInventorySummaryByCustomer:
+                case "viewInventorySummaryByCustomer":
                     var inventorySummaryData = GetSearchResult<ViewInventorySummaryByCustomer>(model);
                     return inventorySummaryData.Select(item => item.GetValues()).ToList();
-                case
-                    GenericViewNames.viewDisposalDatesOfCustomer:
+                case "viewDisposalDatesOfCustomer":
                     var viewDisposalDatesOfCustomersData = GetSearchResult<ViewDisposalDatesOfCustomer>(model);
                     return viewDisposalDatesOfCustomersData.Select(item => item.GetValues()).ToList();
+                case "viewRequestSummary":
+                    var viewRequestSummaryData = GetSearchResult<ViewRequestSummary>(model);
+                    return viewRequestSummaryData.Select(item => item.GetValues()).ToList();
                 default:
                     throw new Exception("Report not implemented");
             }

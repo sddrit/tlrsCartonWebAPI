@@ -10,6 +10,7 @@ using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
 using tlrsCartonManager.DAL.Models.Report;
+using tlrsCartonManager.DAL.Models.RoleResponse;
 
 #nullable disable
 
@@ -96,6 +97,11 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewInventorySummaryByCustomer> ViewInventorySummaryByCustomers { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<ViewDisposalDatesOfCustomer> ViewDisposalDatesOfCustomers { get; set; }
+
+        public virtual DbSet<ViewRequestSummary> ViewRequestSummaries { get; set; }
+        public virtual DbSet<ViewMenu> ViewMenus { get; set; }
+        public virtual DbSet<ViewUserRole> ViewUserRoles { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -964,6 +970,56 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.StatusConfirmed).IsUnicode(false);
             });
+            modelBuilder.Entity<UserRole>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+            });
+            modelBuilder.Entity<ViewMenu>(entity =>
+            {
+                entity.ToView("viewMenu");
+
+                entity.Property(e => e.CategoryName).IsUnicode(false);
+            });
+            modelBuilder.Entity<ViewUserRole>(entity =>
+
+            {
+                entity.ToView("viewUserRole");
+
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<ViewRequestSummary>(entity =>
+            {
+                entity.ToView("viewRequestSummary");
+
+                entity.Property(e => e.CreatedUser).IsUnicode(false);
+
+                entity.Property(e => e.CustomerReference).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryRoute).IsUnicode(false);
+
+                entity.Property(e => e.DocketNo).IsUnicode(false);
+
+                entity.Property(e => e.LuUser).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.OrderReceivedBy).IsUnicode(false);
+
+                entity.Property(e => e.RequestNo).IsUnicode(false);
+
+                entity.Property(e => e.RequestType).IsUnicode(false);
+
+                entity.Property(e => e.ServiceType).IsUnicode(false);
+
+                entity.Property(e => e.StorageType).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
+
+                entity.Property(e => e.WoType).IsUnicode(false);
+            });
 
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
@@ -1000,7 +1056,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<RetrievalTracker>().HasNoKey();
             modelBuilder.Entity<LongOutstanding>().HasNoKey();
             modelBuilder.Entity<GenericReportColumn>().HasNoKey();
-
+            modelBuilder.Entity<RolePermissionListItem>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 
