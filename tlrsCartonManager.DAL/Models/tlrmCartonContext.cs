@@ -98,6 +98,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<ViewDisposalDatesOfCustomer> ViewDisposalDatesOfCustomers { get; set; }
 
+        public virtual DbSet<ViewRequestSummary> ViewRequestSummaries { get; set; }
         public virtual DbSet<ViewMenu> ViewMenus { get; set; }
         public virtual DbSet<ViewUserRole> ViewUserRoles { get; set; }
 
@@ -988,6 +989,38 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
             });
+
+            modelBuilder.Entity<ViewRequestSummary>(entity =>
+            {
+                entity.ToView("viewRequestSummary");
+
+                entity.Property(e => e.CreatedUser).IsUnicode(false);
+
+                entity.Property(e => e.CustomerReference).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryRoute).IsUnicode(false);
+
+                entity.Property(e => e.DocketNo).IsUnicode(false);
+
+                entity.Property(e => e.LuUser).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.OrderReceivedBy).IsUnicode(false);
+
+                entity.Property(e => e.RequestNo).IsUnicode(false);
+
+                entity.Property(e => e.RequestType).IsUnicode(false);
+
+                entity.Property(e => e.ServiceType).IsUnicode(false);
+
+                entity.Property(e => e.StorageType).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
+
+                entity.Property(e => e.WoType).IsUnicode(false);
+            });
+
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();

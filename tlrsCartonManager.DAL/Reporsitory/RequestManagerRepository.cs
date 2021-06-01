@@ -130,8 +130,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var resultTable = _tcContext.Set<TableReturn>().FromSqlRaw(RequestStoredProcedure.Sql, parms.ToArray()).ToList();
             var tableResponse = new TableResponse<TableReturn>
             {
-                Message = resultTable.Where(x => x.Reason == "OK" || x.Reason=="NOK").FirstOrDefault().OutValue,
-
+                Message = resultTable.Where(x => x.Reason == "OK" || x.Reason == "NOK").FirstOrDefault().OutValue,
+                Ok = resultTable.Where(x => x.Reason == "OK").FirstOrDefault() != null ? true : false,
                 OutList = resultTable.Where(x => x.Reason != "OK" && x.Reason!="NOK").ToList()
             };
             return tableResponse;
