@@ -10,6 +10,7 @@ using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
 using tlrsCartonManager.DAL.Models.Report;
+using tlrsCartonManager.DAL.Models.RoleResponse;
 
 #nullable disable
 
@@ -96,6 +97,10 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewInventorySummaryByCustomer> ViewInventorySummaryByCustomers { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<ViewDisposalDatesOfCustomer> ViewDisposalDatesOfCustomers { get; set; }
+
+        public virtual DbSet<ViewMenu> ViewMenus { get; set; }
+        public virtual DbSet<ViewUserRole> ViewUserRoles { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -964,7 +969,25 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.StatusConfirmed).IsUnicode(false);
             });
+            modelBuilder.Entity<UserRole>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+            });
+            modelBuilder.Entity<ViewMenu>(entity =>
+            {
+                entity.ToView("viewMenu");
 
+                entity.Property(e => e.CategoryName).IsUnicode(false);
+            });
+            modelBuilder.Entity<ViewUserRole>(entity =>
+
+            {
+                entity.ToView("viewUserRole");
+
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -1000,7 +1023,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<RetrievalTracker>().HasNoKey();
             modelBuilder.Entity<LongOutstanding>().HasNoKey();
             modelBuilder.Entity<GenericReportColumn>().HasNoKey();
-
+            modelBuilder.Entity<RolePermissionListItem>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 
