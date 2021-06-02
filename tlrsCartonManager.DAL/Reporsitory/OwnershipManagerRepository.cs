@@ -66,12 +66,31 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = CartonOwnershipSummaryStoredProcedure.StoredProcedureParameters[1].ToString(), Value = toValue.AsDbValue() },
                 new SqlParameter { ParameterName = CartonOwnershipSummaryStoredProcedure.StoredProcedureParameters[2].ToString(), Value = searchBy.AsDbValue() }
 
-            };
+            };           
 
             var ownershipSummaryList = await _tcContext.Set<CartonOwnershipSummary>().FromSqlRaw(CartonOwnershipSummaryStoredProcedure.Sql,
-                 parms.ToArray()).ToListAsync();
+                 parms.ToArray()).ToListAsync();          
             return ownershipSummaryList.FirstOrDefault();
         }
+
+        public async Task<List<CustomerMainCodeSearchDto>> SearchOwnershipSummaryCustomerList(string fromValue, string toValue, string searchBy)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = CartonOwnershipCustomerListStoredProcedure.StoredProcedureParameters[0].ToString(), Value = fromValue.AsDbValue() },
+                new SqlParameter { ParameterName = CartonOwnershipCustomerListStoredProcedure.StoredProcedureParameters[1].ToString(), Value = toValue.AsDbValue() },
+                new SqlParameter { ParameterName = CartonOwnershipCustomerListStoredProcedure.StoredProcedureParameters[2].ToString(), Value = searchBy.AsDbValue() }
+
+            };         
+       
+
+            var customerList = await _tcContext.Set<CustomerMainCodeSearchDto>().FromSqlRaw(CartonOwnershipCustomerListStoredProcedure.Sql,
+                 parms.ToArray()).ToListAsync();
+
+         
+            return customerList;
+        }
+
 
         public bool InsertOwnership(CartonOwnershipTransfer cartonOwnership)
         {

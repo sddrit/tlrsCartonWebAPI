@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Docket;
@@ -1196,6 +1197,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<LongOutstanding>().HasNoKey();
             modelBuilder.Entity<GenericReportColumn>().HasNoKey();
             modelBuilder.Entity<RolePermissionListItem>().HasNoKey();
+            modelBuilder.Entity<CustomerMainCodeSearchDto>();
+            
             OnModelCreatingPartial(modelBuilder);
         }
 
