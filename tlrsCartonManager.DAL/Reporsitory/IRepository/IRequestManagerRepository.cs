@@ -11,7 +11,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
     public interface IRequestManagerRepository
     {
-        Task<RequestHeaderDto> GetRequestList(string requestNo);
+        Task<RequestHeaderDto> GetRequestList(string requestNo, string type);
         Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType,string searchText, int pageIndex, int pageSize);
         TableResponse<TableReturn> AddRequest (RequestHeaderDto requestInsert);
         TableResponse<TableReturn> UpdateRequest(RequestHeaderDto requestUpdate);

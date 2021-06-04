@@ -32,11 +32,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _mapper = mapper;
             _searchManager = searchManager;
         }
-        public async Task<RequestHeaderDto> GetRequestList(string requestNo)
+        public async Task<RequestHeaderDto> GetRequestList(string requestNo, string type)
         {
+            if(type.ToLower()=="emptyallocate")
+                type="Empty";
+
             var request = await _tcContext.RequestHeaders.
                                  Include(x => x.RequestDetails.Where(x=>x.RequestNo==requestNo)).
-                                 FirstOrDefaultAsync(x => x.RequestNo == requestNo);
+                                 FirstOrDefaultAsync(x => x.RequestNo == requestNo & x.RequestType==type);
             var requestDto = _mapper.Map<RequestHeaderDto>(request);
             if (request != null)
             {
