@@ -1,82 +1,135 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.IO;
-//using System.Linq;
-//using System.Security.Cryptography;
-//using System.Text;
-//using System.Threading.Tasks;
-//using NPOI.SS.UserModel;
-//using NPOI.XSSF.UserModel;
-//using tlrsCartonManager.DAL.Dtos;
-//using tlrsCartonManager.DAL.Models;
-//using tlrsCartonManager.DAL.Models.GenericReport;
-//using tlrsCartonManager.DAL.Models.Report;
-//using tlrsCartonManager.DAL.Reporsitory.IRepository;
-//using tlrsCartonManager.Services.Report.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+using AutoMapper;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using tlrsCartonManager.Core;
+using tlrsCartonManager.Core.Enums;
+using tlrsCartonManager.DAL.Exceptions;
+using tlrsCartonManager.DAL.Models.GenericReport;
+using tlrsCartonManager.DAL.Models.Report;
+using tlrsCartonManager.DAL.Reporsitory;
+using tlrsCartonManager.DAL.Reporsitory.IRepository;
+using tlrsCartonManager.Services.Report.Core;
+using tlrsCartonManager.Services.User;
+using TransnationalLanka.ThreePL.Services.User.Core;
 
-//namespace tlrsCartonManager.Services.Report
-//{
-//    public class UserGeneratingService
-//    {
-//        private readonly IUserPasswordManagerRepository _usertManagerRepository;
-//        private readonly ITokenServicesRepository _tokenServiceRepository;
-
-//        public UserGeneratingService(IUserPasswordManagerRepository usertManagerRepository, ITokenServicesRepository tokenServiceRepository)
-//        {
-//            _usertManagerRepository = usertManagerRepository;
-//            _tokenServiceRepository = tokenServiceRepository;
-//        }
-
-//        public async Task<UserToken> Login(SystemUserPasswordsDto userPassword)
-//        {
-//            if (!await _usertManagerRepository.ValidUserName(userPassword.UserID))
-//            {
-//                throw new Exception("Invalid User Name");
-
-//            }
-
-//            var systemUserPassword = await _usertManagerRepository.GetSystemUserPasswords(userPassword.UserID);
+namespace tlrsCartonManager.Services.User
+{
+    public class UserService
+    {
+        private readonly IUserManagerRepository _userManagerRepository;
+        private readonly IUserPasswordManagerRepository _userPasswordManagerRepository;
+        private readonly ITokenServicesRepository _tokenServiceRepository;
 
 
+        public UserService(IUserManagerRepository userManagerRepository, IUserPasswordManagerRepository userPasswordManagerRepository,
+            ITokenServicesRepository tokenServiceRepository, IMapper mapper)
+        {
+            _userManagerRepository = userManagerRepository;
+            _userPasswordManagerRepository = userPasswordManagerRepository;
+            _tokenServiceRepository = tokenServiceRepository;
 
-//            using var hmac = new HMACSHA512(systemUserPassword.PasswordSalt);
+        }
 
-//            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userPassword.PasswordText));
+        public async Task<DAL.Dtos.UserResponse> CreateUser(DAL.Dtos.UserDto user)
+        {
+            await ValidateUser(user);
+            using var hmac = new HMACSHA512();
 
-//            for (int i = 0; i < computedHash.Length; i++)
-//            {
-//                if (computedHash[i] != systemUserPassword.PasswordHash[i])
-//                {
-//                    throw new Exception("Passowrd Not Valid");
-//                }
-//            }
+            var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.UserPassword));
+            var passwordSalt = hmac.Key;
+            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Insert.ToString());
+            if (userId == 0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                    new ErrorMessage()
+                    {
+                        Message = "Unable to create user"
+                    }
+                });
+            }
 
-//            int systemuserid = _usertManagerRepository.GetSystemUserID(userPassword.UserID);
+            return await _userManagerRepository.GetUserById(userId);
+        }
 
-//            await _usertManagerRepository.UserLoginTracker(systemuserid);
+        private async Task ValidateUser(DAL.Dtos.UserDto user)
+        {
+            var userByName = await _userManagerRepository.GetUserByName(user.UserName);
+
+            if (userByName != null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Message = $"Existing user name found  {user.UserName}"
+                    }
+               });
+
+            }
+
+            var userValidator = new UserValidator();
+            var validateResult = await userValidator.ValidateAsync(user);
+
+            if (validateResult.IsValid)
+            {
+                return;
+            }
 
 
-//            return new UserToken
-//            {
-//                UserId = userPassword.UserID,
-//                Token = _tokenServiceRepository.CreateToken(userPassword.UserID),
+            throw new ServiceException(validateResult.Errors.Select(e => new ErrorMessage()
+            {
+                Code = ErrorCodes.Model_Validation_Error_Code,
+                Meta = new
+                {
+                    e.ErrorCode,
+                    e.ErrorMessage,
+                    e.PropertyName
+                },
+                Message = e.ErrorMessage
+            }).ToArray());
+        }
+        public async Task<DAL.Dtos.UserToken> Login(DAL.Dtos.SystemUserPasswordsDto userPassword)
+        {
+            if (!await _userPasswordManagerRepository.ValidUserName(userPassword.UserID))
+            {
+                throw new Exception("Invalid User Name");
 
-//            };
+            }
 
-//        }
-//        public async Task<User> CreateUser(User user)
-//        {
-           
+            var systemUserPassword = await _userPasswordManagerRepository.GetSystemUserPasswords(userPassword.UserID);
 
-//            await ValidateSupplier(supplier);
+            using var hmac = new HMACSHA512(systemUserPassword.PasswordSalt);
 
-//            _unitOfWork.SupplierRepository.Insert(supplier);
-//            await _unitOfWork.SaveChanges();
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userPassword.PasswordText));
 
-//            //Todo send the create new supplier to tracking application
+            for (int i = 0; i < computedHash.Length; i++)
+            {
+                if (computedHash[i] != systemUserPassword.PasswordHash[i])
+                {
+                    throw new Exception("Passowrd Not Valid");
+                }
+            }
 
-//            return await GetSupplierById(supplier.Id);
-//        }
+            int systemuserid = _userPasswordManagerRepository.GetSystemUserID(userPassword.UserID);
 
-//    }
-//}
+            await _userPasswordManagerRepository.UserLoginTracker(systemuserid);
+
+
+            return new DAL.Dtos.UserToken
+            {
+                UserId = userPassword.UserID,
+                Token = _tokenServiceRepository.CreateToken(userPassword.UserID),
+
+            };
+
+        }
+    }
+}

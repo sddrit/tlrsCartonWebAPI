@@ -180,6 +180,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<Location, LocationDto>().ReverseMap();
             CreateMap<RoleResponseListItem, Role>().ReverseMap();
             CreateMap<RolePermissionListItem, ViewMenu>().ReverseMap();
+            CreateMap<User, UserResponse>().ReverseMap();
             //ruv
         }
 

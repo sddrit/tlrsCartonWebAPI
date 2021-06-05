@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tlrsCartonManager.Services.User;
+using tlrsCartonManager.Services.Report;
+using tlrsCartonManager.DAL.Models;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -14,10 +17,12 @@ namespace tlrsCartonManager.Api.Controllers
     public class UserController : Controller
     {
         private readonly IUserManagerRepository _userRepository;
+        private readonly UserService _userService;
 
-        public UserController(IUserManagerRepository userRepository)
+        public UserController(IUserManagerRepository userRepository, UserService userService)
         {
             _userRepository = userRepository;
+            _userService = userService;
         }
 
         //[HttpGet("getUsersList")]
@@ -32,6 +37,11 @@ namespace tlrsCartonManager.Api.Controllers
             var userList = await _userRepository.SearchUser(columnValue, pageIndex, pageSize);
             return Ok(userList);
         }
-
+        [HttpPost("addUser")]
+        public async Task<ActionResult<User>> AddUser(UserDto request)
+        {
+            return   Ok (await _userService.CreateUser(request));
+           
+        }
     }
 }
