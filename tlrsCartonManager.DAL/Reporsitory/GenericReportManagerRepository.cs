@@ -47,6 +47,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 case "viewRequestSummary":
                     var viewRequestSummaryData = GetSearchResult<ViewRequestSummary>(model);
                     return viewRequestSummaryData.Select(item => item.GetValues()).ToList();
+                case "viewCustomerSummary":
+                    var viewCustomerSummaryData = GetSearchResult<ViewCustomerSummary>(model);
+                    return viewCustomerSummaryData.Select(item => item.GetValues()).ToList();
+                case "viewCreatedPickList":
+                    var viewCreatedPickListData = GetSearchResult<ViewCreatedPickList>(model);
+                    return viewCreatedPickListData.Select(item => item.GetValues()).ToList();
+                case "viewCreatedInvoiceList":
+                    var viewCreatedInvoiceListData = GetSearchResult<ViewCreatedInvoiceList>(model);
+                    return viewCreatedInvoiceListData.Select(item => item.GetValues()).ToList();
+                case "viewCustomerAuthorizationList":
+                    var viewCustomerAuthorizationListData = GetSearchResult<ViewCustomerAuthorizationList>(model);
+                    return viewCustomerAuthorizationListData.Select(item => item.GetValues()).ToList();
                 default:
                     throw new Exception("Report not implemented");
             }

@@ -15,7 +15,9 @@ namespace tlrsCartonManager.DAL.Utility
                 "@valueFrom",
                 "@valueTo",
                 "@searchBy"
-            };
+                
+         };
+
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 
     }
@@ -33,5 +35,19 @@ namespace tlrsCartonManager.DAL.Utility
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 
     }
+    public class CartonOwnershipCustomerListStoredProcedure
+    {
 
+        public static string StoredProcedureName = "ownershipSearchCustomerList";
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+                "@valueFrom",
+                "@valueTo",
+                "@searchBy"
+
+         };
+
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
+    }
 }

@@ -17,6 +17,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<PagedResponse<CartonOwnershipSearch>> SearchOwnership(string fromValue, string toValue, string searchBy, int pageIndex, int pageSize);
 
         Task<CartonOwnershipSummary> SearchOwnershipSummaryAsync(string fromValue, string toValue, string searchBy);
+        Task<List<CustomerMainCodeSearchDto>> SearchOwnershipSummaryCustomerList(string fromValue, string toValue, string searchBy);
         bool InsertOwnership(CartonOwnershipTransfer cartonOwnership);
 
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Docket;
@@ -30,8 +31,8 @@ namespace tlrsCartonManager.DAL.Models
 
         public virtual DbSet<AuthorizationLevel> AuthorizationLevels { get; set; }
 
-       
 
+        #region db set
         public virtual DbSet<BillingCycle> BillingCycles { get; set; }
         public virtual DbSet<CalculationType> CalculationTypes { get; set; }
         public virtual DbSet<CartonLocation> CartonLocations { get; set; }
@@ -101,6 +102,13 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewRequestSummary> ViewRequestSummaries { get; set; }
         public virtual DbSet<ViewMenu> ViewMenus { get; set; }
         public virtual DbSet<ViewUserRole> ViewUserRoles { get; set; }
+        public virtual DbSet<ViewCustomerSummary> ViewCustomerSummaries { get; set; }
+
+        public virtual DbSet<ViewCreatedPickList> ViewCreatedPickLists { get; set; }
+
+        public virtual DbSet<ViewCreatedInvoiceList> ViewCreatedInvoiceLists { get; set; }
+        public virtual DbSet<ViewCustomerAuthorizationList> ViewCustomerAuthorizationLists { get; set; }
+        #endregion
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -110,11 +118,11 @@ namespace tlrsCartonManager.DAL.Models
             }
         }
 
+        #region Model creation
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
           
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
-
             modelBuilder.Entity<AuthorizationLevel>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
@@ -1020,7 +1028,139 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.WoType).IsUnicode(false);
             });
+            modelBuilder.Entity<ViewCustomerSummary>(entity =>
+            {
+                entity.ToView("viewCustomerSummary");
 
+                entity.Property(e => e.AccountType).IsUnicode(false);
+
+                entity.Property(e => e.Address2).IsUnicode(false);
+
+                entity.Property(e => e.Address3).IsUnicode(false);
+
+                entity.Property(e => e.BillingCycle).IsUnicode(false);
+
+                entity.Property(e => e.City).IsUnicode(false);
+
+                entity.Property(e => e.ContactAddress1).IsUnicode(false);
+
+                entity.Property(e => e.ContactAddress2).IsUnicode(false);
+
+                entity.Property(e => e.ContactAddress3).IsUnicode(false);
+
+                entity.Property(e => e.ContactFax).IsUnicode(false);
+
+                entity.Property(e => e.ContactName).IsUnicode(false);
+
+                entity.Property(e => e.ContactPersonInv).IsUnicode(false);
+
+                entity.Property(e => e.ContactTelephone1).IsUnicode(false);
+
+                entity.Property(e => e.ContactTelephone2).IsUnicode(false);
+
+                entity.Property(e => e.ContractNo).IsUnicode(false);
+
+                entity.Property(e => e.CreatedUser).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryAddress1).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryAddress2).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryAddress3).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryFax).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryName).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryTelephone1).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryTelephone2).IsUnicode(false);
+
+                entity.Property(e => e.Email).IsUnicode(false);
+
+                entity.Property(e => e.Fax).IsUnicode(false);
+
+                entity.Property(e => e.LuUser).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.PickUpAddress1).IsUnicode(false);
+
+                entity.Property(e => e.PickUpAddress2).IsUnicode(false);
+
+                entity.Property(e => e.PickUpAddress3).IsUnicode(false);
+
+                entity.Property(e => e.PickUpFax).IsUnicode(false);
+
+                entity.Property(e => e.PickUpName).IsUnicode(false);
+
+                entity.Property(e => e.PickUpTelephone1).IsUnicode(false);
+
+                entity.Property(e => e.PickUpTelephone2).IsUnicode(false);
+
+                entity.Property(e => e.PoNo).IsUnicode(false);
+
+                entity.Property(e => e.Route).IsUnicode(false);
+
+                entity.Property(e => e.ServiceProvided).IsUnicode(false);
+
+                entity.Property(e => e.SvatNo).IsUnicode(false);
+
+                entity.Property(e => e.Telephone1).IsUnicode(false);
+
+                entity.Property(e => e.Telephone2).IsUnicode(false);
+
+                entity.Property(e => e.VatNo).IsUnicode(false);
+
+                entity.Property(e => e.ZipCode).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ViewCreatedPickList>(entity =>
+            {
+                entity.ToView("viewCreatedPickList");
+
+                entity.Property(e => e.AssignedUser).IsUnicode(false);
+
+                entity.Property(e => e.Barcode).IsUnicode(false);
+
+                entity.Property(e => e.CreatedUser).IsUnicode(false);
+
+                entity.Property(e => e.LastSentDeviceId).IsUnicode(false);
+
+                entity.Property(e => e.LocationCode).IsUnicode(false);
+
+                entity.Property(e => e.PickListNo).IsUnicode(false);
+
+                entity.Property(e => e.PickedUser).IsUnicode(false);
+
+                entity.Property(e => e.RequestNo).IsUnicode(false);
+
+                entity.Property(e => e.WareHouseCode).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ViewCreatedInvoiceList>(entity =>
+            {
+                entity.ToView("viewCreatedInvoiceList");
+
+                entity.Property(e => e.CreatedUser).IsUnicode(false);
+
+                entity.Property(e => e.InvoiceId).IsUnicode(false);
+
+                entity.Property(e => e.LuUser).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ViewCustomerAuthorizationList>(entity =>
+            {
+                entity.ToView("viewCustomerAuthorizationList");
+
+                entity.Property(e => e.ContactNo).IsUnicode(false);
+
+                entity.Property(e => e.CustomerName).IsUnicode(false);
+
+                entity.Property(e => e.Email).IsUnicode(false);
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -1057,10 +1197,12 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<LongOutstanding>().HasNoKey();
             modelBuilder.Entity<GenericReportColumn>().HasNoKey();
             modelBuilder.Entity<RolePermissionListItem>().HasNoKey();
+            modelBuilder.Entity<CustomerMainCodeSearchDto>();
+            
             OnModelCreatingPartial(modelBuilder);
         }
 
-
+        #endregion
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }

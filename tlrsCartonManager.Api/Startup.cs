@@ -55,7 +55,7 @@ namespace tlrsCartonManager.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tlrsCartonManager.Api v1"));
             }
-
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseHttpsRedirection();
 
             app.UseRouting();

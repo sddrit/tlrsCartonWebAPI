@@ -18,6 +18,7 @@ using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models.Carton;
+using tlrsCartonManager.DAL.Exceptions;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -77,6 +78,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             };
             #endregion
+
+            if (postResponse == null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to find cartons"
+                    }
+                });
+            }
 
             return paginationResponse;
         }
