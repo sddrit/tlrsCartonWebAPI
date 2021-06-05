@@ -16,9 +16,9 @@ namespace tlrsCartonManager.DAL.Models
         public long TrackingId { get; set; }
         [Column("userId")]
         public int? UserId { get; set; }
-        [Column("loginDate", TypeName = "datetime")]
+        [Column("passwordCreatedDate", TypeName = "datetime")]
         public DateTime? LoginDate { get; set; }
-        [Column("expiryDate", TypeName = "datetime")]
+        [Column("passwordExpiryDate", TypeName = "datetime")]
         public DateTime? ExpiryDate { get; set; }
     }
 }
