@@ -10,10 +10,16 @@ namespace tlrsCartonManager.DAL.Models
     public class InvoiceConfirmationSearch
     {
         [Key]
-            public string RequestNo { get; set; }
-            public int RequestDate { get; set; }
-            public string CustomerCode { get; set; }
-            public string CustomerName { get; set; }
-            public string WOType { get; set; }       
+           
+        public string RequestNo { get; set; }
+        public int RequestDate { get; set; }
+        public string CustomerCode { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerAddress { get; set; }
+        public string ContactPersonName { get; set; }
+        public string WOType { get; set; }
+        public int? CartonCount { get; set; }
+        public int? DeliveryDate { get; set; }
+
     }
 }
