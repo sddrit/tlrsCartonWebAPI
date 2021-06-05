@@ -75,9 +75,9 @@ namespace tlrsCartonManager.Api.Controllers
 
         }
         [HttpDelete]
-        public ActionResult DeleteRequest(string requestNo)
+        public ActionResult DeleteRequest(RequestHeaderDto request)
         {
-            return Ok(_requestRepository.DeleteRequest(requestNo));
+            return Ok(_requestRepository.DeleteRequest(request.RequestNo));
 
         }
 
