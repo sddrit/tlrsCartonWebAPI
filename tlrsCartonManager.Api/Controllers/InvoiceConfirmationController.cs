@@ -58,9 +58,10 @@ namespace tlrsCartonManager.Api.Controllers
 
         }
         [HttpDelete]
-        public ActionResult DeleteInvoiceConfirmation(string requestNo, string reason, int userId)
+        public ActionResult DeleteInvoiceConfirmation(InvoiceDisConfirmationDto invoiceDisConfirmation)
         {
-            if (_invoiceRepository.DeleteInvoiceConfirmation(requestNo, reason, userId))
+            if (_invoiceRepository.DeleteInvoiceConfirmation(invoiceDisConfirmation.RequestNo,
+                invoiceDisConfirmation.Reason, invoiceDisConfirmation.UserId))
 
                 return new JsonErrorResult(new { Message = "Request Disapproved" }, HttpStatusCode.OK);
             else

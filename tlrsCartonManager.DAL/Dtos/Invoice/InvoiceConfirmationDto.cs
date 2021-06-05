@@ -22,7 +22,11 @@ namespace tlrsCartonManager.DAL.Dtos
         public int RequestDate { get; set; }
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
+        public string CustomerAddress { get; set; }
+        public string ContactPersonName { get; set; }
         public string WOType { get; set; }
+        public int? CartonCount { get; set; }
+        public int? DeliveryDate { get; set; }
     }
     public class InvoiceConfirmationHeaderDto
     {
@@ -42,6 +46,15 @@ namespace tlrsCartonManager.DAL.Dtos
         public bool? Picked { get; set; }
         public string PickListNo { get; set; }
        public string LocationCode { get; set; }
+
+    }
+    public class InvoiceDisConfirmationDto
+    {
+        [Key]
+        public string RequestNo { get; set; }
+        public string Reason { get; set; }
+     
+        public int UserId { get; set; }
 
     }
 }
