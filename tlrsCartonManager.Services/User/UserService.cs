@@ -41,7 +41,6 @@ namespace tlrsCartonManager.Services.User
         {
             await ValidateUser(user);
             using var hmac = new HMACSHA512();
-
             var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.UserPassword));
             var passwordSalt = hmac.Key;
             var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Insert.ToString());

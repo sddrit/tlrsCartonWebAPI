@@ -181,6 +181,8 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<RoleResponseListItem, Role>().ReverseMap();
             CreateMap<RolePermissionListItem, ViewMenu>().ReverseMap();
             CreateMap<User, UserResponse>().ReverseMap();
+
+            CreateMap<object, TableReturn>().ReverseMap();
             //ruv
         }
 
