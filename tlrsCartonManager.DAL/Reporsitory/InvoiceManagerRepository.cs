@@ -129,6 +129,31 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return paginationResponse;
         }
+        public async Task<object> SearchInvoiceDisConfirmation(string requestNo)
+        {
+            var validationResult = (IList<TableReturn>)(await GetInvoiceDisConfirmation(requestNo, true));           
+            if(validationResult.Count==0   )       
+                return await GetInvoiceDisConfirmation(requestNo, false);
+
+            return validationResult;           
+
+        }
+        public async Task<object> GetInvoiceDisConfirmation(string requestNo, bool isValidate)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = InvoiceDisaprroveValidateStoredProcedure.StoredProcedureParameters[0].ToString(), Value = requestNo.AsDbValue() },
+                new SqlParameter { ParameterName = InvoiceDisaprroveValidateStoredProcedure.StoredProcedureParameters[1].ToString(), Value = isValidate}
+
+            };
+            if (isValidate)
+            {
+                var v =await _tcContext.Set<TableReturn>().FromSqlRaw(InvoiceDisaprroveValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+                return v;
+            }
+            else
+                return await _tcContext.Set<InvoiceConfirmationSearch>().FromSqlRaw(InvoiceDisaprroveValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+        }
         public async Task<List<InvoiceConfirmationDetail>> GetInvoiceConfirmationDetailByRequestNo(string requestNo)
         {            
             List<SqlParameter> parms = new List<SqlParameter>

@@ -26,6 +26,10 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<List<InvoiceConfirmationDetail>> GetInvoiceConfirmationDetailByRequestNo(string requestNo);
         bool SaveInvoiceConfirmation(List<InvoiceConfirmationDto> invoiceConfirmation);
         bool DeleteInvoiceConfirmation(string requestNo, string reason, int userId);
+
+        Task<object> SearchInvoiceDisConfirmation(string requestNo);
+        Task<object> GetInvoiceDisConfirmation(string requestNo, bool isValidate);
+
         #endregion
 
         #region Invoice Posting

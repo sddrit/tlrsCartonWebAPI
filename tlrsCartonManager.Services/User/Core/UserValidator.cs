@@ -6,7 +6,7 @@ namespace TransnationalLanka.ThreePL.Services.User.Core
 {
     public class UserValidator : AbstractValidator<tlrsCartonManager.DAL.Dtos.UserDto>
     {
-        private readonly IUserManagerRepository _userManagerRepository;
+      
         public UserValidator()
         {
 

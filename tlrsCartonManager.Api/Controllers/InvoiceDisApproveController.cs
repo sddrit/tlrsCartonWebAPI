@@ -20,23 +20,23 @@ namespace tlrsCartonManager.Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    public class InvoiceConfirmationController : Controller
+    public class InvoiceDisApproveController : Controller
     {
         private readonly IInvoiceManagerRepository _invoiceRepository;
 
-        public InvoiceConfirmationController(IInvoiceManagerRepository invoiceRepository)
+        public InvoiceDisApproveController(IInvoiceManagerRepository invoiceRepository)
         {
             _invoiceRepository = invoiceRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string searchText, int pageIndex, int pageSize)
+        public async Task<ActionResult> SearchInvoiceDisConfirmation(string requestNo)
         {
-            var invoiceList = await _invoiceRepository.SearchInvoiceConfirmation(searchText, pageIndex, pageSize);
+            var invoiceList = await _invoiceRepository.SearchInvoiceDisConfirmation(requestNo);
             return Ok(invoiceList);
         }
 
-        [HttpGet("{requestNo}")]
+        [HttpGet("invoiceDetails/{requestNo}")]
         public async Task<ActionResult<InvoiceConfirmationDetail>> GetSingleSearch(string requestNo)
         {
             var invoiceConfirmationDetailList = await _invoiceRepository.GetInvoiceConfirmationDetailByRequestNo(requestNo);
@@ -45,17 +45,20 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Invoice Confirmation Details Not Found" }, HttpStatusCode.NotFound);
         }
+        
         [HttpPost]
-        public ActionResult AddInvoiceConfirmation(List<InvoiceConfirmationDto> invoiceConfirmList)
+        public ActionResult DeleteInvoiceConfirmation(InvoiceDisConfirmationDto invoiceDisConfirmation)
         {
-            if(_invoiceRepository.SaveInvoiceConfirmation(invoiceConfirmList))
-                return new JsonErrorResult(new { Message = "Request Approved" }, HttpStatusCode.OK);
+            if (_invoiceRepository.DeleteInvoiceConfirmation(invoiceDisConfirmation.RequestNo,
+                invoiceDisConfirmation.Reason, invoiceDisConfirmation.UserId))
+
+                return new JsonErrorResult(new { Message = "Request Disapproved" }, HttpStatusCode.OK);
             else
-                return new JsonErrorResult(new { Message = "Request Approval Failed" }, HttpStatusCode.NotFound);
-            
+                return new JsonErrorResult(new { Message = "Request Disapprove Failed" }, HttpStatusCode.NotFound);
+
+          
 
         }
-       
 
     }
 }
