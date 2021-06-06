@@ -41,6 +41,7 @@ namespace tlrsCartonManager.DAL.Models
         public bool? Active { get; set; }
         [Column("deleted")]
         public bool? Deleted { get; set; }
+      
 
         [InverseProperty(nameof(MenuRightUser.User))]
         public virtual ICollection<MenuRightUser> MenuRightUsers { get; set; }

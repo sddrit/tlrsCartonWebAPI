@@ -12,6 +12,7 @@ using tlrsCartonManager.DAL.Reporsitory;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
 using tlrsCartonManager.DAL.Mapper;
 using tlrsCartonManager.Services.Report;
+using tlrsCartonManager.Services.User;
 
 namespace tlrsCartonManager.Api.Extensions
 {
@@ -54,6 +55,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IGenericReportManagerRepository, GenericReportManagerRepository>();
             services.AddScoped<ReportGeneratingService>();
             services.AddScoped<IRolePermissionManagerRepository, RolePermissionManagerRepository>();
+            services.AddScoped<UserService>();
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             return services;
         }

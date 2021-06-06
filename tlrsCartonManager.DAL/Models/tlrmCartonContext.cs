@@ -109,7 +109,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewCreatedInvoiceList> ViewCreatedInvoiceLists { get; set; }
         public virtual DbSet<ViewCustomerAuthorizationList> ViewCustomerAuthorizationLists { get; set; }
         #endregion
-
+        public virtual DbSet<ViewWorkerUserList> ViewWorkerUserLists { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -1161,6 +1161,14 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.Email).IsUnicode(false);
             });
+            modelBuilder.Entity<ViewWorkerUserList>(entity =>
+            {
+                entity.ToView("viewWorkerUserList");
+
+                entity.Property(e => e.UserId).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.UserName).IsUnicode(false);
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -1172,6 +1180,7 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<PickListSearch>().HasNoKey();
             modelBuilder.Entity<BoolReturn>().HasNoKey();
+            modelBuilder.Entity<IntReturn>().HasNoKey();
             modelBuilder.Entity<StringReturn>().HasNoKey();
             modelBuilder.Entity<TableReturn>().HasNoKey();
             modelBuilder.Entity<InvoiceReturn>();
@@ -1198,7 +1207,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<GenericReportColumn>().HasNoKey();
             modelBuilder.Entity<RolePermissionListItem>().HasNoKey();
             modelBuilder.Entity<CustomerMainCodeSearchDto>();
-            
+            modelBuilder.Entity<ViewWorkerUserList>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 

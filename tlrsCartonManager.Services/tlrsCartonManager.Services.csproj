@@ -10,9 +10,11 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.3" />
+    <PackageReference Include="FluentValidation" Version="10.1.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\tlrsCartonManager.Core\tlrsCartonManager.Core.csproj" />
     <ProjectReference Include="..\tlrsCartonManager.DAL\tlrsCartonManager.DAL.csproj" />
   </ItemGroup>
 
