@@ -110,6 +110,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewCustomerAuthorizationList> ViewCustomerAuthorizationLists { get; set; }
         #endregion
         public virtual DbSet<ViewWorkerUserList> ViewWorkerUserLists { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -1168,6 +1169,14 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.UserId).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.UserName).IsUnicode(false);
+            });
+
+
+            modelBuilder.Entity<Department>(entity =>
+            {
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Name).IsUnicode(false);
             });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();

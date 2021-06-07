@@ -22,13 +22,13 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         #endregion
 
         #region Invoice Confirmation
-        Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string searchText, int pageIndex, int pageSize);
+        Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string type,string searchText, int pageIndex, int pageSize);
         Task<List<InvoiceConfirmationDetail>> GetInvoiceConfirmationDetailByRequestNo(string requestNo);
         bool SaveInvoiceConfirmation(List<InvoiceConfirmationDto> invoiceConfirmation);
         bool DeleteInvoiceConfirmation(string requestNo, string reason, int userId);
 
-        Task<object> SearchInvoiceDisConfirmation(string requestNo);
-        Task<object> GetInvoiceDisConfirmation(string requestNo, bool isValidate);
+  
+        Task<List<TableReturn>> ValidateInvoiceDisConfirmation(string requestNo);
 
         #endregion
 

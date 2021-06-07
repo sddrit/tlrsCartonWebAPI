@@ -108,10 +108,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
         #endregion
 
         #region Invoice Confirmation
-        public async Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string type, string searchText, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("invoiceConfirmationSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
-            var cartonList = await _tcContext.Set<InvoiceConfirmationSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            List<SqlParameter> parms = _searchManager.Search("invoiceConfirmDisapproveSearch",type, searchText, pageIndex, pageSize, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<InvoiceConfirmationSearch>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
             var postResponse = _mapper.Map<List<InvoiceConfirmationSearchDto>>(cartonList);
@@ -129,30 +129,16 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return paginationResponse;
         }
-        public async Task<object> SearchInvoiceDisConfirmation(string requestNo)
-        {
-            var validationResult = (IList<TableReturn>)(await GetInvoiceDisConfirmation(requestNo, true));           
-            if(validationResult.Count==0   )       
-                return await GetInvoiceDisConfirmation(requestNo, false);
-
-            return validationResult;           
-
-        }
-        public async Task<object> GetInvoiceDisConfirmation(string requestNo, bool isValidate)
+       
+        public async Task<List<TableReturn>> ValidateInvoiceDisConfirmation(string requestNo)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
-                new SqlParameter { ParameterName = InvoiceDisaprroveValidateStoredProcedure.StoredProcedureParameters[0].ToString(), Value = requestNo.AsDbValue() },
-                new SqlParameter { ParameterName = InvoiceDisaprroveValidateStoredProcedure.StoredProcedureParameters[1].ToString(), Value = isValidate}
-
+                new SqlParameter { ParameterName = InvoiceDisaprroveValidateStoredProcedure.StoredProcedureParameters[0].ToString(), Value = requestNo.AsDbValue() }
             };
-            if (isValidate)
-            {
-                var v =await _tcContext.Set<TableReturn>().FromSqlRaw(InvoiceDisaprroveValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
-                return v;
-            }
-            else
-                return await _tcContext.Set<InvoiceConfirmationSearch>().FromSqlRaw(InvoiceDisaprroveValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+          
+               return await _tcContext.Set<TableReturn>().FromSqlRaw(InvoiceDisaprroveValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+               
         }
         public async Task<List<InvoiceConfirmationDetail>> GetInvoiceConfirmationDetailByRequestNo(string requestNo)
         {            

@@ -20,21 +20,23 @@ using Newtonsoft.Json;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class RoleManagerRepository : IRoleManagerRepository
+    public class DepartmentManagerRepository : IDepartmentManagerRepository
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
 
-        public RoleManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public DepartmentManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
         {
             _tcContext = tccontext;
             _mapper = mapper;
         }
-        public async  Task<IEnumerable<RoleDto>> GetRoleList()
-        {
-            var roleList = await _tcContext.Roles.ToListAsync();
-            return _mapper.Map<IEnumerable<RoleDto>>(roleList);
 
-        }       
+        public async Task<IEnumerable<Department>> GetDepartmentList()
+        {
+            return await _tcContext.Departments.ToListAsync();
+           
+        }
+
+             
     }
  }
