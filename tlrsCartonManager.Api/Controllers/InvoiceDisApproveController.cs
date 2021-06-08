@@ -20,23 +20,29 @@ namespace tlrsCartonManager.Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    public class InvoiceDisApproveController : Controller
+    public class InvoiceDisapproveController : Controller
     {
         private readonly IInvoiceManagerRepository _invoiceRepository;
 
-        public InvoiceDisApproveController(IInvoiceManagerRepository invoiceRepository)
+        public InvoiceDisapproveController(IInvoiceManagerRepository invoiceRepository)
         {
             _invoiceRepository = invoiceRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult> SearchInvoiceDisConfirmation(string requestNo)
+        public async Task<ActionResult<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string searchText, int pageIndex, int pageSize)
         {
-            var invoiceList = await _invoiceRepository.SearchInvoiceDisConfirmation(requestNo);
+            var invoiceList = await _invoiceRepository.SearchInvoiceConfirmation("Disapprove",searchText, pageIndex, pageSize);
+            return Ok(invoiceList);
+        }
+        [HttpGet("validateRequest")]
+        public async Task<ActionResult> ValidateRequest(string requestNo)
+        {
+            var invoiceList = await _invoiceRepository.ValidateInvoiceDisConfirmation(requestNo);
             return Ok(invoiceList);
         }
 
-        [HttpGet("invoiceDetails/{requestNo}")]
+        [HttpGet("{requestNo}")]
         public async Task<ActionResult<InvoiceConfirmationDetail>> GetSingleSearch(string requestNo)
         {
             var invoiceConfirmationDetailList = await _invoiceRepository.GetInvoiceConfirmationDetailByRequestNo(requestNo);
@@ -45,7 +51,7 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Invoice Confirmation Details Not Found" }, HttpStatusCode.NotFound);
         }
-        
+
         [HttpPost]
         public ActionResult DeleteInvoiceConfirmation(InvoiceDisConfirmationDto invoiceDisConfirmation)
         {
@@ -55,8 +61,6 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Request Disapproved" }, HttpStatusCode.OK);
             else
                 return new JsonErrorResult(new { Message = "Request Disapprove Failed" }, HttpStatusCode.NotFound);
-
-          
 
         }
 

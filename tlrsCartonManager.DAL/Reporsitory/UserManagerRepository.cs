@@ -57,7 +57,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[4].ToString(), Value = user.DepartmentId.AsDbValue() },
                 new SqlParameter { ParameterName = UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[5].ToString(), Value = passwrodHash },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[6].ToString(),Value= passwordSalt },
-                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[7].ToString(), Value =string.Join(",",user.UserRoles.Select(x => x.UserRoleId.ToString()).ToArray()) },
+                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[7].ToString(), Value =string.Join(",",user.UserRoles.Select(x => x.Id.ToString()).ToArray()) },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[8].ToString() , Value =user.Email.AsDbValue() },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[9].ToString() , Value =user.Active.AsDbValue() },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[10].ToString() , Value =trasactionType },

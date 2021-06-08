@@ -37,7 +37,7 @@ namespace tlrsCartonManager.Api.Controllers
             var userList = await _userRepository.SearchUser(columnValue, pageIndex, pageSize);
             return Ok(userList);
         }
-        [HttpPost("addUser")]
+        [HttpPost]
         public async Task<ActionResult<User>> AddUser(UserDto request)
         {
             return   Ok (await _userService.CreateUser(request));

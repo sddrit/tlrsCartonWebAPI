@@ -21,7 +21,7 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IRouteManagerRepository _routeRepository;
         private readonly IServiceCategoryManagerRepository _serviceRepository;
         private readonly IStorageTypeManagerRepository _cartonTypeRepository;
-        private readonly IRoleManagerRepository _roleRepository;
+        private readonly IDepartmentManagerRepository _departmentRepository;
         private readonly IReceiveTypeManagerRepository _receiveTypeRepository;
         private readonly IDisposalTimeFrameManagerRepository _disposalTimeFrameRepository;
         private readonly IWorkOrderTypeManagerRepository _workOrderTypeRepository;
@@ -34,7 +34,7 @@ namespace tlrsCartonManager.Api.Controllers
             (
             IBillingCycleManagerRepository billingCycleRepository, IRouteManagerRepository routeRepository,
             IServiceCategoryManagerRepository serviceRepository, IStorageTypeManagerRepository cartonTypeRepository,
-            IRoleManagerRepository roleRepository, IReceiveTypeManagerRepository receiveTypeRepository,
+            IDepartmentManagerRepository departmentRepository, IReceiveTypeManagerRepository receiveTypeRepository,
             IDisposalTimeFrameManagerRepository disposalTimeFrame, IWorkOrderTypeManagerRepository workOrderTypeRepository,
             IMobileDeviceManagerRepository mobileDeviceRepository, IUserManagerRepository workerRepository,
             IPostingTypeManagerRepository postingTypeRepository, ITaxTypeManagerRepository taxTypeManagerRepository,
@@ -44,7 +44,7 @@ namespace tlrsCartonManager.Api.Controllers
             _routeRepository = routeRepository;
             _serviceRepository = serviceRepository;
             _cartonTypeRepository = cartonTypeRepository;
-            _roleRepository = roleRepository;
+            _departmentRepository = departmentRepository;
             _receiveTypeRepository = receiveTypeRepository;
             _disposalTimeFrameRepository = disposalTimeFrame;
             _workOrderTypeRepository = workOrderTypeRepository;
@@ -62,7 +62,7 @@ namespace tlrsCartonManager.Api.Controllers
             var route = await _routeRepository.GetRouteList();
             var serviceCategory = await _serviceRepository.GetServiceList();
             var storageType = await _cartonTypeRepository.GetCartonTypeList();
-            var roleList = await _roleRepository.GetRoleList();
+            var departmentList = await _departmentRepository.GetDepartmentList();
             var receiveTypeList = await _receiveTypeRepository.GetReceiveTypeList();
             var disposalTimeFrameList = await _disposalTimeFrameRepository.GetDisposalTimeFrameList();
             var workOrderTypeList= await _workOrderTypeRepository.GetWoTypeList();
@@ -79,7 +79,7 @@ namespace tlrsCartonManager.Api.Controllers
                 route,
                 serviceCategory,
                 storageType,
-                roleList,
+                departmentList,
                 receiveTypeList,
                 disposalTimeFrameList,
                 workOrderTypeList,

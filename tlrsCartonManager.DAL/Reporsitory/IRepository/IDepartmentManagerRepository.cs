@@ -9,9 +9,10 @@ using tlrsCartonManager.DAL.Models;
 
 namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
-    public interface IRoleManagerRepository
+    public interface IDepartmentManagerRepository
     {
-        Task<IEnumerable<RoleDto>> GetRoleList();
-        
+        Task<IEnumerable<Department>> GetDepartmentList();
+
+
     }
 }

@@ -27,7 +27,7 @@ namespace tlrsCartonManager.DAL.Dtos
     }
     public class UserRoleDto
     {
-        public int UserRoleId { get; set; }
+        public int Id { get; set; }
 
     }
     public class UserSerachDto
@@ -37,7 +37,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string UserName { get; set; }
         public string UserFullName { get; set; }
         public string EmpId { get; set; }      
-        public string UserRole { get; set; }
+        public string DepartmentName { get; set; }
      
     }
     public class UserResponse
