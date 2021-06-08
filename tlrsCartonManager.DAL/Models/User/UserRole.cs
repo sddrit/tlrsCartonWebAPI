@@ -16,6 +16,6 @@ namespace tlrsCartonManager.DAL.Models
         public int UserId { get; set; }
         [Key]
         [Column("roleId")]
-        public int RoleId { get; set; }
+        public int Id { get; set; }
     }
 }

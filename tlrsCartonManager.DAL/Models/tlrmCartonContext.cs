@@ -842,7 +842,7 @@ namespace tlrsCartonManager.DAL.Models
             });
             modelBuilder.Entity<UserRole>(entity =>
             {
-                entity.HasKey(e => new { e.UserId, e.RoleId });
+                entity.HasKey(e => new { e.UserId, e.Id });
             });
             modelBuilder.Entity<ViewPendingRequestPivot>(entity =>
             {
@@ -981,7 +981,7 @@ namespace tlrsCartonManager.DAL.Models
             });
             modelBuilder.Entity<UserRole>(entity =>
             {
-                entity.HasKey(e => new { e.UserId, e.RoleId });
+                entity.HasKey(e => new { e.UserId, e.Id });
             });
             modelBuilder.Entity<ViewMenu>(entity =>
             {
@@ -1176,7 +1176,7 @@ namespace tlrsCartonManager.DAL.Models
             {
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Name).IsUnicode(false);
+                entity.Property(e => e.Description).IsUnicode(false);
             });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();

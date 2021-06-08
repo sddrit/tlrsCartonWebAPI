@@ -31,10 +31,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var users = await _tcContext.Users.ToListAsync();
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
-        public async Task<UserResponse> GetUserById(int id)
+        public async Task<UserDto> GetUserById(int id)
         {
-            return _mapper.Map<UserResponse>(await _tcContext.Users.Where(x => x.UserId == id).FirstOrDefaultAsync());
+           var user= _mapper.Map<UserDto>(await _tcContext.Users.
+                          Include(x => x.UserRoles).
+                          Where(x => x.UserId == id && x.Deleted==false )
+                          .FirstOrDefaultAsync());
 
+            return user;
         }
         public async Task<User> GetUserByName(string userName)
         {
@@ -55,9 +59,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[2].ToString() , Value = user.UserFullName.AsDbValue() },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[3].ToString() , Value = user.EmpId.AsDbValue() },
                 new SqlParameter { ParameterName = UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[4].ToString(), Value = user.DepartmentId.AsDbValue() },
-                new SqlParameter { ParameterName = UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[5].ToString(), Value = passwrodHash },
-                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[6].ToString(),Value= passwordSalt },
-                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[7].ToString(), Value =string.Join(",",user.UserRoles.Select(x => x.Id.ToString()).ToArray()) },
+                new SqlParameter { ParameterName = UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[5].ToString(), Value = passwrodHash.AsDbValue() },
+                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[6].ToString(),Value= passwordSalt.AsDbValue() },
+                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[7].ToString(), Value =user.UserRoles!=null? string.Join(",",user.UserRoles.Select(x => x.Id.ToString()).ToArray()): string.Empty },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[8].ToString() , Value =user.Email.AsDbValue() },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[9].ToString() , Value =user.Active.AsDbValue() },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[10].ToString() , Value =trasactionType },
