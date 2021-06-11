@@ -15,6 +15,7 @@ using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.DAL.Dtos.Carton;
 using tlrsCartonManager.DAL.Models.Operation;
+using tlrsCartonManager.DAL.Models.Invoice;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -24,10 +25,11 @@ namespace tlrsCartonManager.Api.Controllers
     public class InquiryController : Controller
     {
         private readonly IInquiryManagerRepository _inquiryRepository;
-
-        public InquiryController(IInquiryManagerRepository inquiryRepository)
+        private readonly IInvoiceManagerRepository _invoiceRepository;
+        public InquiryController(IInquiryManagerRepository inquiryRepository, IInvoiceManagerRepository invoiceRepository)
         {
             _inquiryRepository = inquiryRepository;
+            _invoiceRepository = invoiceRepository;
         }
 
         [HttpGet("CartonHeader")]
@@ -88,5 +90,24 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
         }
+        [HttpGet("RequestSummaryByCustomer")]
+        public async Task<ActionResult<RequestSearch>> GetRequestSummaryByCustomer( string customerCode,string searchText,int pageIndex, int pageSize)
+        {
+            var requestList = await _inquiryRepository.GetRequestInquiryByCustomer(customerCode, searchText, pageIndex, pageSize);
+            if (requestList != null)
+                return Ok(requestList);
+            else
+                return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
+        }
+        [HttpGet("RequestSummaryByCustomer/{requestNo}")]
+        public async Task<ActionResult<InvoiceConfirmationDetail>> GetSingleSearch(string requestNo)
+        {
+            var invoiceConfirmationDetailList = await _invoiceRepository.GetInvoiceConfirmationDetailByRequestNo(requestNo);
+            if (invoiceConfirmationDetailList != null)
+                return Ok(invoiceConfirmationDetailList);
+            else
+                return new JsonErrorResult(new { Message = "Request  Details Not Found" }, HttpStatusCode.NotFound);
+        }
+
     }
 }

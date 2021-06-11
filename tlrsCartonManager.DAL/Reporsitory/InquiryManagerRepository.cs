@@ -24,6 +24,7 @@ using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Ownership;
 
+
 namespace tlrsCartonManager.DAL.Reporsitory
 {
     public class InquiryManagerRepository : IInquiryManagerRepository
@@ -96,7 +97,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return operationOverView;
         }
 
-        public  List<CartonUserSummary> GetCartonUserOverview(int date, string criteria)
+        public List<CartonUserSummary> GetCartonUserOverview(int date, string criteria)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
@@ -104,10 +105,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
                new SqlParameter { ParameterName = InquiryOperationOverviewStoredProcedure.StoredProcedureParameters[1].ToString(), Value = criteria.AsDbValue() }
 
             };
-           return  _tcContext.Set<CartonUserSummary>().FromSqlRaw(InquiryOperationOverviewStoredProcedure.Sql, parms.ToArray()).ToList();
+            return _tcContext.Set<CartonUserSummary>().FromSqlRaw(InquiryOperationOverviewStoredProcedure.Sql, parms.ToArray()).ToList();
 
         }
-        public  List<CartonLocationSummary> GetCartonLocationOverview(int date, string criteria)
+        public List<CartonLocationSummary> GetCartonLocationOverview(int date, string criteria)
         {
 
             List<SqlParameter> parms = new List<SqlParameter>
@@ -116,12 +117,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
                new SqlParameter { ParameterName = InquiryOperationOverviewStoredProcedure.StoredProcedureParameters[1].ToString(), Value = criteria.AsDbValue() }
 
             };
-            return  _tcContext.Set<CartonLocationSummary>().FromSqlRaw(InquiryOperationOverviewStoredProcedure.Sql, parms.ToArray()).ToList();
+            return _tcContext.Set<CartonLocationSummary>().FromSqlRaw(InquiryOperationOverviewStoredProcedure.Sql, parms.ToArray()).ToList();
 
         }
         public async Task<PagedResponse<CartonInquiry>> SearchCartonHeader(string columnValueFrom, string columnValueTo, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.SearchFromTo("cartonInquiryFromTo", columnValueFrom, columnValueTo,pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.SearchFromTo("cartonInquiryFromTo", columnValueFrom, columnValueTo, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<CartonInquiry>().FromSqlRaw(SearchStoredProcedureFromTo.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging         
@@ -174,9 +175,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
                new SqlParameter { ParameterName = InquiryOperationOverviewByWoTypeStoredProcedure.StoredProcedureParameters[1].ToString(), Value = woType.AsDbValue() }
 
             };
-            return  await _tcContext.Set<OperationOverviewByWoType>().FromSqlRaw(InquiryOperationOverviewByWoTypeStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            return await _tcContext.Set<OperationOverviewByWoType>().FromSqlRaw(InquiryOperationOverviewByWoTypeStoredProcedure.Sql, parms.ToArray()).ToListAsync();
         }
-        public async Task<PagedResponse<OperationOverviewByUserLocaion>> GetOperationOverviewByUserLocationAsync(int date, string user, string locationCode, 
+        public async Task<PagedResponse<OperationOverviewByUserLocaion>> GetOperationOverviewByUserLocationAsync(int date, string user, string locationCode,
             bool isRcLocation, bool isVehicle, string searchText, int pageIndex, int pageSize)
         {
             List<SqlParameter> parms = new List<SqlParameter>
@@ -192,7 +193,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             };
             var outParam = new SqlParameter { ParameterName = InquiryOperationOverviewByUserLocationStoredProcedure.StoredProcedureParameters[8].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
             parms.Add(outParam);
-            var operationOverviewByUserLocation= await _tcContext.Set<OperationOverviewByUserLocaion>().FromSqlRaw(InquiryOperationOverviewByUserLocationStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var operationOverviewByUserLocation = await _tcContext.Set<OperationOverviewByUserLocaion>().FromSqlRaw(InquiryOperationOverviewByUserLocationStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
             var postResponse = _mapper.Map<List<OperationOverviewByUserLocaion>>(operationOverviewByUserLocation);
@@ -209,5 +210,25 @@ namespace tlrsCartonManager.DAL.Reporsitory
             #endregion
             return paginationResponse;
         }
+
+        public async Task<PagedResponse<ViewRequestSummary>> GetRequestInquiryByCustomer(string cusomerCode,string searchText, int pageIndex, int pageSize)
+        {
+            List<SqlParameter> parms = _searchManager.Search("requestInquiry",  searchText, cusomerCode,pageIndex, pageSize,out SqlParameter outParam);
+
+            var requestList = await _tcContext.Set<ViewRequestSummary>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
+
+            var paginationResponse = new PagedResponse<ViewRequestSummary>
+            {
+                Data = requestList,
+                pageNumber = pageIndex,
+                pageSize = pageSize,
+                totalCount = (int)outParam.Value,
+                totalPages = (int)Math.Ceiling((int)outParam.Value / (double)pageSize),
+
+            };
+            return paginationResponse;
+
+        }
+
     }
 }

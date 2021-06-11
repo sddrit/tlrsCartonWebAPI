@@ -10,6 +10,7 @@ using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Operation;
 
+
 namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
     public interface IInquiryManagerRepository
@@ -22,6 +23,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<List<OperationOverviewByWoType>> GetOperationOverviewByWoTypeAsync(int date, string woType);
         Task<PagedResponse<OperationOverviewByUserLocaion>> GetOperationOverviewByUserLocationAsync(int date, string user,
             string locationCode, bool isRcLocation, bool isVehicle, string searchText, int pageIndex, int pageSize);
+
+        Task<PagedResponse<ViewRequestSummary>> GetRequestInquiryByCustomer(string cusomerCode, string searchText, int pageIndex, int pageSize);
 
     }
 }
