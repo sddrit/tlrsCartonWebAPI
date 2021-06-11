@@ -15,9 +15,9 @@ namespace tlrsCartonManager.DAL.Models
         [Column("id")]
         public int Id { get; set; }
         [Required]
-        [Column("name")]
+        [Column("description")]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string Description { get; set; }
         [Column("active")]
         public bool Active { get; set; }
         [Column("deleted")]

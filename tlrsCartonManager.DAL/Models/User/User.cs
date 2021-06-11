@@ -35,13 +35,18 @@ namespace tlrsCartonManager.DAL.Models
         public DateTime? LastLoginDate { get; set; }
         [Column("passwordLockedDate", TypeName = "datetime")]
         public DateTime? PasswordLockedDate { get; set; }
-        [Column("userRoleId")]
-        public int UserRoleId { get; set; }
+
+        public ICollection<UserRole> UserRoles { get; set; }
+
         [Column("active")]
         public bool? Active { get; set; }
         [Column("deleted")]
         public bool? Deleted { get; set; }
-      
+        [Column("departmentId")]
+        public int? DepartmentId { get; set; }
+        [Column("email")]
+        public string Email { get; set; }
+
 
         [InverseProperty(nameof(MenuRightUser.User))]
         public virtual ICollection<MenuRightUser> MenuRightUsers { get; set; }

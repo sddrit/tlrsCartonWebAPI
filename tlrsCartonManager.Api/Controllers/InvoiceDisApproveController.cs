@@ -38,8 +38,10 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet("validateRequest")]
         public async Task<ActionResult> ValidateRequest(string requestNo)
         {
-            var invoiceList = await _invoiceRepository.ValidateInvoiceDisConfirmation(requestNo);
-            return Ok(invoiceList);
+            var outList = await _invoiceRepository.ValidateInvoiceDisConfirmation(requestNo);
+            return new JsonErrorResult(outList);
+            
+           
         }
 
         [HttpGet("{requestNo}")]

@@ -14,6 +14,7 @@ namespace tlrsCartonManager.DAL.Models
     {
         [Required]
         [StringLength(20)]
+       
         public string RequestNo { get; set; }
         [Required]
         [StringLength(20)]

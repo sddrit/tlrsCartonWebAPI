@@ -25,23 +25,40 @@ namespace tlrsCartonManager.Api.Controllers
             _userService = userService;
         }
 
-        //[HttpGet("getUsersList")]
-        //public async Task<ActionResult<IEnumerable<UserDto>>> GetUserList()
-        //{
-        //    var userList=  await _userRepository.GetUsersList();
-        //    return Ok(userList);
-        //}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUserbyId(int id)
+        {
+            return Ok (await _userService.GetUserById(id));
+           
+        }
         [HttpGet("getUser")]
         public async Task<ActionResult<UserSerachDto>> SearchUser(string columnValue, int pageIndex, int pageSize)
-        {
-            var userList = await _userRepository.SearchUser(columnValue, pageIndex, pageSize);
-            return Ok(userList);
+        {           
+            return Ok(await _userService.SearchUser(columnValue, pageIndex, pageSize));
         }
         [HttpPost]
         public async Task<ActionResult<User>> AddUser(UserDto request)
         {
             return   Ok (await _userService.CreateUser(request));
            
+        }
+        [HttpPut]
+        public async Task<ActionResult<User>> UpdateUser(UserDto request)
+        {
+            return Ok(await _userService.UpdateUser(request));
+
+        }
+        [HttpPost("Reset")]
+        public async Task<ActionResult<User>> ResetUser(UserDto request)
+        {
+            return Ok(await _userService.ResetUser(request));
+
+        }
+        [HttpDelete]
+        public async Task<ActionResult<User>> DeleteUser(UserDto request)
+        {
+            return Ok(await _userService.DeleteUser(request));
+
         }
     }
 }
