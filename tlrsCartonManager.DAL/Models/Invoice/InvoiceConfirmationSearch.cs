@@ -19,7 +19,7 @@ namespace tlrsCartonManager.DAL.Models
         public string ContactPersonName { get; set; }
         public string WOType { get; set; }
         public int? CartonCount { get; set; }
-        public int? DeliveryDate { get; set; }
+   
 
     }
 }

@@ -88,6 +88,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                new SqlParameter { ParameterName = GenericReportColumnStoredProcedure.StoredProcedureParameters[0].ToString(), Value =reportName.AsDbValue()}
               
             };
+
+            
             return  _tcContext.Set<GenericReportColumn>().FromSqlRaw(GenericReportColumnStoredProcedure.Sql, parms.ToArray()).ToList();
         }
     }       

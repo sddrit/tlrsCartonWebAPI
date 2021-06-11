@@ -10,7 +10,9 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using tlrsCartonManager.Core;
 using tlrsCartonManager.Core.Enums;
+using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Exceptions;
+using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.DAL.Models.GenericReport;
 using tlrsCartonManager.DAL.Models.Report;
 using tlrsCartonManager.DAL.Reporsitory;
@@ -37,9 +39,9 @@ namespace tlrsCartonManager.Services.User
 
         }
 
-        public async Task<DAL.Dtos.UserResponse> CreateUser(DAL.Dtos.UserDto user)
+        public async Task<DAL.Dtos.UserDto> CreateUser(DAL.Dtos.UserDto user)
         {
-            await ValidateUser(user);
+            await ValidateUser(user, TransactionType.Insert.ToString());
             using var hmac = new HMACSHA512();
             var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.UserPassword));
             var passwordSalt = hmac.Key;
@@ -57,12 +59,121 @@ namespace tlrsCartonManager.Services.User
 
             return await _userManagerRepository.GetUserById(userId);
         }
+        public async Task<DAL.Dtos.UserDto> UpdateUser(DAL.Dtos.UserDto user)
+        {
+            using var hmac = new HMACSHA512();
+            var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(string.Empty));
+            var passwordSalt = hmac.Key;
 
-        private async Task ValidateUser(DAL.Dtos.UserDto user)
+            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Update.ToString());
+            if (userId == 0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                    new ErrorMessage()
+                    {
+                        Message = $"Unable to update user {user.UserId}"
+                    }
+                });
+            }
+
+            return await _userManagerRepository.GetUserById(userId);
+        }
+
+        public async Task<DAL.Dtos.UserDto> ResetUser(DAL.Dtos.UserDto user)
+        {
+            await ValidateUser(user, TransactionType.Reset.ToString());
+            using var hmac = new HMACSHA512();
+            var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.UserPassword));
+            var passwordSalt = hmac.Key;
+
+            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Reset.ToString());
+            if (userId == 0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                    new ErrorMessage()
+                    {
+                        Message = $"Unable to reset user {user.UserId}"
+                    }
+                });
+            }
+
+            return await _userManagerRepository.GetUserById(userId);
+        }
+
+        public async Task<DAL.Dtos.UserDto> DeleteUser(DAL.Dtos.UserDto user)
+        {
+            using var hmac = new HMACSHA512();
+            var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(string.Empty));
+            var passwordSalt = hmac.Key;
+
+            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Delete.ToString());
+            if (userId == 0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                    new ErrorMessage()
+                    {
+                        Message = $"Unable to delete user {user.UserId}"
+                    }
+                });
+            }
+
+            return await _userManagerRepository.GetUserById(userId);
+        }
+
+        public Task<PagedResponse<UserSerachDto>> SearchUser(string columnValue, int pageIndex, int pageSize)
+        {
+            var userList= _userManagerRepository.SearchUser(columnValue, pageIndex , pageSize);
+            if(userList==null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+              {
+                    new ErrorMessage()
+                    {
+                        Message = $"Unable to find user "
+                    }
+              });
+
+            }
+            return userList;
+
+        }
+        public async Task<DAL.Dtos.UserDto> GetUserById(int userId)
+        {
+           var user=await _userManagerRepository.GetUserById(userId);
+
+            if (user == null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Message = $"Unable to find user by {userId}"
+                    }
+               });;
+
+            }
+            return user;
+
+        }
+        private async Task ValidateUser(DAL.Dtos.UserDto user, string transactionType)
         {
             var userByName = await _userManagerRepository.GetUserByName(user.UserName);
 
-            if (userByName != null)
+            if (transactionType==TransactionType.Insert.ToString() && userByName != null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Message = $"Existing user name found  {user.UserName}"
+                    }
+               });
+
+            }
+            if (transactionType == TransactionType.Reset.ToString() && userByName != null && userByName.UserId !=user.UserId)
             {
                 throw new ServiceException(new ErrorMessage[]
                {
@@ -74,14 +185,15 @@ namespace tlrsCartonManager.Services.User
 
             }
 
-            var userValidator = new UserValidator();
+            var userValidator =  new UserValidator(transactionType);     
+             
+
             var validateResult = await userValidator.ValidateAsync(user);
 
             if (validateResult.IsValid)
             {
                 return;
             }
-
 
             throw new ServiceException(validateResult.Errors.Select(e => new ErrorMessage()
             {
@@ -95,6 +207,8 @@ namespace tlrsCartonManager.Services.User
                 Message = e.ErrorMessage
             }).ToArray());
         }
+
+
         public async Task<DAL.Dtos.UserToken> Login(DAL.Dtos.SystemUserPasswordsDto userPassword)
         {
             if (!await _userPasswordManagerRepository.ValidUserName(userPassword.UserID))

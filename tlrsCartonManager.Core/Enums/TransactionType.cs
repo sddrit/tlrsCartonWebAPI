@@ -12,6 +12,7 @@ namespace tlrsCartonManager.Core.Enums
     {
         Insert,
         Update,
-        Delete
+        Delete,
+        Reset
     }
 }
