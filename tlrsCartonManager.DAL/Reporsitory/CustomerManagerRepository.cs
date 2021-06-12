@@ -17,7 +17,7 @@ using tlrsCartonManager.DAL.Helper;
 using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
-
+using tlrsCartonManager.DAL.Exceptions;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -31,37 +31,40 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _tcContext = tccontext;
             _mapper = mapper;
         }
+
         public async Task<IEnumerable<CustomerDto>> GetCustomerList()
         {
             var customer = await _tcContext.Customers.ToListAsync();
             return _mapper.Map<IEnumerable<CustomerDto>>(customer);
         }
-
+        
         public async Task<CustomerDto> GetCustomerById(int customerId)
         {
             var subAccList = _mapper.Map<IEnumerable<CustomerSubAccountListDto>>(await _tcContext.Customers.
                                 Where(x => x.MainCustomerCode == customerId && x.AccountType != "M" && x.Deleted == false).ToListAsync());
 
             var customerList = _mapper.Map<CustomerDto>(await _tcContext.Customers.
-                                Include(x => x.CustomerAuthorizationListHeaders.Where(x=>x.Deleted==false)).
-                                ThenInclude (x => x.CustomerAuthorizationListDetails.Where(x => x.Deleted == false)).
-                                FirstOrDefaultAsync(x => x.TrackingId == customerId && x.Deleted==false));
-            if(customerList!=null)
-             customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
+                                Include(x => x.CustomerAuthorizationListHeaders.Where(x => x.Deleted == false)).
+                                ThenInclude(x => x.CustomerAuthorizationListDetails.Where(x => x.Deleted == false)).
+                                FirstOrDefaultAsync(x => x.TrackingId == customerId && x.Deleted == false));
+            if (customerList != null)
+                customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
             return customerList;
 
         }
+
         public async Task<List<CustomerAuthorizationHeaderDto>> GetCustomerAuthorizationById(int customerId)
         {
             var authorizedList = (await _tcContext.CustomerAuthorizationListHeaders.
-                                Where(x => x.CustomerId == customerId && x.Deleted ==false)
+                                Where(x => x.CustomerId == customerId && x.Deleted == false)
                                  .Select(p => new CustomerAuthorizationHeaderDto()
                                  {
                                      TrackingId = p.TrackingId,
                                      Name = p.Name
-                                 }).ToListAsync());       
+                                 }).ToListAsync());
             return authorizedList;
         }
+
         public async Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainName(string customerName)
         {
             var mainAccList = await _tcContext.Customers.
@@ -72,9 +75,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainId(int customerId)
         {
             var mainAccList = await _tcContext.Customers.
-                Where(x => x.TrackingId==customerId && x.AccountType == "M" && x.Deleted == false).ToListAsync();
+                Where(x => x.TrackingId == customerId && x.AccountType == "M" && x.Deleted == false).ToListAsync();
             return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
         }
+
         public async Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnValue, int pageIndex, int pageSize)
         {
             List<SqlParameter> parms = new List<SqlParameter>
@@ -100,70 +104,137 @@ namespace tlrsCartonManager.DAL.Reporsitory
             #endregion
             return paginationResponse;
         }
+
         public bool AddCustomer(CustomerDto customerInsert)
         {
-            return SaveCustomer(customerInsert, TransactionTypes.Insert.ToString());
+            if (ValidateCustomer(customerInsert, TransactionTypes.Insert.ToString()))
+            {
+                if (!SaveCustomer(customerInsert, TransactionTypes.Insert.ToString()))
+                {
+                    throw new ServiceException(new ErrorMessage[]
+                    {
+                    new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to create customer"
+                        }
+                    });
+                }
+            }
+            return true;
         }
+
         public bool UpdateCustomer(CustomerDto customerUpdate)
         {
-            return SaveCustomer(customerUpdate, TransactionTypes.Update.ToString());
+            if (ValidateCustomer(customerUpdate, TransactionTypes.Update.ToString()))
+            {
+                if (!SaveCustomer(customerUpdate, TransactionTypes.Update.ToString()))
+                {
+                    throw new ServiceException(new ErrorMessage[]
+                    {
+                    new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to create customer"
+                        }
+                    });
+                }
+            }
+            return true;          
         }
+
         public bool DeleteCustomer(CustomerDeleteDto customerDelete)
         {
             var cutomerTransaction = new CustomerDto
             {
                 TrackingId = customerDelete.TrackingId
             };
-
-            return SaveCustomer(cutomerTransaction, TransactionTypes.Delete.ToString());
+            if (!SaveCustomer(cutomerTransaction, TransactionTypes.Delete.ToString()))
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                    new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to delete customer"
+                        }
+                });
+            }
+            return true;
         }
-        public string ValidateCustomer(CustomerDto customer, string transcationType)
+
+        public bool ValidateCustomer(CustomerDto customer, string transcationType)
         {
             if (transcationType == TransactionTypes.Insert.ToString())
             {
-                if (_tcContext.Customers.Where(x => x.CustomerCode.ToUpper().Trim() == customer.CustomerCode.ToUpper().Trim()).FirstOrDefault() != null)
-                    return "Existing Customer Code Found";
-                if (_tcContext.Customers.Where(x => x.Name.ToUpper().Trim() == customer.Name.ToUpper().Trim()).FirstOrDefault() != null)
-                    return "Existing Customer Name Found";
-            }
-            if(transcationType==TransactionTypes.Update.ToString())
-            {
-                var existingCustomer = _tcContext.Customers.Where(x => x.Name.ToUpper().Trim() == customer.Name.ToUpper().Trim()).ToListAsync();
-                if(existingCustomer.Result.Where(x =>x.TrackingId != customer.TrackingId).FirstOrDefault()!=null)
-                    return "Existing Customer Name Found";
-            }
+                if (_tcContext.Customers.Any(x => x.CustomerCode.ToUpper().Trim() == customer.CustomerCode.ToUpper().Trim()))
+                {
+                    throw new ServiceException(new ErrorMessage[]
+                    {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Existing Customer Code Found"
+                    }
+                    });
+                }
 
-            return string.Empty;
+                if (_tcContext.Customers.Any(x => x.Name.ToUpper().Trim() == customer.Name.ToUpper().Trim()))
+                {
+                    throw new ServiceException(new ErrorMessage[]
+                    {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Existing Customer Name Found"
+                    }
+                    });
+                }
+            }
+            if (transcationType == TransactionTypes.Update.ToString())
+            {
+                if (_tcContext.Customers.Any(c => c.TrackingId != customer.TrackingId && c.Name.ToUpper().Trim() == customer.Name.ToUpper().Trim()))
+                {
+                    throw new ServiceException(new ErrorMessage[]
+                    {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Existing Customer Name Found"
+                        }
+                    });
+                }
+            }
+            return true;
         }
+
         private bool SaveCustomer(CustomerDto customerTransaction, string transcationType)
         {
-           
+            #region Assign values to utds          
+            List<CustomerAuthorizationListUtdDto> lstAuthorization = new List<CustomerAuthorizationListUtdDto>();
+            List<CustomerAuthorizationListDetailUdtDto> lstAuthorizationLevel = new List<CustomerAuthorizationListDetailUdtDto>();
 
-                #region Assign values to utds          
-                List<CustomerAuthorizationListUtdDto> lstAuthorization = new List<CustomerAuthorizationListUtdDto>();
-                List<CustomerAuthorizationListDetailUdtDto> lstAuthorizationLevel = new List<CustomerAuthorizationListDetailUdtDto>();
+            var custAuth = customerTransaction.CustomerAuthorizationListHeaders.ToList();
+            int ix = 0;
+            foreach (var customerAuthItem in custAuth)
+            {
+                var b = _mapper.Map<CustomerAuthorizationListUtdDto>(customerAuthItem);
+                b.AutoId = ix + 1;
+                lstAuthorization.Add(b);
 
-                var custAuth = customerTransaction.CustomerAuthorizationListHeaders.ToList();
-                int ix = 0;
-                foreach (var customerAuthItem in custAuth)
+                var d = _mapper.Map<List<CustomerAuthorizationListDetailUdtDto>>(customerAuthItem.CustomerAuthorizationListDetails.ToList());
+                foreach (var customerAuthlevel in d)
                 {
-                    var b = _mapper.Map<CustomerAuthorizationListUtdDto>(customerAuthItem);
-                    b.AutoId = ix + 1;
-                    lstAuthorization.Add(b);
+                    customerAuthlevel.AutoId = b.AutoId;
+                    lstAuthorizationLevel.Add(customerAuthlevel);
 
-                    var d = _mapper.Map<List<CustomerAuthorizationListDetailUdtDto>>(customerAuthItem.CustomerAuthorizationListDetails.ToList());
-                    foreach (var customerAuthlevel in d)
-                    {
-                        customerAuthlevel.AutoId = b.AutoId;
-                        lstAuthorizationLevel.Add(customerAuthlevel);
-
-                    }
-                    ix = ix + 1;
                 }
-                #endregion
+                ix = ix + 1;
+            }
+            #endregion
 
-                #region Sql Parameter loading
-                List<SqlParameter> parms = new List<SqlParameter>
+            #region Sql Parameter loading
+            List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[0].ToString(),
                     Value = transcationType==TransactionTypes.Insert.ToString()? 0: customerTransaction.TrackingId },
@@ -233,26 +304,25 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    Value =  lstAuthorizationLevel.ToDataTable()
                 }
             };
-                #endregion
-
-              return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
-                 
+            #endregion
+            return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
 
         public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByName(string customerName, bool isAll)
         {
             var mainAccList = await _tcContext.Customers.
-               Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%")  && x.Deleted == false && x.Active == true)).ToListAsync();
-            if(isAll)
-             mainAccList = await _tcContext.Customers.
-              Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false)).ToListAsync();
+               Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false && x.Active == true)).ToListAsync();
+            if (isAll)
+                mainAccList = await _tcContext.Customers.
+                 Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false)).ToListAsync();
             return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
         }
+
         public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByCode(string customerCode, bool isAll)
         {
             var mainAccList = await _tcContext.Customers.
                Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false && x.Active == true)).ToListAsync();
-            if(isAll)
+            if (isAll)
                 mainAccList = await _tcContext.Customers.
                Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false)).ToListAsync();
             return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
@@ -260,7 +330,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public int? GetCustomerId(string customerCode)
         {
-            return  (int)(_tcContext.Customers.Where(x => x.CustomerCode == customerCode).FirstOrDefault()?.TrackingId??0);
+            return (int)(_tcContext.Customers.Where(x => x.CustomerCode == customerCode).FirstOrDefault()?.TrackingId ?? 0);
         }
     }
 }

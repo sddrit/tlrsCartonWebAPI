@@ -21,7 +21,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<List<CustomerAuthorizationHeaderDto>> GetCustomerAuthorizationById(int customerId);
 
         int? GetCustomerId(string customerCode);
-        string ValidateCustomer(CustomerDto customer, string transcationType);
+        bool ValidateCustomer(CustomerDto customer, string transcationType);
         bool AddCustomer(CustomerDto customerInsert);
         bool UpdateCustomer(CustomerDto customerUpdate);
         bool DeleteCustomer(CustomerDeleteDto customerDelete);
