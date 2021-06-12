@@ -47,6 +47,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                                 Include(x => x.CustomerAuthorizationListHeaders.Where(x => x.Deleted == false)).
                                 ThenInclude(x => x.CustomerAuthorizationListDetails.Where(x => x.Deleted == false)).
                                 FirstOrDefaultAsync(x => x.TrackingId == customerId && x.Deleted == false));
+
             if (customerList != null)
                 customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
             else
@@ -121,44 +122,53 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
             return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
         }
-
-        public async Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnValue, int pageIndex, int pageSize)
+        public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByName(string customerName, bool isAll)
         {
-            List<SqlParameter> parms = new List<SqlParameter>
-            {
-               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[0].ToString(), Value = columnValue==null ? string.Empty :columnValue },
-               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[1].ToString(), Value = pageIndex },
-               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[2].ToString(), Value = pageSize },
-            };
-            var outParam = new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[3].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
-            parms.Add(outParam);
-            var customerList = await _tcContext.Set<CustomerSearch>().FromSqlRaw(CustomerStoredProcedureSearch.Sql, parms.ToArray()).ToListAsync();
-            var totalRows = (int)outParam.Value;
-            #region paging
-            var postResponse = _mapper.Map<List<CustomerSearchDto>>(customerList);
-            var paginationResponse = new PagedResponse<CustomerSearchDto>
-            {
-                Data = postResponse,
-                pageNumber = pageIndex,
-                pageSize = pageSize,
-                totalCount = totalRows,
-                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
-            };
-            #endregion
-            if(paginationResponse==null)
+            var mainAccList = await _tcContext.Customers.
+               Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false && x.Active == true)).ToListAsync();
+            if (isAll)
+                mainAccList = await _tcContext.Customers.
+                 Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false)).ToListAsync();
+
+            if (mainAccList == null)
             {
                 throw new ServiceException(new ErrorMessage[]
-                {
-                     new ErrorMessage()
-                     {
+                    {
+                        new ErrorMessage()
+                        {
                             Code = string.Empty,
-                            Message = $"Unable to find customers"
-                     }
-                });
+                            Message = $"Unable to find Customer by name {customerName}"
+                        }
+                    });
             }
-
-            return paginationResponse;
+            return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
         }
+
+        public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByCode(string customerCode, bool isAll)
+        {
+            var mainAccList = await _tcContext.Customers.
+               Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false && x.Active == true)).ToListAsync();
+            if (isAll)
+                mainAccList = await _tcContext.Customers.
+               Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false)).ToListAsync();
+            if (mainAccList == null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                   {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to find Customer by code {customerCode}"
+                        }
+                   });
+            }
+            return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
+        }
+
+        public int? GetCustomerId(string customerCode)
+        {
+            return (int)(_tcContext.Customers.Where(x => x.CustomerCode == customerCode).FirstOrDefault()?.TrackingId ?? 0);
+        }        
 
         public bool AddCustomer(CustomerDto customerInsert)
         {
@@ -363,52 +373,37 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
 
-        public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByName(string customerName, bool isAll)
+        public async Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnValue, int pageIndex, int pageSize)
         {
-            var mainAccList = await _tcContext.Customers.
-               Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false && x.Active == true)).ToListAsync();
-            if (isAll)
-                mainAccList = await _tcContext.Customers.
-                 Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false)).ToListAsync();
-            
-            if(mainAccList==null)
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[0].ToString(), Value = columnValue==null ? string.Empty :columnValue },
+               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[1].ToString(), Value = pageIndex },
+               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[2].ToString(), Value = pageSize },
+            };
+
+            var outParam = new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[3].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            parms.Add(outParam);
+
+            var customerList = await _tcContext.Set<CustomerSearch>().FromSqlRaw(CustomerStoredProcedureSearch.Sql, parms.ToArray()).ToListAsync();
+           
+            var totalRows = (int)outParam.Value;          
+            var postResponse = _mapper.Map<List<CustomerSearchDto>>(customerList);
+            var paginationResponse = new PagedResponse<CustomerSearchDto>(postResponse, pageIndex, pageSize, totalRows);               
+          
+            if (paginationResponse == null)
             {
                 throw new ServiceException(new ErrorMessage[]
-                    {
-                        new ErrorMessage()
-                        {
+                {
+                     new ErrorMessage()
+                     {
                             Code = string.Empty,
-                            Message = $"Unable to find Customer by name {customerName}"
-                        }
-                    });
-            }            
-            return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
+                            Message = $"Unable to find customers"
+                     }
+                });
+            }
+            return paginationResponse;
         }
 
-        public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByCode(string customerCode, bool isAll)
-        {
-            var mainAccList = await _tcContext.Customers.
-               Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false && x.Active == true)).ToListAsync();
-            if (isAll)
-                mainAccList = await _tcContext.Customers.
-               Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false)).ToListAsync();
-           if(mainAccList==null)
-           {
-                throw new ServiceException(new ErrorMessage[]
-                   {
-                        new ErrorMessage()
-                        {
-                            Code = string.Empty,
-                            Message = $"Unable to find Customer by code {customerCode}"
-                        }
-                   });
-            }            
-            return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
-        }
-
-        public int? GetCustomerId(string customerCode)
-        {
-            return (int)(_tcContext.Customers.Where(x => x.CustomerCode == customerCode).FirstOrDefault()?.TrackingId ?? 0);
-        }
     }
 }
