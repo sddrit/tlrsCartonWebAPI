@@ -108,10 +108,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
         #endregion
 
         #region Invoice Confirmation
-        public async Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string type, string searchText, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("invoiceConfirmationSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
-            var cartonList = await _tcContext.Set<InvoiceConfirmationSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            List<SqlParameter> parms = _searchManager.Search("invoiceConfirmDisapproveSearch",type, searchText, pageIndex, pageSize, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<InvoiceConfirmationSearch>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
             var postResponse = _mapper.Map<List<InvoiceConfirmationSearchDto>>(cartonList);
@@ -128,6 +128,24 @@ namespace tlrsCartonManager.DAL.Reporsitory
             #endregion
 
             return paginationResponse;
+        }
+       
+        public async Task<TableResponse<TableReturn>> ValidateInvoiceDisConfirmation(string requestNo)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = InvoiceDisaprroveValidateStoredProcedure.StoredProcedureParameters[0].ToString(), Value = requestNo.AsDbValue() }
+            };
+
+            var errorList= await _tcContext.Set<TableReturn>().FromSqlRaw(InvoiceDisaprroveValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var tableResponse = new TableResponse<TableReturn>
+            {
+                Message ="Failed",               
+                OutList = errorList
+            };
+            return tableResponse;
+           
+               
         }
         public async Task<List<InvoiceConfirmationDetail>> GetInvoiceConfirmationDetailByRequestNo(string requestNo)
         {            

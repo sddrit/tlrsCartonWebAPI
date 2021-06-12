@@ -32,7 +32,7 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string searchText, int pageIndex, int pageSize)
         {
-            var invoiceList = await _invoiceRepository.SearchInvoiceConfirmation(searchText, pageIndex, pageSize);
+            var invoiceList = await _invoiceRepository.SearchInvoiceConfirmation("Approve",searchText, pageIndex, pageSize);
             return Ok(invoiceList);
         }
 
@@ -52,23 +52,10 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Request Approved" }, HttpStatusCode.OK);
             else
                 return new JsonErrorResult(new { Message = "Request Approval Failed" }, HttpStatusCode.NotFound);
-
-
             
 
         }
-        [HttpDelete]
-        public ActionResult DeleteInvoiceConfirmation(string requestNo, string reason, int userId)
-        {
-            if (_invoiceRepository.DeleteInvoiceConfirmation(requestNo, reason, userId))
-
-                return new JsonErrorResult(new { Message = "Request Disapproved" }, HttpStatusCode.OK);
-            else
-                return new JsonErrorResult(new { Message = "Request Disapprove Failed" }, HttpStatusCode.NotFound);
-
-          
-
-        }
+       
 
     }
 }

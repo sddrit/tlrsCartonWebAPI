@@ -7,6 +7,7 @@ using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Dtos.Carton;
 using tlrsCartonManager.DAL.Dtos.Company;
 using tlrsCartonManager.DAL.Dtos.Invoice;
+using tlrsCartonManager.DAL.Dtos.Location;
 using tlrsCartonManager.DAL.Dtos.MetaData;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Dtos.Pick;
@@ -16,8 +17,7 @@ using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
-
-
+using tlrsCartonManager.DAL.Models.RoleResponse;
 
 namespace tlrsCartonManager.DAL.Mapper
 {
@@ -177,6 +177,13 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<TaxEffectiveDate, TaxEffectiveDateDto>().ReverseMap();
             CreateMap<TaxType, TaxTypeDto>().ReverseMap();
             CreateMap<RequestType, RequestTypeDto>().ReverseMap();
+            CreateMap<Location, LocationDto>().ReverseMap();
+            CreateMap<RoleResponseListItem, Role>().ReverseMap();
+            CreateMap<RolePermissionListItem, ViewMenu>().ReverseMap();
+            CreateMap<User, UserResponse>().ReverseMap();
+            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<UserRoleDto, UserRole>().ReverseMap();
+            CreateMap<object, TableReturn>().ReverseMap();
             //ruv
         }
 

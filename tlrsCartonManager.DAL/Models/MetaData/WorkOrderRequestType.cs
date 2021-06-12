@@ -12,6 +12,8 @@ namespace tlrsCartonManager.DAL.Models
     public partial class WorkOrderRequestType
     {
         [Key]
+        public int Id { get; set; }
+
         [Column("typeCode")]
         [StringLength(50)]
         public string TypeCode { get; set; }

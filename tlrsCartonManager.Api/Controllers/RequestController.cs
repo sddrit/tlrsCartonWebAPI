@@ -29,16 +29,16 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<CartonStorageSearchDto>> SearchCarton(string requestType,string searchtext, int pageIndex, int pageSize)
+        public async Task<ActionResult<CartonStorageSearchDto>> SearchCarton(string requestType,string searchText, int pageIndex, int pageSize)
         {
-            var requestList = await _requestRepository.SearchRequest(requestType,searchtext, pageIndex, pageSize);
+            var requestList = await _requestRepository.SearchRequest(requestType, searchText, pageIndex, pageSize);
             return Ok(requestList);
         }
 
         [HttpGet("{requestNo}")]
-        public async Task<ActionResult<CartonStorageDto>> GetSingleSearch(string requestNo)
+        public async Task<ActionResult<CartonStorageDto>> GetSingleSearch(string requestNo, string type)
         {
-            var request = await _requestRepository.GetRequestList(requestNo);
+            var request = await _requestRepository.GetRequestList(requestNo,type);
             if (request != null)
                 return Ok(request);
             else
@@ -51,7 +51,7 @@ namespace tlrsCartonManager.Api.Controllers
             var response = _requestRepository.AddRequest(request);
             if (response.OutList!=null && response.OutList.Count()>0)
                 return new JsonErrorResult(response, HttpStatusCode.PartialContent);
-            else if (response.Message=="OK")
+            else if (response.Ok)
                 return Ok(response);
             else
                 return new JsonErrorResult(new { Message =response.Message }, HttpStatusCode.InternalServerError);
@@ -62,13 +62,22 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPut]
         public ActionResult UpdateRequest(RequestHeaderDto request)
         {
-            return Ok(_requestRepository.UpdateRequest(request));
+
+            var response = _requestRepository.UpdateRequest(request);
+            if (response.OutList != null && response.OutList.Count() > 0)
+                return new JsonErrorResult(response, HttpStatusCode.PartialContent);
+            else if (response.Ok)
+                return Ok(response);
+            else
+                return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);
+
+          
 
         }
         [HttpDelete]
-        public ActionResult DeleteRequest(string requestNo)
+        public ActionResult DeleteRequest(RequestHeaderDto request)
         {
-            return Ok(_requestRepository.DeleteRequest(requestNo));
+            return Ok(_requestRepository.DeleteRequest(request.RequestNo));
 
         }
 

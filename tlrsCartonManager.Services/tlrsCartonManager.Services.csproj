@@ -4,4 +4,18 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="C:\Users\sajit\.nuget\packages\dotnetcore.npoi\1.2.3\contentFiles\any\netstandard2.0\NOTICE.TXT" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetCore.NPOI" Version="1.2.3" />
+    <PackageReference Include="FluentValidation" Version="10.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\tlrsCartonManager.Core\tlrsCartonManager.Core.csproj" />
+    <ProjectReference Include="..\tlrsCartonManager.DAL\tlrsCartonManager.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

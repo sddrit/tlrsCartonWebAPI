@@ -14,6 +14,6 @@ namespace tlrsCartonManager.DAL.Models
         public string UserName { get; set; }
         public string UserFullName { get; set; }
         public string EmpId { get; set; }
-        public string UserRole { get; set; }
+        public string DepartmentName { get; set; }
     }
 }

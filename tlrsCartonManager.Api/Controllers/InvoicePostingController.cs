@@ -43,7 +43,7 @@ namespace tlrsCartonManager.Api.Controllers
             if (await _invoiceRepository.SaveInvoicePostingAsync(invoicePosting))
                 return new JsonErrorResult(new { Message = "Invoice Posting Created" }, HttpStatusCode.OK);
             else
-                return new JsonErrorResult(new { Message = "Invoice Posting Creation Failed" }, HttpStatusCode.BadRequest);       
+                return new JsonErrorResult(new { Message = "Invoice Posting Creation Failed" }, HttpStatusCode.InternalServerError);       
 
 
         }

@@ -51,6 +51,17 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Ownership Not Found" }, HttpStatusCode.NotFound);
 
         }
+        [HttpGet("getOwnershipCustomerList")]
+        public async Task<ActionResult<CartonOwnershipSummary>> SearchOwnershipCustomerList(string fromValue, string toValue,
+         string searchBy)
+        {
+            var ownershipList = await _ownershipRepository.SearchOwnershipSummaryCustomerList(fromValue, toValue, searchBy);
+            if (ownershipList != null)
+                return Ok(ownershipList);
+            else
+                return new JsonErrorResult(new { Message = "Ownership customer Not Found" }, HttpStatusCode.NotFound);
+
+        }
         [HttpPost]
         public IActionResult InsertOwnershipTransfer(CartonOwnershipTransfer cartonOwnership)
         {

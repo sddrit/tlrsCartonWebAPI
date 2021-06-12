@@ -52,7 +52,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             foreach (UserRole user in userRole)
             {
-                var menuModelUsers = await _tcContext.MenuModelUserRoles.Where(x => x.RoleId == user.RoleId).Include(x => x.Model).ToListAsync();
+                var menuModelUsers = await _tcContext.MenuModelUserRoles.Where(x => x.RoleId == user.Id).Include(x => x.Model).ToListAsync();
 
                 foreach (MenuModelUserRole menuUser in menuModelUsers)
                 {
@@ -95,7 +95,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             systemUser.UserFullName = userdto.UserFullName;
             systemUser.AppId = userdto.AppId;
             systemUser.EmpId = userdto.EmpId;
-            systemUser.UserRoleId = userdto.UserRoleId;
+          
             _tcContext.Users.Add(systemUser);
 
             await _tcContext.SaveChangesAsync();

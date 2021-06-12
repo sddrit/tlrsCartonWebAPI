@@ -11,6 +11,8 @@ using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Reporsitory;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
 using tlrsCartonManager.DAL.Mapper;
+using tlrsCartonManager.Services.Report;
+using tlrsCartonManager.Services.User;
 
 namespace tlrsCartonManager.Api.Extensions
 {
@@ -31,7 +33,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IServiceCategoryManagerRepository, ServiceCategoryManagerRepository>();
             services.AddScoped<IBillingCycleManagerRepository, BillingCycleManagerRepository>();
             services.AddScoped<IStorageTypeManagerRepository, StorageTypeManagerRepository>();
-            services.AddScoped<IRoleManagerRepository, RoleManagerRepository>();
+            services.AddScoped<IDepartmentManagerRepository, DepartmentManagerRepository>();
             services.AddScoped<ICartonStorageManagerRepository, CartonStorageManagerRepository>();
 
             services.AddScoped<ISearchManagerRepository, SearchManagerRepository >();
@@ -49,6 +51,11 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<ITaxTypeManagerRepository, TaxTypeManagerRepository>();
             services.AddScoped<IReportManagerRepository, ReportManagerRepository>();
             services.AddScoped<IRequestTypeManagerRepository, RequestTypeManagerRepository>();
+            services.AddScoped<ILocationManagerRepository, LocationManagerRepository>();
+            services.AddScoped<IGenericReportManagerRepository, GenericReportManagerRepository>();
+            services.AddScoped<ReportGeneratingService>();
+            services.AddScoped<IRolePermissionManagerRepository, RolePermissionManagerRepository>();
+            services.AddScoped<UserService>();
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             return services;
         }

@@ -66,4 +66,14 @@ namespace tlrsCartonManager.DAL.Utility
 		};
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 	}
+	public class InvoiceDisaprroveValidateStoredProcedure
+	{
+		public static string StoredProcedureName = "invoiceDisConfirmationValidateSearch";
+		public static List<string> StoredProcedureParameters = new List<string>()
+		{
+			"@requestNo"
+
+		};
+		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+	}
 }

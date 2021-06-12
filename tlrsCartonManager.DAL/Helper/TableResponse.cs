@@ -15,6 +15,7 @@ namespace tlrsCartonManager.DAL.Helper
             OutList = outList;
         }
         public string Message { get; set; }
+        public bool Ok { get; set; }
         public IEnumerable<T> OutList { get; set; }
 
 
