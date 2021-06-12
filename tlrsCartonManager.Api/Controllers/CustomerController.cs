@@ -46,6 +46,7 @@ namespace tlrsCartonManager.Api.Controllers
             else              
                 return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpGet("getAuthorizationById/{customerId}")]
         public async Task<ActionResult<CustomerAuthorizationHeaderDto>> GetCustomerAuthorizationList(int customerId)
         {
@@ -55,6 +56,7 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Authorization Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpGet("getCustomerByName/{customerName}")]
         public async Task<ActionResult<CustomerSearchDto>> GetCustomerByName(string customerName, bool isAll=false)
         {
@@ -64,6 +66,7 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpGet("getCustomerByCode/{customerCode}")]
         public async Task<ActionResult<CustomerDto>> GetCustomerByCode(string customerCode, bool isAll = false)
         {
@@ -73,6 +76,7 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpGet("MainAccountByName/{name}")]
         public async Task<ActionResult<CustomerMainCodeSearchDto>> GetMainAccount(string name)
         {
@@ -82,6 +86,7 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpGet("MainAccountById/{customerId}")]
         public async Task<ActionResult<CustomerMainCodeSearchDto>> GetMainAccountById(int customerId)
         {
@@ -91,48 +96,25 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpPost]
         public ActionResult AddCustomer(CustomerDto customer)
         {
-            var validateMessage=_customerRepository.ValidateCustomer(customer, TransactionTypes.Insert.ToString());
-            if(!string.IsNullOrEmpty(validateMessage))
-                return  new JsonErrorResult(new { Message = validateMessage }, HttpStatusCode.BadRequest);
-
-            if (_customerRepository.AddCustomer(customer))           
-                return new JsonErrorResult(new { Message = "Customer Created" }, HttpStatusCode.OK);            
-            else         
-                return new JsonErrorResult(new { Message = "Customer Creation Failed" }, HttpStatusCode.NotFound);
-            
-
+            return Ok(_customerRepository.AddCustomer(customer));
         }
+
         [HttpPut]
         public ActionResult UpdateCustomer(CustomerDto customer)
         {
-            
-            var validateMessage = _customerRepository.ValidateCustomer(customer, TransactionTypes.Update.ToString());
-            if (!string.IsNullOrEmpty(validateMessage))
-                return new JsonErrorResult(new { Message = validateMessage }, HttpStatusCode.NotFound);
-
-            if (_customerRepository.UpdateCustomer(customer))          
-                return new JsonErrorResult(new { Message = "Customer Updated" }, HttpStatusCode.OK);           
-            else           
-                return new JsonErrorResult(new { Message = "Update Failed" }, HttpStatusCode.NotFound);
-          
-
+            return Ok(_customerRepository.UpdateCustomer(customer));
         }
+
         [HttpDelete]
         public ActionResult DeleteCustomer(CustomerDeleteDto customer)
-        {          
-
-            if(_customerRepository.DeleteCustomer(customer))
-         
-                return new JsonErrorResult(new { Message = "Customer Deleted" }, HttpStatusCode.OK);         
-            else           
-                return new JsonErrorResult(new { Message = "Deletion Failed" }, HttpStatusCode.NotFound);
+        {
+            return Ok(_customerRepository.DeleteCustomer(customer));        
            
-        }
-
-       
+        }     
        
     }
 }
