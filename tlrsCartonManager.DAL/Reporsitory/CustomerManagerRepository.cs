@@ -37,7 +37,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var customer = await _tcContext.Customers.ToListAsync();
             return _mapper.Map<IEnumerable<CustomerDto>>(customer);
         }
-        
+
         public async Task<CustomerDto> GetCustomerById(int customerId)
         {
             var subAccList = _mapper.Map<IEnumerable<CustomerSubAccountListDto>>(await _tcContext.Customers.
@@ -49,19 +49,40 @@ namespace tlrsCartonManager.DAL.Reporsitory
                                 FirstOrDefaultAsync(x => x.TrackingId == customerId && x.Deleted == false));
             if (customerList != null)
                 customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
+            else
+            {
+                throw new ServiceException(new ErrorMessage[]
+                    {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to find customer by {customerId}"
+                        }
+                    });
+            }
             return customerList;
-
         }
 
         public async Task<List<CustomerAuthorizationHeaderDto>> GetCustomerAuthorizationById(int customerId)
         {
             var authorizedList = (await _tcContext.CustomerAuthorizationListHeaders.
-                                Where(x => x.CustomerId == customerId && x.Deleted == false)
-                                 .Select(p => new CustomerAuthorizationHeaderDto()
-                                 {
-                                     TrackingId = p.TrackingId,
-                                     Name = p.Name
-                                 }).ToListAsync());
+                Where(x => x.CustomerId == customerId && x.Deleted == false)
+                .Select(p => new CustomerAuthorizationHeaderDto()
+                {
+                    TrackingId = p.TrackingId,
+                    Name = p.Name
+                }).ToListAsync());
+            if(authorizedList==null || (authorizedList!=null && authorizedList.Count==0))
+            {                   
+                throw new ServiceException(new ErrorMessage[]
+                 {
+                     new ErrorMessage()
+                     {
+                        Code = string.Empty,
+                        Message = $"Unable to find authorization by {customerId}"
+                     }
+                 });    
+            }
             return authorizedList;
         }
 
@@ -69,6 +90,17 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             var mainAccList = await _tcContext.Customers.
                 Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && (x.AccountType == "M") && x.Deleted == false)).ToListAsync();
+            if (mainAccList == null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                 {
+                     new ErrorMessage()
+                     {
+                            Code = string.Empty,
+                            Message = $"Unable to find customer by {customerName}"
+                     }
+                 });
+            }
             return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
         }
 
@@ -76,6 +108,17 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             var mainAccList = await _tcContext.Customers.
                 Where(x => x.TrackingId == customerId && x.AccountType == "M" && x.Deleted == false).ToListAsync();
+            if(mainAccList==null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                     new ErrorMessage()
+                     {
+                            Code = string.Empty,
+                            Message = $"Unable to find customer by main account {customerId}"
+                     }
+                });
+            }
             return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
         }
 
@@ -102,6 +145,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
             };
             #endregion
+            if(paginationResponse==null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                     new ErrorMessage()
+                     {
+                            Code = string.Empty,
+                            Message = $"Unable to find customers"
+                     }
+                });
+            }
+
             return paginationResponse;
         }
 
@@ -113,7 +168,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 {
                     throw new ServiceException(new ErrorMessage[]
                     {
-                    new ErrorMessage()
+                        new ErrorMessage()
                         {
                             Code = string.Empty,
                             Message = $"Unable to create customer"
@@ -140,7 +195,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     });
                 }
             }
-            return true;          
+            return true;
         }
 
         public bool DeleteCustomer(CustomerDeleteDto customerDelete)
@@ -171,11 +226,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 {
                     throw new ServiceException(new ErrorMessage[]
                     {
-                    new ErrorMessage()
-                    {
-                        Code = string.Empty,
-                        Message = $"Existing Customer Code Found"
-                    }
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Existing Customer Code Found"
+                        }
                     });
                 }
 
@@ -183,11 +238,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 {
                     throw new ServiceException(new ErrorMessage[]
                     {
-                    new ErrorMessage()
-                    {
-                        Code = string.Empty,
-                        Message = $"Existing Customer Name Found"
-                    }
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Existing Customer Name Found"
+                        }
                     });
                 }
             }
@@ -315,6 +370,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
             if (isAll)
                 mainAccList = await _tcContext.Customers.
                  Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false)).ToListAsync();
+            
+            if(mainAccList==null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                    {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to find Customer by name {customerName}"
+                        }
+                    });
+            }            
             return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
         }
 
@@ -325,6 +392,17 @@ namespace tlrsCartonManager.DAL.Reporsitory
             if (isAll)
                 mainAccList = await _tcContext.Customers.
                Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false)).ToListAsync();
+           if(mainAccList==null)
+           {
+                throw new ServiceException(new ErrorMessage[]
+                   {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to find Customer by code {customerCode}"
+                        }
+                   });
+            }            
             return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
         }
 
