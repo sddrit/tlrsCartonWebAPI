@@ -10,9 +10,13 @@ namespace tlrsCartonManager.DAL.Helper
     {
         public PagedResponse() { }
 
-        public PagedResponse(IEnumerable<T> data)
+        public PagedResponse(IEnumerable<T> data, int _pageNumber, int _pageSize, int _totalCount)
         {
             Data = data;
+            pageNumber = _pageNumber;
+            pageSize = _pageSize;
+            totalCount = _totalCount;
+            totalPages = (int)Math.Ceiling(_totalCount / (double)_pageSize);
         }
 
         public IEnumerable<T> Data { get; set; }

@@ -33,68 +33,43 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet("getCustomer")]
         public async Task<ActionResult<CustomerSearchDto>> SearchCustomer( string columnValue, int pageIndex, int pageSize)
         {
-            var customerList = await _customerRepository.SearchCustomer(columnValue, pageIndex, pageSize);
-            return Ok(customerList);
+            return Ok(await _customerRepository.SearchCustomer(columnValue, pageIndex, pageSize));         
         }
 
         [HttpGet("getCustomerById/{customerId}")]
         public async Task<ActionResult<CustomerDto>> GetSingleSearch(int customerId)
         {
-            var customerList = await _customerRepository.GetCustomerById(customerId);
-            if(customerList!=null)
-                return Ok(customerList);
-            else              
-                return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
+            return Ok(await _customerRepository.GetCustomerById(customerId));          
         }
 
         [HttpGet("getAuthorizationById/{customerId}")]
         public async Task<ActionResult<CustomerAuthorizationHeaderDto>> GetCustomerAuthorizationList(int customerId)
         {
-            var authorizationList = await _customerRepository.GetCustomerAuthorizationById(customerId);
-            if (authorizationList != null)
-                return Ok(authorizationList);
-            else
-                return new JsonErrorResult(new { Message = "Authorization Not Found" }, HttpStatusCode.NotFound);
+            return Ok(await _customerRepository.GetCustomerAuthorizationById(customerId));           
         }
 
         [HttpGet("getCustomerByName/{customerName}")]
         public async Task<ActionResult<CustomerSearchDto>> GetCustomerByName(string customerName, bool isAll=false)
         {
-            var customerList = await _customerRepository.GetCustomerByName(customerName,isAll);
-            if (customerList != null)
-                return Ok(customerList);
-            else
-                return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
+            return Ok(await _customerRepository.GetCustomerByName(customerName,isAll));          
         }
 
         [HttpGet("getCustomerByCode/{customerCode}")]
         public async Task<ActionResult<CustomerDto>> GetCustomerByCode(string customerCode, bool isAll = false)
         {
-            var customerList = await _customerRepository.GetCustomerByCode(customerCode,isAll);
-            if (customerList != null)
-                return Ok(customerList);
-            else
-                return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
+            return Ok(await _customerRepository.GetCustomerByCode(customerCode,isAll));          
         }
 
         [HttpGet("MainAccountByName/{name}")]
         public async Task<ActionResult<CustomerMainCodeSearchDto>> GetMainAccount(string name)
         {
-            var customerMainList = await _customerRepository.GetCustomerByMainName(name);
-            if (customerMainList != null)
-                return Ok(customerMainList);
-            else
-                return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
+            return Ok(await _customerRepository.GetCustomerByMainName(name));           
         }
 
         [HttpGet("MainAccountById/{customerId}")]
         public async Task<ActionResult<CustomerMainCodeSearchDto>> GetMainAccountById(int customerId)
         {
-            var customerMainList = await _customerRepository.GetCustomerByMainId(customerId);
-            if (customerMainList != null)
-                return Ok(customerMainList);
-            else
-                return new JsonErrorResult(new { Message = "Customer Not Found" }, HttpStatusCode.NotFound);
+            return Ok(await _customerRepository.GetCustomerByMainId(customerId));         
         }
 
         [HttpPost]

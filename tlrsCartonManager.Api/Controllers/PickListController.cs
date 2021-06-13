@@ -55,18 +55,13 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpPost]
-        public ActionResult AddPickList(PickListResponseDto pickList)
+        public async Task<ActionResult> AddPickList(PickListResponseDto pickList)
         {
-           var request=_pickListRepository.AddPickList(pickList);            
-
-            if(request.Reason=="OK")
-                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.OK);
-            else
-                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
-
-
+            return Ok(await _pickListRepository.AddPickList(pickList));
         }
+
         [HttpPut]
         public ActionResult UpdatePickList(PickListResponseDto pickList)
         {
@@ -75,9 +70,8 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.OK);
             else
                 return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
-            
-
         }
+
         [HttpDelete]
         public ActionResult DeletePickList(PickListResponseDto pickList)
         {
