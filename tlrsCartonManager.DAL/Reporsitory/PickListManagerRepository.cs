@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models.Pick;
+using tlrsCartonManager.DAL.Exceptions;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -99,9 +100,24 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return paginationResponse;
         }        
 
-        public TableReturn AddPickList(PickListResponseDto pickListInsert)
+        public async Task<PickListHeaderDto> AddPickList(PickListResponseDto pickListInsert)
         {
-           return  SavePickList(pickListInsert, TransactionTypes.Insert.ToString());
+            var result= SavePickList(pickListInsert, TransactionTypes.Insert.ToString());
+            if(result.OutValue=="NOK")
+            {
+                throw new ServiceException(new ErrorMessage[]
+                  {
+                     new ErrorMessage()
+                     {
+                         Code = string.Empty,
+                         Message = $"Unable to create picklist"
+                     }
+                  });
+            }
+            else
+            {
+               return await GetPickList(result.OutValue);
+            }
         }
 
         public async Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue,string searchText, int pageIndex, int pageSize)

@@ -10,7 +10,7 @@ namespace tlrsCartonManager.DAL.Dtos
     {
         
         public int TrackingId { get; set; }      
-        public int CustomerId { get; set; }      
+        public string CustomerCode { get; set; }      
         public string Name { get; set; }       
         public string Address1 { get; set; }
     }
