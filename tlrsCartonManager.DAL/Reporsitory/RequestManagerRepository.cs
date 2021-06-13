@@ -17,6 +17,7 @@ using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models;
+using tlrsCartonManager.DAL.Exceptions;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -140,7 +141,36 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return tableResponse;
         }
 
-        public  bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket)
+        public async Task<TableReturn> ValidateCartonsInRequest(int cartonNo, string requestNo,string requestType, string customerCode, string transcationType)
+        {         
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[0].ToString(), Value = customerCode.AsDbValue() },
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[1].ToString(), Value = cartonNo.AsDbValue() },
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[2].ToString(), Value = requestType.AsDbValue() },
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[3].ToString(), Value = requestNo.AsDbValue() },
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[4].ToString(), Value = transcationType.AsDbValue() } 
+                             
+            };
+           
+            var resultTable =await _tcContext.Set<TableReturn>().FromSqlRaw(RequestValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();  
+            
+            if(resultTable!=null && resultTable.Count>0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                  {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = resultTable.FirstOrDefault().Reason
+                        }
+                  });
+            }
+            return new TableReturn() {OutValue=cartonNo.ToString(), Reason="OK"};
+        }
+
+        public bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {

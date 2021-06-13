@@ -12,12 +12,20 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface IRequestManagerRepository
     {
         Task<RequestHeaderDto> GetRequestList(string requestNo, string type);
-        Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType,string searchText, int pageIndex, int pageSize);
-        TableResponse<TableReturn> AddRequest (RequestHeaderDto requestInsert);
+
+        Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType, string searchText, int pageIndex, int pageSize);
+
+        TableResponse<TableReturn> AddRequest(RequestHeaderDto requestInsert);
+
         TableResponse<TableReturn> UpdateRequest(RequestHeaderDto requestUpdate);
+
         TableResponse<TableReturn> DeleteRequest(string requestNo);
+
         bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket);
+
         Task<PagedResponse<OriginalDocketSearchDto>> SearchOriginalDockets(string searchText, int pageIndex, int pageSize);
+
+        Task<TableReturn> ValidateCartonsInRequest(int cartonNo, string requestNo, string requestType, string customerCode, string transcationType);
 
     }
 }

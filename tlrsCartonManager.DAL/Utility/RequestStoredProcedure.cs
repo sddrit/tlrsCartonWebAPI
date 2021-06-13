@@ -52,4 +52,20 @@ namespace tlrsCartonManager.DAL.Utility
 		};	
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 	}
+	public static class RequestValidateStoredProcedure
+	{
+		public static string StoredProcedureName = "requestInsertUpdateDeleteValidate";
+		public static List<string> StoredProcedureParameters = new List<string>()
+		{
+			
+			"@customerCode",
+			"@cartonNo",
+			"@requestType",
+			"@requestNo",
+			"@statementType"
+
+		};	
+
+		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+	}
 }
