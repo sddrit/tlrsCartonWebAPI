@@ -10,4 +10,10 @@ namespace tlrsCartonManager.DAL.Models
         public string OutValue { get; set; }
         public string Reason { get; set; }
     }
+    public class CartonValidationResult
+    {
+        public int CartonNo { get; set; }
+        public string Reason { get; set; }
+        public bool  CanProcess { get; set; }
+    }
 }

@@ -58,14 +58,18 @@ namespace tlrsCartonManager.DAL.Utility
 		public static List<string> StoredProcedureParameters = new List<string>()
 		{
 			
-			"@customerCode",
-			"@cartonNo",
+			"@customerCode",			
 			"@requestType",
 			"@requestNo",
-			"@statementType"
+			"@statementType",
+			"@requestDetail"
 
-		};	
+		};
+		public static List<string> StoredProcedureTypeNames = new List<string>()
+		{
+			"dbo.udtValidateCarton",
 
+		};
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 	}
 }

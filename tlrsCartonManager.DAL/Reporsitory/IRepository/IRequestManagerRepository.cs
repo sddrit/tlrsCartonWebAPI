@@ -25,7 +25,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         Task<PagedResponse<OriginalDocketSearchDto>> SearchOriginalDockets(string searchText, int pageIndex, int pageSize);
 
-        Task<TableReturn> ValidateCartonsInRequest(int cartonNo, string requestNo, string requestType, string customerCode, string transcationType);
+        Task<List<CartonValidationResult>> ValidateCartonsInRequest(RequestValidationModel validation);
 
     }
 }

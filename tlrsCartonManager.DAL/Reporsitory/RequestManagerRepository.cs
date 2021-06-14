@@ -141,33 +141,38 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return tableResponse;
         }
 
-        public async Task<TableReturn> ValidateCartonsInRequest(int cartonNo, string requestNo,string requestType, string customerCode, string transcationType)
-        {         
+        public async Task<List<CartonValidationResult>> ValidateCartonsInRequest(RequestValidationModel validation)
+        {
             List<SqlParameter> parms = new List<SqlParameter>
             {
 
-                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[0].ToString(), Value = customerCode.AsDbValue() },
-                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[1].ToString(), Value = cartonNo.AsDbValue() },
-                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[2].ToString(), Value = requestType.AsDbValue() },
-                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[3].ToString(), Value = requestNo.AsDbValue() },
-                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[4].ToString(), Value = transcationType.AsDbValue() } 
-                             
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[0].ToString(), Value = validation.CustomerCode.AsDbValue() },
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[1].ToString(), Value = validation.RequestType.AsDbValue() },
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[2].ToString(), Value = validation.RequestNo.AsDbValue() },
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[3].ToString(), Value = validation.TransactionType.AsDbValue() },
+                new SqlParameter
+                {
+                   ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[4].ToString(),
+                   TypeName = RequestValidateStoredProcedure.StoredProcedureTypeNames[0].ToString(),
+                   SqlDbType = SqlDbType.Structured,
+                   Value =validation.CartonList.ToList().ToDataTable()
+                },
+
             };
-           
-            var resultTable =await _tcContext.Set<TableReturn>().FromSqlRaw(RequestValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();  
-            
-            if(resultTable!=null && resultTable.Count>0)
-            {
-                throw new ServiceException(new ErrorMessage[]
-                  {
+            var result = await _tcContext.Set<CartonValidationResult>().FromSqlRaw(RequestValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+
+            if (result == null)
+            { 
+            throw new ServiceException(new ErrorMessage[]
+                   {
                         new ErrorMessage()
                         {
                             Code = string.Empty,
-                            Message = resultTable.FirstOrDefault().Reason
+                            Message = $"nothing to validate"
                         }
-                  });
+                   });
             }
-            return new TableReturn() {OutValue=cartonNo.ToString(), Reason="OK"};
+            return result;
         }
 
         public bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket)

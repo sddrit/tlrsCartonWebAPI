@@ -80,9 +80,9 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPost("validateCarton")]
-        public async Task<ActionResult> ValidateCarton(int cartonNo, string requestNo, string requestType, string customerCode, string transcationType)
+        public async Task<ActionResult> ValidateCarton(RequestValidationModel cartonValidationModel)
         {
-            return Ok(await _requestRepository.ValidateCartonsInRequest(cartonNo, requestNo, requestType, customerCode, transcationType));
+            return Ok(await _requestRepository.ValidateCartonsInRequest(cartonValidationModel));
         
         }
     }
