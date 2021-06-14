@@ -37,20 +37,26 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             if (type.ToLower() == "emptyallocate")
             {
-                throw new ServiceException(new ErrorMessage[]
-               {
-                        new ErrorMessage()
-                        {
-                            Code = string.Empty,
-                            Message = $"carton details cannot be viewed"
-                        }
-               });
+                type = "Empty";
 
             }
 
             var request = await _tcContext.RequestHeaders.
                                  Include(x => x.RequestDetails.Where(x=>x.RequestNo==requestNo)).
                                  FirstOrDefaultAsync(x => x.RequestNo == requestNo & x.RequestType==type);
+            
+            if(request.Status==15)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                 {
+                            new ErrorMessage()
+                            {
+                                Code = string.Empty,
+                                Message = $"carton details cannot be viewed"
+                            }
+                 });
+
+            }
             var requestDto = _mapper.Map<RequestHeaderDto>(request);
             if (request != null)
             {
