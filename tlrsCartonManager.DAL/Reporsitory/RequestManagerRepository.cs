@@ -35,25 +35,39 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public async Task<RequestHeaderDto> GetRequestList(string requestNo, string type)
         {
-            if (type.ToLower() == "emptyallocate")
-            {
-                throw new ServiceException(new ErrorMessage[]
-               {
-                        new ErrorMessage()
-                        {
-                            Code = string.Empty,
-                            Message = $"carton details cannot be viewed"
-                        }
-               });
+            var requestType = type.ToLower();
 
-            }
+            if (type.ToLower() == "emptyallocate" || type.ToLower()=="emptydeallocate")            
+                type = "Empty";            
 
             var request = await _tcContext.RequestHeaders.
                                  Include(x => x.RequestDetails.Where(x=>x.RequestNo==requestNo)).
-                                 FirstOrDefaultAsync(x => x.RequestNo == requestNo & x.RequestType==type);
-            var requestDto = _mapper.Map<RequestHeaderDto>(request);
-            if (request != null)
+                                 FirstOrDefaultAsync(x => x.RequestNo == requestNo & x.RequestType==type & x.Deleted==false);
+            if(request==null)
             {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"Unable to find request by {requestNo}"
+                     }
+                });
+            }
+            if (request.Status==60 ||( request.Status==15 && requestType == "emptyallocate" || requestType=="empty") )
+            {
+                throw new ServiceException(new ErrorMessage[]
+                 {
+                      new ErrorMessage()
+                      {
+                          Code = string.Empty,
+                          Message = $"request details cannot be viewed for {requestNo}"
+                      }
+                 });
+            }
+
+            var requestDto = _mapper.Map<RequestHeaderDto>(request);
+           
                 var customer = await _tcContext.Customers.Where(x => x.TrackingId == request.CustomerId).FirstOrDefaultAsync();
                 requestDto.CustomerName = customer.Name;
                 requestDto.CustomerCode = customer.CustomerCode;
@@ -66,9 +80,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                      Name = p.Name
                  }).ToListAsync();
                 requestDto.AuthorizedOfficers = authorizationList;
-            }
             return requestDto;
-
         }
         public async Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType, string searchText, int pageIndex, int pageSize)
         {
