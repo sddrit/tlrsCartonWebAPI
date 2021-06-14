@@ -54,7 +54,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                      }
                 });
             }
-            if (request.Status==60 ||( request.Status==15 && requestType == "emptyallocate" || requestType=="empty") )
+            if (request.Status==60 ||( request.Status==15 && requestType == "emptyallocate") ||(request.Status == 15 && requestType =="empty") )
             {
                 throw new ServiceException(new ErrorMessage[]
                  {
