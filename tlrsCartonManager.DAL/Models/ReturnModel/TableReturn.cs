@@ -15,5 +15,6 @@ namespace tlrsCartonManager.DAL.Models
         public int CartonNo { get; set; }
         public string Reason { get; set; }
         public bool  CanProcess { get; set; }
+        public string CartonStatus { get; set; }
     }
 }

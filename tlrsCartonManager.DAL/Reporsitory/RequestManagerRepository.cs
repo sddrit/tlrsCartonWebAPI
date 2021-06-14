@@ -35,8 +35,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public async Task<RequestHeaderDto> GetRequestList(string requestNo, string type)
         {
-            if(type.ToLower()=="emptyallocate")
-                type="Empty";
+            if (type.ToLower() == "emptyallocate")
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"carton details cannot be viewed"
+                        }
+               });
+
+            }
 
             var request = await _tcContext.RequestHeaders.
                                  Include(x => x.RequestDetails.Where(x=>x.RequestNo==requestNo)).
@@ -163,14 +173,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             if (result == null)
             { 
-            throw new ServiceException(new ErrorMessage[]
-                   {
+                throw new ServiceException(new ErrorMessage[]
+                {
                         new ErrorMessage()
                         {
                             Code = string.Empty,
                             Message = $"nothing to validate"
                         }
-                   });
+                });
             }
             return result;
         }
