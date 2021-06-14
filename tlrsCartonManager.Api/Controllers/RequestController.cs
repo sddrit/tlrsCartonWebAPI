@@ -69,9 +69,7 @@ namespace tlrsCartonManager.Api.Controllers
             else if (response.Ok)
                 return Ok(response);
             else
-                return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);
-
-          
+                return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);          
 
         }
         [HttpDelete]
@@ -81,5 +79,11 @@ namespace tlrsCartonManager.Api.Controllers
 
         }
 
+        [HttpPost("validateCarton")]
+        public async Task<ActionResult> ValidateCarton(RequestValidationModel cartonValidationModel)
+        {
+            return Ok(await _requestRepository.ValidateCartonsInRequest(cartonValidationModel));
+        
+        }
     }
 }

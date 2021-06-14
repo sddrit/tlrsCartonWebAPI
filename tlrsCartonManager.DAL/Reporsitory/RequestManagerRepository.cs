@@ -17,6 +17,7 @@ using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models;
+using tlrsCartonManager.DAL.Exceptions;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -140,7 +141,41 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return tableResponse;
         }
 
-        public  bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket)
+        public async Task<List<CartonValidationResult>> ValidateCartonsInRequest(RequestValidationModel validation)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[0].ToString(), Value = validation.CustomerCode.AsDbValue() },
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[1].ToString(), Value = validation.RequestType.AsDbValue() },
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[2].ToString(), Value = validation.RequestNo.AsDbValue() },
+                new SqlParameter { ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[3].ToString(), Value = validation.TransactionType.AsDbValue() },
+                new SqlParameter
+                {
+                   ParameterName = RequestValidateStoredProcedure.StoredProcedureParameters[4].ToString(),
+                   TypeName = RequestValidateStoredProcedure.StoredProcedureTypeNames[0].ToString(),
+                   SqlDbType = SqlDbType.Structured,
+                   Value =validation.CartonList.ToList().ToDataTable()
+                },
+
+            };
+            var result = await _tcContext.Set<CartonValidationResult>().FromSqlRaw(RequestValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+
+            if (result == null)
+            { 
+            throw new ServiceException(new ErrorMessage[]
+                   {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"nothing to validate"
+                        }
+                   });
+            }
+            return result;
+        }
+
+        public bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {

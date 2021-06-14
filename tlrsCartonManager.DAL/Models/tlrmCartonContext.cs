@@ -1217,6 +1217,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<RolePermissionListItem>().HasNoKey();
             modelBuilder.Entity<CustomerMainCodeSearchDto>();
             modelBuilder.Entity<ViewWorkerUserList>().HasNoKey();
+            modelBuilder.Entity<CartonValidationResult>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 
