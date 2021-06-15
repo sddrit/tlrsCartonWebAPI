@@ -85,5 +85,11 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _requestRepository.ValidateCartonsInRequest(cartonValidationModel));
         
         }
+        [HttpPost("validateAlternativeCarton")]
+        public async Task<ActionResult> ValidateAlternativeCarton(RequestAlternateValidationModel cartonValidationModel)
+        {
+            return Ok(await _requestRepository.ValidateAlternativeCartonsInRequest(cartonValidationModel));
+
+        }
     }
 }

@@ -1218,6 +1218,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<CustomerMainCodeSearchDto>();
             modelBuilder.Entity<ViewWorkerUserList>().HasNoKey();
             modelBuilder.Entity<CartonValidationResult>().HasNoKey();
+            modelBuilder.Entity<AlternativeValidationResult>().HasNoKey();            
             OnModelCreatingPartial(modelBuilder);
         }
 

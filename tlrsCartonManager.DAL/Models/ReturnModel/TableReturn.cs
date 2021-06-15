@@ -17,4 +17,12 @@ namespace tlrsCartonManager.DAL.Models
         public bool  CanProcess { get; set; }
         public string CartonStatus { get; set; }
     }
+    public class AlternativeValidationResult
+    {
+        public string AlternativeNo { get; set; }
+        public int? CartonNo { get; set; }
+        public string Reason { get; set; }
+        public bool CanProcess { get; set; }
+        public string CartonStatus { get; set; }
+    }
 }
