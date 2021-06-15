@@ -34,16 +34,27 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _searchManager = searchManager;
         }
         public async Task<RequestHeaderDto> GetRequestList(string requestNo, string type)
-        {
-            var requestType = type.ToLower();
+        {          
+            var result = await SearchRequest(type, requestNo, 1, 1);// call search function to check the request is valid to get data.
+            if (result.Data == null || result.Data!=null && result.Data.Count()==0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"Request details cannot be viewed for {requestNo}"
+                     }
+                });
+            }
 
             if (type.ToLower() == "emptyallocate" || type.ToLower()=="emptydeallocate")            
-                type = "Empty";            
+                type = "Empty";   
 
-            var request = await _tcContext.RequestHeaders.
+                var request = await _tcContext.RequestHeaders.
                                  Include(x => x.RequestDetails.Where(x=>x.RequestNo==requestNo)).
                                  FirstOrDefaultAsync(x => x.RequestNo == requestNo & x.RequestType==type & x.Deleted==false);
-            if(request==null)
+            if (request == null)
             {
                 throw new ServiceException(new ErrorMessage[]
                 {
@@ -53,18 +64,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                          Message = $"Unable to find request by {requestNo}"
                      }
                 });
-            }
-            if (request.Status==60 ||( request.Status==15 && requestType == "emptyallocate") ||(request.Status == 15 && requestType =="empty") )
-            {
-                throw new ServiceException(new ErrorMessage[]
-                 {
-                      new ErrorMessage()
-                      {
-                          Code = string.Empty,
-                          Message = $"request details cannot be viewed for {requestNo}"
-                      }
-                 });
-            }
+            }          
 
             var requestDto = _mapper.Map<RequestHeaderDto>(request);
            
@@ -82,6 +82,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 requestDto.AuthorizedOfficers = authorizationList;
             return requestDto;
         }
+
         public async Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType, string searchText, int pageIndex, int pageSize)
         {
             List<SqlParameter> parms = _searchManager.Search("requestSearch", requestType, searchText, pageIndex, pageSize, out SqlParameter outParam);
@@ -185,6 +186,39 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             if (result == null)
             { 
+                throw new ServiceException(new ErrorMessage[]
+                {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"nothing to validate"
+                        }
+                });
+            }
+            return result;
+        }
+        public async Task<List<AlternativeValidationResult>> ValidateAlternativeCartonsInRequest(RequestAlternateValidationModel validation)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+
+                new SqlParameter { ParameterName = RequestAlternativeValidateStoredProcedure.StoredProcedureParameters[0].ToString(), Value = validation.CustomerCode.AsDbValue() },
+                new SqlParameter { ParameterName = RequestAlternativeValidateStoredProcedure.StoredProcedureParameters[1].ToString(), Value = validation.RequestType.AsDbValue() },
+                new SqlParameter { ParameterName = RequestAlternativeValidateStoredProcedure.StoredProcedureParameters[2].ToString(), Value = validation.RequestNo.AsDbValue() },
+                new SqlParameter { ParameterName = RequestAlternativeValidateStoredProcedure.StoredProcedureParameters[3].ToString(), Value = validation.TransactionType.AsDbValue() },
+                new SqlParameter
+                {
+                   ParameterName = RequestAlternativeValidateStoredProcedure.StoredProcedureParameters[4].ToString(),
+                   TypeName = RequestAlternativeValidateStoredProcedure.StoredProcedureTypeNames[0].ToString(),
+                   SqlDbType = SqlDbType.Structured,
+                   Value =validation.AlternateList.ToList().ToDataTable()
+                },
+
+            };
+            var result = await _tcContext.Set<AlternativeValidationResult>().FromSqlRaw(RequestAlternativeValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+
+            if (result == null)
+            {
                 throw new ServiceException(new ErrorMessage[]
                 {
                         new ErrorMessage()

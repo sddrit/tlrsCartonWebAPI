@@ -69,8 +69,21 @@ namespace tlrsCartonManager.DAL.Dtos
         public List<CartonValidationModel> CartonList { get; set; }
 
     }
+    public class RequestAlternateValidationModel
+    {
+        public string RequestNo { get; set; }
+        public string CustomerCode { get; set; }
+        public string RequestType { get; set; }
+        public string TransactionType { get; set; }
+        public List<AlternateValidationModel> AlternateList { get; set; }
+
+    }
     public class CartonValidationModel
     {
         public string CartonNo { get; set; }
+    }
+    public class AlternateValidationModel
+    {
+        public string AlternateNo { get; set; }
     }
 }
