@@ -184,6 +184,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<UserRoleDto, UserRole>().ReverseMap();
             CreateMap<object, TableReturn>().ReverseMap();
+            CreateMap<DocketPrintResultModel, ViewRequestSummary>().ReverseMap();
             //ruv
         }
 

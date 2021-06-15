@@ -18,6 +18,7 @@ using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Exceptions;
+using tlrsCartonManager.Core.Enums;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -48,7 +49,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 });
             }
 
-            if (type.ToLower() == "emptyallocate" || type.ToLower()=="emptydeallocate")            
+            if (type.ToLower() == RequestTypes.emptyallocate.ToString() || type.ToLower()== RequestTypes.emptydeallocate.ToString())            
                 type = "Empty";   
 
                 var request = await _tcContext.RequestHeaders.
@@ -226,6 +227,65 @@ namespace tlrsCartonManager.DAL.Reporsitory
                             Code = string.Empty,
                             Message = $"nothing to validate"
                         }
+                });
+            }
+            return result;
+        }
+        
+        public object GetDocket(DocketPrintModel model)
+        {
+            int serialNo = 0;          
+
+            var headerResult=_mapper.Map< DocketPrintResultModel>(_tcContext.ViewRequestSummaries.Where(x => x.RequestNo == model.RequestNo).FirstOrDefault());            
+           
+            if(headerResult==null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to find docket by {model.RequestNo}"
+                    }
+               });
+
+            }
+            if (model.RequestType.ToLower() == RequestTypes.empty.ToString())
+                headerResult.EmptyList= GetCartonsToDocket<DocketPrintEmptyDetailModel>(model, out serialNo);
+            else
+                headerResult.CartonList= GetCartonsToDocket<DocketPrintDetailModel>(model, out serialNo);
+
+            headerResult.SerialNo = serialNo;
+            return headerResult;
+
+        }
+
+        public List<T> GetCartonsToDocket<T>(DocketPrintModel model, out int serialNo) where T : class
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+
+                new SqlParameter { ParameterName = RequestDocketStoredProcedure.StoredProcedureParameters[0].ToString(), Value = model.RequestNo.AsDbValue() },
+                new SqlParameter { ParameterName = RequestDocketStoredProcedure.StoredProcedureParameters[1].ToString(), Value = model.PrintedBy.AsDbValue() },
+                new SqlParameter { ParameterName = RequestDocketStoredProcedure.StoredProcedureParameters[2].ToString(), Value = model.RequestType.AsDbValue() }              
+              
+            };
+            var OutSerialNo = new SqlParameter { ParameterName = RequestDocketStoredProcedure.StoredProcedureParameters[3].ToString(), 
+                SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            parms.Add(OutSerialNo);            
+
+            var result = _tcContext.Set<T>().FromSqlRaw(RequestDocketStoredProcedure.Sql, parms.ToArray()).ToList();
+            serialNo = (int)OutSerialNo.Value;
+
+            if (result == null || result!=null && result.Count==0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to find docket by {model.RequestNo}"
+                    }
                 });
             }
             return result;

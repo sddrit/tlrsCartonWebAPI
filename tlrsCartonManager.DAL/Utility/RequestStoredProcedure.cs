@@ -92,4 +92,18 @@ namespace tlrsCartonManager.DAL.Utility
 		};
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 	}
+	public static class RequestDocketStoredProcedure
+	{
+		public static string StoredProcedureName = "docketInsertUpdateDelete";
+		public static List<string> StoredProcedureParameters = new List<string>()
+		{
+
+			"@requestNo",
+			"@printedBy",		
+			"@requestType",
+			"@serialNo"
+
+		};		
+		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) +" OUTPUT";
+	}
 }
