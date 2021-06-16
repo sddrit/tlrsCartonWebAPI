@@ -34,5 +34,12 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(_docketPrintRepository.GetDocket(model));
 
         }
+        [HttpGet]
+        public async Task<ActionResult> SearchDocket(string status, string searchText, int pageIndex, int pageSize)
+        {
+           return Ok( await _docketPrintRepository.SearchDockets(status, searchText, pageIndex, pageSize));
+           
+        }
+
     }
 }

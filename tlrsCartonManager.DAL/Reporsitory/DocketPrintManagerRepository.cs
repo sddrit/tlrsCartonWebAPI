@@ -28,11 +28,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
+        private readonly ISearchManagerRepository _searchManager;
 
-        public DocketPrintManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public DocketPrintManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager)
         {
             _tcContext = tccontext;
             _mapper = mapper;
+            _searchManager = searchManager;
         }
         public object GetDocket(DocketRePrintModel model)
         {        
@@ -90,7 +92,28 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return result;
         }
 
+        public async Task<PagedResponse<ViewPrintedDocket>> SearchDockets(string printStatus, string searchText, int pageIndex, int pageSize)
+        {
+            List<SqlParameter> parms = _searchManager.Search("docketPrintSearch", printStatus, searchText, pageIndex, pageSize, out SqlParameter outParam);
+            var docketList = await _tcContext.Set<ViewPrintedDocket>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
+            var totalRows = (int)outParam.Value;
 
+            var paginationResponse = new PagedResponse<ViewPrintedDocket>(docketList, pageIndex, pageSize, totalRows);
+
+            if (paginationResponse == null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                     new ErrorMessage()
+                     {
+                            Code = string.Empty,
+                            Message = $"Unable to find dockets"
+                     }
+                });
+            }
+            return paginationResponse;
+           
+        }
 
     }
 }

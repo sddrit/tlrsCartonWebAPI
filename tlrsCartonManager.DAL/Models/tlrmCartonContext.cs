@@ -111,6 +111,7 @@ namespace tlrsCartonManager.DAL.Models
         #endregion
         public virtual DbSet<ViewWorkerUserList> ViewWorkerUserLists { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<ViewPrintedDocket> ViewPrintedDockets { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -1177,6 +1178,25 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Description).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ViewPrintedDocket>(entity =>
+            {
+                entity.ToView("viewPrintedDockets");
+
+                entity.Property(e => e.DeliveryRouteId).IsUnicode(false);
+
+                entity.Property(e => e.DocketPrintStatus).IsUnicode(false);
+
+                entity.Property(e => e.DocketType).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.PrintedBy).IsUnicode(false);
+
+                entity.Property(e => e.RequestNo).IsUnicode(false);
+
+                entity.Property(e => e.Route).IsUnicode(false);
             });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
