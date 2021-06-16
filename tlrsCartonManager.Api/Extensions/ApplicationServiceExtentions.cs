@@ -56,6 +56,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<ReportGeneratingService>();
             services.AddScoped<IRolePermissionManagerRepository, RolePermissionManagerRepository>();
             services.AddScoped<UserService>();
+            services.AddScoped<IDocketPrintManagerRepository, DocketPrintManagerRepository>();
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             return services;
         }

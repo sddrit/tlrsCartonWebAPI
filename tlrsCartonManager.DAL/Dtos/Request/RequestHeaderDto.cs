@@ -119,6 +119,14 @@ namespace tlrsCartonManager.DAL.Dtos
         public string RequestType { get; set; }
        
     }
+    public class DocketRePrintModel
+    {
+        public int? SerialNo { get; set; }
+        public string RequestNo { get; set; }
+        public string PrintedBy { get; set; }
+        public string RequestType { get; set; }
+
+    }
     public class DocketPrintResultModel
     {
         public string RequestNo { get; set; }
