@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\tlrsCartonManager.Core\tlrsCartonManager.Core.csproj" />
+  </ItemGroup>
+
 </Project>

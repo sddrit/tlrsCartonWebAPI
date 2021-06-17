@@ -55,40 +55,42 @@ namespace tlrsCartonManager.Api.Controllers
                 return Ok(response);
             else
                 return new JsonErrorResult(new { Message =response.Message }, HttpStatusCode.InternalServerError);
-
-        }                 
-          
+        }             
      
         [HttpPut]
         public ActionResult UpdateRequest(RequestHeaderDto request)
         {
-
             var response = _requestRepository.UpdateRequest(request);
             if (response.OutList != null && response.OutList.Count() > 0)
                 return new JsonErrorResult(response, HttpStatusCode.PartialContent);
             else if (response.Ok)
                 return Ok(response);
             else
-                return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);          
-
+                return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);   
         }
+
         [HttpDelete]
         public ActionResult DeleteRequest(RequestHeaderDto request)
         {
             return Ok(_requestRepository.DeleteRequest(request.RequestNo));
-
         }
 
         [HttpPost("validateCarton")]
         public async Task<ActionResult> ValidateCarton(RequestValidationModel cartonValidationModel)
         {
-            return Ok(await _requestRepository.ValidateCartonsInRequest(cartonValidationModel));
-        
+            return Ok(await _requestRepository.ValidateCartonsInRequest(cartonValidationModel));        
         }
+
         [HttpPost("validateAlternativeCarton")]
         public async Task<ActionResult> ValidateAlternativeCarton(RequestAlternateValidationModel cartonValidationModel)
         {
             return Ok(await _requestRepository.ValidateAlternativeCartonsInRequest(cartonValidationModel));
+
+        }
+        [HttpPost("getDocket")]
+        public  ActionResult GetDocket(DocketPrintModel model)
+        {           
+            return Ok( _requestRepository.GetDocket(model));
 
         }
     }

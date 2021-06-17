@@ -69,6 +69,21 @@ namespace tlrsCartonManager.DAL.Models
         [StringLength(200)]
         public string DocketNo { get; set; }
 
+        [Column("Department")]        
+        public string Department { get; set; }
+
+        [Column("PoNo")]     
+        public string PoNo { get; set; }
+
+        [Column("ContactPerson")]    
+        public string ContactPerson { get; set; }
+
+        [Column("ContactNo")]
+        public string ContactNo { get; set; }
+
+        [Column("DocketType")]
+        public string DocketType { get; set; }
+
         public IList<KeyValuePair<string, string>> GetValues()
         {
             return new List<KeyValuePair<string, string>>()
