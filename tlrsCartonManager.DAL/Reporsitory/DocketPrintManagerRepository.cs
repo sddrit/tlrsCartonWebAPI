@@ -36,8 +36,22 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _mapper = mapper;
             _searchManager = searchManager;
         }
-        public object GetDocket(DocketRePrintModel model)
-        {        
+        public async Task<object> GetDocketRePrint(DocketRePrintModel model)
+        {
+            var authorizedDocket= await SearchDockets("Printed", model.RequestNo, 1, 1);
+            if(authorizedDocket==null || authorizedDocket!=null && authorizedDocket.Data.Count()==0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to view docket by {model.RequestNo} - {model.SerialNo}"
+                    }
+               });
+
+            }
+
             var headerResult = _mapper.Map<DocketPrintResultModel>(_tcContext.ViewRequestSummaries.Where(x => x.RequestNo == model.RequestNo).FirstOrDefault());
 
             if (headerResult == null)
