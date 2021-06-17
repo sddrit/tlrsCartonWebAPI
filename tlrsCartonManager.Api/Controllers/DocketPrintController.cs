@@ -30,10 +30,11 @@ namespace tlrsCartonManager.Api.Controllers
             _requestPrintRepository = requestPrintRepository;
         }
         
-        [HttpPost("getDocketRePrint")]
-        public  ActionResult GetDocketRePrint(DocketRePrintModel model)
-        {           
-            return Ok(_docketPrintRepository.GetDocket(model));
+        [HttpGet("getDocketRePrint")]
+        public async Task<ActionResult> GetDocketRePrint(int serialNo,string requestNo, string requestType, string printedBy)
+        {
+            DocketRePrintModel model = new DocketRePrintModel() {SerialNo=serialNo, RequestNo = requestNo, RequestType = requestType, PrintedBy = printedBy };
+            return Ok(await _docketPrintRepository.GetDocketRePrint(model));
 
         }
 

@@ -13,7 +13,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
     public interface IDocketPrintManagerRepository
     {
-        object GetDocket(DocketRePrintModel model);
+        Task<object> GetDocketRePrint(DocketRePrintModel model);
 
         Task<PagedResponse<ViewPrintedDocket>> SearchDockets(string printStatus, string searchText, int pageIndex, int pageSize);
 
