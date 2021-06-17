@@ -22,18 +22,28 @@ namespace tlrsCartonManager.Api.Controllers
     public class DocketPrintController : Controller
     {
         private readonly IDocketPrintManagerRepository _docketPrintRepository;
+        private readonly IRequestManagerRepository _requestPrintRepository;
 
-        public DocketPrintController(IDocketPrintManagerRepository docketPrintRepository)
+        public DocketPrintController(IDocketPrintManagerRepository docketPrintRepository, IRequestManagerRepository requestPrintRepository)
         {
             _docketPrintRepository = docketPrintRepository;
+            _requestPrintRepository = requestPrintRepository;
         }
         
-        [HttpPost("getDocket")]
-        public  ActionResult GetDocket(DocketRePrintModel model)
+        [HttpPost("getDocketRePrint")]
+        public  ActionResult GetDocketRePrint(DocketRePrintModel model)
         {           
             return Ok(_docketPrintRepository.GetDocket(model));
 
         }
+
+        [HttpPost("getDocket")]
+        public ActionResult GetDocket(DocketPrintModel model)
+        {           
+            return Ok(_requestPrintRepository.GetDocket(model));
+
+        }
+
         [HttpGet]
         public async Task<ActionResult> SearchDocket(string status, string searchText, int pageIndex, int pageSize)
         {
