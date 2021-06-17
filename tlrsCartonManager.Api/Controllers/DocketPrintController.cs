@@ -37,12 +37,13 @@ namespace tlrsCartonManager.Api.Controllers
 
         }
 
-        [HttpPost("getDocket")]
-        public ActionResult GetDocket(DocketPrintModel model)
-        {           
+        [HttpGet("getDocket")]
+        public ActionResult GetDocket(string requestNo,string requestType, string printedBy)
+        {
+            DocketPrintModel model = new DocketPrintModel() { RequestNo = requestNo, RequestType = requestType, PrintedBy = printedBy };
             return Ok(_requestPrintRepository.GetDocket(model));
 
-        }
+        }      
 
         [HttpGet]
         public async Task<ActionResult> SearchDocket(string status, string searchText, int pageIndex, int pageSize)
