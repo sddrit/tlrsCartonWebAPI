@@ -39,5 +39,7 @@ namespace tlrsCartonManager.DAL.Models
         public string PrintedBy { get; set; }
         [StringLength(4000)]
         public string PrintedOn { get; set; }
+        public string RequestType { get; set; }
+
     }
 }
