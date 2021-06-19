@@ -58,6 +58,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string PONo { get; set; }
         public string ContactNo { get; set; }
         public string Department { get; set; }
+        public bool IsPrintAlternativeNo { get; set; }
         public List<DocketPrintEmptyDetailModel> EmptyList { get; set; }
         public List<DocketPrintDetailModel> CartonList { get; set; }
 
