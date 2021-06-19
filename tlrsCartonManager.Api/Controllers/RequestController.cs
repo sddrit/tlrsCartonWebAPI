@@ -87,11 +87,6 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _requestRepository.ValidateAlternativeCartonsInRequest(cartonValidationModel));
 
         }
-        [HttpPost("getDocket")]
-        public  ActionResult GetDocket(DocketPrintModel model)
-        {           
-            return Ok( _requestRepository.GetDocket(model));
-
-        }
+       
     }
 }

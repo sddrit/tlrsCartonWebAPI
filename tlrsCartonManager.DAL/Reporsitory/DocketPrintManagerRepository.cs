@@ -36,9 +36,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _mapper = mapper;
             _searchManager = searchManager;
         }
-        public async Task<object> GetDocketRePrint(DocketRePrintModel model)
+        #region Docket reprinting
+        public object GetDocketRePrint(DocketRePrintModel model)
         {
-            var authorizedDocket= await SearchDockets("Printed", model.RequestNo, 1, 1);
+            var authorizedDocket=  SearchDockets("Printed", model.RequestNo, 1, 1);
             if(authorizedDocket==null || authorizedDocket!=null && authorizedDocket.Data.Count()==0)
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -67,9 +68,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             }
             if (model.RequestType.ToLower() == RequestTypes.empty.ToString())
-                headerResult.EmptyList = GetCartonsToDocket<DocketPrintEmptyDetailModel>(model);
+                headerResult.EmptyList = GetCartonsToDocketRePrint<DocketPrintEmptyDetailModel>(model);
             else
-                headerResult.CartonList = GetCartonsToDocket<DocketPrintDetailModel>(model);
+                headerResult.CartonList = GetCartonsToDocketRePrint<DocketPrintDetailModel>(model);
 
             headerResult.SerialNo = (int)model.SerialNo;
 
@@ -77,19 +78,19 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         }
 
-        public List<T> GetCartonsToDocket<T>(DocketRePrintModel model) where T : class
+        public List<T> GetCartonsToDocketRePrint<T>(DocketRePrintModel model) where T : class
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
 
-                new SqlParameter { ParameterName = RequestDocketStoredProcedure.StoredProcedureParameters[0].ToString(), Value = model.RequestNo.AsDbValue() },
-                new SqlParameter { ParameterName = RequestDocketStoredProcedure.StoredProcedureParameters[1].ToString(), Value = model.PrintedBy.AsDbValue() },
-                new SqlParameter { ParameterName = RequestDocketStoredProcedure.StoredProcedureParameters[2].ToString(), Value = model.RequestType.AsDbValue()},
-                new SqlParameter { ParameterName = RequestDocketStoredProcedure.StoredProcedureParameters[3].ToString(), Value = model.SerialNo.AsDbValue() }
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[0].ToString(), Value = model.RequestNo.AsDbValue() },
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[1].ToString(), Value = model.PrintedBy.AsDbValue() },
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[2].ToString(), Value = model.RequestType.AsDbValue()},
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[3].ToString(), Value = model.SerialNo.AsDbValue() }
 
             };
           
-            var result = _tcContext.Set<T>().FromSqlRaw(RequestDocketStoredProcedure.SqlRePrint, parms.ToArray()).ToList();
+            var result = _tcContext.Set<T>().FromSqlRaw(DocketStoredProcedure.SqlRePrint, parms.ToArray()).ToList();
         
 
             if (result == null || result != null && result.Count == 0)
@@ -105,11 +106,90 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
             return result;
         }
+        #endregion
 
-        public async Task<PagedResponse<ViewPrintedDocket>> SearchDockets(string printStatus, string searchText, int pageIndex, int pageSize)
+        #region Docket printing
+        public object GetDocket(DocketPrintModel model)
+        {
+            int serialNo = 0;
+            var authorizedDocket =  SearchDockets("Not Printed", model.RequestNo, 1, 1);
+
+            if (authorizedDocket == null || authorizedDocket != null && authorizedDocket.Data.Count() == 0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to view docket by {model.RequestNo} "
+                    }
+               });
+
+            }
+            var headerResult = _mapper.Map<DocketPrintResultModel>(_tcContext.ViewRequestSummaries.Where(x => x.RequestNo == model.RequestNo).FirstOrDefault());
+
+            if (headerResult == null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to find docket by {model.RequestNo}"
+                    }
+               });
+
+            }
+            if (model.RequestType.ToLower() == RequestTypes.empty.ToString())
+                headerResult.EmptyList = GetCartonsToDocket<DocketPrintEmptyDetailModel>(model, out serialNo);
+            else
+                headerResult.CartonList = GetCartonsToDocket<DocketPrintDetailModel>(model, out serialNo);
+
+            headerResult.SerialNo = serialNo;
+            return headerResult;
+
+        }
+
+     
+        public List<T> GetCartonsToDocket<T>(DocketPrintModel model, out int serialNo) where T : class
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[0].ToString(), Value = model.RequestNo.AsDbValue() },
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[1].ToString(), Value = model.PrintedBy.AsDbValue() },
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[2].ToString(), Value = model.RequestType.AsDbValue() }
+
+            };
+            var OutSerialNo = new SqlParameter
+            {
+                ParameterName = DocketStoredProcedure.StoredProcedureParameters[3].ToString(),
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+            parms.Add(OutSerialNo);
+
+            var result = _tcContext.Set<T>().FromSqlRaw(DocketStoredProcedure.Sql, parms.ToArray()).ToList();
+            serialNo = (int)OutSerialNo.Value;
+
+            if (result == null || result != null && result.Count == 0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to find docket by {model.RequestNo}"
+                    }
+                });
+            }
+            return result;
+        }
+
+        public PagedResponse<ViewPrintedDocket> SearchDockets(string printStatus, string searchText, int pageIndex, int pageSize)
         {
             List<SqlParameter> parms = _searchManager.Search("docketPrintSearch", printStatus, searchText, pageIndex, pageSize, out SqlParameter outParam);
-            var docketList = await _tcContext.Set<ViewPrintedDocket>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
+            var docketList =  _tcContext.Set<ViewPrintedDocket>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToList();
             var totalRows = (int)outParam.Value;
 
             var paginationResponse = new PagedResponse<ViewPrintedDocket>(docketList, pageIndex, pageSize, totalRows);
@@ -128,6 +208,27 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return paginationResponse;
            
         }
+        #endregion
 
+        public List<DocketPrintResultModel> GetBulkDocket(DocketPrintBulkModel model)
+        {
+            List<DocketPrintResultModel> listResult = new List<DocketPrintResultModel>();
+
+            foreach(var requestModel in model.RequestNos)
+            {
+                try
+                {
+                    var result =  GetDocket(requestModel);
+                    listResult.Add((DocketPrintResultModel)result) ;
+                }
+                catch(ServiceException )
+                {
+                    continue;
+                }
+            }
+            return listResult;
+        }
+
+       
     }
 }

@@ -34,7 +34,7 @@ namespace tlrsCartonManager.Api.Controllers
         public async Task<ActionResult> GetDocketRePrint(int serialNo,string requestNo, string requestType, string printedBy)
         {
             DocketRePrintModel model = new DocketRePrintModel() {SerialNo=serialNo, RequestNo = requestNo, RequestType = requestType, PrintedBy = printedBy };
-            return Ok(await _docketPrintRepository.GetDocketRePrint(model));
+            return Ok( _docketPrintRepository.GetDocketRePrint(model));
 
         }
 
@@ -42,14 +42,19 @@ namespace tlrsCartonManager.Api.Controllers
         public ActionResult GetDocket(string requestNo,string requestType, string printedBy)
         {
             DocketPrintModel model = new DocketPrintModel() { RequestNo = requestNo, RequestType = requestType, PrintedBy = printedBy };
-            return Ok(_requestPrintRepository.GetDocket(model));
+            return Ok(_docketPrintRepository.GetDocket(model));
 
-        }      
+        }
+        [HttpPost("getSelectedDockets")]
+        public ActionResult GetDocketSeleced(DocketPrintBulkModel model)        
+        {           
+            return Ok(_docketPrintRepository.GetBulkDocket(model));
+        }
 
         [HttpGet]
         public async Task<ActionResult> SearchDocket(string status, string searchText, int pageIndex, int pageSize)
         {
-           return Ok( await _docketPrintRepository.SearchDockets(status, searchText, pageIndex, pageSize));
+           return Ok(  _docketPrintRepository.SearchDockets(status, searchText, pageIndex, pageSize));
            
         }
 

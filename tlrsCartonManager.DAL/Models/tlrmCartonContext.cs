@@ -1241,7 +1241,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<AlternativeValidationResult>().HasNoKey();
             modelBuilder.Entity<DocketPrintEmptyDetailModel>().HasNoKey();
             modelBuilder.Entity<DocketPrintDetailModel>().HasNoKey();
-
+            modelBuilder.Entity<DocketPrintBulkResult>().HasNoKey();
+            
             OnModelCreatingPartial(modelBuilder);
         }
 
