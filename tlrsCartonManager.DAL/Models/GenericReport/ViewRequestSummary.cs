@@ -84,6 +84,11 @@ namespace tlrsCartonManager.DAL.Models
         [Column("DocketType")]
         public string DocketType { get; set; }
 
+        [Column("IsPrintAlternativeNo")]
+        public bool IsPrintAlternativeNo { get; set; }
+
+        
+
         public IList<KeyValuePair<string, string>> GetValues()
         {
             return new List<KeyValuePair<string, string>>()
