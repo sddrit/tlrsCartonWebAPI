@@ -229,6 +229,34 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return listResult;
         }
 
-       
+
+        public bool DeleteDocketRePrint(DocketRePrintModel model) 
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[0].ToString(), Value = model.RequestNo.AsDbValue() },
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[1].ToString(), Value = model.PrintedBy.AsDbValue() },
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[2].ToString(), Value = model.RequestType.AsDbValue()},
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[3].ToString(), Value = model.SerialNo.AsDbValue() }
+
+            };
+
+            var result = _tcContext.Set<BoolReturn>().FromSqlRaw(DocketStoredProcedure.SqlRePrintDelete, parms.ToArray()).AsEnumerable().First().Value;           
+
+            if (result == false )
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to delete docket by {model.RequestNo} - {model.SerialNo}"
+                    }
+                });
+            }
+            return result;
+        }
+
     }
 }
