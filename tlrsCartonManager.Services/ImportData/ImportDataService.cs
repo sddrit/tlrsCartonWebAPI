@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using tlrsCartonManager.Core.Enums;
 using tlrsCartonManager.DAL.Dtos.Import;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
-using tlrsCartonManager.Services.ImportData.Import;
+
 
 namespace tlrsCartonManager.Services.ImportData
 {
