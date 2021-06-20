@@ -42,7 +42,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var authorizedDocket=  SearchDockets("Printed", model.RequestNo, 1, 1);
             if(authorizedDocket==null || authorizedDocket!=null && authorizedDocket.Data.Count()==0)
             {
-                throw new ServiceException(new ErrorMessage[]
+               throw new ServiceException(new ErrorMessage[]
                {
                     new ErrorMessage()
                     {

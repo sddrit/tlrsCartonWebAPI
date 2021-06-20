@@ -186,8 +186,9 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<object, TableReturn>().ReverseMap();
             CreateMap<DocketPrintResultModel, ViewRequestSummary>().ReverseMap();
             CreateMap<DocketPrintBulkResult, DocketPrintModel>().ReverseMap();
-
             
+            
+
             //ruv
         }
 
