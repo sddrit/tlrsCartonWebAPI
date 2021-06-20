@@ -42,7 +42,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var authorizedDocket=  SearchDockets("Printed", model.RequestNo, 1, 1);
             if(authorizedDocket==null || authorizedDocket!=null && authorizedDocket.Data.Count()==0)
             {
-                throw new ServiceException(new ErrorMessage[]
+               throw new ServiceException(new ErrorMessage[]
                {
                     new ErrorMessage()
                     {
@@ -93,7 +93,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var result = _tcContext.Set<T>().FromSqlRaw(DocketStoredProcedure.SqlRePrint, parms.ToArray()).ToList();
         
 
-            if (result == null || result != null && result.Count == 0)
+            if (result == null || result != null && result.Count == 0 && model.RequestType.ToLower() != RequestTypes.collection.ToString())
             {
                 throw new ServiceException(new ErrorMessage[]
                 {
@@ -172,7 +172,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var result = _tcContext.Set<T>().FromSqlRaw(DocketStoredProcedure.Sql, parms.ToArray()).ToList();
             serialNo = (int)OutSerialNo.Value;
 
-            if (result == null || result != null && result.Count == 0)
+            if (result == null || result != null && result.Count == 0 && model.RequestType.ToLower()!= RequestTypes.collection.ToString())
             {
                 throw new ServiceException(new ErrorMessage[]
                 {

@@ -21,7 +21,7 @@ using tlrsCartonManager.Services.Report.Core;
 using tlrsCartonManager.Services.ImportData;
 using Microsoft.AspNetCore.Http;
 using tlrsCartonManager.Core.Enums;
-using tlrsCartonManager.Services.ImportData.Import;
+using tlrsCartonManager.DAL.Dtos.Import;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -39,9 +39,9 @@ namespace tlrsCartonManager.Api.Controllers
         }       
 
         [HttpPost("importDataAlternativeNo")]
-        public  IActionResult ImportData(IFormFile file, ImportType importOption)
+        public  IActionResult ImportData(IFormFile file, ImportType importOption, int userId)
         {
-           return Ok( _importDataService.GetImportDetails<ExcelParseAlternativeNoUpdateViewModel>(file, importOption));                 
+           return Ok( _importDataService.GetImportDetails<ExcelParseAlternativeNoUpdateViewModel>(file, importOption, userId));                 
         }
 
     }

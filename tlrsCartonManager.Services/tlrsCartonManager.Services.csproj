@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -18,6 +18,10 @@
   <ItemGroup>
     <ProjectReference Include="..\tlrsCartonManager.Core\tlrsCartonManager.Core.csproj" />
     <ProjectReference Include="..\tlrsCartonManager.DAL\tlrsCartonManager.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ImportData\Core\" />
   </ItemGroup>
 
 </Project>

@@ -8,17 +8,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using tlrsCartonManager.Core.Enums;
-using tlrsCartonManager.Services.ImportData.Import;
+using tlrsCartonManager.DAL.Dtos.Import;
+using tlrsCartonManager.DAL.Reporsitory.IRepository;
+
 
 namespace tlrsCartonManager.Services.ImportData
 {
     public  class ImportDataService
     {
-        public  List<T> GetImportDetails<T>(IFormFile file, ImportType importOption) where T : class
+        private readonly IImportDataManagerRepository _importDataManagerRepository;
+
+        public ImportDataService(IImportDataManagerRepository importDataManagerRepository)
+        {
+            _importDataManagerRepository = importDataManagerRepository;
+        }
+
+        public  ImportResultDto GetImportDetails<T>(IFormFile file, ImportType importOption, int userId) where T : class
         {
             if (file.Length <= 0)
             {
-                return new List<T>();
+                return new ImportResultDto();
             }
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -50,7 +59,11 @@ namespace tlrsCartonManager.Services.ImportData
                             CartonNo = cartonNo
                         };
                     });
-                    return importDetails.Where(importDetails => importDetails.CartonNo != 0).ToList() as List<T>;
+
+                    var result= importDetails.Where(importDetails => importDetails.CartonNo != 0).ToList() ;
+                    
+                    return _importDataManagerRepository.GetAlternativeNoUpdateResult(result, userId) ;
+                   
 
                 default:
                     throw new Exception("Import not implemented");
