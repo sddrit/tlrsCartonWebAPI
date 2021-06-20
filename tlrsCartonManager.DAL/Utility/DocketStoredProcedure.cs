@@ -27,6 +27,8 @@ namespace tlrsCartonManager.DAL.Utility
 		public static string StoredProcedureName = "docketInsertUpdateDelete";
 
 		public static string StoredProcedureReprintName = "docketRePrint";
+		
+		public static string StoredProcedureReprintDeleteName = "docketRePrintDelete";
 
 		public static List<string> StoredProcedureParameters = new List<string>()
 		{
@@ -39,5 +41,7 @@ namespace tlrsCartonManager.DAL.Utility
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) + " OUTPUT";
 
 		public static string SqlRePrint = "EXEC " + StoredProcedureReprintName + " " + string.Join(",", StoredProcedureParameters);
+
+		public static string SqlRePrintDelete = "EXEC " + StoredProcedureReprintDeleteName + " " + string.Join(",", StoredProcedureParameters);
 	}
 }

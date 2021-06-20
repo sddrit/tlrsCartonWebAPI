@@ -16,6 +16,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         object GetDocket(DocketPrintModel model);
         object GetDocketRePrint(DocketRePrintModel model);
         List<DocketPrintResultModel> GetBulkDocket(DocketPrintBulkModel model);
+        bool DeleteDocketRePrint(DocketRePrintModel model);
        PagedResponse<ViewPrintedDocket> SearchDockets(string printStatus, string searchText, int pageIndex, int pageSize);
        
     }

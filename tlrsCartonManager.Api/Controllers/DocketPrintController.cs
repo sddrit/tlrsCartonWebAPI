@@ -58,5 +58,11 @@ namespace tlrsCartonManager.Api.Controllers
            
         }
 
+        [HttpDelete]
+        public ActionResult DeleteRePrintedDockets(DocketRePrintModel model)
+        {
+            return Ok(_docketPrintRepository.DeleteDocketRePrint(model));
+        }
+
     }
 }
