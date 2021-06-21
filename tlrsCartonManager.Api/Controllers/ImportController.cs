@@ -30,18 +30,24 @@ namespace tlrsCartonManager.Api.Controllers
     //[Authorize]
     public class ImportController : Controller
     {
-        
-        private readonly ImportDataService  _importDataService;
+
+        private readonly ImportDataService _importDataService;
 
         public ImportController(ImportDataService importDataService)
         {
-            _importDataService = importDataService;            
-        }       
+            _importDataService = importDataService;
+        }
 
         [HttpPost("importDataAlternativeNo")]
-        public  IActionResult ImportData(IFormFile file, ImportType importOption, int userId)
+        public IActionResult ImportDataAlternativeNos(IFormFile file, int userId)
         {
-           return Ok( _importDataService.GetImportDetails<ExcelParseAlternativeNoUpdateViewModel>(file, importOption, userId));                 
+            return Ok(_importDataService.GetImportDetails<ExcelParseAlternativeNoUpdateViewModel>(file, ImportType.AlternativeNoUpdate, userId));
+        }
+
+        [HttpPost("importDataDestructionDates")]
+        public IActionResult ImportDataDestructionDates(IFormFile file, int userId)
+        {
+            return Ok(_importDataService.GetImportDetails<ExcelParseDestructioDateUpdateViewModel>(file, ImportType.DestructionDateUpdate, userId));
         }
 
     }

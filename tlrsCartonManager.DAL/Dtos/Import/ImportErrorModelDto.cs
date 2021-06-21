@@ -14,11 +14,20 @@ namespace tlrsCartonManager.DAL.Dtos.Import
     }
     public class ImportResultDto
     {
+        public ImportResultDto() { }
+        public ImportResultDto(int _NoOfImportedRecords, int _NoOfFailedRecords, int _NoOfTotalRecords, List<ImportErrorModelItemDto> _FailedList)
+        {
+            NoOfImportedRecords = _NoOfImportedRecords;
+            NoOfFailedRecords = _NoOfFailedRecords;
+            NoOfTotalRecords = _NoOfTotalRecords;
+            FailedList = _FailedList;
+        }
         public int NoOfImportedRecords { get; set; }
         public int NoOfFailedRecords { get; set; }
+        public int NoOfTotalRecords { get; set; }
         public List<ImportErrorModelItemDto> FailedList { get; set; }
 
 
     }
-    
+
 }

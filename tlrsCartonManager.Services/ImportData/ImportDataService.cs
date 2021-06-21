@@ -14,7 +14,7 @@ using tlrsCartonManager.DAL.Reporsitory.IRepository;
 
 namespace tlrsCartonManager.Services.ImportData
 {
-    public  class ImportDataService
+    public class ImportDataService
     {
         private readonly IImportDataManagerRepository _importDataManagerRepository;
 
@@ -23,7 +23,7 @@ namespace tlrsCartonManager.Services.ImportData
             _importDataManagerRepository = importDataManagerRepository;
         }
 
-        public  ImportResultDto GetImportDetails<T>(IFormFile file, ImportType importOption, int userId) where T : class
+        public ImportResultDto GetImportDetails<T>(IFormFile file, ImportType importOption, int userId) where T : class
         {
             if (file.Length <= 0)
             {
@@ -60,10 +60,27 @@ namespace tlrsCartonManager.Services.ImportData
                         };
                     });
 
-                    var result= importDetails.Where(importDetails => importDetails.CartonNo != 0).ToList() ;
-                    
-                    return _importDataManagerRepository.GetAlternativeNoUpdateResult(result, userId) ;
-                   
+                    var result = importDetails.Where(importDetails => importDetails.CartonNo != 0).ToList();
+
+                    return _importDataManagerRepository.GetAlternativeNoUpdateResult(result, userId);
+
+                case ImportType.DestructionDateUpdate:
+
+                    var importDestructionDetails = rows.Skip(1).Take(rows.Count() - 1).Select(currentRow =>
+                    {
+                        int.TryParse(currentRow[0].ToString() ?? "0", out var cartonNo);
+                        return new ExcelParseDestructioDateUpdateViewModel()
+                        {
+                            DestructionDate = currentRow[1].ToString(),
+                            DestructionTimeFrame = currentRow[2].ToString(),
+                            CartonNo = cartonNo
+                        };
+                    });
+
+                    var resultDestruction = importDestructionDetails.Where(importDestructionDetails => importDestructionDetails.CartonNo != 0).ToList();
+
+                    return _importDataManagerRepository.GetDestructionDateUpdateResult(resultDestruction, userId);
+
 
                 default:
                     throw new Exception("Import not implemented");
