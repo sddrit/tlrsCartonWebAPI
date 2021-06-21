@@ -38,7 +38,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             List<SqlParameter> parms = new List<SqlParameter>
             {
                  new SqlParameter { ParameterName = ImportDataAlternativeNoStoredprocedure.StoredProcedureParameters[0].ToString(), Value = userId.AsDbValue() } ,
-                
+
                 new SqlParameter
                 {
                    ParameterName = ImportDataAlternativeNoStoredprocedure.StoredProcedureParameters[1].ToString(),
@@ -58,19 +58,42 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             var result = _tcContext.Set<ImportErrorModelItemDto>().FromSqlRaw(ImportDataAlternativeNoStoredprocedure.Sql, parms.ToArray()).ToList();
 
-            ImportResultDto importResult = new ImportResultDto();
-            if (result==null || result!=null && result.Count()==0)
-            {
-                importResult.NoOfImportedRecords = alternativeNoList.Count();
-            }
+            if (result == null || result != null && result.Count() == 0)
+                return new ImportResultDto(alternativeNoList.Count(), 0, alternativeNoList.Count(), new List<ImportErrorModelItemDto>());
             else
-            {
-                importResult.FailedList = result;
-                importResult.NoOfFailedRecords = result.Count();
-                importResult.NoOfImportedRecords = (int)outSuccessCount.Value;
+                return new ImportResultDto((int)outSuccessCount.Value, result.Count(), alternativeNoList.Count(), result);
 
-            }
-            return importResult;
+        }
+
+        public ImportResultDto GetDestructionDateUpdateResult(List<ExcelParseDestructioDateUpdateViewModel> destructionDateList, int userId)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                 new SqlParameter { ParameterName = ImportDataDestructionDateStoredprocedure.StoredProcedureParameters[0].ToString(), Value = userId.AsDbValue() } ,
+
+                new SqlParameter
+                {
+                   ParameterName = ImportDataDestructionDateStoredprocedure.StoredProcedureParameters[1].ToString(),
+                   TypeName = ImportDataDestructionDateStoredprocedure.StoredProcedureTypeNames[0].ToString(),
+                   SqlDbType = SqlDbType.Structured,
+                   Value =destructionDateList.ToList().ToDataTable()
+                },
+            };
+
+            var outSuccessCount = new SqlParameter
+            {
+                ParameterName = ImportDataDestructionDateStoredprocedure.StoredProcedureParameters[2].ToString(),
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+            parms.Add(outSuccessCount);
+
+            var result = _tcContext.Set<ImportErrorModelItemDto>().FromSqlRaw(ImportDataDestructionDateStoredprocedure.Sql, parms.ToArray()).ToList();
+
+            if (result == null || result != null && result.Count() == 0)
+                return new ImportResultDto(destructionDateList.Count(), 0, destructionDateList.Count(), new List<ImportErrorModelItemDto>());
+            else
+                return new ImportResultDto((int)outSuccessCount.Value, result.Count(), destructionDateList.Count(), result);
         }
 
     }

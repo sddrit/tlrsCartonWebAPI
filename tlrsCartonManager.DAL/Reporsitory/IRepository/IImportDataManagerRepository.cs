@@ -13,6 +13,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface IImportDataManagerRepository
     {
         ImportResultDto GetAlternativeNoUpdateResult(List<ExcelParseAlternativeNoUpdateViewModel> alternativeNoList, int userId);
-        
+        ImportResultDto GetDestructionDateUpdateResult(List<ExcelParseDestructioDateUpdateViewModel> destructionDateList, int userId);
+
+
     }
 }
