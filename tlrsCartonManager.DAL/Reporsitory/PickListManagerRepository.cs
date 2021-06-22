@@ -100,7 +100,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return paginationResponse;
         }        
 
-        public async Task<PickListHeaderDto> AddPickList(PickListResponseDto pickListInsert)
+        public bool AddPickList(PickListResponseDto pickListInsert)
         {
             var result= SavePickList(pickListInsert, TransactionTypes.Insert.ToString());
             if(result.OutValue=="NOK")
@@ -116,7 +116,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
             else
             {
-               return await GetPickList(result.OutValue);
+                return true;
             }
         }
 

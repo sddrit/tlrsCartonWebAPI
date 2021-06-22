@@ -59,7 +59,7 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> AddPickList(PickListResponseDto pickList)
         {
-            return Ok(await _pickListRepository.AddPickList(pickList));
+            return Ok(_pickListRepository.AddPickList(pickList));
         }
 
         [HttpPut]

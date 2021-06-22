@@ -58,5 +58,12 @@ namespace tlrsCartonManager.DAL.Models
         [Column("pickedUserName")]
         [StringLength(100)]
         public string PickedUserName { get; set; }
+
+        [Column("assignedUserName")]
+        [StringLength(100)]
+        public string AssignedUserName { get; set; }
+
+        
+
     }
 }
