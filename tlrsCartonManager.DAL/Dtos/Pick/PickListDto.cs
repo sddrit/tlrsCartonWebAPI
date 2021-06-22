@@ -14,6 +14,9 @@ namespace tlrsCartonManager.DAL.Dtos.Pick
         public string PickListNo { get; set; }
         public string LastSentDeviceId { get; set; }
         public int? AssignedUserId { get; set; }
+        public string AssignedUserName { get; set; }
+        public string PickedUserName { get; set; }        
+        public DateTime CreatedDate { get; set; }       
         public ICollection<PickListDetailItemDto> PickListDetail { get; set; }
 
     }
@@ -58,6 +61,8 @@ namespace tlrsCartonManager.DAL.Dtos.Pick
         public string PickedUserName { get; set; }
         public bool IsPicked { get; set; }
         public long? PickDate { get; set; }
+
+        public int? LastScannedDate { get; set; }
     }
     public class PickListDto
     {
