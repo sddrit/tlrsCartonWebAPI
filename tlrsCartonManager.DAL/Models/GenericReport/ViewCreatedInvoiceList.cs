@@ -15,25 +15,47 @@ namespace tlrsCartonManager.DAL.Models
         [Required]
         [StringLength(50)]
         public string InvoiceId { get; set; }
+        
         [StringLength(20)]
         public string CustomerCode { get; set; }
+        
         [StringLength(50)]
         public string Name { get; set; }
+        
         public int? FromDate { get; set; }
+        
         public int? ToDate { get; set; }
+        
         [Column(TypeName = "numeric(18, 2)")]
         public decimal? InvoiceValue { get; set; }
+        
         [StringLength(100)]
         public string CreatedUser { get; set; }
+        
         [StringLength(4000)]
         public string CreatedDate { get; set; }
+        
         [Column("luUser")]
         [StringLength(100)]
         public string LuUser { get; set; }
+        
         [Required]
         [Column("luDate")]
         [StringLength(4000)]
         public string LuDate { get; set; }
+
+        [Column("CustomerAddress")]
+        public string CustomerAddress { get; set; }
+
+        [Column("ContactPerson")]
+        public string ContactPerson { get; set; }
+
+        [Column("PoNo")]
+        public string PoNo { get; set; }
+
+        [Column("VatNo")]
+        public string VatNo { get; set; }
+
 
         public IList<KeyValuePair<string, string>> GetValues()
         {

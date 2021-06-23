@@ -13,7 +13,8 @@ namespace tlrsCartonManager.DAL.Dtos
         [Key]       
         public string InvoiceId { get; set; }       
         public long TrackingId { get; set; }      
-        public int? CustomerId { get; set; }      
+        public int? CustomerId { get; set; }
+        public string Name { get; set; }
         public int? FromDate { get; set; }      
         public int? ToDate { get; set; }      
         public decimal? InvoiceValue { get; set; }       
@@ -21,8 +22,13 @@ namespace tlrsCartonManager.DAL.Dtos
         public int? CreatedUserId { get; set; }      
         public DateTime? CreatedDate { get; set; }       
         public int? LuUserId { get; set; }       
-        public DateTime? LuDate { get; set; }
-  
+        public DateTime? LuDate { get; set; }      
+        public string CustomerAddress { get; set; }       
+        public string ContactPerson { get; set; }       
+        public string PoNo { get; set; }       
+        public string VatNo { get; set; }
+        
+
         public virtual ICollection<InvoiceDetailDto> InvoiceDetails { get; set; }
     }
     public class InvoiceSearchDto
@@ -34,5 +40,21 @@ namespace tlrsCartonManager.DAL.Dtos
         public string InvoicePeriod { get; set; }
         public decimal InvoiceValue { get; set; }
 
+    }
+    public class InvoicePrintModel
+    {
+       
+        public string InvoiceId { get; set; }      
+        public string CustomerCode { get; set; }      
+        public string Name { get; set; }
+        public int? FromDate { get; set; }
+        public int? ToDate { get; set; }     
+        public decimal? InvoiceValue { get; set; }            
+        public string CustomerAddress { get; set; }        
+        public string ContactPerson { get; set; }       
+        public string PoNo { get; set; }               
+        public string VatNo { get; set; }
+
+        public  ICollection<InvoiceDetailDto> InvoiceDetails { get; set; }
     }
 }
