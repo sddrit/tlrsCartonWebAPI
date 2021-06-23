@@ -38,7 +38,7 @@ namespace tlrsCartonManager.DAL.Models
         public DateTime? CreatedDate { get; set; }
         [Column("luUserId")]
         [StringLength(50)]
-        public string LuUserId { get; set; }
+        public int? LuUserId { get; set; }
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
 
