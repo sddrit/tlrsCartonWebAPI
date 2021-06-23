@@ -35,7 +35,7 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(invoiceList);
         }
 
-        [HttpGet("getInvoicePrintList/{invoiceid}")]
+        [HttpGet("getInvoicePrintList/{invoiceId}")]
         public async Task<ActionResult<InvoiceHeaderDto>> GetSingleSearch(string invoiceId)
         {
             var invoice = await _invoiceRepository.GetInvoiceList(invoiceId);

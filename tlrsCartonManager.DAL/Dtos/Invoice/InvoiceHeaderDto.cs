@@ -20,7 +20,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public int? InvoiceProfielId { get; set; }        
         public int? CreatedUserId { get; set; }      
         public DateTime? CreatedDate { get; set; }       
-        public string LuUserId { get; set; }       
+        public int? LuUserId { get; set; }       
         public DateTime? LuDate { get; set; }
   
         public virtual ICollection<InvoiceDetailDto> InvoiceDetails { get; set; }
