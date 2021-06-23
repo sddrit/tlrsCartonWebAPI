@@ -62,7 +62,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return SavePickList(pickListDelete, TransactionTypes.Delete.ToString());
         }
         public TableReturn UpdatePickList(PickListResponseDto pickListUpdate)
-        {           
+        {
+            pickListUpdate.PickListDetail = new List<PickListResponseDetailDto>();
             return SavePickList(pickListUpdate, TransactionTypes.Update.ToString());
         }
         public async Task<PickListHeaderDto> GetPickList(string pickListNo)
