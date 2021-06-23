@@ -19,6 +19,7 @@ using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Dtos.Invoice;
+using tlrsCartonManager.DAL.Exceptions;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -36,12 +37,28 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
         #region Invoicing
-        public async Task<InvoiceHeaderDto> GetInvoiceList(string invoiceNo)
-        {
-            var carton = _mapper.Map<InvoiceHeaderDto>(await _tcContext.InvoiceHeaders.
-                          Include(x => x.InvoiceDetails).
-                          Where(x => x.InvoiceId == invoiceNo).FirstOrDefaultAsync());
-            return carton;
+        public async Task<InvoicePrintModel> GetInvoiceList(string invoiceNo)
+        {           
+
+            var invoiceHeader = _mapper.Map<InvoicePrintModel>(await _tcContext.ViewCreatedInvoiceLists
+                .Where(x => x.InvoiceId == invoiceNo).FirstOrDefaultAsync());
+
+            if(invoiceHeader==null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"Unable to find Invoice by {invoiceNo}"
+                     }
+                });
+            }
+
+            invoiceHeader.InvoiceDetails = _mapper.Map<List<InvoiceDetailDto>>( await _tcContext.InvoiceDetails
+                .Where(x => x.InvoiceId == invoiceNo).ToListAsync());                        
+
+            return invoiceHeader;
 
         }
         public List<InvoiceReturn> GetInvoiceById(string invoiceNo)
