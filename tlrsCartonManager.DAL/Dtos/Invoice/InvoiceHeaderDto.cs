@@ -54,11 +54,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string ContactPerson { get; set; }       
         public string PoNo { get; set; }               
         public string VatNo { get; set; }      
-        public string InvoiceTye { get; set; }       
-        public string CompanySVATNo { get; set; }      
-        public string CompanyVATNo { get; set; }        
-        public string CompanyNBT { get; set; }
-
+        public string InvoiceTye { get; set; }           
         public  ICollection<InvoiceDetailDto> InvoiceDetails { get; set; }
     }
 }
