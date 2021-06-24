@@ -55,6 +55,19 @@ namespace tlrsCartonManager.DAL.Models
 
         [Column("VatNo")]
         public string VatNo { get; set; }
+        
+        [Column("InvoiceTye")]
+        public string InvoiceTye { get; set; }
+        
+        [Column("CompanySVATNo")]
+        public string CompanySVATNo { get; set; }
+
+        [Column("CompanyVATNo")]
+        public string CompanyVATNo { get; set; }
+
+        [Column("CompanyNBT")]
+        public string CompanyNBT { get; set; }
+
 
 
         public IList<KeyValuePair<string, string>> GetValues()
