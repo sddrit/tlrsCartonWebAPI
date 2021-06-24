@@ -61,7 +61,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     lnMenuModel.ModelName = menuUser.Model.Name;
                     List<MenuModelOptionsDto> _lstMenuModelOptions = new List<MenuModelOptionsDto>();
 
-                    var userRoleModels = await _tcContext.MenuModelOptionsUserRoles.Where(x => x.UserRoleId == menuUser.RoleId).Include(x => x.FormRight).ToListAsync();
+                    var userRoleModels = await _tcContext.MenuModelOptionsUserRoles.Where(x => x.UserRoleId == menuUser.TrackingId).Include(x => x.FormRight).ToListAsync();
 
                     foreach (MenuModelOptionsUserRole mnuOptUserRole in userRoleModels)
                     {
