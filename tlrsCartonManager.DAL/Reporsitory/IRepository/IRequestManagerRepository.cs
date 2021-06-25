@@ -29,7 +29,10 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         
         Task<List<AlternativeValidationResult>> ValidateAlternativeCartonsInRequest(RequestAlternateValidationModel validation);
 
-       
+        Task<object> GetDocket(DocketPrintModel model);
+
+
+
 
     }
 }
