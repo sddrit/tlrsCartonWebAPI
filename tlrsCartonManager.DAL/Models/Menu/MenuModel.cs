@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace tlrsCartonManager.DAL.Models
 {
-    [Table("Menu")]
+    [Table("SubModule")]
     public partial class MenuModel
     {
         public MenuModel()

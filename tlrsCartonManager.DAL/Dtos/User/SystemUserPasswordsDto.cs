@@ -14,4 +14,12 @@ namespace tlrsCartonManager.DAL.Dtos
         [Required]
         public string PasswordText { get; set; }
     }
+    public class UserLoginModel
+    {
+        [Required]
+        public string UserName { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+    }
 }

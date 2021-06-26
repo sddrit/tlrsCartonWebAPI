@@ -8,6 +8,7 @@ using tlrsCartonManager.DAL.Dtos.Carton;
 using tlrsCartonManager.DAL.Dtos.Company;
 using tlrsCartonManager.DAL.Dtos.Invoice;
 using tlrsCartonManager.DAL.Dtos.Location;
+using tlrsCartonManager.DAL.Dtos.Menu;
 using tlrsCartonManager.DAL.Dtos.MetaData;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Dtos.Pick;
@@ -179,7 +180,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<RequestType, RequestTypeDto>().ReverseMap();
             CreateMap<Location, LocationDto>().ReverseMap();
             CreateMap<RoleResponseListItem, Role>().ReverseMap();
-            CreateMap<RolePermissionListItem, ViewMenu>().ReverseMap();
+            CreateMap<UserModulePermission, ViewMenu>().ReverseMap();
             CreateMap<User, UserResponse>().ReverseMap();
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<UserRoleDto, UserRole>().ReverseMap();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tlrsCartonManager.DAL.Dtos.Menu;
 
 namespace tlrsCartonManager.DAL.Models.RoleResponse
 {
@@ -16,7 +17,7 @@ namespace tlrsCartonManager.DAL.Models.RoleResponse
         public int RoleId { get; set; }
         public string RoleName { get; set; }
         public int UserId { get; set; }
-        public ICollection<RolePermissionListItem> RolePermissionList { get; set; }
+        public ICollection<UserRolePermission> RolePermissionList { get; set; }
        
 
     }

@@ -60,6 +60,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IDocketPrintManagerRepository, DocketPrintManagerRepository>();
             services.AddScoped<IImportDataManagerRepository, ImportDataManagerRepository>();
             services.AddScoped<ImportDataService>();
+            services.AddScoped<IAccountManagerRepository, AccountManagerRepository>();
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             return services;
         }

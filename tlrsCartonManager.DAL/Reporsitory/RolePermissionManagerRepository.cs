@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using tlrsCartonManager.DAL.Dtos.Menu;
+using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Extensions;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.RoleResponse;
@@ -26,7 +29,19 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public bool AddRolePermission(RoleResponse response)
         {
-           return SaveRolePermission(response, TransactionTypes.Insert.ToString());
+            if (!SaveRolePermission(response, TransactionTypes.Insert.ToString()))
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to create role permission"
+                        }
+                });
+            }
+
+            return true;
         }
         public bool UpdateRolePermission(RoleResponse response)
         {
@@ -53,9 +68,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 }
             };
             #endregion
-            return _tcContext.Set<BoolReturn>().FromSqlRaw(UserRoleStoredProcedure.Sql,
-                parms.ToArray()).AsEnumerable().First().Value;
+            return _tcContext.Set<BoolReturn>().FromSqlRaw(UserRoleStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
+
         public async Task<IEnumerable<RoleResponseListItem>> GetRoleList()
         {
             var role = await _tcContext.Roles.Where(x=>x.Deleted==0).ToListAsync();
@@ -66,31 +81,61 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var role = await _tcContext.ViewUserRoles.ToListAsync();
             return _mapper.Map<IEnumerable<ViewUserRole>>(role);
         }
-        public async Task<IEnumerable<RolePermissionListItem>> GeRolePermissionList()        {
+        public async Task<IEnumerable<UserModulePermission>> GeRolePermissionList()        
+        {
           
-            return _mapper.Map<IEnumerable<RolePermissionListItem>>( await _tcContext.ViewMenus.ToListAsync());
+            return _mapper.Map<IEnumerable<UserModulePermission>>( await _tcContext.ViewMenus.ToListAsync());
           
         }
         public async Task<bool> AddRole(Role role)
         {
-            role.Active = true;
-            role.Deleted = 0;
-            role.CreatedDate = System.DateTime.Today;
+            string validateResult = ValidateRole(role);
+           
+            if(!string.IsNullOrEmpty(validateResult))
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = validateResult
+                        }
+               });
 
-             _tcContext.Roles.Add(role);
-            if (await _tcContext.SaveChangesAsync() > 0)return true;          
-            else return false;
+            }
+                role.Active = true;
+                role.Deleted = 0;
+                role.CreatedDate = System.DateTime.Today;
+
+                _tcContext.Roles.Add(role);
+                if (await _tcContext.SaveChangesAsync() > 0) return true;
+                else return false;
+            
                       
         }
         public async Task<bool> DeleteRole(Role role)
         {
-            var currentRole = _tcContext.Roles.Where(x => x.Id == role.Id).FirstOrDefault();
-            currentRole.Deleted = 1;
-            _tcContext.Roles.Update(currentRole);
-            if (await _tcContext.SaveChangesAsync() > 0) return true;
-            else return false;
-
+            try
+            {
+                var currentRole = _tcContext.Roles.Where(x => x.Id == role.Id).FirstOrDefault();
+                currentRole.Deleted = 1;
+                _tcContext.Roles.Update(currentRole);
+                if (await _tcContext.SaveChangesAsync() > 0) return true;
+                else return false;
+            }
+            catch(Exception)
+            {
+                  throw new ServiceException(new ErrorMessage[]
+                  {
+                            new ErrorMessage()
+                            {
+                                Code = string.Empty,
+                                Message = $"Unable to delete role by  {role.Id}"
+                            }
+                  });
+            }
         }
+
         public string ValidateRole(Role role)
         {
             if (_tcContext.Roles.Where(x => x.Description == role.Description && x.Deleted==0).FirstOrDefault()!=null)
@@ -100,7 +145,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         }
 
-        public async Task<IEnumerable<RolePermissionListItem>> GetRolePermissionListById(int id)
+        public async Task<IEnumerable<UserModulePermission>> GetRolePermissionListById(int id)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
@@ -108,7 +153,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     Value = id.AsDbValue() }                           
             };
 
-            return await _tcContext.Set<RolePermissionListItem>().FromSqlRaw(UserRoleByIdStoredProcedure.Sql,
+            return await _tcContext.Set<UserModulePermission>().FromSqlRaw(UserRoleByIdStoredProcedure.Sql,
                 parms.ToArray()).ToListAsync();
         }
     }

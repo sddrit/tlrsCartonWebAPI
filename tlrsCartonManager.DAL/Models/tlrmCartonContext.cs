@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Dtos.Import;
+using tlrsCartonManager.DAL.Dtos.Menu;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Docket;
@@ -989,7 +990,7 @@ namespace tlrsCartonManager.DAL.Models
             {
                 entity.ToView("viewMenu");
 
-                entity.Property(e => e.CategoryName).IsUnicode(false);
+                entity.Property(e => e.ModuleName).IsUnicode(false);
             });
             modelBuilder.Entity<ViewUserRole>(entity =>
 
@@ -1244,6 +1245,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<DocketPrintDetailModel>().HasNoKey();
             modelBuilder.Entity<DocketPrintBulkResult>().HasNoKey();
             modelBuilder.Entity<ImportErrorModelItemDto>().HasNoKey();
+            modelBuilder.Entity<LoginValidationResult>().HasNoKey();
+            modelBuilder.Entity<UserModulePermission>().HasNoKey();
             
             OnModelCreatingPartial(modelBuilder);
         }

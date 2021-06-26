@@ -89,17 +89,9 @@ namespace tlrsCartonManager.Api
                         },
                         new List<string>()
                     }
-                });
+                });        
 
-           
-
-              
-
-            });
-
-
-     
-            
+            });           
 
         }
 
