@@ -87,6 +87,12 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _requestRepository.ValidateAlternativeCartonsInRequest(cartonValidationModel));
 
         }
-       
+        [HttpGet("getDocketPrint")]
+        public async Task<ActionResult> GetDocketPrintAsync(string requestNo, string requestType, string printedBy)
+        {
+            DocketPrintModel model = new DocketPrintModel() { RequestNo = requestNo, RequestType = requestType, PrintedBy = printedBy };
+            return Ok( await _requestRepository.GetDocket(model));
+
+        }
     }
 }

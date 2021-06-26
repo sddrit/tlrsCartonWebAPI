@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Dtos.Menu;
 using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.RoleResponse;
@@ -18,10 +19,10 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         Task<IEnumerable<RoleResponseListItem>> GetRoleList();
         Task<IEnumerable<ViewUserRole>> GetPermissionPendingRoleList();
-        Task<IEnumerable<RolePermissionListItem>> GeRolePermissionList();
+        Task<IEnumerable<UserModulePermission>> GeRolePermissionList();
         Task<bool> AddRole(Role role);
         Task<bool> DeleteRole(Role role);
         string ValidateRole(Role role);
-        Task<IEnumerable<RolePermissionListItem>> GetRolePermissionListById(int id);
+        Task<IEnumerable<UserModulePermission>> GetRolePermissionListById(int id);
     }
 }

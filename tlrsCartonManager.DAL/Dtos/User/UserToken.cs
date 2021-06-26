@@ -14,4 +14,13 @@ namespace tlrsCartonManager.DAL.Dtos
 
         public IEnumerable<MenuModelsDto> UserRights { get; set; }
     }
+
+    public class UserLoginResponse
+    {
+        public string UserId { get; set; }
+
+        public string Token { get; set; }
+
+        public IEnumerable<UserModulePermission> Permissions { get; set; }
+    }
 }

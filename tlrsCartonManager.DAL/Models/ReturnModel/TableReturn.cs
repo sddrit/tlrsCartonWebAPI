@@ -25,4 +25,11 @@ namespace tlrsCartonManager.DAL.Models
         public bool CanProcess { get; set; }
         public string CartonStatus { get; set; }
     }
+
+    public class LoginValidationResult
+    {
+        public string Code { get; set; }
+        public string Message { get; set; }
+
+    }
 }

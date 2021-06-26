@@ -13,13 +13,13 @@ namespace tlrsCartonManager.DAL.Utility
         {
            "@id",         
            "@userId",
-           "@statementType",           
-           "@udtMenuUserRoleAction"
+           "@statementType",
+           "@udtRolePermission"
         };
         public static List<string> StoredProcedureTypeNames = new List<string>()
         {
-            
-            "dbo.udtMenuUserRoleAction"
+
+            "dbo.udtRolePermission"
 
         };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) ;
@@ -28,7 +28,7 @@ namespace tlrsCartonManager.DAL.Utility
 
 public class UserRoleByIdStoredProcedure
 {
-    public static string StoredProcedureName = "userRolePermissionSelect";
+    public static string StoredProcedureName = "rolePermissionSelect";
     public static List<string> StoredProcedureParameters = new List<string>()
         {
            "@id"

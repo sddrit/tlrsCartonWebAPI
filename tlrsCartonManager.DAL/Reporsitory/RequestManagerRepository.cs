@@ -27,12 +27,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
         private readonly ISearchManagerRepository _searchManager;
-
-        public RequestManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager)
+        private readonly IDocketPrintManagerRepository _docketManager;
+        public RequestManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager,
+            IDocketPrintManagerRepository docketManager)
         {
             _tcContext = tccontext;
             _mapper = mapper;
             _searchManager = searchManager;
+            _docketManager = docketManager;
         }
         public async Task<RequestHeaderDto> GetRequestList(string requestNo, string type)
         {          
@@ -269,6 +271,49 @@ namespace tlrsCartonManager.DAL.Reporsitory
             #endregion
 
             return paginationResponse;
+        }
+        public async Task<object> GetDocket(DocketPrintModel model)
+        {
+            int serialNo = 0;
+            var authorizedDocket = await SearchRequest(model.RequestType,model.RequestNo, 1, 1);
+
+            if (authorizedDocket == null || authorizedDocket != null && authorizedDocket.Data.Count() == 0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to view docket by {model.RequestNo} "
+                    }
+               });
+
+            }
+            
+
+            var headerResult = _mapper.Map<DocketPrintResultModel>(_tcContext.ViewRequestSummaries.Where(x => x.RequestNo == model.RequestNo)
+                .FirstOrDefault());
+
+            if (headerResult == null)
+            {
+               throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to find docket by {model.RequestNo}"
+                    }
+               });
+
+            }
+            if (model.RequestType.ToLower() == RequestTypes.empty.ToString())
+                headerResult.EmptyList = _docketManager.GetCartonsToDocket<DocketPrintEmptyDetailModel>(model, out serialNo);
+            else
+                headerResult.CartonList = _docketManager.GetCartonsToDocket<DocketPrintDetailModel>(model, out serialNo);
+
+            headerResult.SerialNo = serialNo;
+            return headerResult;
+
         }
 
     }
