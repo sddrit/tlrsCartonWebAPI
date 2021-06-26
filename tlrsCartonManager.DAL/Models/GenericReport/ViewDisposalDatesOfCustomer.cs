@@ -12,29 +12,38 @@ namespace tlrsCartonManager.DAL.Models
     [Keyless]
     public partial class ViewDisposalDatesOfCustomer : IGenericReportDataItem
     {
-        [Column("cartonNo")]
+        [Column("Carton No")]
         public int CartonNo { get; set; }
+
         [Required]
-        [Column("customerCode")]
+        [Column("Customer Code")]
         [StringLength(20)]
         public string CustomerCode { get; set; }
+
         [Required]
-        [Column("name")]
+        [Column("Name")]
         [StringLength(50)]
         public string Name { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Status { get; set; }
+
         [Required]
         [StringLength(50)]
+        [Column("Status Confirmed")]
         public string StatusConfirmed { get; set; }
-        [Column("disposalDate")]
+
+        [Column("Disposal Date")]
         public int? DisposalDate { get; set; }
-        [Column("disposalTimeFrame")]
+
+        [Column("Disposal Time Frame")]
         public int? DisposalTimeFrame { get; set; }
-        [Column("firstInDate")]
+
+        [Column("First In Date")]
         public int FirstInDate { get; set; }
-        [Column("lastTransactionDate")]
+
+        [Column("Last Transaction Date")]
         public int LastTransactionDate { get; set; }
 
         public IList<KeyValuePair<string, string>> GetValues()

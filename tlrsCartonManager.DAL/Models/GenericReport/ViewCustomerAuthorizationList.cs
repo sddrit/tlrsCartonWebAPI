@@ -13,26 +13,40 @@ namespace tlrsCartonManager.DAL.Models
     public partial class ViewCustomerAuthorizationList : IGenericReportDataItem
     {
         [StringLength(20)]
+        [Column("Customer Code")]
         public string CustomerCode { get; set; }
+
         [StringLength(50)]
+        [Column("Customer Name")]
         public string CustomerName { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Department { get; set; }
+
         [StringLength(50)]
         public string Designation { get; set; }
+
         [StringLength(50)]
         public string Email { get; set; }
+
         [StringLength(10)]
+        [Column("Contact No")]
         public string ContactNo { get; set; }
+
         public bool Active { get; set; }
         public bool Deleted { get; set; }
+
+        [Column("Level Of Authority")]
         public int? LevelOfAuthority { get; set; }
+
         [Required]
         [StringLength(20)]
+        [Column("Main Customer Code")]
         public string MainCustomerCode { get; set; }
 
         public IList<KeyValuePair<string, string>> GetValues()

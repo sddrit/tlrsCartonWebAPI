@@ -14,80 +14,111 @@ namespace tlrsCartonManager.DAL.Models
     {
         [Required]
         [StringLength(20)]
-       
+        [Column("Request No")]
         public string RequestNo { get; set; }
+
         [Required]
         [StringLength(20)]
+        [Column("Customer Code")]
         public string CustomerCode { get; set; }
+
         [Required]
         [StringLength(50)]
+        [Column("Name")]
         public string Name { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Address { get; set; }
+
+        [Column("Delivery Date")]
         public int? DeliveryDate { get; set; }
+
         [StringLength(50)]
+        [Column("Order Received By")]
         public string OrderReceivedBy { get; set; }
+
         [StringLength(50)]
+        [Column("Customer Reference")]
         public string CustomerReference { get; set; }
+
         [Required]
         [StringLength(50)]
+        [Column("Authorized Officer")]
         public string AuthorizedOfficer { get; set; }
+
+        [Column("No Of Cartons")]
         public int? NoOfCartons { get; set; }
+
         [StringLength(10)]
+        [Column("Request Type")]
         public string RequestType { get; set; }
+
         [StringLength(100)]
         public string Status { get; set; }
+
         [StringLength(100)]
+        [Column("Storage Type")]
         public string StorageType { get; set; }
+
         [StringLength(20)]
+        [Column("Wo Type")]
         public string WoType { get; set; }
-        [Column("createdUser")]
+
+        [Column("Created User")]
         [StringLength(100)]
         public string CreatedUser { get; set; }
-        [Column("createdDate")]
+
+        [Column("Created Date")]
         [StringLength(4000)]
         public string CreatedDate { get; set; }
-        [Column("createdDateTime")]
+
+        [Column("Created Date Time")]
         [StringLength(4000)]
         public string CreatedDateTime { get; set; }
+
         [Required]
-        [Column("luUser")]
+        [Column("Lu User")]
         [StringLength(100)]
         public string LuUser { get; set; }
-        [Column("luDate")]
+
+        [Column("Lu Date")]
         [StringLength(4000)]
         public string LuDate { get; set; }
-        [Column("luDateTime")]
+
+        [Column("Lu Date Time")]
         [StringLength(4000)]
         public string LuDateTime { get; set; }
+
         [StringLength(50)]
+        [Column("Delivery Route")]
         public string DeliveryRoute { get; set; }
+
         [StringLength(50)]
+        [Column("Service Type")]
         public string ServiceType { get; set; }
-        [Column("docketNo")]
+
+        [Column("Docket No")]
         [StringLength(200)]
         public string DocketNo { get; set; }
 
-        [Column("Department")]        
+        [Column("Department")]
         public string Department { get; set; }
 
-        [Column("PoNo")]     
+        [Column("Po No")]
         public string PoNo { get; set; }
 
-        [Column("ContactPerson")]    
+        [Column("Contact Person")]
         public string ContactPerson { get; set; }
 
-        [Column("ContactNo")]
+        [Column("Contact No")]
         public string ContactNo { get; set; }
 
-        [Column("DocketType")]
+        [Column("Docket Type")]
         public string DocketType { get; set; }
 
-        [Column("IsPrintAlternativeNo")]
+        [Column("Is PrintAlternative No")]
         public bool IsPrintAlternativeNo { get; set; }
-
-        
 
         public IList<KeyValuePair<string, string>> GetValues()
         {
@@ -119,5 +150,5 @@ namespace tlrsCartonManager.DAL.Models
         }
     }
 
-   
+
 }

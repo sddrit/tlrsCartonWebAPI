@@ -14,34 +14,61 @@ namespace tlrsCartonManager.DAL.Models
     {
         [Required]
         [StringLength(50)]
+        [Column("PickList No")]
         public string PickListNo { get; set; }
+
+        [Column("Carton No")]
         public int CartonNo { get; set; }
+
         [Required]
         [StringLength(50)]
+        [Column("Bar Code")]
         public string Barcode { get; set; }
+
         [StringLength(20)]
+        [Column("Location Code")]
         public string LocationCode { get; set; }
+
         [StringLength(20)]
+        [Column("WareHouse Code")]
         public string WareHouseCode { get; set; }
+
         [StringLength(50)]
+        [Column("Last Sent Device Id")]
         public string LastSentDeviceId { get; set; }
+
         [StringLength(100)]
+        [Column("Assigned User")]
         public string AssignedUser { get; set; }
+
         [StringLength(20)]
+        [Column("Request No")]
         public string RequestNo { get; set; }
+
         [StringLength(100)]
+        [Column("Picked User")]
         public string PickedUser { get; set; }
+
+        [Column("IsPicked")]
         public bool IsPicked { get; set; }
+
+        [Column("Pick Date")]
         public long? PickDate { get; set; }
+
         public bool? Deleted { get; set; }
-        [Column("createdUser")]
+
+        [Column("Created User")]
         [StringLength(100)]
         public string CreatedUser { get; set; }
+
+        [Column("Created Date")]
         [StringLength(4000)]
         public string CreatedDate { get; set; }
-        [Column("luUser")]
+
+        [Column("Lu User")]
         public int? LuUser { get; set; }
-        [Column("LUDate")]
+
+        [Column("Lu Date")]
         [StringLength(4000)]
         public string LuDate { get; set; }
 
@@ -49,22 +76,22 @@ namespace tlrsCartonManager.DAL.Models
         {
             return new List<KeyValuePair<string, string>>()
             {
-                 new KeyValuePair<string, string>("PickListNo",PickListNo),
-                 new KeyValuePair<string, string>("CartonNo",CartonNo.ToString()),
-                 new KeyValuePair<string, string>("Barcode",Barcode),
-                 new KeyValuePair<string, string>("LocationCode",LocationCode),
-                 new KeyValuePair<string, string>("WareHouseCode",WareHouseCode),
-                 new KeyValuePair<string, string>("LastSentDeviceId",LastSentDeviceId),
-                 new KeyValuePair<string, string>("AssignedUser",AssignedUser),
-                 new KeyValuePair<string, string>("RequestNo",RequestNo),
-                 new KeyValuePair<string, string>("PickedUser",PickedUser),
+                 new KeyValuePair<string, string>("PickList No",PickListNo),
+                 new KeyValuePair<string, string>("Carton No",CartonNo.ToString()),
+                 new KeyValuePair<string, string>("Bar Code",Barcode),
+                 new KeyValuePair<string, string>("Location Code",LocationCode),
+                 new KeyValuePair<string, string>("WareHouse Code",WareHouseCode),
+                 new KeyValuePair<string, string>("Last SentDevice Id",LastSentDeviceId),
+                 new KeyValuePair<string, string>("Assigned User",AssignedUser),
+                 new KeyValuePair<string, string>("Request No",RequestNo),
+                 new KeyValuePair<string, string>("Picked User",PickedUser),
                  new KeyValuePair<string, string>("IsPicked",IsPicked.ToString()),
-                 new KeyValuePair<string, string>("PickDate",PickDate.ToString()),
+                 new KeyValuePair<string, string>("Pick Date",PickDate.ToString()),
                  new KeyValuePair<string, string>("Deleted",Deleted.ToString()),
-                 new KeyValuePair<string, string>("CreatedUser",CreatedUser),
-                 new KeyValuePair<string, string>("CreatedDate",CreatedDate),
-                 new KeyValuePair<string, string>("LuUser",LuUser.ToString()),
-                 new KeyValuePair<string, string>("LuDate",LuDate)
+                 new KeyValuePair<string, string>("Created User",CreatedUser),
+                 new KeyValuePair<string, string>("Created Date",CreatedDate),
+                 new KeyValuePair<string, string>("Lu User",LuUser.ToString()),
+                 new KeyValuePair<string, string>("Lu Date",LuDate)
 
             };
         }

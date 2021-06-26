@@ -14,51 +14,56 @@ namespace tlrsCartonManager.DAL.Models
     {
         [Required]
         [StringLength(50)]
+        [Column("Invoice Id")]
         public string InvoiceId { get; set; }
-        
+
         [StringLength(20)]
+        [Column("Customer Code")]
         public string CustomerCode { get; set; }
-        
+
         [StringLength(50)]
         public string Name { get; set; }
-        
+
+        [Column("From Date")]
         public int? FromDate { get; set; }
-        
+
+        [Column("To Date")]
         public int? ToDate { get; set; }
-        
-        [Column(TypeName = "numeric(18, 2)")]
+
+        [Column("Invoice Value", TypeName = "numeric(18, 2)")]
         public decimal? InvoiceValue { get; set; }
-        
+
         [StringLength(100)]
+        [Column("Created User")]
         public string CreatedUser { get; set; }
-        
+
         [StringLength(4000)]
+        [Column("Created Date")]
         public string CreatedDate { get; set; }
-        
-        [Column("luUser")]
+
+        [Column("Lu User")]
         [StringLength(100)]
         public string LuUser { get; set; }
-        
+
         [Required]
-        [Column("luDate")]
+        [Column("Lu Date")]
         [StringLength(4000)]
         public string LuDate { get; set; }
 
-        [Column("CustomerAddress")]
+        [Column("Customer Address")]
         public string CustomerAddress { get; set; }
 
-        [Column("ContactPerson")]
+        [Column("Contact Person")]
         public string ContactPerson { get; set; }
 
-        [Column("PoNo")]
+        [Column("Po No")]
         public string PoNo { get; set; }
 
-        [Column("VatNo")]
+        [Column("Vat No")]
         public string VatNo { get; set; }
-        
-        [Column("InvoiceTye")]
-        public string InvoiceTye { get; set; }    
 
+        [Column("Invoice Tye")]
+        public string InvoiceTye { get; set; }
 
 
         public IList<KeyValuePair<string, string>> GetValues()
