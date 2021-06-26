@@ -22,6 +22,7 @@ namespace tlrsCartonManager.Api.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountManagerRepository _accountRepository;
+
         public AccountController(IAccountManagerRepository accountRepository)
         {
             _accountRepository = accountRepository;

@@ -13,35 +13,45 @@ namespace tlrsCartonManager.DAL.Models
     public partial class ViewInventorySummaryByCustomer : IGenericReportDataItem
     {
         [Required]
-        [Column("customerCode")]
+        [Column("Customer Code")]
         [StringLength(20)]
         public string CustomerCode { get; set; }
+
         [Required]
-        [Column("name")]
+        [Column("Name")]
         [StringLength(50)]
         public string Name { get; set; }
+
         [Required]
-        [Column("address1")]
+        [Column("Address")]
         [StringLength(50)]
         public string Address1 { get; set; }
-        [Column("contactTelephone1")]
+
+        [Column("Contact No")]
         [StringLength(50)]
         public string ContactTelephone1 { get; set; }
-        [Column("contactName")]
+
+        [Column("Contact Name")]
         [StringLength(50)]
         public string ContactName { get; set; }
-        [Column("serviceProvided")]
+
+        [Column("Service Provided")]
         [StringLength(50)]
         public string ServiceProvided { get; set; }
-        [Column("emptyCartonCount")]
+
+        [Column("Empty Carton Count")]
         public int EmptyCartonCount { get; set; }
-        [Column("collectionCartonCount")]
+
+        [Column("Collection Carton Count")]
         public int CollectionCartonCount { get; set; }
-        [Column("retreivalCartonCount")]
+
+        [Column("Retreival Carton Count")]
         public int RetreivalCartonCount { get; set; }
-        [Column("permOutCartonCount")]
+
+        [Column("PermOut Carton Count")]
         public int PermOutCartonCount { get; set; }
-        [Column("disposalCartonCount")]
+
+        [Column("Disposal Carton Count")]
         public int DisposalCartonCount { get; set; }
 
 
