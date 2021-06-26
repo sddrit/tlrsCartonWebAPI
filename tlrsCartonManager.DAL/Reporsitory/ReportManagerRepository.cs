@@ -18,6 +18,7 @@ using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Report;
+using tlrsCartonManager.Core.Enums;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -74,17 +75,23 @@ namespace tlrsCartonManager.DAL.Reporsitory
               FromSqlRaw(InventoryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
       
-            var postResponse = _mapper.Map<List<InventoryByCustomer>>(inventoryList);           
+            var postResponse = _mapper.Map<List<InventoryByCustomer>>(inventoryList);
 
-            parms = SendResponse(customerId, woType, asAtDate, InventoryReportTypes.SummaryInventory.ToString(),
-               includeSubAccount, out outParam);
-            var inventorySummaryList = await _tcContext.Set<InventoryByCustomerSummary>().
-             FromSqlRaw(InventoryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var inventorySummaryList =postResponse.GroupBy(t => t.WoType)
+                           .Select(t => new InventoryByCustomerSummary ()
+                           {
+                               WoType = t.Key,
+                               CartonCount = t.Count()
+                           }).ToList();
 
-            parms = SendResponse(customerId, woType, asAtDate, InventoryReportTypes.SummaryRetreival.ToString(),
-              includeSubAccount ,out outParam);
-            var retreivalSummaryList = await _tcContext.Set<InventoryByRetreivalSummary>().
-             FromSqlRaw(InventoryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var retrievalList = postResponse.Where(x => x.WoType.ToLower() == RequestTypes.retrieval.ToString()).ToList();
+
+            var retreivalSummaryList = retrievalList.GroupBy(t => t.RetrievalType)
+                          .Select(t => new InventoryByRetreivalSummary()
+                          {
+                              WoType = t.Key,
+                              CartonCount = t.Count()
+                          }).ToList();          
 
             var inventoryByCustomer = new InventoryByCustomerReponse()
             {

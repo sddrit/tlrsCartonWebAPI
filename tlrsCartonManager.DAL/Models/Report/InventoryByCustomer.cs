@@ -20,6 +20,8 @@ namespace tlrsCartonManager.DAL.Models.Report
         public string TransactionDate { get; set; }
         public string StorageType { get; set; }
         public string WareHouseCode { get; set; }
+        public string RetrievalType { get; set; }
+        
     }
     public class InventoryByCustomerSummary
     {
