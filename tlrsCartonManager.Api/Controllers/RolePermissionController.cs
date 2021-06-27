@@ -72,5 +72,6 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _menuRoleRepository.DeleteRole(role));           
 
         }
+       
     }
 }

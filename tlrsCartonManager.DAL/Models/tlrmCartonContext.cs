@@ -114,6 +114,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewWorkerUserList> ViewWorkerUserLists { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<ViewPrintedDocket> ViewPrintedDockets { get; set; }
+        public virtual DbSet<ViewModulePermission> ViewModulePermissions { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -1200,6 +1201,14 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.Route).IsUnicode(false);
             });
+
+            modelBuilder.Entity<ViewModulePermission>(entity =>
+            {
+                entity.ToView("viewModulePermission");
+
+                entity.Property(e => e.ModuleName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();

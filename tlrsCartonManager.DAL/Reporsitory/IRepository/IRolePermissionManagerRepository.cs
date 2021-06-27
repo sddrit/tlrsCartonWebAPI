@@ -24,5 +24,6 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<bool> DeleteRole(Role role);
         string ValidateRole(Role role);
         Task<IEnumerable<UserModulePermission>> GetRolePermissionListById(int id);
+        Task<IEnumerable<UserModulePermission>> GeModulePermissionList();
     }
 }

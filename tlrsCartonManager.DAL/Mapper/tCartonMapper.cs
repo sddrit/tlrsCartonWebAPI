@@ -188,7 +188,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<DocketPrintResultModel, ViewRequestSummary>().ReverseMap();
             CreateMap<DocketPrintBulkResult, DocketPrintModel>().ReverseMap();
             CreateMap<InvoicePrintModel, ViewCreatedInvoiceList>().ReverseMap();
-
+            CreateMap<UserModulePermission, ViewModulePermission>().ReverseMap();
 
             //ruv
         }
