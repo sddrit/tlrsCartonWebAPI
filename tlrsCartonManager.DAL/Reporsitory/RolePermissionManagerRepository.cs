@@ -83,10 +83,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public async Task<IEnumerable<UserModulePermission>> GeRolePermissionList()        
         {
-          
-            return _mapper.Map<IEnumerable<UserModulePermission>>( await _tcContext.ViewMenus.ToListAsync());
-          
+            return _mapper.Map<IEnumerable<UserModulePermission>>( await _tcContext.ViewMenus.ToListAsync());          
         }
+
         public async Task<bool> AddRole(Role role)
         {
             string validateResult = ValidateRole(role);
@@ -156,5 +155,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return await _tcContext.Set<UserModulePermission>().FromSqlRaw(UserRoleByIdStoredProcedure.Sql,
                 parms.ToArray()).ToListAsync();
         }
+        public async Task<IEnumerable<UserModulePermission>> GeModulePermissionList()
+        {
+            return _mapper.Map<IEnumerable<UserModulePermission>>(await _tcContext.ViewModulePermissions.ToListAsync());
+        }
+
     }
 }

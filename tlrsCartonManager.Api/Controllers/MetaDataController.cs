@@ -30,6 +30,8 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IPostingTypeManagerRepository _postingTypeRepository;
         private readonly ITaxTypeManagerRepository _taxTypeManagerRepository;
         private readonly IRequestTypeManagerRepository _requestTypeTypeManagerRepository;
+        private readonly IRolePermissionManagerRepository _rolePermissionManagerRepository;
+
         public MetaDataController
             (
             IBillingCycleManagerRepository billingCycleRepository, IRouteManagerRepository routeRepository,
@@ -38,7 +40,7 @@ namespace tlrsCartonManager.Api.Controllers
             IDisposalTimeFrameManagerRepository disposalTimeFrame, IWorkOrderTypeManagerRepository workOrderTypeRepository,
             IMobileDeviceManagerRepository mobileDeviceRepository, IUserManagerRepository workerRepository,
             IPostingTypeManagerRepository postingTypeRepository, ITaxTypeManagerRepository taxTypeManagerRepository,
-            IRequestTypeManagerRepository requestTypeTypeManagerRepository)
+            IRequestTypeManagerRepository requestTypeTypeManagerRepository, IRolePermissionManagerRepository rolePermissionManagerRepository)
         {
             _billingCycleRepository = billingCycleRepository;
             _routeRepository = routeRepository;
@@ -53,6 +55,7 @@ namespace tlrsCartonManager.Api.Controllers
             _postingTypeRepository = postingTypeRepository;
             _taxTypeManagerRepository = taxTypeManagerRepository;
             _requestTypeTypeManagerRepository = requestTypeTypeManagerRepository;
+            _rolePermissionManagerRepository = rolePermissionManagerRepository;
         }
 
         [HttpGet]
@@ -71,7 +74,8 @@ namespace tlrsCartonManager.Api.Controllers
             var postingTypeList = await _postingTypeRepository.GetPostingTypeList();
             var taxTypeList = await _taxTypeManagerRepository.GetTaxTypeList();
             var requestTypeList = await _requestTypeTypeManagerRepository.GetRequestTypeList();
-           
+            var modulePermissionList = await _rolePermissionManagerRepository.GeModulePermissionList();
+
             return Ok(
             new
             {
@@ -87,7 +91,8 @@ namespace tlrsCartonManager.Api.Controllers
                 workerList,
                 postingTypeList,
                 taxTypeList,
-                requestTypeList
+                requestTypeList,
+                modulePermissionList
 
             });
         }
