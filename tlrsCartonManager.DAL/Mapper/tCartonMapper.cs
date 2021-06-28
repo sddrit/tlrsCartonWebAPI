@@ -10,6 +10,7 @@ using tlrsCartonManager.DAL.Dtos.Invoice;
 using tlrsCartonManager.DAL.Dtos.Location;
 using tlrsCartonManager.DAL.Dtos.Menu;
 using tlrsCartonManager.DAL.Dtos.MetaData;
+using tlrsCartonManager.DAL.Dtos.Module;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models;
@@ -190,6 +191,15 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<InvoicePrintModel, ViewCreatedInvoiceList>().ReverseMap();
             CreateMap<UserModulePermission, ViewModulePermission>().ReverseMap();
 
+            CreateMap<Module, ModuleDto>().ReverseMap();
+            CreateMap<ModuleSub, SubModuleDto>()
+                .ForMember(d => d.ModuleName, s => s.MapFrom(d => d.Module.Name))
+                .ForMember(d => d.ModulePermissions, s => s.MapFrom(d => d.ModulePermissions.Select(p => p.PermissionId))).ReverseMap();
+
+         
+
+
+            CreateMap<ModulePermission, ModulePermissionDto>().ReverseMap();
             //ruv
         }
 

@@ -115,6 +115,9 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<ViewPrintedDocket> ViewPrintedDockets { get; set; }
         public virtual DbSet<ViewModulePermission> ViewModulePermissions { get; set; }
+        public virtual DbSet<Module> Modules { get; set; }
+        public virtual DbSet<ModulePermission> ModulePermissions { get; set; }
+        public virtual DbSet<ModuleSub> ModuleSubs { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -1207,6 +1210,33 @@ namespace tlrsCartonManager.DAL.Models
                 entity.ToView("viewModulePermission");
 
                 entity.Property(e => e.ModuleName).IsUnicode(false);
+            });
+
+
+            modelBuilder.Entity<Module>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Name).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ModulePermission>(entity =>
+            {
+                entity.HasOne(d => d.SubModule)
+                    .WithMany(p => p.ModulePermissions)
+                    .HasForeignKey(d => d.SubModuleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ModulePermission_ModuleSub");
+            });
+
+            modelBuilder.Entity<ModuleSub>(entity =>
+            {
+                entity.Property(e => e.SubModuleId).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Module)
+                    .WithMany(p => p.ModuleSubs)
+                    .HasForeignKey(d => d.ModuleId)
+                    .HasConstraintName("FK_ModuleSub_Module");
             });
 
             modelBuilder.Entity<CustomerSearch>();

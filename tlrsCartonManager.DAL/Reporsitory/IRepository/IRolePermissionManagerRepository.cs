@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Dtos.Menu;
+using tlrsCartonManager.DAL.Dtos.Module;
 using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.RoleResponse;
@@ -15,8 +16,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     {
         bool AddRolePermission(RoleResponse response);
         bool UpdateRolePermission(RoleResponse role);
-        bool SaveRolePermission(RoleResponse response, string transactionType);
-
+        bool DeleteRolePermission(RoleResponseDelete response);
+        string SaveRolePermission(RoleResponse response, string transactionType);
         Task<IEnumerable<RoleResponseListItem>> GetRoleList();
         Task<IEnumerable<ViewUserRole>> GetPermissionPendingRoleList();
         Task<IEnumerable<UserModulePermission>> GeRolePermissionList();
@@ -24,6 +25,6 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<bool> DeleteRole(Role role);
         string ValidateRole(Role role);
         Task<IEnumerable<UserModulePermission>> GetRolePermissionListById(int id);
-        Task<IEnumerable<UserModulePermission>> GeModulePermissionList();
+        Task<List<SubModuleDto>> GeModulePermissionList();
     }
 }
