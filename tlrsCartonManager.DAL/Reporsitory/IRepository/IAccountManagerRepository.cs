@@ -12,5 +12,6 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface IAccountManagerRepository
     {
         Task<UserLoginResponse> Login(UserLoginModel model);
+        bool ChangePassword(UserChangePassword model);
     }
 }
