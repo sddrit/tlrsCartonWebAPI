@@ -33,19 +33,26 @@ namespace tlrsCartonManager.Api.Controllers
         public IActionResult AddRolePermission(RoleResponse request)
         {
             return Ok(_menuRoleRepository.AddRolePermission(request));                      
-        }       
+        }
+
+        [HttpPut]
+        public IActionResult UpdateRolePermission(RoleResponse request)
+        {
+            return Ok(_menuRoleRepository.UpdateRolePermission(request));
+        }
+
+        [HttpDelete]
+        public ActionResult DeleteRole(RoleResponseDelete role)
+        {
+            return Ok( _menuRoleRepository.DeleteRolePermission(role));
+        }
+
 
         [HttpGet("getRole")]
         public async Task<ActionResult<RoleResponseListItem>> GetRoleList()
         {
             return Ok(await _menuRoleRepository.GetRoleList());          
-        }
-
-        [HttpGet("getRolePermission")]
-        public async Task<ActionResult> GetRolePermissionList()
-        {
-            return Ok( await _menuRoleRepository.GeRolePermissionList());           
-        }
+        }      
 
         [HttpGet("getRolePermission/{id}")]
         public async Task<ActionResult<RolePermissionListItem>> GetRolePermissionListById(int id)
@@ -53,25 +60,10 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _menuRoleRepository.GetRolePermissionListById(id));          
         }
 
-        [HttpGet("getPermissionPendingRole")]
-        public async Task<ActionResult<MenuModel>> GetPermissionPendingRoleList()
-        {
-            return Ok(await _menuRoleRepository.GetPermissionPendingRoleList());           
-        }
 
-        [HttpPost("AddRole")]
-        public async Task<ActionResult> AddRole(Role role)
-        {
-            return Ok(await _menuRoleRepository.AddRole(role));
-               
-        }
+       
 
-        [HttpDelete("deleteRole")]
-        public async Task<ActionResult> DeleteRole(Role role)
-        {
-            return Ok(await _menuRoleRepository.DeleteRole(role));           
-
-        }
+       
        
     }
 }

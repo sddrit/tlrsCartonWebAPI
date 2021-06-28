@@ -13,6 +13,7 @@ namespace tlrsCartonManager.DAL.Utility
         {
            "@id",         
            "@userId",
+           "@name",
            "@statementType",
            "@udtRolePermission"
         };

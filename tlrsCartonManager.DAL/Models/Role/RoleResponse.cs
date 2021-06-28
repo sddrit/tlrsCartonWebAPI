@@ -16,11 +16,16 @@ namespace tlrsCartonManager.DAL.Models.RoleResponse
     {
         public int RoleId { get; set; }
         public string RoleName { get; set; }
-        public int UserId { get; set; }
+        //public int UserId { get; set; }
         public ICollection<UserRolePermission> RolePermissionList { get; set; }
        
 
     }
+    public class RoleResponseDelete
+    {
+        public int RoleId { get; set; }
+    }
+
     public class MenuRole
     {
         public int MenuId { get; set; }
@@ -40,7 +45,7 @@ namespace tlrsCartonManager.DAL.Models.RoleResponse
         public int Id { get; set; }
         public string Description { get; set; }     
 
-        public int UserId { get; set; }
+      
 
     }
     public class RolePermissionListItem

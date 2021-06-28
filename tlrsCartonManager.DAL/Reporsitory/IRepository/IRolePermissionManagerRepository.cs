@@ -16,8 +16,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     {
         bool AddRolePermission(RoleResponse response);
         bool UpdateRolePermission(RoleResponse role);
-        bool SaveRolePermission(RoleResponse response, string transactionType);
-
+        bool DeleteRolePermission(RoleResponseDelete response);
+        string SaveRolePermission(RoleResponse response, string transactionType);
         Task<IEnumerable<RoleResponseListItem>> GetRoleList();
         Task<IEnumerable<ViewUserRole>> GetPermissionPendingRoleList();
         Task<IEnumerable<UserModulePermission>> GeRolePermissionList();
