@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos.Menu;
+using tlrsCartonManager.DAL.Dtos.Module;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Extensions;
 using tlrsCartonManager.DAL.Models;
@@ -155,9 +156,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return await _tcContext.Set<UserModulePermission>().FromSqlRaw(UserRoleByIdStoredProcedure.Sql,
                 parms.ToArray()).ToListAsync();
         }
-        public async Task<IEnumerable<UserModulePermission>> GeModulePermissionList()
+        public async Task<List<SubModuleDto>> GeModulePermissionList()
         {
-            return _mapper.Map<IEnumerable<UserModulePermission>>(await _tcContext.ViewModulePermissions.ToListAsync());
+            var modulePermission= await _tcContext.ModuleSubs
+                .Include(x => x.ModulePermissions)
+                .Include(x => x.Module)
+                .ToListAsync();        
+
+            return _mapper.Map<List<SubModuleDto>>(modulePermission);         
         }
 
     }
