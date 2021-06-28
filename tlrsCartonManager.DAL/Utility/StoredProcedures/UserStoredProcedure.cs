@@ -42,15 +42,29 @@ namespace tlrsCartonManager.DAL.Utility
 
     public static class LoginStoredProcedure
     {
-        public static string StoredProcedureNameValidate = "userLoginValidate";
-        public static string StoredProcedureNamePermission = "userPermission";
+        public static string StoredProcedureName = "userLoginValidate";
+     
 
         public static List<string> StoredProcedureParameters = new List<string>()
         {           
             "@userName"
         };
-        public static string SqlValidate = "EXEC " + StoredProcedureNameValidate + " " + string.Join(",", StoredProcedureParameters);
-        public static string SqlPermission = "EXEC " + StoredProcedureNamePermission + " " + string.Join(",", StoredProcedureParameters);
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+      
+
+    }
+
+    public static class LoginPermissionStoredProcedure
+    {
+       
+        public static string StoredProcedureName = "userPermission";
+
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+            "@userName"
+        };
+     
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 
     }
 

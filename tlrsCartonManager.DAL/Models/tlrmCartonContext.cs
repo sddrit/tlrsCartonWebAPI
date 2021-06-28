@@ -118,6 +118,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<Module> Modules { get; set; }
         public virtual DbSet<ModulePermission> ModulePermissions { get; set; }
         public virtual DbSet<ModuleSub> ModuleSubs { get; set; }
+        public virtual DbSet<UserPasswordHistory> UserPasswordHistories { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
