@@ -19,8 +19,8 @@ namespace tlrsCartonManager.Api.Controllers
     public class MetaDataController : Controller
     {
 
-        private readonly IRouteManagerRepository _routeRepository;
-        private readonly IServiceCategoryManagerRepository _serviceRepository;
+       
+        
         private readonly IDepartmentManagerRepository _departmentRepository;
         private readonly IReceiveTypeManagerRepository _receiveTypeRepository;
         private readonly IDisposalTimeFrameManagerRepository _disposalTimeFrameRepository;
@@ -36,13 +36,14 @@ namespace tlrsCartonManager.Api.Controllers
 
         private readonly IMetadataRepository<StorageType, StorageTypeDto> _storageTypeRepository;
         private readonly IMetadataRepository<BillingCycle, BillingCycleDto> _billingCycleRepository;
-
+        private readonly IMetadataRepository<Route, RouteDto>_routeRepository;
+        private readonly IMetadataRepository<ServiceCategory, ServiceCategoryDto> _serviceRepository;
         public MetaDataController
             (
               IMetadataRepository<BillingCycle, BillingCycleDto> billingCycleRepository,
               IMetadataRepository<StorageType, StorageTypeDto> storageTypeRepository,
-              IRouteManagerRepository routeRepository,
-              IServiceCategoryManagerRepository serviceRepository,
+              IMetadataRepository<Route, RouteDto> routeRepository,
+              IMetadataRepository<ServiceCategory, ServiceCategoryDto> serviceRepository,
               IDepartmentManagerRepository departmentRepository, IReceiveTypeManagerRepository receiveTypeRepository,
               IDisposalTimeFrameManagerRepository disposalTimeFrame, IWorkOrderTypeManagerRepository workOrderTypeRepository,
               IMobileDeviceManagerRepository mobileDeviceRepository, IUserManagerRepository workerRepository,
@@ -70,11 +71,10 @@ namespace tlrsCartonManager.Api.Controllers
         {
             var billingCylce = await _billingCycleRepository.GetAll();
             var storageType = await _storageTypeRepository.GetAll();
+            var route = await _routeRepository.GetAll();
+            var serviceCategory = await _serviceRepository.GetAll();    
+            
 
-
-
-            var route = await _routeRepository.GetRouteList();
-            var serviceCategory = await _serviceRepository.GetServiceList();            
             var departmentList = await _departmentRepository.GetDepartmentList();
             var receiveTypeList = await _receiveTypeRepository.GetReceiveTypeList();
             var disposalTimeFrameList = await _disposalTimeFrameRepository.GetDisposalTimeFrameList();
@@ -111,11 +111,11 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet("storageType/{id}")]
         public async Task<IActionResult> GetStorageType(int id)
         {
-            var storageType = await _storageTypeRepository.GetById(id);
+            var storageTypes = await _storageTypeRepository.GetById(id);
             return Ok(
             new
             {
-                storageType
+                storageTypes
             });
         }
 
@@ -143,11 +143,11 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet("billingcycle/{id}")]
         public async Task<IActionResult> GetBillingCycle(int id)
         {
-            var billingCycle = await _billingCycleRepository.GetById(id);
+            var billingCycles = await _billingCycleRepository.GetById(id);
             return Ok(
             new
             {
-                billingCycle
+                billingCycles
             });
         }
 
@@ -167,6 +167,70 @@ namespace tlrsCartonManager.Api.Controllers
         public async Task<IActionResult> DeleteBillingCycle(int id)
         {
             await _billingCycleRepository.DeleteItem(id);
+            return Ok();
+        }
+        #endregion
+
+        #region route
+        [HttpGet("route/{id}")]
+        public async Task<IActionResult> GetRoute(int id)
+        {
+            var routes = await _routeRepository.GetById(id);
+            return Ok(
+            new
+            {
+                routes
+            });
+        }
+
+        [HttpPost("route")]
+        public async Task<IActionResult> AddRoute(RouteDto model)
+        {
+            return Ok(await _routeRepository.AddItem(model));
+        }
+
+        [HttpPut("route")]
+        public async Task<IActionResult> UpdateRoute(RouteDto model)
+        {
+            return Ok(await _routeRepository.EditItem(model));
+        }
+
+        [HttpDelete("route")]
+        public async Task<IActionResult> DeleteRoute(int id)
+        {
+            await _routeRepository.DeleteItem(id);
+            return Ok();
+        }
+        #endregion
+
+        #region ServiceCategory
+        [HttpGet("serviceCategory/{id}")]
+        public async Task<IActionResult> GetServiceCategory(int id)
+        {
+            var serviceCategories = await _routeRepository.GetById(id);
+            return Ok(
+            new
+            {
+                serviceCategories
+            });
+        }
+
+        [HttpPost("serviceCategory")]
+        public async Task<IActionResult> AddServiceCategory(RouteDto model)
+        {
+            return Ok(await _routeRepository.AddItem(model));
+        }
+
+        [HttpPut("serviceCategory")]
+        public async Task<IActionResult> UpdateServiceCategory(RouteDto model)
+        {
+            return Ok(await _routeRepository.EditItem(model));
+        }
+
+        [HttpDelete("serviceCategory")]
+        public async Task<IActionResult> DeleteServiceCategory(int id)
+        {
+            await _routeRepository.DeleteItem(id);
             return Ok();
         }
         #endregion

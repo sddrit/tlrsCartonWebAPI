@@ -39,7 +39,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
         public async Task<CustomerDto> GetCustomerById(int customerId)
-        {
+        {            
             var subAccList = _mapper.Map<IEnumerable<CustomerSubAccountListDto>>(await _tcContext.Customers.
                                 Where(x => x.MainCustomerCode == customerId && x.AccountType != "M" && x.Deleted == false).ToListAsync());
 

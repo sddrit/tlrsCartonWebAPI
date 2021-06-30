@@ -20,22 +20,12 @@ using Newtonsoft.Json;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class ServiceCategoryManagerRepository : IServiceCategoryManagerRepository
+
+    public class RouteManagerRepository : BaseMetadataRepository<Route, RouteDto>
     {
-        private readonly tlrmCartonContext _tcContext;
-        private readonly IMapper _mapper;
-
-        public ServiceCategoryManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public RouteManagerRepository(tlrmCartonContext tccontext, IMapper mapper) : base(tccontext, mapper)
         {
-            _tcContext = tccontext;
-            _mapper = mapper;
         }
-        public async  Task<IEnumerable<ServiceCategoryDto>> GetServiceList()
-        {
-            var service = await _tcContext.ServiceCategories.ToListAsync();
-            return _mapper.Map<IEnumerable<ServiceCategoryDto>>(service);
-
-        }
-       
     }
- }
+
+}

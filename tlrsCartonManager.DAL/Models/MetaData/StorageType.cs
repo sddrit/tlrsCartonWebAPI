@@ -11,7 +11,7 @@ using tlrsCartonManager.DAL.Models.Base;
 namespace tlrsCartonManager.DAL.Models
 {
     [Table("StorageType")]
-    public partial class StorageType : ISoftDelete
+    public partial class StorageType : MetadataValidator, ISoftDelete
     {
         public StorageType()
         {
@@ -38,13 +38,11 @@ namespace tlrsCartonManager.DAL.Models
         public bool Deleted { get; set; } 
 
         [Column("createdUser")]
-        public int? CreatedUser { get; set; }
-        [Column("createdDate", TypeName = "datetime")]
-        public DateTime? CreatedDate { get; set; }
+        public int CreatedUser { get; set; }
+      
         [Column("luUser")]
-        public int? LuUser { get; set; }
-        [Column("luDate", TypeName = "datetime")]
-        public DateTime? LuDate { get; set; }
+        public int LuUser { get; set; }
+       
 
         [InverseProperty(nameof(CartonStorage.CartonTypeNavigation))]
         public virtual ICollection<CartonStorage> CartonStorages { get; set; }

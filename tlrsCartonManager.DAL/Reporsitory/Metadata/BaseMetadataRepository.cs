@@ -15,7 +15,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
     public class BaseMetadataRepository<TEntity, TDto> : IMetadataRepository<TEntity, TDto> where TEntity : class where TDto : class
     {
 
-        private readonly tlrmCartonContext _tcContext;
+        public readonly tlrmCartonContext _tcContext;
         private readonly DbSet<TEntity> _dbSet;
         private readonly IMapper _mapper;
 
@@ -27,20 +27,25 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
         public async Task<TDto> AddItem(TDto item)
-        {
-            var entity = _mapper.Map<TEntity>(item);
+        {          
+                var entity = _mapper.Map<TEntity>(item);
 
-            await _dbSet.AddAsync(entity);
+                //await ValidateItem(entity);
 
-            await _tcContext.SaveChangesAsync();
+                await _dbSet.AddAsync(entity);
 
-            return _mapper.Map<TDto>(entity);
+                await _tcContext.SaveChangesAsync();
 
+                return _mapper.Map<TDto>(entity);
+           
+           
         }
 
         public async Task<TDto> EditItem(TDto item)
         {
             var entity = _mapper.Map<TEntity>(item);
+
+            //await ValidateItem(entity);
 
             _dbSet.Update(entity);
 
@@ -88,6 +93,56 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _mapper.Map<TDto>(entity);
 
         }
+        //public async Task<bool> ValidateItem(TEntity item)
+        //{
+        //    try
+        //    {
+        //        var entity = await _dbSet.AsNoTracking().ToListAsync();
+
+        //        var currentItem = _mapper.Map<MetadataValidator>(item);
+        //        if(!string.IsNullOrEmpty(currentItem.Type))
+        //        {
+
+
+
+        //        }
+
+        //        var validatingEntity = _mapper.Map<List<MetadataValidator>>(entity);
+
+        //        if (currentItem.Id == 0 && validatingEntity.Any(x => x.Description.ToLower() == currentItem.Description.ToLower() ||x.Type.ToLower() == currentItem.Type.ToLower()))                     
+        //        {
+        //            throw new ServiceException(new ErrorMessage[]
+        //                {
+        //                   new ErrorMessage()
+        //                   {
+        //                      Code = string.Empty,
+        //                     Message = $"Exsiting description found "
+        //                   }
+        //                });
+        //        }
+
+        //        else if (currentItem.Id> 0 && validatingEntity.Any(x => x.Id != currentItem.Id && (x.Description.ToLower() == currentItem.Description.ToLower() ||
+        //              x.Type.ToLower() == currentItem.Type.ToLower())))
+        //        {
+        //            throw new ServiceException(new ErrorMessage[]
+        //                {
+        //                   new ErrorMessage()
+        //                   {
+        //                      Code = string.Empty,
+        //                     Message = $"Exsiting description found "
+        //                   }
+        //                });
+
+        //        }
+
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+
+        //}
 
     }
 }

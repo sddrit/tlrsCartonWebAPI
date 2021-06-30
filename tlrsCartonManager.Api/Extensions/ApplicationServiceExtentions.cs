@@ -29,9 +29,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IUserManagerRepository, UserManagerRepository>();
             services.AddScoped<IUserPasswordManagerRepository, UserPasswordManagerRepository>();
             services.AddScoped<ITokenServicesRepository, TokenServicesRepository>();
-            services.AddScoped<ICustomerManagerRepository, CustomerManagerRepository>();
-            services.AddScoped<IRouteManagerRepository, RouteManagerRepository>();
-            services.AddScoped<IServiceCategoryManagerRepository, ServiceCategoryManagerRepository>();            
+            services.AddScoped<ICustomerManagerRepository, CustomerManagerRepository>();          
             services.AddScoped<IDepartmentManagerRepository, DepartmentManagerRepository>();
             services.AddScoped<ICartonStorageManagerRepository, CartonStorageManagerRepository>();
             services.AddScoped<ISearchManagerRepository, SearchManagerRepository >();
@@ -62,7 +60,9 @@ namespace tlrsCartonManager.Api.Extensions
             //---Meta Data registration
             services.AddScoped(typeof(IMetadataRepository<StorageType, StorageTypeDto>), typeof(BaseMetadataRepository<StorageType, StorageTypeDto>));
             services.AddScoped(typeof(IMetadataRepository<BillingCycle, BillingCycleDto>), typeof(BaseMetadataRepository<BillingCycle, BillingCycleDto>));
-        
+            services.AddScoped(typeof(IMetadataRepository<Route, RouteDto>), typeof(BaseMetadataRepository<Route, RouteDto>));
+            services.AddScoped(typeof(IMetadataRepository<ServiceCategory, ServiceCategoryDto>), typeof(BaseMetadataRepository<ServiceCategory, ServiceCategoryDto>));
+
             //---------------------------------------------------------------
 
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);

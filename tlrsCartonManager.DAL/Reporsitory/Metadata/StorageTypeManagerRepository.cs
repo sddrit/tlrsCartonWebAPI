@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Dtos;
+using System.Threading.Tasks;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -8,6 +9,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
     {
         public StorageTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper) : base(tccontext, mapper)
         {
+                        
         }
+       
     }
 }

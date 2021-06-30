@@ -14,6 +14,7 @@ using tlrsCartonManager.DAL.Dtos.Module;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models;
+using tlrsCartonManager.DAL.Models.Base;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Models.MetaData;
@@ -57,8 +58,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CustomerSubAccountListDto, Customer>();
             CreateMap<Customer, CustomerSubAccountListDto>();
 
-            CreateMap<RouteDto, Route>();
-            CreateMap<Route, RouteDto>();
+
             CreateMap<ServiceCategoryDto, ServiceCategory>();
             CreateMap<ServiceCategory, ServiceCategoryDto>();
 
@@ -201,6 +201,8 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<StorageType, StorageTypeDto>().ReverseMap();
             CreateMap<BillingCycle, BillingCycleDto>().ReverseMap();
+            CreateMap<RouteDto, Route>().ReverseMap();
+            CreateMap<MetadataValidator, StorageType>().ReverseMap();
 
             //ruv
         }
