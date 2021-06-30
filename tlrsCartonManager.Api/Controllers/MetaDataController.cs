@@ -10,6 +10,7 @@ using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.Api.Extensions;
 using tlrsCartonManager.Api.Error;
 using System.Net;
+using tlrsCartonManager.DAL.Models;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -20,7 +21,7 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IBillingCycleManagerRepository _billingCycleRepository;
         private readonly IRouteManagerRepository _routeRepository;
         private readonly IServiceCategoryManagerRepository _serviceRepository;
-        private readonly IStorageTypeManagerRepository _cartonTypeRepository;
+        private readonly IMetadataRepository<StorageType, StorageTypeDto> _storageTypeRepository;
         private readonly IDepartmentManagerRepository _departmentRepository;
         private readonly IReceiveTypeManagerRepository _receiveTypeRepository;
         private readonly IDisposalTimeFrameManagerRepository _disposalTimeFrameRepository;
@@ -111,7 +112,7 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPost("StorageType")]
         public async Task<IActionResult> AddCartonType(StorageTypeDto cartonType)
         {
-            await _cartonTypeRepository.AddCartonType(cartonType);
+            await _storageTypeRepository.AddItem(cartonType);
             return new JsonErrorResult(new { Message = "Carton Type Created" }, HttpStatusCode.OK);
         }
 

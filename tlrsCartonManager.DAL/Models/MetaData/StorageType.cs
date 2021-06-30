@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using tlrsCartonManager.DAL.Models.Base;
 
 #nullable disable
 
 namespace tlrsCartonManager.DAL.Models
 {
     [Table("StorageType")]
-    public partial class StorageType
+    public partial class StorageType : ISoftDelete
     {
         public StorageType()
         {
