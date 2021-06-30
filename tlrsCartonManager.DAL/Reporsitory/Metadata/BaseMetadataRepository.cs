@@ -9,6 +9,7 @@ using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Base;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
+using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -18,34 +19,36 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public readonly tlrmCartonContext _tcContext;
         private readonly DbSet<TEntity> _dbSet;
         private readonly IMapper _mapper;
+        private readonly BaseMetaRepositoryValidator _validator;
 
-        public BaseMetadataRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public BaseMetadataRepository(tlrmCartonContext tccontext, IMapper mapper, BaseMetaRepositoryValidator validator)
         {
             _tcContext = tccontext;
             _dbSet = _tcContext.Set<TEntity>();
             _mapper = mapper;
+            _validator = validator;
         }
 
         public async Task<TDto> AddItem(TDto item)
-        {          
-                var entity = _mapper.Map<TEntity>(item);
+        {
+            var entity = _mapper.Map<TEntity>(item);
 
-                //await ValidateItem(entity);
+            await ValidateItem(entity);
 
-                await _dbSet.AddAsync(entity);
+            await _dbSet.AddAsync(entity);
 
-                await _tcContext.SaveChangesAsync();
+            await _tcContext.SaveChangesAsync();
 
-                return _mapper.Map<TDto>(entity);
-           
-           
+            return _mapper.Map<TDto>(entity);
+
+
         }
 
         public async Task<TDto> EditItem(TDto item)
         {
             var entity = _mapper.Map<TEntity>(item);
 
-            //await ValidateItem(entity);
+            await ValidateItem(entity);
 
             _dbSet.Update(entity);
 
@@ -93,53 +96,22 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _mapper.Map<TDto>(entity);
 
         }
-        //public async Task<bool> ValidateItem(TEntity item)
-        //{
-        //    try
-        //    {
-        //        var entity = await _dbSet.AsNoTracking().ToListAsync();
+        public async Task<bool> ValidateItem(TEntity item)
+        {
 
-        //        var currentItem = _mapper.Map<MetadataValidator>(item);
-               
-        //        var validatingEntity = _mapper.Map<List<MetadataValidator>>(entity);
+            var entity = await _dbSet.AsNoTracking().ToListAsync();
 
-        //        validatingEntity.Any(x=>x.Type==)
+            var currentItem = _mapper.Map<MetadataValidator>(item);
 
+            var validatingEntity = _mapper.Map<List<MetadataValidator>>(entity);
 
-        //        if (currentItem.Id == 0 && validatingEntity.Any(x => x.Description.ToLower() == currentItem.Description.ToLower() || x.Type.ToLower() == currentItem.Type.ToLower()))
-        //        {
-        //            throw new ServiceException(new ErrorMessage[]
-        //                {
-        //                   new ErrorMessage()
-        //                   {
-        //                      Code = string.Empty,
-        //                     Message = $"Exsiting description found "
-        //                   }
-        //                });
-        //        }
+            _validator.ValidateItemByType(currentItem, validatingEntity);
 
-        //        else if (currentItem.Id > 0 && validatingEntity.Any(x => x.Id != currentItem.Id && (x.Description.ToLower() == currentItem.Description.ToLower() ||
-        //               x.Type.ToLower() == currentItem.Type.ToLower())))
-        //        {
-        //            throw new ServiceException(new ErrorMessage[]
-        //                {
-        //                   new ErrorMessage()
-        //                   {
-        //                      Code = string.Empty,
-        //                     Message = $"Exsiting description found "
-        //                   }
-        //                });
+            _validator.ValidateItemByDescription(currentItem, validatingEntity);
 
-        //        }
+            return true;
 
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-
-        //}
+        }
 
     }
 }

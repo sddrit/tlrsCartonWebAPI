@@ -15,6 +15,7 @@ using tlrsCartonManager.Services.Report;
 using tlrsCartonManager.Services.User;
 using tlrsCartonManager.Services.ImportData;
 using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 
 namespace tlrsCartonManager.Api.Extensions
 {
@@ -29,8 +30,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IUserManagerRepository, UserManagerRepository>();
             services.AddScoped<IUserPasswordManagerRepository, UserPasswordManagerRepository>();
             services.AddScoped<ITokenServicesRepository, TokenServicesRepository>();
-            services.AddScoped<ICustomerManagerRepository, CustomerManagerRepository>();          
-            services.AddScoped<IDepartmentManagerRepository, DepartmentManagerRepository>();
+            services.AddScoped<ICustomerManagerRepository, CustomerManagerRepository>();        
             services.AddScoped<ICartonStorageManagerRepository, CartonStorageManagerRepository>();
             services.AddScoped<ISearchManagerRepository, SearchManagerRepository >();
             services.AddScoped<IRequestManagerRepository, RequestManagerRepository>();
@@ -55,13 +55,17 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IDocketPrintManagerRepository, DocketPrintManagerRepository>();
             services.AddScoped<IImportDataManagerRepository, ImportDataManagerRepository>();
             services.AddScoped<ImportDataService>();
-            services.AddScoped<IAccountManagerRepository, AccountManagerRepository>();    
-          
+            services.AddScoped<IAccountManagerRepository, AccountManagerRepository>();
+
             //---Meta Data registration
+
+            services.AddScoped<BaseMetaRepositoryValidator>();
+
             services.AddScoped(typeof(IMetadataRepository<StorageType, StorageTypeDto>), typeof(BaseMetadataRepository<StorageType, StorageTypeDto>));
             services.AddScoped(typeof(IMetadataRepository<BillingCycle, BillingCycleDto>), typeof(BaseMetadataRepository<BillingCycle, BillingCycleDto>));
             services.AddScoped(typeof(IMetadataRepository<Route, RouteDto>), typeof(BaseMetadataRepository<Route, RouteDto>));
             services.AddScoped(typeof(IMetadataRepository<ServiceCategory, ServiceCategoryDto>), typeof(BaseMetadataRepository<ServiceCategory, ServiceCategoryDto>));
+            services.AddScoped(typeof(IMetadataRepository<Department, DepartmentDto>), typeof(BaseMetadataRepository<Department, DepartmentDto>));
 
             //---------------------------------------------------------------
 

@@ -202,8 +202,12 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<StorageType, StorageTypeDto>().ReverseMap();
             CreateMap<BillingCycle, BillingCycleDto>().ReverseMap();
             CreateMap<RouteDto, Route>().ReverseMap();
-            CreateMap<MetadataValidator, StorageType>().ReverseMap();
+            CreateMap<DepartmentDto, Department>().ReverseMap();
 
+            CreateMap<MetadataValidator, StorageType>().ReverseMap();
+            CreateMap<MetadataValidator, BillingCycle>().ReverseMap();
+            CreateMap<MetadataValidator, Route>().ReverseMap();
+            CreateMap<MetadataValidator, Department>().ReverseMap();
             //ruv
         }
 

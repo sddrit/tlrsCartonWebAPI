@@ -17,26 +17,16 @@ using tlrsCartonManager.DAL.Helper;
 using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
+using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class DepartmentManagerRepository : IDepartmentManagerRepository
+
+    public class DepartmentManagerRepository : BaseMetadataRepository<Route, RouteDto>
     {
-        private readonly tlrmCartonContext _tcContext;
-        private readonly IMapper _mapper;
-
-        public DepartmentManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public DepartmentManagerRepository(tlrmCartonContext tccontext, IMapper mapper, BaseMetaRepositoryValidator validator)
+            : base(tccontext, mapper, validator)
         {
-            _tcContext = tccontext;
-            _mapper = mapper;
         }
-
-        public async Task<IEnumerable<Department>> GetDepartmentList()
-        {
-            return await _tcContext.Departments.ToListAsync();
-           
-        }
-
-             
     }
- }
+}
