@@ -100,16 +100,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
         //        var entity = await _dbSet.AsNoTracking().ToListAsync();
 
         //        var currentItem = _mapper.Map<MetadataValidator>(item);
-        //        if(!string.IsNullOrEmpty(currentItem.Type))
-        //        {
-
-
-
-        //        }
-
+               
         //        var validatingEntity = _mapper.Map<List<MetadataValidator>>(entity);
 
-        //        if (currentItem.Id == 0 && validatingEntity.Any(x => x.Description.ToLower() == currentItem.Description.ToLower() ||x.Type.ToLower() == currentItem.Type.ToLower()))                     
+        //        validatingEntity.Any(x=>x.Type==)
+
+
+        //        if (currentItem.Id == 0 && validatingEntity.Any(x => x.Description.ToLower() == currentItem.Description.ToLower() || x.Type.ToLower() == currentItem.Type.ToLower()))
         //        {
         //            throw new ServiceException(new ErrorMessage[]
         //                {
@@ -121,8 +118,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
         //                });
         //        }
 
-        //        else if (currentItem.Id> 0 && validatingEntity.Any(x => x.Id != currentItem.Id && (x.Description.ToLower() == currentItem.Description.ToLower() ||
-        //              x.Type.ToLower() == currentItem.Type.ToLower())))
+        //        else if (currentItem.Id > 0 && validatingEntity.Any(x => x.Id != currentItem.Id && (x.Description.ToLower() == currentItem.Description.ToLower() ||
+        //               x.Type.ToLower() == currentItem.Type.ToLower())))
         //        {
         //            throw new ServiceException(new ErrorMessage[]
         //                {

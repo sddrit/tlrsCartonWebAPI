@@ -108,15 +108,17 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         #region storage types
+
+        [HttpGet("getAllStorageTypes")]
+        public async Task<IActionResult> GetAllStorageType()
+        {
+            return Ok(await _storageTypeRepository.GetAll());           
+        }
+
         [HttpGet("storageType/{id}")]
         public async Task<IActionResult> GetStorageType(int id)
         {
-            var storageTypes = await _storageTypeRepository.GetById(id);
-            return Ok(
-            new
-            {
-                storageTypes
-            });
+            return Ok(await _storageTypeRepository.GetById(id));           
         }
 
         [HttpPost("storageType")]
@@ -140,15 +142,17 @@ namespace tlrsCartonManager.Api.Controllers
         #endregion
 
         #region billing Cycle
-        [HttpGet("billingcycle/{id}")]
+
+        [HttpGet("getAllBillingCycles")]
+        public async Task<IActionResult> GetAllBillingCycle()
+        {
+            return Ok( await _billingCycleRepository.GetAll());            
+        }
+
+        [HttpGet("billingCycle/{id}")]
         public async Task<IActionResult> GetBillingCycle(int id)
         {
-            var billingCycles = await _billingCycleRepository.GetById(id);
-            return Ok(
-            new
-            {
-                billingCycles
-            });
+            return Ok(await _billingCycleRepository.GetById(id));           
         }
 
         [HttpPost("billingCycle")]
@@ -172,15 +176,17 @@ namespace tlrsCartonManager.Api.Controllers
         #endregion
 
         #region route
+
+        [HttpGet("getAllRoutes")]
+        public async Task<IActionResult> GetAllRoutes()
+        {
+            return Ok(await _routeRepository.GetAll());            
+        }
+
         [HttpGet("route/{id}")]
         public async Task<IActionResult> GetRoute(int id)
         {
-            var routes = await _routeRepository.GetById(id);
-            return Ok(
-            new
-            {
-                routes
-            });
+            return Ok(await _routeRepository.GetById(id));           
         }
 
         [HttpPost("route")]
@@ -204,15 +210,17 @@ namespace tlrsCartonManager.Api.Controllers
         #endregion
 
         #region ServiceCategory
+
+        [HttpGet("getAllServiceCategories")]
+        public async Task<IActionResult> GetAllServiceCategory()
+        {
+            return Ok(await _routeRepository.GetAll());           
+        }
+
         [HttpGet("serviceCategory/{id}")]
         public async Task<IActionResult> GetServiceCategory(int id)
         {
-            var serviceCategories = await _routeRepository.GetById(id);
-            return Ok(
-            new
-            {
-                serviceCategories
-            });
+            return Ok(await _routeRepository.GetById(id));           
         }
 
         [HttpPost("serviceCategory")]
