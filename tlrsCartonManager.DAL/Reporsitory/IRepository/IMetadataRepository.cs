@@ -10,5 +10,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<TDto> EditItem(TDto item);
         Task DeleteItem(int id);
         Task<TDto> GetById(int id);
+
+
     }
 }

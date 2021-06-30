@@ -48,13 +48,13 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
 
-        [HttpGet("getRole")]
+        [HttpGet("getRoles")]
         public async Task<ActionResult<RoleResponseListItem>> GetRoleList()
         {
             return Ok(await _menuRoleRepository.GetRoleList());          
         }      
 
-        [HttpGet("getRolePermission/{id}")]
+        [HttpGet("getRole/{id}")]
         public async Task<ActionResult<RolePermissionListItem>> GetRolePermissionListById(int id)
         {
             return Ok(await _menuRoleRepository.GetRolePermissionListById(id));          

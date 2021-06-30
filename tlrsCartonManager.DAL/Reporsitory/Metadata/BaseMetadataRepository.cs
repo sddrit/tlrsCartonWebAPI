@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Base;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
@@ -28,14 +29,31 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<TDto> AddItem(TDto item)
         {
             var entity = _mapper.Map<TEntity>(item);
+
             await _dbSet.AddAsync(entity);
+
             await _tcContext.SaveChangesAsync();
+
             return _mapper.Map<TDto>(entity);
+
+        }
+
+        public async Task<TDto> EditItem(TDto item)
+        {
+            var entity = _mapper.Map<TEntity>(item);
+
+            _dbSet.Update(entity);
+
+            await _tcContext.SaveChangesAsync();
+
+            return _mapper.Map<TDto>(entity);
+
         }
 
         public async Task DeleteItem(int id)
         {
-            var entity = await GetById(id);
+
+            var entity = await _dbSet.FindAsync(id);
 
             if (entity is ISoftDelete softDeletedEntity)
             {
@@ -43,14 +61,6 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
 
             await _tcContext.SaveChangesAsync();
-        }
-
-        public async Task<TDto> EditItem(TDto item)
-        {
-            var entity = _mapper.Map<TEntity>(item);
-            _dbSet.Update(entity);
-            await _tcContext.SaveChangesAsync();
-            return _mapper.Map<TDto>(entity);
         }
 
         public async Task<IList<TDto>> GetAll()
@@ -62,7 +72,22 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<TDto> GetById(int id)
         {
             var entity = await _dbSet.FindAsync(id);
+
+            if (entity is ISoftDelete softDeletedEntity && softDeletedEntity.Deleted)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                   new ErrorMessage()
+                   {
+                      Code = string.Empty,
+                     Message = $"Unable to find meta data by {id}"
+                   }
+                });
+            }
+
             return _mapper.Map<TDto>(entity);
+
         }
+
     }
 }

@@ -62,8 +62,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<ServiceCategoryDto, ServiceCategory>();
             CreateMap<ServiceCategory, ServiceCategoryDto>();
 
-            CreateMap<BillingCycleDto, BillingCycle>();
-            CreateMap<BillingCycle, BillingCycleDto>();
+          
 
             CreateMap<CustomerMainCodeSearchDto, Customer>();
             CreateMap<Customer, CustomerMainCodeSearchDto>();
@@ -80,8 +79,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CustomerAuthorizationListDetailUdtDto, CustomerAuthorizationListDetailDto>();
             CreateMap<CustomerAuthorizationListDetailDto, CustomerAuthorizationListDetailUdtDto>();
 
-            CreateMap<StorageType, StorageTypeDto>();
-            CreateMap<StorageTypeDto, StorageType>();
+           
 
             CreateMap<SlabTypeHeader, SlabTypeHeaderDto>();
             CreateMap<SlabTypeHeaderDto, SlabTypeHeader>();
@@ -200,6 +198,10 @@ namespace tlrsCartonManager.DAL.Mapper
 
 
             CreateMap<ModulePermission, ModulePermissionDto>().ReverseMap();
+
+            CreateMap<StorageType, StorageTypeDto>().ReverseMap();
+            CreateMap<BillingCycle, BillingCycleDto>().ReverseMap();
+
             //ruv
         }
 

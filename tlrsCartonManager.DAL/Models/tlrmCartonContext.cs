@@ -140,8 +140,7 @@ namespace tlrsCartonManager.DAL.Models
             });
 
             modelBuilder.Entity<BillingCycle>(entity =>
-            {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+            {               
 
                 entity.Property(e => e.Description).IsUnicode(false);
             });
@@ -626,7 +625,13 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.Size).IsUnicode(false);
 
-                entity.Property(e => e.Type).IsUnicode(false);
+                entity.Property(e => e.Type).IsUnicode(false);               
+
+                entity.Property(e => e.Deleted).HasDefaultValueSql("((0))");
+
+               
+
+
             });
 
             modelBuilder.Entity<User>(entity =>

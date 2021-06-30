@@ -9,7 +9,7 @@ using tlrsCartonManager.DAL.Models;
 
 namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
-    public interface IStorageTypeManagerRepository
+    public interface IStorageTypeManagerRepository 
     {
         Task<IEnumerable<StorageTypeDto>> GetCartonTypeList();
         Task AddCartonType(StorageTypeDto cartonType);

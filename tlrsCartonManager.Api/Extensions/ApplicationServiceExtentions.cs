@@ -14,6 +14,7 @@ using tlrsCartonManager.DAL.Mapper;
 using tlrsCartonManager.Services.Report;
 using tlrsCartonManager.Services.User;
 using tlrsCartonManager.Services.ImportData;
+using tlrsCartonManager.DAL.Dtos;
 
 namespace tlrsCartonManager.Api.Extensions
 {
@@ -28,15 +29,11 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IUserManagerRepository, UserManagerRepository>();
             services.AddScoped<IUserPasswordManagerRepository, UserPasswordManagerRepository>();
             services.AddScoped<ITokenServicesRepository, TokenServicesRepository>();
-
             services.AddScoped<ICustomerManagerRepository, CustomerManagerRepository>();
             services.AddScoped<IRouteManagerRepository, RouteManagerRepository>();
-            services.AddScoped<IServiceCategoryManagerRepository, ServiceCategoryManagerRepository>();
-            services.AddScoped<IBillingCycleManagerRepository, BillingCycleManagerRepository>();
-            services.AddScoped<IStorageTypeManagerRepository, StorageTypeManagerRepository>();
+            services.AddScoped<IServiceCategoryManagerRepository, ServiceCategoryManagerRepository>();            
             services.AddScoped<IDepartmentManagerRepository, DepartmentManagerRepository>();
             services.AddScoped<ICartonStorageManagerRepository, CartonStorageManagerRepository>();
-
             services.AddScoped<ISearchManagerRepository, SearchManagerRepository >();
             services.AddScoped<IRequestManagerRepository, RequestManagerRepository>();
             services.AddScoped<IInvoiceManagerRepository, InvoiceManagerRepository>();
@@ -60,7 +57,14 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IDocketPrintManagerRepository, DocketPrintManagerRepository>();
             services.AddScoped<IImportDataManagerRepository, ImportDataManagerRepository>();
             services.AddScoped<ImportDataService>();
-            services.AddScoped<IAccountManagerRepository, AccountManagerRepository>();
+            services.AddScoped<IAccountManagerRepository, AccountManagerRepository>();    
+          
+            //---Meta Data registration
+            services.AddScoped(typeof(IMetadataRepository<StorageType, StorageTypeDto>), typeof(BaseMetadataRepository<StorageType, StorageTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<BillingCycle, BillingCycleDto>), typeof(BaseMetadataRepository<BillingCycle, BillingCycleDto>));
+        
+            //---------------------------------------------------------------
+
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             return services;
         }

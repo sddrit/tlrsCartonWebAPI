@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +32,11 @@ namespace tlrsCartonManager.DAL.Models
         public string Size { get; set; }
         [Column("active")]
         public bool? Active { get; set; }
+
         [Column("deleted")]
-        public bool? Deleted { get; set; }
+        [DefaultValue(false)]
+        public bool Deleted { get; set; } 
+
         [Column("createdUser")]
         public int? CreatedUser { get; set; }
         [Column("createdDate", TypeName = "datetime")]

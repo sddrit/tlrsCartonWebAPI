@@ -20,23 +20,11 @@ using Newtonsoft.Json;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class BillingCycleManagerRepository : IBillingCycleManagerRepository
+    public class BillingCycleManagerRepository :  BaseMetadataRepository<BillingCycle, BillingCycleDto>
     {
-        private readonly tlrmCartonContext _tcContext;
-        private readonly IMapper _mapper;
-
-        public BillingCycleManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public BillingCycleManagerRepository(tlrmCartonContext tccontext, IMapper mapper) : base(tccontext, mapper)
         {
-            _tcContext = tccontext;
-            _mapper = mapper;
-        }
-        public async  Task<IEnumerable<BillingCycleDto>> GetBillingList()
-        {
-            var billingCycle = await _tcContext.BillingCycles.ToListAsync();
-            return _mapper.Map<IEnumerable<BillingCycleDto>>(billingCycle);
-
         }
 
-       
     }
-    }
+}
