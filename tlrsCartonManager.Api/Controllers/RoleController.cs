@@ -20,11 +20,11 @@ namespace tlrsCartonManager.Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    public class RolePermissionController : Controller
+    public class RoleController : Controller
     {
         private readonly IRolePermissionManagerRepository _menuRoleRepository;
 
-        public RolePermissionController(IRolePermissionManagerRepository menuRoleRepository)
+        public RoleController(IRolePermissionManagerRepository menuRoleRepository)
         {
             _menuRoleRepository = menuRoleRepository;
         }        
@@ -48,13 +48,13 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
 
-        [HttpGet("getRole")]
+        [HttpGet("getRoles")]
         public async Task<ActionResult<RoleResponseListItem>> GetRoleList()
         {
             return Ok(await _menuRoleRepository.GetRoleList());          
         }      
 
-        [HttpGet("getRolePermission/{id}")]
+        [HttpGet("getRole/{id}")]
         public async Task<ActionResult<RolePermissionListItem>> GetRolePermissionListById(int id)
         {
             return Ok(await _menuRoleRepository.GetRolePermissionListById(id));          
