@@ -11,6 +11,7 @@ using tlrsCartonManager.Api.Extensions;
 using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.DAL.Models;
+using tlrsCartonManager.DAL.Models.MetaData;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -19,7 +20,7 @@ namespace tlrsCartonManager.Api.Controllers
     public class MetaDataController : Controller
     {    
        
-        private readonly IReceiveTypeManagerRepository _receiveTypeRepository;
+        
         private readonly IDisposalTimeFrameManagerRepository _disposalTimeFrameRepository;
         private readonly IWorkOrderTypeManagerRepository _workOrderTypeRepository;
         private readonly IMobileDeviceManagerRepository _mobileDeviceRepository;
@@ -36,6 +37,7 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IMetadataRepository<Route, RouteDto>_routeRepository;
         private readonly IMetadataRepository<ServiceCategory, ServiceCategoryDto> _serviceRepository;
         private readonly IMetadataRepository<Department, DepartmentDto> _departmentRepository;
+        private readonly IMetadataRepository<ReceiveType, ReceiveTypeDto> _receiveTypeRepository;
 
         public MetaDataController
             (
@@ -43,8 +45,8 @@ namespace tlrsCartonManager.Api.Controllers
               IMetadataRepository<StorageType, StorageTypeDto> storageTypeRepository,
               IMetadataRepository<Route, RouteDto> routeRepository,
               IMetadataRepository<ServiceCategory, ServiceCategoryDto> serviceRepository,
-              IMetadataRepository<Department, DepartmentDto> departmentRepository, 
-              IReceiveTypeManagerRepository receiveTypeRepository,
+              IMetadataRepository<Department, DepartmentDto> departmentRepository,
+              IMetadataRepository<ReceiveType, ReceiveTypeDto> receiveTypeRepository,
               IDisposalTimeFrameManagerRepository disposalTimeFrame, IWorkOrderTypeManagerRepository workOrderTypeRepository,
               IMobileDeviceManagerRepository mobileDeviceRepository, IUserManagerRepository workerRepository,
             IPostingTypeManagerRepository postingTypeRepository, ITaxTypeManagerRepository taxTypeManagerRepository,
@@ -67,16 +69,15 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCustomerMetaData()
+        public async Task<IActionResult> GetMetaData()
         {
-            var billingCylce = await _billingCycleRepository.GetAll();
-            var storageType = await _storageTypeRepository.GetAll();
-            var route = await _routeRepository.GetAll();
-            var serviceCategory = await _serviceRepository.GetAll();    
-            var departmentList = await _departmentRepository.GetAll();
+            var billingCylce = await _billingCycleRepository.GetAllMetaData();
+            var storageType = await _storageTypeRepository.GetAllMetaData();
+            var route = await _routeRepository.GetAllMetaData();
+            var serviceCategory = await _serviceRepository.GetAllMetaData();    
+            var departmentList = await _departmentRepository.GetAllMetaData();
+            var receiveTypeList = await _receiveTypeRepository.GetAllMetaData();
 
-
-            var receiveTypeList = await _receiveTypeRepository.GetReceiveTypeList();
             var disposalTimeFrameList = await _disposalTimeFrameRepository.GetDisposalTimeFrameList();
             var workOrderTypeList = await _workOrderTypeRepository.GetWoTypeList();
             var mobileDeviceList = await _mobileDeviceRepository.GetMobileDeviceList();
@@ -245,7 +246,7 @@ namespace tlrsCartonManager.Api.Controllers
 
         #region Department
 
-        [HttpGet("getAlldepartments")]
+        [HttpGet("getAllDepartments")]
         public async Task<IActionResult> GetAllDepartments()
         {
             return Ok(await _departmentRepository.GetAll());
@@ -258,13 +259,13 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPost("department")]
-        public async Task<IActionResult> Adddepartment(DepartmentDto model)
+        public async Task<IActionResult> AddDDepartment(DepartmentDto model)
         {
             return Ok(await _departmentRepository.AddItem(model));
         }
 
         [HttpPut("department")]
-        public async Task<IActionResult> Updatedepartment(DepartmentDto model)
+        public async Task<IActionResult> UpdateDepartment(DepartmentDto model)
         {
             return Ok(await _departmentRepository.EditItem(model));
         }
@@ -273,6 +274,40 @@ namespace tlrsCartonManager.Api.Controllers
         public async Task<IActionResult> DeleteDepartment(int id)
         {
             await _departmentRepository.DeleteItem(id);
+            return Ok();
+        }
+        #endregion
+
+        #region receive type
+
+        [HttpGet("getAllReceiveTypes")]
+        public async Task<IActionResult> GetAllReceiveTypes()
+        {
+            return Ok(await _receiveTypeRepository.GetAll());
+        }
+
+        [HttpGet("receiveType/{id}")]
+        public async Task<IActionResult> GetReceiveType(int id)
+        {
+            return Ok(await _receiveTypeRepository.GetById(id));
+        }
+
+        [HttpPost("receiveType")]
+        public async Task<IActionResult> AddReceiveType(ReceiveTypeDto model)
+        {
+            return Ok(await _receiveTypeRepository.AddItem(model));
+        }
+
+        [HttpPut("receiveType")]
+        public async Task<IActionResult> UpdateReceiveType(ReceiveTypeDto model)
+        {
+            return Ok(await _receiveTypeRepository.EditItem(model));
+        }
+
+        [HttpDelete("receiveType")]
+        public async Task<IActionResult> DeleteReceiveType(int id)
+        {
+            await _receiveTypeRepository.DeleteItem(id);
             return Ok();
         }
         #endregion

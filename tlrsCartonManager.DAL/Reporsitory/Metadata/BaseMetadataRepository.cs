@@ -71,12 +71,20 @@ namespace tlrsCartonManager.DAL.Reporsitory
             await _tcContext.SaveChangesAsync();
         }
 
+        public async Task<IList<TDto>> GetAllMetaData()
+        {
+            var result = (await _dbSet.ToListAsync())
+                .Select(_mapper.Map<MetadataBase>).Where(x => x.Deleted == false && x.Active == true).ToList();
+
+            return _mapper.Map<List<TDto>>(result);
+        }
         public async Task<IList<TDto>> GetAll()
         {
-            return (await _dbSet.ToListAsync())
-                .Select(_mapper.Map<TDto>).ToList();
-        }
+            var result = (await _dbSet.ToListAsync())
+                .Select(_mapper.Map<MetadataBase>).Where(x => x.Deleted == false).ToList();
 
+            return _mapper.Map<List<TDto>>(result);
+        }
         public async Task<TDto> GetById(int id)
         {
             var entity = await _dbSet.FindAsync(id);
@@ -101,9 +109,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             var entity = await _dbSet.AsNoTracking().ToListAsync();
 
-            var currentItem = _mapper.Map<MetadataValidator>(item);
+            var currentItem = _mapper.Map<MetadataBase>(item);
 
-            var validatingEntity = _mapper.Map<List<MetadataValidator>>(entity);
+            var validatingEntity = _mapper.Map<List<MetadataBase>>(entity);
 
             _validator.ValidateItemByType(currentItem, validatingEntity);
 

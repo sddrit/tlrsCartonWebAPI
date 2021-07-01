@@ -11,7 +11,7 @@ using tlrsCartonManager.DAL.Models.Base;
 namespace tlrsCartonManager.DAL.Models
 {
     [Table("StorageType")]
-    public partial class StorageType : MetadataValidator, ISoftDelete
+    public partial class StorageType : MetadataBase, ISoftDelete
     {
         public StorageType()
         {

@@ -11,7 +11,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.Metadata.Core
 {
     public class BaseMetaRepositoryValidator
     {
-        public void ValidateItemByDescription(MetadataValidator currentItem, List<MetadataValidator> validatingEntity)
+        public void ValidateItemByDescription(MetadataBase currentItem, List<MetadataBase> validatingEntity)
         {
 
             if (currentItem.Id == 0 && validatingEntity.Any(x => x.Description.ToLower() == currentItem.Description.ToLower()))
@@ -39,7 +39,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.Metadata.Core
             }
         }
 
-        public void ValidateItemByType(MetadataValidator currentItem, List<MetadataValidator> validatingEntity)
+        public void ValidateItemByType(MetadataBase currentItem, List<MetadataBase> validatingEntity)
         {
 
             if (validatingEntity.Where(x => x.Type != null).Any() &&

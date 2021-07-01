@@ -16,6 +16,7 @@ using tlrsCartonManager.Services.User;
 using tlrsCartonManager.Services.ImportData;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
+using tlrsCartonManager.DAL.Models.MetaData;
 
 namespace tlrsCartonManager.Api.Extensions
 {
@@ -36,8 +37,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IRequestManagerRepository, RequestManagerRepository>();
             services.AddScoped<IInvoiceManagerRepository, InvoiceManagerRepository>();
             services.AddScoped<IPickListManagerRepository ,PickListManagerRepository>();
-            services.AddScoped<IInquiryManagerRepository, InquiryManagerRepository>();
-            services.AddScoped<IReceiveTypeManagerRepository, ReceiveTypeManagerRepository>();
+            services.AddScoped<IInquiryManagerRepository, InquiryManagerRepository>();           
             services.AddScoped<IDisposalTimeFrameManagerRepository, DisposalTimeFrameManagerRepository>();
             services.AddScoped<IWorkOrderTypeManagerRepository, WorkOrderTypeManagerRepository>();
             services.AddScoped<IOwnershipManagerRepository, OwnershipManagerRepository>();
@@ -66,6 +66,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped(typeof(IMetadataRepository<Route, RouteDto>), typeof(BaseMetadataRepository<Route, RouteDto>));
             services.AddScoped(typeof(IMetadataRepository<ServiceCategory, ServiceCategoryDto>), typeof(BaseMetadataRepository<ServiceCategory, ServiceCategoryDto>));
             services.AddScoped(typeof(IMetadataRepository<Department, DepartmentDto>), typeof(BaseMetadataRepository<Department, DepartmentDto>));
+            services.AddScoped(typeof(IMetadataRepository<ReceiveType, ReceiveTypeDto>), typeof(BaseMetadataRepository<ReceiveType, ReceiveTypeDto>));
 
             //---------------------------------------------------------------
 

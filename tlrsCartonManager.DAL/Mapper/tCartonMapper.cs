@@ -193,22 +193,30 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<ModuleSub, SubModuleDto>()
                 .ForMember(d => d.ModuleName, s => s.MapFrom(d => d.Module.Name))
                 .ForMember(d => d.ModulePermissions, s => s.MapFrom(d => d.ModulePermissions.Select(p => p.PermissionId))).ReverseMap();
-
-         
-
-
             CreateMap<ModulePermission, ModulePermissionDto>().ReverseMap();
 
+            //meta data section
             CreateMap<StorageType, StorageTypeDto>().ReverseMap();
             CreateMap<BillingCycle, BillingCycleDto>().ReverseMap();
-            CreateMap<RouteDto, Route>().ReverseMap();
-            CreateMap<DepartmentDto, Department>().ReverseMap();
+            CreateMap<Route, RouteDto>().ReverseMap();
+            CreateMap<ServiceCategory, ServiceCategoryDto>().ReverseMap();
+            CreateMap<Department, DepartmentDto>().ReverseMap();
+            CreateMap<ReceiveType, ReceiveTypeDto>().ReverseMap();
 
-            CreateMap<MetadataValidator, StorageType>().ReverseMap();
-            CreateMap<MetadataValidator, BillingCycle>().ReverseMap();
-            CreateMap<MetadataValidator, Route>().ReverseMap();
-            CreateMap<MetadataValidator, Department>().ReverseMap();
-            //ruv
+            CreateMap<MetadataBase, StorageType>().ReverseMap();
+            CreateMap<MetadataBase, BillingCycle>().ReverseMap();
+            CreateMap<MetadataBase, Route>().ReverseMap();
+            CreateMap<MetadataBase, ServiceCategory>().ReverseMap();
+            CreateMap<MetadataBase, Department>().ReverseMap();
+            CreateMap<MetadataBase, ReceiveType>().ReverseMap();
+
+            CreateMap<MetadataBase, StorageTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, BillingCycleDto>().ReverseMap();
+            CreateMap<MetadataBase, RouteDto>().ReverseMap();
+            CreateMap<MetadataBase, ServiceCategoryDto>().ReverseMap();
+            CreateMap<MetadataBase, DepartmentDto>().ReverseMap();
+            CreateMap<MetadataBase, ReceiveTypeDto>().ReverseMap();
+            //
         }
 
 
