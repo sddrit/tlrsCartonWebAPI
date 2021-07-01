@@ -12,32 +12,26 @@ using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.MetaData;
+using tlrsCartonManager.DAL.Dtos.MetaData;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class MetaDataController : Controller
-    {    
-       
-        
-        private readonly IDisposalTimeFrameManagerRepository _disposalTimeFrameRepository;
-        private readonly IWorkOrderTypeManagerRepository _workOrderTypeRepository;
-        private readonly IMobileDeviceManagerRepository _mobileDeviceRepository;
-        private readonly IUserManagerRepository _workerRepository;
-        private readonly IPostingTypeManagerRepository _postingTypeRepository;
-        private readonly ITaxTypeManagerRepository _taxTypeManagerRepository;
-        private readonly IRequestTypeManagerRepository _requestTypeTypeManagerRepository;
-        private readonly IRolePermissionManagerRepository _rolePermissionManagerRepository;
-
-
-
+    {
         private readonly IMetadataRepository<StorageType, StorageTypeDto> _storageTypeRepository;
         private readonly IMetadataRepository<BillingCycle, BillingCycleDto> _billingCycleRepository;
-        private readonly IMetadataRepository<Route, RouteDto>_routeRepository;
+        private readonly IMetadataRepository<Route, RouteDto> _routeRepository;
         private readonly IMetadataRepository<ServiceCategory, ServiceCategoryDto> _serviceRepository;
         private readonly IMetadataRepository<Department, DepartmentDto> _departmentRepository;
         private readonly IMetadataRepository<ReceiveType, ReceiveTypeDto> _receiveTypeRepository;
+        private readonly IMetadataRepository<RequestType, RequestTypeDto> _requestTypeTypeManagerRepository;
+        private readonly IMetadataRepository<WorkOrderRequestType, WorkOrderTypeDto> _workOrderTypeRepository;
+        private readonly IMetadataRepository<DisposalTimeFrame, DisposalTimeFrameDto> _disposalTimeFrameRepository;
+        private readonly IMetadataRepository<PostingType, PostingTypeDto> _postingTypeRepository;
+        private readonly IMetadataRepository<TaxType, TaxTypeDto> _taxTypeManagerRepository;
+        private readonly IMetadataRepository<MobileDevice, MobileDeviceDto> _mobileDeviceRepository;
 
         public MetaDataController
             (
@@ -47,10 +41,13 @@ namespace tlrsCartonManager.Api.Controllers
               IMetadataRepository<ServiceCategory, ServiceCategoryDto> serviceRepository,
               IMetadataRepository<Department, DepartmentDto> departmentRepository,
               IMetadataRepository<ReceiveType, ReceiveTypeDto> receiveTypeRepository,
-              IDisposalTimeFrameManagerRepository disposalTimeFrame, IWorkOrderTypeManagerRepository workOrderTypeRepository,
-              IMobileDeviceManagerRepository mobileDeviceRepository, IUserManagerRepository workerRepository,
-            IPostingTypeManagerRepository postingTypeRepository, ITaxTypeManagerRepository taxTypeManagerRepository,
-            IRequestTypeManagerRepository requestTypeTypeManagerRepository, IRolePermissionManagerRepository rolePermissionManagerRepository)
+              IMetadataRepository<RequestType, RequestTypeDto> requestTypeTypeManagerRepository,
+              IMetadataRepository<WorkOrderRequestType, WorkOrderTypeDto> workOrderTypeRepository,
+              IMetadataRepository<DisposalTimeFrame, DisposalTimeFrameDto> disposalTimeFrame,
+              IMetadataRepository<MobileDevice, MobileDeviceDto> mobileDeviceRepository,
+              IMetadataRepository<PostingType, PostingTypeDto> postingTypeRepository,
+              IMetadataRepository<TaxType, TaxTypeDto> taxTypeManagerRepository)
+
         {
             _billingCycleRepository = billingCycleRepository;
             _routeRepository = routeRepository;
@@ -61,31 +58,43 @@ namespace tlrsCartonManager.Api.Controllers
             _disposalTimeFrameRepository = disposalTimeFrame;
             _workOrderTypeRepository = workOrderTypeRepository;
             _mobileDeviceRepository = mobileDeviceRepository;
-            _workerRepository = workerRepository;
             _postingTypeRepository = postingTypeRepository;
             _taxTypeManagerRepository = taxTypeManagerRepository;
             _requestTypeTypeManagerRepository = requestTypeTypeManagerRepository;
-            _rolePermissionManagerRepository = rolePermissionManagerRepository;
+
         }
 
         [HttpGet]
         public async Task<IActionResult> GetMetaData()
         {
-            var billingCylce = await _billingCycleRepository.GetAllMetaData();
-            var storageType = await _storageTypeRepository.GetAllMetaData();
-            var route = await _routeRepository.GetAllMetaData();
-            var serviceCategory = await _serviceRepository.GetAllMetaData();    
-            var departmentList = await _departmentRepository.GetAllMetaData();
-            var receiveTypeList = await _receiveTypeRepository.GetAllMetaData();
 
-            var disposalTimeFrameList = await _disposalTimeFrameRepository.GetDisposalTimeFrameList();
-            var workOrderTypeList = await _workOrderTypeRepository.GetWoTypeList();
-            var mobileDeviceList = await _mobileDeviceRepository.GetMobileDeviceList();
-            var workerList = await _workerRepository.GetWorkersList();
-            var postingTypeList = await _postingTypeRepository.GetPostingTypeList();
-            var taxTypeList = await _taxTypeManagerRepository.GetTaxTypeList();
-            var requestTypeList = await _requestTypeTypeManagerRepository.GetRequestTypeList();
-            var modulePermissionList = await _rolePermissionManagerRepository.GeModulePermissionList();
+
+            //customer
+            var serviceCategory = await _serviceRepository.GetAllMetaData();
+            var route = await _routeRepository.GetAllMetaData();
+            var billingCylce = await _billingCycleRepository.GetAllMetaData();
+
+            //wo
+            var receiveTypeList = await _receiveTypeRepository.GetAllMetaData();
+            var requestTypeList = await _requestTypeTypeManagerRepository.GetAllMetaData();
+            var workOrderTypeList = await _workOrderTypeRepository.GetAllMetaData();
+
+
+            //carton
+            var storageType = await _storageTypeRepository.GetAllMetaData();
+            var disposalTimeFrameList = await _disposalTimeFrameRepository.GetAllMetaData();
+
+            //company
+            var departmentList = await _departmentRepository.GetAllMetaData();
+
+
+            //invoice
+            var postingTypeList = await _postingTypeRepository.GetAllMetaData();
+            var taxTypeList = await _taxTypeManagerRepository.GetAllMetaData();
+
+            //other
+            var mobileDeviceList = await _mobileDeviceRepository.GetAllMetaData();
+
 
             return Ok(
             new
@@ -99,11 +108,10 @@ namespace tlrsCartonManager.Api.Controllers
                 disposalTimeFrameList,
                 workOrderTypeList,
                 mobileDeviceList,
-                workerList,
                 postingTypeList,
                 taxTypeList,
-                requestTypeList,
-                modulePermissionList
+                requestTypeList
+
 
             });
         }
@@ -113,13 +121,13 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet("getAllStorageTypes")]
         public async Task<IActionResult> GetAllStorageType()
         {
-            return Ok(await _storageTypeRepository.GetAll());           
+            return Ok(await _storageTypeRepository.GetAll());
         }
 
         [HttpGet("storageType/{id}")]
         public async Task<IActionResult> GetStorageType(int id)
         {
-            return Ok(await _storageTypeRepository.GetById(id));           
+            return Ok(await _storageTypeRepository.GetById(id));
         }
 
         [HttpPost("storageType")]
@@ -147,13 +155,13 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet("getAllBillingCycles")]
         public async Task<IActionResult> GetAllBillingCycle()
         {
-            return Ok( await _billingCycleRepository.GetAll());            
+            return Ok(await _billingCycleRepository.GetAll());
         }
 
         [HttpGet("billingCycle/{id}")]
         public async Task<IActionResult> GetBillingCycle(int id)
         {
-            return Ok(await _billingCycleRepository.GetById(id));           
+            return Ok(await _billingCycleRepository.GetById(id));
         }
 
         [HttpPost("billingCycle")]
@@ -181,13 +189,13 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet("getAllRoutes")]
         public async Task<IActionResult> GetAllRoutes()
         {
-            return Ok(await _routeRepository.GetAll());            
+            return Ok(await _routeRepository.GetAll());
         }
 
         [HttpGet("route/{id}")]
         public async Task<IActionResult> GetRoute(int id)
         {
-            return Ok(await _routeRepository.GetById(id));           
+            return Ok(await _routeRepository.GetById(id));
         }
 
         [HttpPost("route")]
@@ -215,31 +223,31 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet("getAllServiceCategories")]
         public async Task<IActionResult> GetAllServiceCategory()
         {
-            return Ok(await _routeRepository.GetAll());           
+            return Ok(await _serviceRepository.GetAll());
         }
 
         [HttpGet("serviceCategory/{id}")]
         public async Task<IActionResult> GetServiceCategory(int id)
         {
-            return Ok(await _routeRepository.GetById(id));           
+            return Ok(await _serviceRepository.GetById(id));
         }
 
         [HttpPost("serviceCategory")]
-        public async Task<IActionResult> AddServiceCategory(RouteDto model)
+        public async Task<IActionResult> AddServiceCategory(ServiceCategoryDto model)
         {
-            return Ok(await _routeRepository.AddItem(model));
+            return Ok(await _serviceRepository.AddItem(model));
         }
 
         [HttpPut("serviceCategory")]
-        public async Task<IActionResult> UpdateServiceCategory(RouteDto model)
+        public async Task<IActionResult> UpdateServiceCategory(ServiceCategoryDto model)
         {
-            return Ok(await _routeRepository.EditItem(model));
+            return Ok(await _serviceRepository.EditItem(model));
         }
 
         [HttpDelete("serviceCategory")]
         public async Task<IActionResult> DeleteServiceCategory(int id)
         {
-            await _routeRepository.DeleteItem(id);
+            await _serviceRepository.DeleteItem(id);
             return Ok();
         }
         #endregion
@@ -312,5 +320,208 @@ namespace tlrsCartonManager.Api.Controllers
         }
         #endregion
 
+        #region request type
+
+        [HttpGet("getAllRequestTypes")]
+        public async Task<IActionResult> GetAllRequestTypes()
+        {
+            return Ok(await _requestTypeTypeManagerRepository.GetAll());
+        }
+
+        [HttpGet("requestType/{id}")]
+        public async Task<IActionResult> GetRequestType(int id)
+        {
+            return Ok(await _requestTypeTypeManagerRepository.GetById(id));
+        }
+
+        [HttpPost("requestType")]
+        public async Task<IActionResult> AddRequestType(RequestTypeDto model)
+        {
+            return Ok(await _requestTypeTypeManagerRepository.AddItem(model));
+        }
+
+        [HttpPut("requestType")]
+        public async Task<IActionResult> UpdateRequestType(RequestTypeDto model)
+        {
+            return Ok(await _requestTypeTypeManagerRepository.EditItem(model));
+        }
+
+        [HttpDelete("requestType")]
+        public async Task<IActionResult> DeleteRequestType(int id)
+        {
+            await _requestTypeTypeManagerRepository.DeleteItem(id);
+            return Ok();
+        }
+        #endregion
+
+        #region Wo type
+
+        [HttpGet("getAllWorkOrderTypes")]
+        public async Task<IActionResult> GetAllWorkOrderTypes()
+        {
+            return Ok(await _workOrderTypeRepository.GetAll());
+        }
+
+        [HttpGet("workOrderType/{id}")]
+        public async Task<IActionResult> GetWorkOrderType(int id)
+        {
+            return Ok(await _workOrderTypeRepository.GetById(id));
+        }
+
+        [HttpPost("workOrderType")]
+        public async Task<IActionResult> AddWorkOrderType(WorkOrderTypeDto model)
+        {
+            return Ok(await _workOrderTypeRepository.AddItem(model));
+        }
+
+        [HttpPut("workOrderType")]
+        public async Task<IActionResult> UpdateWorkOrderType(WorkOrderTypeDto model)
+        {
+            return Ok(await _workOrderTypeRepository.EditItem(model));
+        }
+
+        [HttpDelete("workOrderType")]
+        public async Task<IActionResult> DeleteWorkOrderType(int id)
+        {
+            await _workOrderTypeRepository.DeleteItem(id);
+            return Ok();
+        }
+        #endregion
+
+        #region Disposasl time frame
+
+        [HttpGet("getAllDisposalTimeFrames")]
+        public async Task<IActionResult> GetAllDisposalTimeFrames()
+        {
+            return Ok(await _disposalTimeFrameRepository.GetAll());
+        }
+
+        [HttpGet("disposalTimeFrame/{id}")]
+        public async Task<IActionResult> GetDisposalTimeFrame(int id)
+        {
+            return Ok(await _disposalTimeFrameRepository.GetById(id));
+        }
+
+        [HttpPost("disposalTimeFrame")]
+        public async Task<IActionResult> AddDisposalTimeFrame(DisposalTimeFrameDto model)
+        {
+            return Ok(await _disposalTimeFrameRepository.AddItem(model));
+        }
+
+        [HttpPut("disposalTimeFrame")]
+        public async Task<IActionResult> UpdateDisposalTimeFrame(DisposalTimeFrameDto model)
+        {
+            return Ok(await _disposalTimeFrameRepository.EditItem(model));
+        }
+
+        [HttpDelete("disposalTimeFrame")]
+        public async Task<IActionResult> DeleteDisposalTimeFrame(int id)
+        {
+            await _disposalTimeFrameRepository.DeleteItem(id);
+            return Ok();
+        }
+        #endregion
+
+        #region Posting types
+
+        [HttpGet("getAllPostingTypes")]
+        public async Task<IActionResult> GetAllPostingTypes()
+        {
+            return Ok(await _postingTypeRepository.GetAll());
+        }
+
+        [HttpGet("postingType/{id}")]
+        public async Task<IActionResult> GetPostingType(int id)
+        {
+            return Ok(await _postingTypeRepository.GetById(id));
+        }
+
+        [HttpPost("postingType")]
+        public async Task<IActionResult> AddPostingType(PostingTypeDto model)
+        {
+            return Ok(await _postingTypeRepository.AddItem(model));
+        }
+
+        [HttpPut("postingType")]
+        public async Task<IActionResult> UpdatePostingType(PostingTypeDto model)
+        {
+            return Ok(await _postingTypeRepository.EditItem(model));
+        }
+
+        [HttpDelete("postingType")]
+        public async Task<IActionResult> DeletePostingType(int id)
+        {
+            await _postingTypeRepository.DeleteItem(id);
+            return Ok();
+        }
+        #endregion
+
+        #region Tax types
+
+        [HttpGet("getAllTaxTypes")]
+        public async Task<IActionResult> GetAllTaxTypes()
+        {
+            return Ok(await _taxTypeManagerRepository.GetAll());
+        }
+
+        [HttpGet("taxtType/{id}")]
+        public async Task<IActionResult> GetTaxType(int id)
+        {
+            return Ok(await _taxTypeManagerRepository.GetById(id));
+        }
+
+        [HttpPost("taxtType")]
+        public async Task<IActionResult> AddTaxType(TaxTypeDto model)
+        {
+            return Ok(await _taxTypeManagerRepository.AddItem(model));
+        }
+
+        [HttpPut("taxtType")]
+        public async Task<IActionResult> UpdateTaxType(TaxTypeDto model)
+        {
+            return Ok(await _taxTypeManagerRepository.EditItem(model));
+        }
+
+        [HttpDelete("taxtType")]
+        public async Task<IActionResult> DeleteTaxType(int id)
+        {
+            await _taxTypeManagerRepository.DeleteItem(id);
+            return Ok();
+        }
+        #endregion
+
+        #region Mobile Devices
+
+        [HttpGet("getAllMobileDevices")]
+        public async Task<IActionResult> GetAllMobileDevices()
+        {
+            return Ok(await _mobileDeviceRepository.GetAll());
+        }
+
+        [HttpGet("mobileDevice/{id}")]
+        public async Task<IActionResult> GetMobileDevice(int id)
+        {
+            return Ok(await _mobileDeviceRepository.GetById(id));
+        }
+
+        [HttpPost("mobileDevice")]
+        public async Task<IActionResult> AddMobileDevice(MobileDeviceDto model)
+        {
+            return Ok(await _mobileDeviceRepository.AddItem(model));
+        }
+
+        [HttpPut("mobileDevice")]
+        public async Task<IActionResult> UpdateMobileDevice(MobileDeviceDto model)
+        {
+            return Ok(await _mobileDeviceRepository.EditItem(model));
+        }
+
+        [HttpDelete("mobileDevice")]
+        public async Task<IActionResult> DeleteMobileDevice(int id)
+        {
+            await _mobileDeviceRepository.DeleteItem(id);
+            return Ok();
+        }
+        #endregion
     }
 }

@@ -18,25 +18,17 @@ using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Dtos.MetaData;
+using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class TaxTypeManagerRepository : ITaxTypeManagerRepository
+    public class WorkOrderTypeManagerRepository : BaseMetadataRepository<WorkOrderRequestType, WorkOrderTypeDto>
     {
-        private readonly tlrmCartonContext _tcContext;
-        private readonly IMapper _mapper;
-
-        public TaxTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public WorkOrderTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper, BaseMetaRepositoryValidator validator)
+            : base(tccontext, mapper, validator)
         {
-            _tcContext = tccontext;
-            _mapper = mapper;
+
         }
 
-
-        public async Task<IEnumerable<TaxTypeDto>> GetTaxTypeList()
-        {
-            var taxTypeList = await _tcContext.TaxTypes.ToListAsync();
-            return _mapper.Map<IEnumerable<TaxTypeDto>>(taxTypeList);
-        }
     }
 }

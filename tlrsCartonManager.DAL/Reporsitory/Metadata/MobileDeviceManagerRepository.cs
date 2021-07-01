@@ -17,26 +17,18 @@ using tlrsCartonManager.DAL.Helper;
 using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
+using tlrsCartonManager.DAL.Models.MetaData;
+using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class MobileDeviceManagerRepository : IMobileDeviceManagerRepository
+    public class MobileDeviceManagerRepository : BaseMetadataRepository<MobileDevice, MobileDeviceDto>
     {
-        private readonly tlrmCartonContext _tcContext;
-        private readonly IMapper _mapper;
-
-        public MobileDeviceManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public MobileDeviceManagerRepository(tlrmCartonContext tccontext, IMapper mapper, BaseMetaRepositoryValidator validator)
+            : base(tccontext, mapper, validator)
         {
-            _tcContext = tccontext;
-            _mapper = mapper;
-        }
-        public async  Task<IEnumerable<MobileDeviceDto>> GetMobileDeviceList()
-        {
-            var mobileDeviceList = await _tcContext.MobileDevices.ToListAsync();
-            return _mapper.Map<IEnumerable<MobileDeviceDto>>(mobileDeviceList);
 
         }
 
-       
     }
-    }
+}

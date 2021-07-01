@@ -359,8 +359,7 @@ namespace tlrsCartonManager.DAL.Models
             });
 
             modelBuilder.Entity<DisposalTimeFrame>(entity =>
-            {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+            {              
 
                 entity.Property(e => e.Description).IsUnicode(false);
             });
@@ -565,8 +564,8 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<RequestType>(entity =>
             {
-                entity.HasKey(e => e.TypeCode)
-                    .HasName("PK_RequestType_1");
+                //entity.HasKey(e => e.TypeCode)
+                //    .HasName("PK_RequestType_1");
 
                 entity.Property(e => e.TypeCode).IsUnicode(false);
             });
@@ -676,11 +675,7 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.TypeCode).IsUnicode(false);
 
                 entity.Property(e => e.RequestTypeCode).IsUnicode(false);
-
-                entity.HasOne(d => d.RequestTypeCodeNavigation)
-                    .WithMany(p => p.WorkOrderRequestTypes)
-                    .HasForeignKey(d => d.RequestTypeCode)
-                    .HasConstraintName("FK_WorkOrderRequestType_RequestType");
+              
             });
 
 
@@ -709,21 +704,16 @@ namespace tlrsCartonManager.DAL.Models
             });
             modelBuilder.Entity<ReceiveType>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Description).IsUnicode(false);
             });
 
             modelBuilder.Entity<MobileDevice>(entity =>
-            {
-                entity.HasKey(e => e.DeviceCode)
-                    .HasName("PK_Mobile-Devices");
+            {              
 
-                entity.Property(e => e.DeviceCode).IsUnicode(false);
+                entity.Property(e => e.Code).IsUnicode(false);
 
-                entity.Property(e => e.DeviceName).IsUnicode(false);
-
-                entity.Property(e => e.LastSynchedUser).IsUnicode(false);
+                entity.Property(e => e.Description).IsUnicode(false);
+               
             });
 
             modelBuilder.Entity<MenuModel>(entity =>

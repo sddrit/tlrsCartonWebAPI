@@ -17,6 +17,7 @@ using tlrsCartonManager.Services.ImportData;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 using tlrsCartonManager.DAL.Models.MetaData;
+using tlrsCartonManager.DAL.Dtos.MetaData;
 
 namespace tlrsCartonManager.Api.Extensions
 {
@@ -31,22 +32,16 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IUserManagerRepository, UserManagerRepository>();
             services.AddScoped<IUserPasswordManagerRepository, UserPasswordManagerRepository>();
             services.AddScoped<ITokenServicesRepository, TokenServicesRepository>();
-            services.AddScoped<ICustomerManagerRepository, CustomerManagerRepository>();        
+            services.AddScoped<ICustomerManagerRepository, CustomerManagerRepository>();
             services.AddScoped<ICartonStorageManagerRepository, CartonStorageManagerRepository>();
-            services.AddScoped<ISearchManagerRepository, SearchManagerRepository >();
+            services.AddScoped<ISearchManagerRepository, SearchManagerRepository>();
             services.AddScoped<IRequestManagerRepository, RequestManagerRepository>();
             services.AddScoped<IInvoiceManagerRepository, InvoiceManagerRepository>();
-            services.AddScoped<IPickListManagerRepository ,PickListManagerRepository>();
-            services.AddScoped<IInquiryManagerRepository, InquiryManagerRepository>();           
-            services.AddScoped<IDisposalTimeFrameManagerRepository, DisposalTimeFrameManagerRepository>();
-            services.AddScoped<IWorkOrderTypeManagerRepository, WorkOrderTypeManagerRepository>();
+            services.AddScoped<IPickListManagerRepository, PickListManagerRepository>();
+            services.AddScoped<IInquiryManagerRepository, InquiryManagerRepository>();
             services.AddScoped<IOwnershipManagerRepository, OwnershipManagerRepository>();
-            services.AddScoped<IMobileDeviceManagerRepository, MobileDeviceManagerRepository>();
-            services.AddScoped<IPostingTypeManagerRepository, PostingTypeManagerRepository>();
             services.AddScoped<ICompanyManagerRepository, CompanyManagerRepository>();
-            services.AddScoped<ITaxTypeManagerRepository, TaxTypeManagerRepository>();
             services.AddScoped<IReportManagerRepository, ReportManagerRepository>();
-            services.AddScoped<IRequestTypeManagerRepository, RequestTypeManagerRepository>();
             services.AddScoped<ILocationManagerRepository, LocationManagerRepository>();
             services.AddScoped<IGenericReportManagerRepository, GenericReportManagerRepository>();
             services.AddScoped<ReportGeneratingService>();
@@ -67,6 +62,12 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped(typeof(IMetadataRepository<ServiceCategory, ServiceCategoryDto>), typeof(BaseMetadataRepository<ServiceCategory, ServiceCategoryDto>));
             services.AddScoped(typeof(IMetadataRepository<Department, DepartmentDto>), typeof(BaseMetadataRepository<Department, DepartmentDto>));
             services.AddScoped(typeof(IMetadataRepository<ReceiveType, ReceiveTypeDto>), typeof(BaseMetadataRepository<ReceiveType, ReceiveTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<RequestType, RequestTypeDto>), typeof(BaseMetadataRepository<RequestType, RequestTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<WorkOrderRequestType, WorkOrderTypeDto>), typeof(BaseMetadataRepository<WorkOrderRequestType, WorkOrderTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<DisposalTimeFrame, DisposalTimeFrameDto>), typeof(BaseMetadataRepository<DisposalTimeFrame, DisposalTimeFrameDto>));
+            services.AddScoped(typeof(IMetadataRepository<TaxType, TaxTypeDto>), typeof(BaseMetadataRepository<TaxType, TaxTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<PostingType, PostingTypeDto>), typeof(BaseMetadataRepository<PostingType, PostingTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<MobileDevice, MobileDeviceDto>), typeof(BaseMetadataRepository<MobileDevice, MobileDeviceDto>));
 
             //---------------------------------------------------------------
 

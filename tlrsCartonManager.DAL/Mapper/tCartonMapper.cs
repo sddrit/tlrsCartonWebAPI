@@ -202,6 +202,13 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<ServiceCategory, ServiceCategoryDto>().ReverseMap();
             CreateMap<Department, DepartmentDto>().ReverseMap();
             CreateMap<ReceiveType, ReceiveTypeDto>().ReverseMap();
+            CreateMap<RequestType, RequestTypeDto>().ReverseMap();
+            CreateMap<WorkOrderRequestType, WorkOrderTypeDto>().ReverseMap();
+            CreateMap<DisposalTimeFrame, DisposalTimeFrameDto>().ReverseMap();
+            CreateMap<TaxType, TaxTypeDto>().ReverseMap();
+            CreateMap<PostingType, PostingTypeDto>().ReverseMap();
+            CreateMap<MobileDevice, MobileDeviceDto>().ReverseMap();
+
 
             CreateMap<MetadataBase, StorageType>().ReverseMap();
             CreateMap<MetadataBase, BillingCycle>().ReverseMap();
@@ -209,6 +216,13 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<MetadataBase, ServiceCategory>().ReverseMap();
             CreateMap<MetadataBase, Department>().ReverseMap();
             CreateMap<MetadataBase, ReceiveType>().ReverseMap();
+            CreateMap<MetadataBase, RequestType>().ReverseMap();
+            CreateMap<MetadataBase, WorkOrderRequestType>().ReverseMap();
+            CreateMap<MetadataBase, DisposalTimeFrame>().ReverseMap();
+            CreateMap<MetadataBase, TaxType>().ReverseMap();
+            CreateMap<MetadataBase, PostingType>().ReverseMap();
+            CreateMap<MetadataBase, MobileDevice>().ReverseMap();
+
 
             CreateMap<MetadataBase, StorageTypeDto>().ReverseMap();
             CreateMap<MetadataBase, BillingCycleDto>().ReverseMap();
@@ -216,6 +230,12 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<MetadataBase, ServiceCategoryDto>().ReverseMap();
             CreateMap<MetadataBase, DepartmentDto>().ReverseMap();
             CreateMap<MetadataBase, ReceiveTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, RequestTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, WorkOrderTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, DisposalTimeFrameDto>().ReverseMap();
+            CreateMap<MetadataBase, TaxTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, PostingTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, MobileDeviceDto>().ReverseMap();
             //
         }
 

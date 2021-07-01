@@ -10,13 +10,13 @@ namespace tlrsCartonManager.DAL.Dtos
     public class MobileDeviceDto
     {
         [Key]
-        public string DeviceCode { get; set; }
+        public int Id { get; set; }
+        public string Code { get; set; }
 
-        public string DeviceName { get; set; }
+        public string Description { get; set; }
 
         public bool? Active { get; set; }
 
-        public bool? Deleted { get; set; }
 
     }
 

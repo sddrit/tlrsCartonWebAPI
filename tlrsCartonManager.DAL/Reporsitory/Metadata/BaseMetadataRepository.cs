@@ -81,7 +81,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<IList<TDto>> GetAll()
         {
             var result = (await _dbSet.ToListAsync())
-                .Select(_mapper.Map<MetadataBase>).Where(x => x.Deleted == false).ToList();
+                .Select(_mapper.Map<MetadataBase>).Where(x => x.Deleted == false).OrderByDescending(x=>x.Id).ToList();
 
             return _mapper.Map<List<TDto>>(result);
         }
@@ -115,7 +115,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             _validator.ValidateItemByType(currentItem, validatingEntity);
 
-            _validator.ValidateItemByDescription(currentItem, validatingEntity);
+            _validator.ValidateItemByTypeCode(currentItem, validatingEntity);
+
+            _validator.ValidateItemByCode(currentItem, validatingEntity);
+
+            _validator.ValidateItemByDescription(currentItem, validatingEntity);            
 
             return true;
 

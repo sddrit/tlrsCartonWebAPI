@@ -17,27 +17,18 @@ using tlrsCartonManager.DAL.Helper;
 using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
+using tlrsCartonManager.DAL.Dtos.MetaData;
+using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class PostingTypeManagerRepository : IPostingTypeManagerRepository
+    public class TaxTypeManagerRepository : BaseMetadataRepository<TaxType, TaxTypeDto>
     {
-        private readonly tlrmCartonContext _tcContext;
-        private readonly IMapper _mapper;
-
-        public PostingTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public TaxTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper, BaseMetaRepositoryValidator validator)
+            : base(tccontext, mapper, validator)
         {
-            _tcContext = tccontext;
-            _mapper = mapper;
-        }
-
-        public async  Task<IEnumerable<PostingTypeDto>> GetPostingTypeList()
-        {
-            return _mapper.Map < IEnumerable <PostingTypeDto>>(await _tcContext.PostingTypes.ToListAsync());
-        
 
         }
 
-       
     }
-    }
+}
