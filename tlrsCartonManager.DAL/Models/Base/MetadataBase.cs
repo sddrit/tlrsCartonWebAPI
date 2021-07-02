@@ -17,5 +17,8 @@ namespace tlrsCartonManager.DAL.Models.Base
         public bool? Active { get; set; }
         public string Size { get; set; }
         public bool Deleted { get; set; }
+        public bool IsShowQty { get; set; }
+        public bool IsShowAmount { get; set; }
+        public bool IsShowPercentage { get; set; }
     }
 }

@@ -102,7 +102,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.Metadata.Core
                     new ErrorMessage()
                     {
                        Code = string.Empty,
-                       Message = $"code unauthorized to change"
+                       Message = $"Code unauthorized to change"
                     }
                 });
             }

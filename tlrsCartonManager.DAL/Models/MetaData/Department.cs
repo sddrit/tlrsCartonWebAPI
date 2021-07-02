@@ -25,7 +25,6 @@ namespace tlrsCartonManager.DAL.Models
         public bool Deleted { get; set; }
         [Column("createdUserd")]
         public int CreatedUserd { get; set; }
-        [Column("createdDate", TypeName = "datetime")]
-        public DateTime CreatedDate { get; set; }
+       
     }
 }

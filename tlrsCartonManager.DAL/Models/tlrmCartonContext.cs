@@ -1176,8 +1176,7 @@ namespace tlrsCartonManager.DAL.Models
 
 
             modelBuilder.Entity<Department>(entity =>
-            {
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+            {           
 
                 entity.Property(e => e.Description).IsUnicode(false);
             });

@@ -464,25 +464,25 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _taxTypeManagerRepository.GetAll());
         }
 
-        [HttpGet("taxtType/{id}")]
+        [HttpGet("taxType/{id}")]
         public async Task<IActionResult> GetTaxType(int id)
         {
             return Ok(await _taxTypeManagerRepository.GetById(id));
         }
 
-        [HttpPost("taxtType")]
+        [HttpPost("taxType")]
         public async Task<IActionResult> AddTaxType(TaxTypeDto model)
         {
             return Ok(await _taxTypeManagerRepository.AddItem(model));
         }
 
-        [HttpPut("taxtType")]
+        [HttpPut("taxType")]
         public async Task<IActionResult> UpdateTaxType(TaxTypeDto model)
         {
             return Ok(await _taxTypeManagerRepository.EditItem(model));
         }
 
-        [HttpDelete("taxtType")]
+        [HttpDelete("taxType")]
         public async Task<IActionResult> DeleteTaxType(int id)
         {
             await _taxTypeManagerRepository.DeleteItem(id);
