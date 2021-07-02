@@ -19,26 +19,17 @@ using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Dtos.MetaData;
+using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class RequestTypeManagerRepository : IRequestTypeManagerRepository
+    public class RequestTypeManagerRepository : BaseMetadataRepository<RequestType, RequestTypeDto>
     {
-        private readonly tlrmCartonContext _tcContext;
-        private readonly IMapper _mapper;
+        public RequestTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper, BaseMetaRepositoryValidator validator)
+            : base(tccontext, mapper, validator)
+        {
 
-        public RequestTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
-        {
-            _tcContext = tccontext;
-            _mapper = mapper;
-        }
-        public async Task<IEnumerable<RequestTypeDto>> GetRequestTypeList()
-        {
-            var requestType = await _tcContext.RequestTypes.ToListAsync();
-            return _mapper.Map<IEnumerable<RequestTypeDto>>(requestType);
-                     
         }
 
-       
     }
 }

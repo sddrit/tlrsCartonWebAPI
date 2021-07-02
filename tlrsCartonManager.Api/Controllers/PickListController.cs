@@ -23,10 +23,11 @@ namespace tlrsCartonManager.Api.Controllers
     public class PickListController : Controller
     {
         private readonly IPickListManagerRepository _pickListRepository;
-
-        public PickListController(IPickListManagerRepository pickListRepository)
+        private readonly IUserManagerRepository _workerRepository;
+        public PickListController(IPickListManagerRepository pickListRepository, IUserManagerRepository workerRepository)
         {
             _pickListRepository = pickListRepository;
+            _workerRepository = workerRepository;
         }
 
         [HttpGet]
@@ -35,6 +36,7 @@ namespace tlrsCartonManager.Api.Controllers
             var pickList = await _pickListRepository.SearchPickList(searchText, pageIndex, pageSize);
             return Ok(pickList);
         }
+
 
         [HttpGet("{pickListNo}")]
         public async Task<ActionResult<PickListHeaderDto>> GetSingleSearch(string pickListNo)
@@ -55,6 +57,12 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
         }
+
+        [HttpGet("getWorkerList")]
+        public async Task<ActionResult> GetWorkerList()
+        {
+           return Ok( await _workerRepository.GetWorkersList());
+        }     
 
         [HttpPost]
         public async Task<ActionResult> AddPickList(PickListResponseDto pickList)

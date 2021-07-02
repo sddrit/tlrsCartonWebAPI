@@ -17,25 +17,16 @@ using tlrsCartonManager.DAL.Helper;
 using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
+using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class ServiceCategoryManagerRepository : IServiceCategoryManagerRepository
+    public class BillingCycleManagerRepository :  BaseMetadataRepository<BillingCycle, BillingCycleDto>
     {
-        private readonly tlrmCartonContext _tcContext;
-        private readonly IMapper _mapper;
-
-        public ServiceCategoryManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public BillingCycleManagerRepository(tlrmCartonContext tccontext, IMapper mapper, BaseMetaRepositoryValidator validator) 
+            : base(tccontext, mapper,validator)
         {
-            _tcContext = tccontext;
-            _mapper = mapper;
         }
-        public async  Task<IEnumerable<ServiceCategoryDto>> GetServiceList()
-        {
-            var service = await _tcContext.ServiceCategories.ToListAsync();
-            return _mapper.Map<IEnumerable<ServiceCategoryDto>>(service);
 
-        }
-       
     }
- }
+}

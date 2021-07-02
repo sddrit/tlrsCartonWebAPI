@@ -17,26 +17,18 @@ using tlrsCartonManager.DAL.Helper;
 using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
-using tlrsCartonManager.DAL.Models.MetaData;
+using tlrsCartonManager.DAL.Dtos.MetaData;
+using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class ReceiveTypeManagerRepository : IReceiveTypeManagerRepository
+    public class TaxTypeManagerRepository : BaseMetadataRepository<TaxType, TaxTypeDto>
     {
-        private readonly tlrmCartonContext _tcContext;
-        private readonly IMapper _mapper;
+        public TaxTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper, BaseMetaRepositoryValidator validator)
+            : base(tccontext, mapper, validator)
+        {
 
-        public ReceiveTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
-        {
-            _tcContext = tccontext;
-            _mapper = mapper;
-        }
-        public async Task<IEnumerable<ReceiveType>> GetReceiveTypeList()
-        {
-            var receiveType = await _tcContext.ReceiveTypes.ToListAsync();
-            return _mapper.Map<IEnumerable<ReceiveType>>(receiveType);
         }
 
-       
     }
 }

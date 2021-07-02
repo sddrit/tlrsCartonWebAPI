@@ -17,26 +17,20 @@ using tlrsCartonManager.DAL.Helper;
 using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
+using tlrsCartonManager.DAL.Dtos.MetaData;
+using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class RouteManagerRepository : IRouteManagerRepository
+
+    public class DisposalTimeFrameManagerRepository : BaseMetadataRepository<DisposalTimeFrame, DisposalTimeFrameDto>
     {
-        private readonly tlrmCartonContext _tcContext;
-        private readonly IMapper _mapper;
-
-        public RouteManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public DisposalTimeFrameManagerRepository(tlrmCartonContext tccontext, IMapper mapper, BaseMetaRepositoryValidator validator)
+            : base(tccontext, mapper, validator)
         {
-            _tcContext = tccontext;
-            _mapper = mapper;
-        }
-        public async  Task<IEnumerable<RouteDto>> GetRouteList()
-        {
-            var route = await _tcContext.Routes.ToListAsync();
-            return _mapper.Map<IEnumerable<RouteDto>>(route);
 
         }
 
-       
     }
-    }
+
+}

@@ -14,6 +14,10 @@ using tlrsCartonManager.DAL.Mapper;
 using tlrsCartonManager.Services.Report;
 using tlrsCartonManager.Services.User;
 using tlrsCartonManager.Services.ImportData;
+using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
+using tlrsCartonManager.DAL.Models.MetaData;
+using tlrsCartonManager.DAL.Dtos.MetaData;
 
 namespace tlrsCartonManager.Api.Extensions
 {
@@ -28,30 +32,16 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IUserManagerRepository, UserManagerRepository>();
             services.AddScoped<IUserPasswordManagerRepository, UserPasswordManagerRepository>();
             services.AddScoped<ITokenServicesRepository, TokenServicesRepository>();
-
             services.AddScoped<ICustomerManagerRepository, CustomerManagerRepository>();
-            services.AddScoped<IRouteManagerRepository, RouteManagerRepository>();
-            services.AddScoped<IServiceCategoryManagerRepository, ServiceCategoryManagerRepository>();
-            services.AddScoped<IBillingCycleManagerRepository, BillingCycleManagerRepository>();
-            services.AddScoped<IStorageTypeManagerRepository, StorageTypeManagerRepository>();
-            services.AddScoped<IDepartmentManagerRepository, DepartmentManagerRepository>();
             services.AddScoped<ICartonStorageManagerRepository, CartonStorageManagerRepository>();
-
-            services.AddScoped<ISearchManagerRepository, SearchManagerRepository >();
+            services.AddScoped<ISearchManagerRepository, SearchManagerRepository>();
             services.AddScoped<IRequestManagerRepository, RequestManagerRepository>();
             services.AddScoped<IInvoiceManagerRepository, InvoiceManagerRepository>();
-            services.AddScoped<IPickListManagerRepository ,PickListManagerRepository>();
+            services.AddScoped<IPickListManagerRepository, PickListManagerRepository>();
             services.AddScoped<IInquiryManagerRepository, InquiryManagerRepository>();
-            services.AddScoped<IReceiveTypeManagerRepository, ReceiveTypeManagerRepository>();
-            services.AddScoped<IDisposalTimeFrameManagerRepository, DisposalTimeFrameManagerRepository>();
-            services.AddScoped<IWorkOrderTypeManagerRepository, WorkOrderTypeManagerRepository>();
             services.AddScoped<IOwnershipManagerRepository, OwnershipManagerRepository>();
-            services.AddScoped<IMobileDeviceManagerRepository, MobileDeviceManagerRepository>();
-            services.AddScoped<IPostingTypeManagerRepository, PostingTypeManagerRepository>();
             services.AddScoped<ICompanyManagerRepository, CompanyManagerRepository>();
-            services.AddScoped<ITaxTypeManagerRepository, TaxTypeManagerRepository>();
             services.AddScoped<IReportManagerRepository, ReportManagerRepository>();
-            services.AddScoped<IRequestTypeManagerRepository, RequestTypeManagerRepository>();
             services.AddScoped<ILocationManagerRepository, LocationManagerRepository>();
             services.AddScoped<IGenericReportManagerRepository, GenericReportManagerRepository>();
             services.AddScoped<ReportGeneratingService>();
@@ -61,6 +51,26 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IImportDataManagerRepository, ImportDataManagerRepository>();
             services.AddScoped<ImportDataService>();
             services.AddScoped<IAccountManagerRepository, AccountManagerRepository>();
+
+            //---Meta Data registration
+
+            services.AddScoped<BaseMetaRepositoryValidator>();
+
+            services.AddScoped(typeof(IMetadataRepository<StorageType, StorageTypeDto>), typeof(BaseMetadataRepository<StorageType, StorageTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<BillingCycle, BillingCycleDto>), typeof(BaseMetadataRepository<BillingCycle, BillingCycleDto>));
+            services.AddScoped(typeof(IMetadataRepository<Route, RouteDto>), typeof(BaseMetadataRepository<Route, RouteDto>));
+            services.AddScoped(typeof(IMetadataRepository<ServiceCategory, ServiceCategoryDto>), typeof(BaseMetadataRepository<ServiceCategory, ServiceCategoryDto>));
+            services.AddScoped(typeof(IMetadataRepository<Department, DepartmentDto>), typeof(BaseMetadataRepository<Department, DepartmentDto>));
+            services.AddScoped(typeof(IMetadataRepository<ReceiveType, ReceiveTypeDto>), typeof(BaseMetadataRepository<ReceiveType, ReceiveTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<RequestType, RequestTypeDto>), typeof(BaseMetadataRepository<RequestType, RequestTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<WorkOrderRequestType, WorkOrderTypeDto>), typeof(BaseMetadataRepository<WorkOrderRequestType, WorkOrderTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<DisposalTimeFrame, DisposalTimeFrameDto>), typeof(BaseMetadataRepository<DisposalTimeFrame, DisposalTimeFrameDto>));
+            services.AddScoped(typeof(IMetadataRepository<TaxType, TaxTypeDto>), typeof(BaseMetadataRepository<TaxType, TaxTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<PostingType, PostingTypeDto>), typeof(BaseMetadataRepository<PostingType, PostingTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<MobileDevice, MobileDeviceDto>), typeof(BaseMetadataRepository<MobileDevice, MobileDeviceDto>));
+
+            //---------------------------------------------------------------
+
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             return services;
         }

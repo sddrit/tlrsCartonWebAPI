@@ -23,4 +23,8 @@
     <ProjectReference Include="..\tlrsCartonManager.Services\tlrsCartonManager.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\" />
+  </ItemGroup>
+
 </Project>
