@@ -15,10 +15,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Description { get; set; }       
         public string Size { get; set; }       
         public bool? Active { get; set; }      
-        public int? CreatedUser { get; set; }       
-        public DateTime? CreatedDate { get; set; }     
-        public int? LuUser { get; set; }       
-        public DateTime? LuDate { get; set; }
+      
     }
 
 }

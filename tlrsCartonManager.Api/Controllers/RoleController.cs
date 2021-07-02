@@ -20,11 +20,13 @@ namespace tlrsCartonManager.Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
+
     public class RoleController : Controller
     {
         private readonly IRolePermissionManagerRepository _menuRoleRepository;
 
         public RoleController(IRolePermissionManagerRepository menuRoleRepository)
+
         {
             _menuRoleRepository = menuRoleRepository;
         }        

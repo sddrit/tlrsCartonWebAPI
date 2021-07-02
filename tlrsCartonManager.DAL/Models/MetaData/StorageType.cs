@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using tlrsCartonManager.DAL.Models.Base;
 
 #nullable disable
 
 namespace tlrsCartonManager.DAL.Models
 {
     [Table("StorageType")]
-    public partial class StorageType
+    public partial class StorageType :  ISoftDelete
     {
         public StorageType()
         {
@@ -30,16 +32,17 @@ namespace tlrsCartonManager.DAL.Models
         public string Size { get; set; }
         [Column("active")]
         public bool? Active { get; set; }
+
         [Column("deleted")]
-        public bool? Deleted { get; set; }
+        [DefaultValue(false)]
+        public bool Deleted { get; set; } 
+
         [Column("createdUser")]
-        public int? CreatedUser { get; set; }
-        [Column("createdDate", TypeName = "datetime")]
-        public DateTime? CreatedDate { get; set; }
+        public int CreatedUser { get; set; }
+      
         [Column("luUser")]
-        public int? LuUser { get; set; }
-        [Column("luDate", TypeName = "datetime")]
-        public DateTime? LuDate { get; set; }
+        public int LuUser { get; set; }
+       
 
         [InverseProperty(nameof(CartonStorage.CartonTypeNavigation))]
         public virtual ICollection<CartonStorage> CartonStorages { get; set; }

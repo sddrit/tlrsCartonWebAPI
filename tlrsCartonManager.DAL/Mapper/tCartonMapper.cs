@@ -14,6 +14,7 @@ using tlrsCartonManager.DAL.Dtos.Module;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models;
+using tlrsCartonManager.DAL.Models.Base;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Models.MetaData;
@@ -57,13 +58,11 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CustomerSubAccountListDto, Customer>();
             CreateMap<Customer, CustomerSubAccountListDto>();
 
-            CreateMap<RouteDto, Route>();
-            CreateMap<Route, RouteDto>();
+
             CreateMap<ServiceCategoryDto, ServiceCategory>();
             CreateMap<ServiceCategory, ServiceCategoryDto>();
 
-            CreateMap<BillingCycleDto, BillingCycle>();
-            CreateMap<BillingCycle, BillingCycleDto>();
+          
 
             CreateMap<CustomerMainCodeSearchDto, Customer>();
             CreateMap<Customer, CustomerMainCodeSearchDto>();
@@ -80,8 +79,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CustomerAuthorizationListDetailUdtDto, CustomerAuthorizationListDetailDto>();
             CreateMap<CustomerAuthorizationListDetailDto, CustomerAuthorizationListDetailUdtDto>();
 
-            CreateMap<StorageType, StorageTypeDto>();
-            CreateMap<StorageTypeDto, StorageType>();
+           
 
             CreateMap<SlabTypeHeader, SlabTypeHeaderDto>();
             CreateMap<SlabTypeHeaderDto, SlabTypeHeader>();
@@ -195,12 +193,50 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<ModuleSub, SubModuleDto>()
                 .ForMember(d => d.ModuleName, s => s.MapFrom(d => d.Module.Name))
                 .ForMember(d => d.ModulePermissions, s => s.MapFrom(d => d.ModulePermissions.Select(p => p.PermissionId))).ReverseMap();
-
-         
-
-
             CreateMap<ModulePermission, ModulePermissionDto>().ReverseMap();
-            //ruv
+
+            //meta data section
+            CreateMap<StorageType, StorageTypeDto>().ReverseMap();
+            CreateMap<BillingCycle, BillingCycleDto>().ReverseMap();
+            CreateMap<Route, RouteDto>().ReverseMap();
+            CreateMap<ServiceCategory, ServiceCategoryDto>().ReverseMap();
+            CreateMap<Department, DepartmentDto>().ReverseMap();
+            CreateMap<ReceiveType, ReceiveTypeDto>().ReverseMap();
+            CreateMap<RequestType, RequestTypeDto>().ReverseMap();
+            CreateMap<WorkOrderRequestType, WorkOrderTypeDto>().ReverseMap();
+            CreateMap<DisposalTimeFrame, DisposalTimeFrameDto>().ReverseMap();
+            CreateMap<TaxType, TaxTypeDto>().ReverseMap();
+            CreateMap<PostingType, PostingTypeDto>().ReverseMap();
+            CreateMap<MobileDevice, MobileDeviceDto>().ReverseMap();
+
+
+            CreateMap<MetadataBase, StorageType>().ReverseMap();
+            CreateMap<MetadataBase, BillingCycle>().ReverseMap();
+            CreateMap<MetadataBase, Route>().ReverseMap();
+            CreateMap<MetadataBase, ServiceCategory>().ReverseMap();
+            CreateMap<MetadataBase, Department>().ReverseMap();
+            CreateMap<MetadataBase, ReceiveType>().ReverseMap();
+            CreateMap<MetadataBase, RequestType>().ReverseMap();
+            CreateMap<MetadataBase, WorkOrderRequestType>().ReverseMap();
+            CreateMap<MetadataBase, DisposalTimeFrame>().ReverseMap();
+            CreateMap<MetadataBase, TaxType>().ReverseMap();
+            CreateMap<MetadataBase, PostingType>().ReverseMap();
+            CreateMap<MetadataBase, MobileDevice>().ReverseMap();
+
+
+            CreateMap<MetadataBase, StorageTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, BillingCycleDto>().ReverseMap();
+            CreateMap<MetadataBase, RouteDto>().ReverseMap();
+            CreateMap<MetadataBase, ServiceCategoryDto>().ReverseMap();
+            CreateMap<MetadataBase, DepartmentDto>().ReverseMap();
+            CreateMap<MetadataBase, ReceiveTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, RequestTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, WorkOrderTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, DisposalTimeFrameDto>().ReverseMap();
+            CreateMap<MetadataBase, TaxTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, PostingTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, MobileDeviceDto>().ReverseMap();
+            //
         }
 
 
