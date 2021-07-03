@@ -6,6 +6,7 @@ using tlrsCartonManager.DAL.Dtos.Import;
 using tlrsCartonManager.DAL.Dtos.Menu;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Models.Carton;
+using tlrsCartonManager.DAL.Models.DashBoard;
 using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Models.MetaData;
@@ -1281,6 +1282,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<ImportErrorModelItemDto>().HasNoKey();
             modelBuilder.Entity<LoginValidationResult>().HasNoKey();
             modelBuilder.Entity<UserModulePermission>().HasNoKey();
+            modelBuilder.Entity<DashBoardWeeklyWOStatusDetail>().HasNoKey();
+            
             
             OnModelCreatingPartial(modelBuilder);
         }

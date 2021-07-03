@@ -16,6 +16,7 @@ using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Base;
 using tlrsCartonManager.DAL.Models.Carton;
+using tlrsCartonManager.DAL.Models.DashBoard;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Models.Ownership;
@@ -236,6 +237,9 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<MetadataBase, TaxTypeDto>().ReverseMap();
             CreateMap<MetadataBase, PostingTypeDto>().ReverseMap();
             CreateMap<MetadataBase, MobileDeviceDto>().ReverseMap();
+
+            CreateMap<DashBoardWeeklyWOStatusDetail, DashBoardWeeklyWOStaus>().ReverseMap();
+            CreateMap<DashBoardWeeklyWOStatusDetail, DashBoardWeeklyWOStausCarton>().ReverseMap();
             //
         }
 
