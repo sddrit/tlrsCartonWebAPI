@@ -16,6 +16,7 @@ using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Base;
 using tlrsCartonManager.DAL.Models.Carton;
+using tlrsCartonManager.DAL.Models.DashBoard;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Models.Ownership;
@@ -190,6 +191,8 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<UserModulePermission, ViewModulePermission>().ReverseMap();
 
             CreateMap<Module, ModuleDto>().ReverseMap();
+            CreateMap<Module, ModuleMetaDataDto>().ReverseMap();
+            CreateMap<ModuleSub, SubModuleMetaDataDto>().ReverseMap();
             CreateMap<ModuleSub, SubModuleDto>()
                 .ForMember(d => d.ModuleName, s => s.MapFrom(d => d.Module.Name))
                 .ForMember(d => d.ModulePermissions, s => s.MapFrom(d => d.ModulePermissions.Select(p => p.PermissionId))).ReverseMap();
@@ -236,6 +239,9 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<MetadataBase, TaxTypeDto>().ReverseMap();
             CreateMap<MetadataBase, PostingTypeDto>().ReverseMap();
             CreateMap<MetadataBase, MobileDeviceDto>().ReverseMap();
+
+            CreateMap<DashBoardWeeklyWOStatusDetail, DashBoardWeeklyWOStaus>().ReverseMap();
+            CreateMap<DashBoardWeeklyWOStatusDetail, DashBoardWeeklyWOStausCarton>().ReverseMap();
             //
         }
 

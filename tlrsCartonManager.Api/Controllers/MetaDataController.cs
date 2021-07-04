@@ -33,6 +33,8 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IMetadataRepository<TaxType, TaxTypeDto> _taxTypeManagerRepository;
         private readonly IMetadataRepository<MobileDevice, MobileDeviceDto> _mobileDeviceRepository;
 
+        private readonly IRolePermissionManagerRepository _moduleManager;
+
         public MetaDataController
             (
               IMetadataRepository<BillingCycle, BillingCycleDto> billingCycleRepository,
@@ -46,7 +48,8 @@ namespace tlrsCartonManager.Api.Controllers
               IMetadataRepository<DisposalTimeFrame, DisposalTimeFrameDto> disposalTimeFrame,
               IMetadataRepository<MobileDevice, MobileDeviceDto> mobileDeviceRepository,
               IMetadataRepository<PostingType, PostingTypeDto> postingTypeRepository,
-              IMetadataRepository<TaxType, TaxTypeDto> taxTypeManagerRepository)
+              IMetadataRepository<TaxType, TaxTypeDto> taxTypeManagerRepository,
+              IRolePermissionManagerRepository moduleManager)
 
         {
             _billingCycleRepository = billingCycleRepository;
@@ -61,6 +64,7 @@ namespace tlrsCartonManager.Api.Controllers
             _postingTypeRepository = postingTypeRepository;
             _taxTypeManagerRepository = taxTypeManagerRepository;
             _requestTypeTypeManagerRepository = requestTypeTypeManagerRepository;
+            _moduleManager = moduleManager;
 
         }
 
@@ -94,6 +98,8 @@ namespace tlrsCartonManager.Api.Controllers
 
             //other
             var mobileDeviceList = await _mobileDeviceRepository.GetAllMetaData();
+            var moduleList = await _moduleManager.GeModules();
+            var subModuleList= await _moduleManager.GeSubModules();
 
 
             return Ok(
@@ -110,7 +116,9 @@ namespace tlrsCartonManager.Api.Controllers
                 mobileDeviceList,
                 postingTypeList,
                 taxTypeList,
-                requestTypeList
+                requestTypeList,
+                moduleList,
+                subModuleList
 
 
             });

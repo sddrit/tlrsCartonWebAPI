@@ -26,4 +26,16 @@ namespace tlrsCartonManager.DAL.Dtos.Module
 
 
     }
+    public class SubModuleMetaDataDto
+    {              
+        public int SubModuleId { get; set; }
+        public string SubModuleName { get; set; }
+        public int ModuleId { get; set; }
+    }
+    public class ModuleMetaDataDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+    }
 }

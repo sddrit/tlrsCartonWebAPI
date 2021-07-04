@@ -232,7 +232,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             if (transcationType == TransactionTypes.Insert.ToString())
             {
-                if (_tcContext.Customers.Any(x => x.CustomerCode.ToUpper().Trim() == customer.CustomerCode.ToUpper().Trim()))
+                if (_tcContext.Customers.Any(x => x.CustomerCode.ToUpper().Trim() == customer.CustomerCode.ToUpper().Trim() && x.Deleted==false))
                 {
                     throw new ServiceException(new ErrorMessage[]
                     {
@@ -244,7 +244,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     });
                 }
 
-                if (_tcContext.Customers.Any(x => x.Name.ToUpper().Trim() == customer.Name.ToUpper().Trim()))
+                if (_tcContext.Customers.Any(x => x.Name.ToUpper().Trim() == customer.Name.ToUpper().Trim() && x.Deleted == false))
                 {
                     throw new ServiceException(new ErrorMessage[]
                     {

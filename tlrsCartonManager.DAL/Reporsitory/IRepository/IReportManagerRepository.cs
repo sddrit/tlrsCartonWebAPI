@@ -23,6 +23,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<IEnumerable<RetentionTrackerDisposal>> GetRetentionTrackerDisposal(string customerCode, DateTime fromDate,DateTime toDate, bool includeSubAccount);
         Task<IEnumerable<RetrievalTracker>> GetRetrievalTracker(string customerCode,DateTime fromDate, DateTime toDate, bool includeSubAccount);
         Task<IEnumerable<LongOutstanding>> GetLongOutStanding(string customerCode, DateTime asAtDate, bool includeSubAccount);
+        Task<IEnumerable<InventorySummaryAsAtdate>> GetnventorySummaryAsAtDate(DateTime asAtDate);
 
     }
 }
