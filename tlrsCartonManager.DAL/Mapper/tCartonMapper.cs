@@ -191,6 +191,8 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<UserModulePermission, ViewModulePermission>().ReverseMap();
 
             CreateMap<Module, ModuleDto>().ReverseMap();
+            CreateMap<Module, ModuleMetaDataDto>().ReverseMap();
+            CreateMap<ModuleSub, SubModuleMetaDataDto>().ReverseMap();
             CreateMap<ModuleSub, SubModuleDto>()
                 .ForMember(d => d.ModuleName, s => s.MapFrom(d => d.Module.Name))
                 .ForMember(d => d.ModulePermissions, s => s.MapFrom(d => d.ModulePermissions.Select(p => p.PermissionId))).ReverseMap();

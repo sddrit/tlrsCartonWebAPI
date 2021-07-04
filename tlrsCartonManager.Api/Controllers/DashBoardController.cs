@@ -28,11 +28,18 @@ namespace tlrsCartonManager.Api.Controllers
             _dashBoardRepository = dashBoardRepository;
         }
 
-        [HttpGet]
+        [HttpGet("getweeklyStatusbyRequetType")]
         public async Task<ActionResult> GetWeeklyWoStatus()
         {
             return Ok(await _dashBoardRepository.GetWeelklyWoStatusAsync());
             
+        }
+
+        [HttpGet("getweeklyStatusbyWoType")]
+        public async Task<ActionResult> GetWeeklyWoStatusByType()
+        {
+            return Ok(await _dashBoardRepository.GetWeelklyWoStatusByTypeAsync());
+
         }
     }
 }

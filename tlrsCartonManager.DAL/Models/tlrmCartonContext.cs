@@ -1283,7 +1283,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<LoginValidationResult>().HasNoKey();
             modelBuilder.Entity<UserModulePermission>().HasNoKey();
             modelBuilder.Entity<DashBoardWeeklyWOStatusDetail>().HasNoKey();
-            
+            modelBuilder.Entity<InventorySummaryAsAtdate>().HasNoKey();
+
             
             OnModelCreatingPartial(modelBuilder);
         }

@@ -40,5 +40,22 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
             return result;
         }
+
+        public async Task<List<DashBoardWeeklyWOStatusDetail>> GetWeelklyWoStatusByTypeAsync()
+        {
+            var result = await _tcContext.Set<DashBoardWeeklyWOStatusDetail>().FromSqlRaw("dashBoardWeeklyWoStatusbyWoType").ToListAsync();
+            if (!result.Any())
+            {
+                throw new ServiceException(new ErrorMessage[]
+                  {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to find Weekly Wo data by type"
+                    }
+                  });
+            }
+            return result;
+        }
     }
 }

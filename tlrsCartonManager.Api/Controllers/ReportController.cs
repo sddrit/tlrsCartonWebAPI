@@ -112,5 +112,12 @@ namespace tlrsCartonManager.Api.Controllers
             return File(excelReportData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "report.xlsx");
         }
 
+        [HttpGet("InventorySummaryAsAtDate")]
+        public async Task<ActionResult> InventorySummaryAsAtDate( DateTime asAtDate)
+        {
+            return Ok(await _reportRepository.GetnventorySummaryAsAtDate( asAtDate));
+
+        }
+
     }
 }

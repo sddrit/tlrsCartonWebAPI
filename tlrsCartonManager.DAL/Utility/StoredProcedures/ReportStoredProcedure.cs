@@ -87,4 +87,16 @@ namespace tlrsCartonManager.DAL.Utility
 
     }
 
+    public class InventorySummaryAsAtDate
+    {
+        public static string StoredProcedureName = "reportInventoryAsAtDate";
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+               "@asAtDate"
+
+        };
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
+    }
+
 }
