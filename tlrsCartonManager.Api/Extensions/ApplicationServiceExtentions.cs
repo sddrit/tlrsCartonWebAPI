@@ -18,6 +18,7 @@ using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Dtos.MetaData;
+using tlrsCartonManager.DAL.Dtos.Module;
 
 namespace tlrsCartonManager.Api.Extensions
 {
@@ -69,6 +70,8 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped(typeof(IMetadataRepository<TaxType, TaxTypeDto>), typeof(BaseMetadataRepository<TaxType, TaxTypeDto>));
             services.AddScoped(typeof(IMetadataRepository<PostingType, PostingTypeDto>), typeof(BaseMetadataRepository<PostingType, PostingTypeDto>));
             services.AddScoped(typeof(IMetadataRepository<MobileDevice, MobileDeviceDto>), typeof(BaseMetadataRepository<MobileDevice, MobileDeviceDto>));
+            services.AddScoped(typeof(IMetadataRepository<Module, ModuleMetaDataDto>), typeof(BaseMetadataRepository<Module, ModuleMetaDataDto>));
+            services.AddScoped(typeof(IMetadataRepository<ModuleSub, ModuleSubMetaDataDto>), typeof(BaseMetadataRepository<ModuleSub, ModuleSubMetaDataDto>));
 
             //---------------------------------------------------------------
 

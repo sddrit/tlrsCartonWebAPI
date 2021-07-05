@@ -13,6 +13,7 @@ using System.Net;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Dtos.MetaData;
+using tlrsCartonManager.DAL.Dtos.Module;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -32,8 +33,11 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IMetadataRepository<PostingType, PostingTypeDto> _postingTypeRepository;
         private readonly IMetadataRepository<TaxType, TaxTypeDto> _taxTypeManagerRepository;
         private readonly IMetadataRepository<MobileDevice, MobileDeviceDto> _mobileDeviceRepository;
+        private readonly IMetadataRepository<Module, ModuleMetaDataDto> _moduleRepository;
+        private readonly IMetadataRepository<ModuleSub, ModuleSubMetaDataDto> _subModuleRepository;
 
-        private readonly IRolePermissionManagerRepository _moduleManager;
+        private readonly IRolePermissionManagerRepository _rolePermission;
+
 
         public MetaDataController
             (
@@ -49,7 +53,9 @@ namespace tlrsCartonManager.Api.Controllers
               IMetadataRepository<MobileDevice, MobileDeviceDto> mobileDeviceRepository,
               IMetadataRepository<PostingType, PostingTypeDto> postingTypeRepository,
               IMetadataRepository<TaxType, TaxTypeDto> taxTypeManagerRepository,
-              IRolePermissionManagerRepository moduleManager)
+              IMetadataRepository<Module, ModuleMetaDataDto> moduleRepository,
+              IMetadataRepository<ModuleSub, ModuleSubMetaDataDto> subModuleRepository,
+              IRolePermissionManagerRepository rolePermission)
 
         {
             _billingCycleRepository = billingCycleRepository;
@@ -64,8 +70,9 @@ namespace tlrsCartonManager.Api.Controllers
             _postingTypeRepository = postingTypeRepository;
             _taxTypeManagerRepository = taxTypeManagerRepository;
             _requestTypeTypeManagerRepository = requestTypeTypeManagerRepository;
-            _moduleManager = moduleManager;
-
+            _moduleRepository = moduleRepository;
+            _subModuleRepository = subModuleRepository;
+            _rolePermission = rolePermission;
         }
 
         [HttpGet]
@@ -98,8 +105,9 @@ namespace tlrsCartonManager.Api.Controllers
 
             //other
             var mobileDeviceList = await _mobileDeviceRepository.GetAllMetaData();
-            var moduleList = await _moduleManager.GeModules();
-            var subModuleList= await _moduleManager.GeSubModules();
+            var moduleList = await _moduleRepository.GetAllMetaData();           
+            var subModuleList = await _rolePermission.GeModulePermissionList();
+
 
 
             return Ok(
@@ -528,6 +536,75 @@ namespace tlrsCartonManager.Api.Controllers
         public async Task<IActionResult> DeleteMobileDevice(int id)
         {
             await _mobileDeviceRepository.DeleteItem(id);
+            return Ok();
+        }
+        #endregion
+
+        #region Modules
+
+        [HttpGet("getAllModules")]
+        public async Task<IActionResult> GetAllModuels()
+        {
+            return Ok(await _moduleRepository.GetAll());
+        }
+
+        [HttpGet("module/{id}")]
+        public async Task<IActionResult> GetModuleDevice(int id)
+        {
+            return Ok(await _moduleRepository.GetById(id));
+        }
+
+        [HttpPost("module")]
+        public async Task<IActionResult> AddModuleDevice(ModuleMetaDataDto model)
+        {
+            return Ok(await _moduleRepository.AddItem(model));
+        }
+
+        [HttpPut("module")]
+        public async Task<IActionResult> UpdateModuleDevice(ModuleMetaDataDto model)
+        {
+            return Ok(await _moduleRepository.EditItem(model));
+        }
+
+        [HttpDelete("module")]
+        public async Task<IActionResult> DeleteModuleDevice(int id)
+        {
+            await _moduleRepository.DeleteItem(id);
+            return Ok();
+        }
+        #endregion
+
+
+        #region SubModules
+
+        [HttpGet("getAllSubModules")]
+        public async Task<IActionResult> GetAllSubModuels()
+        {
+            return Ok(await _subModuleRepository.GetAll());
+        }
+
+        [HttpGet("subModule/{id}")]
+        public async Task<IActionResult> GetSubModuleDevice(int id)
+        {
+            return Ok(await _subModuleRepository.GetById(id));
+        }
+
+        [HttpPost("subModule")]
+        public async Task<IActionResult> AddSubModuleDevice(ModuleSubMetaDataDto model)
+        {
+            return Ok(await _subModuleRepository.AddItem(model));
+        }
+
+        [HttpPut("subModule")]
+        public async Task<IActionResult> UpdateSubModuleDevice(ModuleSubMetaDataDto model)
+        {
+            return Ok(await _subModuleRepository.EditItem(model));
+        }
+
+        [HttpDelete("subModule")]
+        public async Task<IActionResult> DeleteSubModuleDevice(int id)
+        {
+            await _subModuleRepository.DeleteItem(id);
             return Ok();
         }
         #endregion

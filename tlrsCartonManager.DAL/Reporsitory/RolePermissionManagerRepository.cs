@@ -206,22 +206,6 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return _mapper.Map<List<SubModuleDto>>(modulePermission);
         }
-
-
-        public async Task<List<ModuleMetaDataDto>> GeModules()
-        {
-            var modules = await _tcContext.Modules               
-                .ToListAsync();
-
-            return _mapper.Map<List<ModuleMetaDataDto>>(modules);
-        }
-
-        public async Task<List<SubModuleMetaDataDto>> GeSubModules()
-        {
-            var subModules = await _tcContext.ModuleSubs
-                .ToListAsync();
-
-            return _mapper.Map<List<SubModuleMetaDataDto>>(subModules);
-        }
+      
     }
 }

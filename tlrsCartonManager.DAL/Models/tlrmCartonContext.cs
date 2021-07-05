@@ -30,7 +30,7 @@ namespace tlrsCartonManager.DAL.Models
             : base(options)
         {
             this.Database.SetCommandTimeout(0);
-        }     
+        }
 
         public virtual DbSet<AuthorizationLevel> AuthorizationLevels { get; set; }
 
@@ -39,7 +39,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<BillingCycle> BillingCycles { get; set; }
         public virtual DbSet<CalculationType> CalculationTypes { get; set; }
         public virtual DbSet<CartonLocation> CartonLocations { get; set; }
-       
+
         public virtual DbSet<CartonStorage> CartonStorages { get; set; }
         public virtual DbSet<CartonType> CartonTypes { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
@@ -131,7 +131,7 @@ namespace tlrsCartonManager.DAL.Models
         #region Model creation
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-          
+
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
             modelBuilder.Entity<AuthorizationLevel>(entity =>
             {
@@ -141,7 +141,7 @@ namespace tlrsCartonManager.DAL.Models
             });
 
             modelBuilder.Entity<BillingCycle>(entity =>
-            {               
+            {
 
                 entity.Property(e => e.Description).IsUnicode(false);
             });
@@ -360,7 +360,7 @@ namespace tlrsCartonManager.DAL.Models
             });
 
             modelBuilder.Entity<DisposalTimeFrame>(entity =>
-            {              
+            {
 
                 entity.Property(e => e.Description).IsUnicode(false);
             });
@@ -546,7 +546,7 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.MobileRequestNo).IsUnicode(false);
 
-                entity.Property(e => e.Remarks).IsUnicode(false);              
+                entity.Property(e => e.Remarks).IsUnicode(false);
 
                 entity.Property(e => e.Reminder1).IsUnicode(false);
 
@@ -577,7 +577,7 @@ namespace tlrsCartonManager.DAL.Models
             });
 
             modelBuilder.Entity<Route>(entity =>
-            {               
+            {
 
                 entity.Property(e => e.Description).IsUnicode(false);
             });
@@ -603,7 +603,7 @@ namespace tlrsCartonManager.DAL.Models
             });
 
             modelBuilder.Entity<ServiceCategory>(entity =>
-            {               
+            {
 
                 entity.Property(e => e.Description).IsUnicode(false);
             });
@@ -623,13 +623,13 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.Size).IsUnicode(false);
 
-                entity.Property(e => e.Type).IsUnicode(false);               
+                entity.Property(e => e.Type).IsUnicode(false);
 
                 entity.Property(e => e.Deleted).HasDefaultValueSql("((0))");
-                
+
                 entity.HasIndex(s => s.Type).IsUnique(true);
 
-               
+
 
 
             });
@@ -676,7 +676,7 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.TypeCode).IsUnicode(false);
 
                 entity.Property(e => e.RequestTypeCode).IsUnicode(false);
-              
+
             });
 
 
@@ -709,12 +709,12 @@ namespace tlrsCartonManager.DAL.Models
             });
 
             modelBuilder.Entity<MobileDevice>(entity =>
-            {              
+            {
 
                 entity.Property(e => e.Code).IsUnicode(false);
 
                 entity.Property(e => e.Description).IsUnicode(false);
-               
+
             });
 
             modelBuilder.Entity<MenuModel>(entity =>
@@ -823,7 +823,7 @@ namespace tlrsCartonManager.DAL.Models
             });
             modelBuilder.Entity<TaxType>(entity =>
             {
-              
+
                 entity.Property(e => e.Code).IsUnicode(false);
             });
             modelBuilder.Entity<ViewPickListByNo>(entity =>
@@ -1177,7 +1177,7 @@ namespace tlrsCartonManager.DAL.Models
 
 
             modelBuilder.Entity<Department>(entity =>
-            {           
+            {
 
                 entity.Property(e => e.Description).IsUnicode(false);
             });
@@ -1211,7 +1211,7 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<Module>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+
 
                 entity.Property(e => e.Name).IsUnicode(false);
             });
@@ -1227,7 +1227,6 @@ namespace tlrsCartonManager.DAL.Models
 
             modelBuilder.Entity<ModuleSub>(entity =>
             {
-                entity.Property(e => e.SubModuleId).ValueGeneratedNever();
 
                 entity.HasOne(d => d.Module)
                     .WithMany(p => p.ModuleSubs)
@@ -1241,7 +1240,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<RequestSearch>();
             modelBuilder.Entity<InvoiceSearch>();
             modelBuilder.Entity<InvoiceConfirmationSearch>();
-            modelBuilder.Entity<InvoiceConfirmationDetail>();            
+            modelBuilder.Entity<InvoiceConfirmationDetail>();
             modelBuilder.Entity<CartonInquiry>();
 
             modelBuilder.Entity<PickListSearch>().HasNoKey();
@@ -1285,7 +1284,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<DashBoardWeeklyWOStatusDetail>().HasNoKey();
             modelBuilder.Entity<InventorySummaryAsAtdate>().HasNoKey();
 
-            
+
             OnModelCreatingPartial(modelBuilder);
         }
 
