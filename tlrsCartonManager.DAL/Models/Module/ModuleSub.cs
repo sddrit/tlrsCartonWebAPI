@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using tlrsCartonManager.DAL.Models.Base;
 
 #nullable disable
 
 namespace tlrsCartonManager.DAL.Models
 {
     [Table("ModuleSub")]
-    public partial class ModuleSub
+    public partial class ModuleSub:ISoftDelete
     {
         public ModuleSub()
         {
@@ -27,5 +28,7 @@ namespace tlrsCartonManager.DAL.Models
         public int? ModuleId { get; set; }
         public virtual Module Module { get; set; }      
         public virtual ICollection<ModulePermission> ModulePermissions { get; set; }
+        public bool Deleted { get; set; }
+        public bool Active { get; set; }
     }
 }

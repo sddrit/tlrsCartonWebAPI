@@ -190,9 +190,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<InvoicePrintModel, ViewCreatedInvoiceList>().ReverseMap();
             CreateMap<UserModulePermission, ViewModulePermission>().ReverseMap();
 
-            CreateMap<Module, ModuleDto>().ReverseMap();
-            CreateMap<Module, ModuleMetaDataDto>().ReverseMap();
-            CreateMap<ModuleSub, SubModuleMetaDataDto>().ReverseMap();
+            CreateMap<Module, ModuleDto>().ReverseMap();           
             CreateMap<ModuleSub, SubModuleDto>()
                 .ForMember(d => d.ModuleName, s => s.MapFrom(d => d.Module.Name))
                 .ForMember(d => d.ModulePermissions, s => s.MapFrom(d => d.ModulePermissions.Select(p => p.PermissionId))).ReverseMap();
@@ -211,7 +209,9 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<TaxType, TaxTypeDto>().ReverseMap();
             CreateMap<PostingType, PostingTypeDto>().ReverseMap();
             CreateMap<MobileDevice, MobileDeviceDto>().ReverseMap();
-
+            CreateMap<Module, ModuleMetaDataDto>().ReverseMap();
+            CreateMap<ModuleSub, ModuleSubMetaDataDto>().ReverseMap();
+               
 
             CreateMap<MetadataBase, StorageType>().ReverseMap();
             CreateMap<MetadataBase, BillingCycle>().ReverseMap();
@@ -225,6 +225,14 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<MetadataBase, TaxType>().ReverseMap();
             CreateMap<MetadataBase, PostingType>().ReverseMap();
             CreateMap<MetadataBase, MobileDevice>().ReverseMap();
+            CreateMap<MetadataBase, Module>()
+                .ForMember(d=>d.Id, s=>s.MapFrom(d=>d.ModuleId))
+                .ForMember(d => d.Name, s => s.MapFrom(d => d.Description))
+                .ReverseMap();
+            CreateMap<MetadataBase, ModuleSub>()
+                .ForMember(d=>d.SubModuleId, s=>s.MapFrom(d=>d.Id))
+                .ForMember(d => d.SubModuleName, s => s.MapFrom(d => d.Description))
+                .ReverseMap();
 
 
             CreateMap<MetadataBase, StorageTypeDto>().ReverseMap();
@@ -239,6 +247,15 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<MetadataBase, TaxTypeDto>().ReverseMap();
             CreateMap<MetadataBase, PostingTypeDto>().ReverseMap();
             CreateMap<MetadataBase, MobileDeviceDto>().ReverseMap();
+            CreateMap<MetadataBase, ModuleMetaDataDto>()
+                .ForMember(d => d.Id, s => s.MapFrom(d => d.ModuleId))
+                .ForMember(d => d.Name, s => s.MapFrom(d => d.Description))
+                .ReverseMap();
+            CreateMap<MetadataBase, ModuleSubMetaDataDto>()
+                .ForMember(d => d.SubModuleId, s => s.MapFrom(d => d.Id))
+                .ForMember(d => d.SubModuleName, s => s.MapFrom(d => d.Description))
+                .ReverseMap();
+
 
             CreateMap<DashBoardWeeklyWOStatusDetail, DashBoardWeeklyWOStaus>().ReverseMap();
             CreateMap<DashBoardWeeklyWOStatusDetail, DashBoardWeeklyWOStausCarton>().ReverseMap();

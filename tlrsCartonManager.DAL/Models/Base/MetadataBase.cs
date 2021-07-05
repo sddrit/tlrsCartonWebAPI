@@ -20,5 +20,6 @@ namespace tlrsCartonManager.DAL.Models.Base
         public bool IsShowQty { get; set; }
         public bool IsShowAmount { get; set; }
         public bool IsShowPercentage { get; set; }
+        public int ModuleId { get; set; }
     }
 }
