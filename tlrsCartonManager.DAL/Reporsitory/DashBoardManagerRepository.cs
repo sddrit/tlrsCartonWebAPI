@@ -57,5 +57,22 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
             return result;
         }
+
+        public async Task<List<DashBoardWeeklyCartonsInAndConfirm>> GetWeelklyCartonsInAndConfirm()
+        {
+            var result = await _tcContext.Set<DashBoardWeeklyCartonsInAndConfirm>().FromSqlRaw("dashBoardWeeklyCartonInAndConfirmed").ToListAsync();
+            if (!result.Any())
+            {
+                throw new ServiceException(new ErrorMessage[]
+                  {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to find Weekly in and confirmed"
+                    }
+                  });
+            }
+            return result;
+        }
     }
 }

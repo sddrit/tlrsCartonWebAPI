@@ -12,5 +12,6 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<List<DashBoardWeeklyWOStatusDetail>> GetWeelklyWoStatusAsync();
         
         Task<List<DashBoardWeeklyWOStatusDetail>> GetWeelklyWoStatusByTypeAsync();
+        Task<List<DashBoardWeeklyCartonsInAndConfirm>> GetWeelklyCartonsInAndConfirm();
     }
 }

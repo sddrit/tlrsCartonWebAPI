@@ -119,5 +119,19 @@ namespace tlrsCartonManager.Api.Controllers
 
         }
 
+        [HttpGet("CartonsInRCCollectionWoPending")]
+        public async Task<ActionResult> CartonsInRCCollectionWoPending(DateTime asAtDate)
+        {
+            return Ok(await _reportRepository.GetCartonsInRCCollectionWoPending(asAtDate));
+
+        }
+
+        [HttpGet("CartonsInRCWoPending")]
+        public async Task<ActionResult> CartonsInRCWoPending(DateTime asAtDate)
+        {
+            return Ok(await _reportRepository.GetCartonsInRCWoPending(asAtDate));
+
+        }
+
     }
 }

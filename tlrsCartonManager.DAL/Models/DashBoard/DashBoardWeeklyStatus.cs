@@ -14,7 +14,7 @@ namespace tlrsCartonManager.DAL.Models.DashBoard
     }
     public class DashBoardWeeklyWOStatusDetail
     {
-        public string DeliveryDate { get; set; }
+        public int DeliveryDate { get; set; }
         public string RequestType { get; set; }
         public string WoStatus { get; set; }
         public int WorkOrderCount { get; set; }
@@ -24,18 +24,26 @@ namespace tlrsCartonManager.DAL.Models.DashBoard
 
     public class DashBoardWeeklyWOStaus
     {
-        public string DeliveryDate { get; set; }
+        public int DeliveryDate { get; set; }
         public string RequestType { get; set; }
         public string WoStatus { get; set; }
-        public int WorkOrderCount { get; set; }       
+        public int WorkOrderCount { get; set; }
 
     }
 
     public class DashBoardWeeklyWOStausCarton
     {
-        public string DeliveryDate { get; set; }
+        public int DeliveryDate { get; set; }
         public string RequestType { get; set; }
         public string WoStatus { get; set; }
+        public int CartonCount { get; set; }
+
+    }
+
+    public class DashBoardWeeklyCartonsInAndConfirm
+    {
+        public long ScannedDate { get; set; }
+        public string Status { get; set; }
         public int CartonCount { get; set; }
 
     }

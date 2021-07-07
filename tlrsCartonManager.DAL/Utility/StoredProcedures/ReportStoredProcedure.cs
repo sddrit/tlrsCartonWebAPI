@@ -16,7 +16,7 @@ namespace tlrsCartonManager.DAL.Utility
                "@woType",
                "@asAtDate",
                "@includeSubAccount",
-               "@reportType",               
+               "@reportType",
                "@totalRecords"
             };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) + " OUTPUT";
@@ -31,7 +31,7 @@ namespace tlrsCartonManager.DAL.Utility
                "@includeSubAccount"
 
         };
-        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) ;
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 
     }
     public class RetentionTrackerStoredProcedure
@@ -90,6 +90,29 @@ namespace tlrsCartonManager.DAL.Utility
     public class InventorySummaryAsAtDate
     {
         public static string StoredProcedureName = "reportInventoryAsAtDate";
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+               "@asAtDate"
+
+        };
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
+    }
+    public class CartonsInRCCollectionWoPendingStoredProcedure
+    {
+        public static string StoredProcedureName = "reportCartonsInRCCollectionWoPending";
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+               "@asAtDate"
+
+        };
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
+    }
+
+    public class CartonsInRCWoPendingStoredProcedure
+    {
+        public static string StoredProcedureName = "reportCartonsInRCWoPending";
         public static List<string> StoredProcedureParameters = new List<string>()
         {
                "@asAtDate"

@@ -246,6 +246,30 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return await _tcContext.Set<InventorySummaryAsAtdate>().FromSqlRaw(InventorySummaryAsAtDate.Sql, parms.ToArray()).ToListAsync();
 
         }
+
+        public async Task<IEnumerable<CartonsInRCCollectionWoPending>> GetCartonsInRCCollectionWoPending(DateTime asAtDate)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = CartonsInRCCollectionWoPendingStoredProcedure.StoredProcedureParameters[0].ToString(),
+                        Value = asAtDate.DateToInt().AsDbValue() }
+                };
+
+            return await _tcContext.Set<CartonsInRCCollectionWoPending>().FromSqlRaw(CartonsInRCCollectionWoPendingStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+
+        }
+
+        public async Task<IEnumerable<CartonsInRCCollectionWoPending>> GetCartonsInRCWoPending(DateTime asAtDate)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = CartonsInRCWoPendingStoredProcedure.StoredProcedureParameters[0].ToString(),
+                        Value = asAtDate.DateToInt().AsDbValue() }
+                };
+
+            return await _tcContext.Set<CartonsInRCCollectionWoPending>().FromSqlRaw(CartonsInRCWoPendingStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+
+        }
     }
 }
 

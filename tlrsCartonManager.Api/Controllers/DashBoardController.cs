@@ -41,5 +41,12 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _dashBoardRepository.GetWeelklyWoStatusByTypeAsync());
 
         }
+
+        [HttpGet("getweeklyCartonInAndConfirm")]
+        public async Task<ActionResult> GetWeeklyCartonInAndConfirm()
+        {
+            return Ok(await _dashBoardRepository.GetWeelklyCartonsInAndConfirm());
+
+        }
     }
 }
