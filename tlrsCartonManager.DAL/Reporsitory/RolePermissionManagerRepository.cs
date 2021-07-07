@@ -185,16 +185,27 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         }
 
-        public async Task<IEnumerable<UserModulePermission>> GetRolePermissionListById(int id)
-        {
+        public async Task<RolePermissionDto> GetRolePermissionListById(int id)
+        {           
+
+
             List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter { ParameterName = UserRoleByIdStoredProcedure.StoredProcedureParameters[0].ToString(),
                     Value = id.AsDbValue() }
             };
 
-            return await _tcContext.Set<UserModulePermission>().FromSqlRaw(UserRoleByIdStoredProcedure.Sql,
-                parms.ToArray()).ToListAsync();
+            var rolePermissionList= await _tcContext.Set<UserModulePermission>().FromSqlRaw(UserRoleByIdStoredProcedure.Sql,parms.ToArray()).ToListAsync();
+            var role = _tcContext.Roles.Where(x => x.Id == id).FirstOrDefault();
+
+            RolePermissionDto rolePermission = new RolePermissionDto()
+            {
+                RoleId = role.Id,
+                RoleName = role.Description,
+                RolePermissionList = rolePermissionList
+            };
+
+            return rolePermission;
         }
 
         public async Task<List<SubModuleDto>> GeModulePermissionList()

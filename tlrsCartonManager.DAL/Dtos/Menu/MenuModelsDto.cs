@@ -30,4 +30,11 @@ namespace tlrsCartonManager.DAL.Dtos.Menu
         public int? SubModuleId { get; set; }        
         public int? Permission { get; set; }
     }
+    public  class RolePermissionDto
+    {
+        public int RoleId { get; set; }
+        public string  RoleName { get; set; }
+        public List<UserModulePermission> RolePermissionList { get; set; }
+
+    }
 }
