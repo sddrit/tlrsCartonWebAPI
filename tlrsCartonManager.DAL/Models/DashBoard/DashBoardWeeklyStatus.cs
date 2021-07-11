@@ -48,5 +48,19 @@ namespace tlrsCartonManager.DAL.Models.DashBoard
 
     }
 
+    public class DashBoardWeeklyWeeklyScannedCartons
+    {
+        public string ScannedUser { get; set; }
+        public long ScannedDate { get; set; }    
+        public int CartonCount { get; set; }
+    }
+
+    public class DashBoarWeeklyScannedCartonsByWH
+    {
+        public string WareHouseCode { get; set; }
+        public long ScannedDate { get; set; }
+        public int CartonCount { get; set; }
+
+    }
 
 }

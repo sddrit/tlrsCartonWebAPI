@@ -28,24 +28,38 @@ namespace tlrsCartonManager.Api.Controllers
             _dashBoardRepository = dashBoardRepository;
         }
 
-        [HttpGet("getweeklyStatusbyRequetType")]
+        [HttpGet("getWeeklyStatusbyRequetType")]
         public async Task<ActionResult> GetWeeklyWoStatus()
         {
             return Ok(await _dashBoardRepository.GetWeelklyWoStatusAsync());
             
         }
 
-        [HttpGet("getweeklyStatusbyWoType")]
+        [HttpGet("getWeeklyStatusbyWoType")]
         public async Task<ActionResult> GetWeeklyWoStatusByType()
         {
             return Ok(await _dashBoardRepository.GetWeelklyWoStatusByTypeAsync());
 
         }
 
-        [HttpGet("getweeklyCartonInAndConfirm")]
+        [HttpGet("getWeeklyCartonInAndConfirm")]
         public async Task<ActionResult> GetWeeklyCartonInAndConfirm()
         {
             return Ok(await _dashBoardRepository.GetWeelklyCartonsInAndConfirm());
+
+        }
+
+        [HttpGet("getWeeklyScannedCartons")]
+        public async Task<ActionResult> GetWeeklyScannedCartons()
+        {
+            return Ok(await _dashBoardRepository.GetWeelklyScannedCartons());
+
+        }
+
+        [HttpGet("gettWeeklyScannedCartonsByWH")]
+        public async Task<ActionResult> GetWeeklyScannedCartonsByWH()
+        {
+            return Ok(await _dashBoardRepository.GetWeelklyWeeklyScannedCartonsByWH());
 
         }
     }

@@ -16,17 +16,17 @@ namespace tlrsCartonManager.DAL.Reporsitory
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
-   
+
 
         public DashBoardManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
         {
             _tcContext = tccontext;
             _mapper = mapper;
-           
+
         }
         public async Task<List<DashBoardWeeklyWOStatusDetail>> GetWeelklyWoStatusAsync()
         {
-            var result =await  _tcContext.Set<DashBoardWeeklyWOStatusDetail>().FromSqlRaw("dashBoardWeeklyWoStatus").ToListAsync();
+            var result = await _tcContext.Set<DashBoardWeeklyWOStatusDetail>().FromSqlRaw("dashBoardWeeklyWoStatus").ToListAsync();
             if (!result.Any())
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -69,6 +69,40 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     {
                         Code = string.Empty,
                         Message = $"Unable to find Weekly in and confirmed"
+                    }
+                  });
+            }
+            return result;
+        }
+
+        public async Task<List<DashBoardWeeklyWeeklyScannedCartons>> GetWeelklyScannedCartons()
+        {
+            var result = await _tcContext.Set<DashBoardWeeklyWeeklyScannedCartons>().FromSqlRaw("dashBoardWeeklyScannedCartons").ToListAsync();
+            if (!result.Any())
+            {
+                throw new ServiceException(new ErrorMessage[]
+                  {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to find Weekly scanned cartons"
+                    }
+                  });
+            }
+            return result;
+        }
+
+        public async Task<List<DashBoarWeeklyScannedCartonsByWH>> GetWeelklyWeeklyScannedCartonsByWH()
+        {
+            var result = await _tcContext.Set<DashBoarWeeklyScannedCartonsByWH>().FromSqlRaw("dashBoardWeeklyScannedCartonsByWH").ToListAsync();
+            if (!result.Any())
+            {
+                throw new ServiceException(new ErrorMessage[]
+                  {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to find Weekly scanned cartons by WH"
                     }
                   });
             }
