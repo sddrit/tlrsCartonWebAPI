@@ -55,7 +55,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             {
                 var userLoginResponse = new UserLoginResponse()
                 {
-                    UserId = model.UserName,
+                    UserName = model.UserName,
                     Token = _tokenServiceRepository.CreateToken(model.UserName)
 
                 };
@@ -88,7 +88,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                     return new UserLoginResponse()
                     {
-                        UserId = model.UserName,
+                        UserName = model.UserName,
                         Token = _tokenServiceRepository.CreateToken(model.UserName),
                         Permissions = resultPermission
 
