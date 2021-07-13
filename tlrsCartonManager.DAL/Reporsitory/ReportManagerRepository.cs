@@ -270,6 +270,43 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return await _tcContext.Set<CartonsInRCCollectionWoPending>().FromSqlRaw(CartonsInRCWoPendingStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
         }
+        public async Task<DailyPalletedSummary> GetDailyPalletedSummary(DateTime asAtDate, string locationCode)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = DailyPalletedSummaryStoredProcedure.StoredProcedureParameters[0].ToString(),
+                        Value = asAtDate.DateToInt().AsDbValue() },
+
+                    new SqlParameter { ParameterName = DailyPalletedSummaryStoredProcedure.StoredProcedureParameters[1].ToString(),
+                        Value = locationCode.AsDbValue() }
+                };
+
+            var result = await _tcContext.Set<DailyPalletedDetail>().FromSqlRaw(DailyPalletedSummaryStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+
+            var palletedSummaryByScannedUsers = result.GroupBy(t => t.ScannedUser)
+                        .Select(t => new DailyPalletedSummaryByScannedUser()
+                        {
+                            ScannedUser = t.Key,
+                            CartonCount = t.Count()
+                        }).ToList();
+
+            var dailyPalletedSummaryByWareHouse = result.GroupBy(t => t.WareHouseCode)
+                      .Select(t => new DailyPalletedSummaryByWareHouse()
+                      {
+                          WareHouseCode = t.Key,
+                          CartonCount = t.Count()
+                      }).ToList();
+
+            DailyPalletedSummary dailyPalletedSummary = new DailyPalletedSummary()
+            {
+                PalletedSummaryByScannedUsers = palletedSummaryByScannedUsers,
+                PalletedSummaryByWareHouses = dailyPalletedSummaryByWareHouse,
+                PalletedDetails = result
+            };
+
+            return dailyPalletedSummary;
+
+        }
     }
 }
 

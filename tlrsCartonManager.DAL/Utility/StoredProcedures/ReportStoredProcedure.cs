@@ -121,5 +121,17 @@ namespace tlrsCartonManager.DAL.Utility
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 
     }
+    public class DailyPalletedSummaryStoredProcedure
+    {
+        public static string StoredProcedureName = "reportDailyPalletedSummary";
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+               "@asAtDate",
+               "@locationCode"
+
+        };
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
+    }
 
 }

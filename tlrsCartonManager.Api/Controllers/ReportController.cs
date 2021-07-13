@@ -133,5 +133,12 @@ namespace tlrsCartonManager.Api.Controllers
 
         }
 
+        [HttpGet("DailyPalletedSummary")]
+        public async Task<ActionResult> DailyPalletedSummary(DateTime asAtDate, string locationCode)
+        {
+            return Ok(await _reportRepository.GetDailyPalletedSummary(asAtDate, locationCode));
+
+        }
+
     }
 }

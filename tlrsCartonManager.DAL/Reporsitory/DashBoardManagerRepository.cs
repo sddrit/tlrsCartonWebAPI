@@ -27,6 +27,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<List<DashBoardWeeklyWOStatusDetail>> GetWeelklyWoStatusAsync()
         {
             var result = await _tcContext.Set<DashBoardWeeklyWOStatusDetail>().FromSqlRaw("dashBoardWeeklyWoStatus").ToListAsync();
+
+
             if (!result.Any())
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -38,6 +40,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     }
                   });
             }
+
             return result;
         }
 
