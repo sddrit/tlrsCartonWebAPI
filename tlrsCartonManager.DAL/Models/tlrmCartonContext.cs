@@ -1287,7 +1287,9 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<CartonsInRCCollectionWoPending>().HasNoKey();
             modelBuilder.Entity<DashBoardWeeklyWeeklyScannedCartons>().HasNoKey();
             modelBuilder.Entity<DashBoarWeeklyScannedCartonsByWH>().HasNoKey();
-            modelBuilder.Entity<DailyPalletedDetail>().HasNoKey();            
+            modelBuilder.Entity<DailyPalletedDetail>().HasNoKey();
+            modelBuilder.Entity<DashBoardWeeklyPendingRetrievalByTypeDetail>().HasNoKey();
+            modelBuilder.Entity<DailyDashBoardData>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 

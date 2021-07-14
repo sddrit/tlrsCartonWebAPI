@@ -10,11 +10,12 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface IDashBoardManagerRepository
     {
         Task<List<DashBoardWeeklyWOStatusDetail>> GetWeelklyWoStatusAsync();
-        
-        Task<List<DashBoardWeeklyWOStatusDetail>> GetWeelklyWoStatusByTypeAsync();
+
+        Task<List<DashBoardWeeklyPendingRetrievalByTypeDetail>> GetWeelklyPendingRetrievalByTypeAsync();
         Task<List<DashBoardWeeklyCartonsInAndConfirm>> GetWeelklyCartonsInAndConfirm();
 
         Task<List<DashBoardWeeklyWeeklyScannedCartons>> GetWeelklyScannedCartons();
         Task<List<DashBoarWeeklyScannedCartonsByWH>> GetWeelklyWeeklyScannedCartonsByWH();
+        Task<DailyDashBoardResponse> GetDailyDashBoard();
     }
 }

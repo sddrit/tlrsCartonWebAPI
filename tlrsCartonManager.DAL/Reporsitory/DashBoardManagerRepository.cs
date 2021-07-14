@@ -44,9 +44,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return result;
         }
 
-        public async Task<List<DashBoardWeeklyWOStatusDetail>> GetWeelklyWoStatusByTypeAsync()
+        public async Task<List<DashBoardWeeklyPendingRetrievalByTypeDetail>> GetWeelklyPendingRetrievalByTypeAsync()
         {
-            var result = await _tcContext.Set<DashBoardWeeklyWOStatusDetail>().FromSqlRaw("dashBoardWeeklyWoStatusbyWoType").ToListAsync();
+            var result = await _tcContext.Set<DashBoardWeeklyPendingRetrievalByTypeDetail>().FromSqlRaw("dashBoardWeeklyWoStatusbyWoType").ToListAsync();
             if (!result.Any())
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -59,6 +59,37 @@ namespace tlrsCartonManager.DAL.Reporsitory
                   });
             }
             return result;
+        }
+
+        public async Task<DailyDashBoardResponse> GetDailyDashBoard()
+        {
+            var result = await _tcContext.Set<DailyDashBoardData>().FromSqlRaw("dashBoardDailySummary").ToListAsync();            
+           
+
+            var dailyCartonCount = result.Where(x => x.DataGroup == 1).Select(t => new DailyDashBoardByCarton()
+            {
+                RequestType = t.RequestType,
+                CartonCount = t.DataGroupCount
+            }).ToList();
+
+            var dailyWoCount = result.Where(x => x.DataGroup == 2).Select(t => new DailyDashBoardByWo()
+            {
+                RequestType = t.RequestType,
+                WoCount = t.DataGroupCount
+            }).ToList();
+
+            if (!result.Any())
+            {
+                throw new ServiceException(new ErrorMessage[]
+                  {
+                    new ErrorMessage()
+                    {
+                        Code = string.Empty,
+                        Message = $"Unable to find Weekly Wo data by type"
+                    }
+                  });
+            }
+            return new DailyDashBoardResponse() { DailyDashBoardByWos=dailyWoCount,DailyDashBoardByCartons=dailyCartonCount};
         }
 
         public async Task<List<DashBoardWeeklyCartonsInAndConfirm>> GetWeelklyCartonsInAndConfirm()

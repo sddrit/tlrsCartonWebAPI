@@ -35,10 +35,17 @@ namespace tlrsCartonManager.Api.Controllers
             
         }
 
-        [HttpGet("getWeeklyStatusbyWoType")]
+        [HttpGet("getWeeklyPendingRetrievalByWoType")]
         public async Task<ActionResult> GetWeeklyWoStatusByType()
         {
-            return Ok(await _dashBoardRepository.GetWeelklyWoStatusByTypeAsync());
+            return Ok(await _dashBoardRepository.GetWeelklyPendingRetrievalByTypeAsync());
+
+        }
+
+        [HttpGet("getDailyDashBoard")]
+        public async Task<ActionResult> GetDashBoard()
+        {
+            return Ok(await _dashBoardRepository.GetDailyDashBoard());
 
         }
 
