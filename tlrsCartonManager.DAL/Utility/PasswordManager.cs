@@ -22,14 +22,7 @@ namespace tlrsCartonManager.DAL.Utility
             {
                 if (computedHash[i] != passwordhash[i])
                 {
-                    throw new ServiceException(new ErrorMessage[]
-                 {
-                        new ErrorMessage()
-                        {
-                            Code = "1000",
-                            Message = "Invalid Password"
-                        }
-                 });
+                    return false;
                 }
             }
             return true;
@@ -58,7 +51,7 @@ namespace tlrsCartonManager.DAL.Utility
                      {
                         new ErrorMessage()
                         {
-                            Code = "1010",
+                            Code = "1012",
                             Message = "Previous password cannot be used"
                         }
                      });

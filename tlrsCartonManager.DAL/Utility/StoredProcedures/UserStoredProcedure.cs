@@ -68,4 +68,19 @@ namespace tlrsCartonManager.DAL.Utility
 
     }
 
+    public static class LoginAttemptsUpdateStoredProcedure
+    {
+
+        public static string StoredProcedureName = "userLoginAttemptsInsertUpdate";
+
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+            "@userName",
+            "@isReset"
+        };
+
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
+    }
+
 }

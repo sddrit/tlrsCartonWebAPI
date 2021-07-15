@@ -19,8 +19,27 @@ namespace tlrsCartonManager.DAL.Dtos
     {
         public string UserName { get; set; }
 
+        public string UserFirstName { get; set; }
+
+        public string UserLastName { get; set; }
+
+        public string UserRole { get; set; }
+
         public string Token { get; set; }
 
         public IEnumerable<UserModulePermission> Permissions { get; set; }
+    }
+
+    public class UserLoginInfo
+    {
+        public string UserName { get; set; }
+
+        public string UserFirstName { get; set; }
+
+        public string UserLastName { get; set; }
+
+        public string UserRole { get; set; }
+
+        
     }
 }

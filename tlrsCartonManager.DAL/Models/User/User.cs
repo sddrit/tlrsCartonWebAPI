@@ -45,8 +45,8 @@ namespace tlrsCartonManager.DAL.Models
         [Column("departmentId")]
         public int? DepartmentId { get; set; }
         [Column("email")]
-        public string Email { get; set; }
-
+        public string Email { get; set; }    
+        
 
         [InverseProperty(nameof(MenuRightUser.User))]
         public virtual ICollection<MenuRightUser> MenuRightUsers { get; set; }

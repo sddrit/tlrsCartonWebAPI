@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using tlrsCartonManager.Core.Enums;
 using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Extensions;
 using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.DAL.Models;
@@ -52,6 +54,23 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public int SaveUser(UserDto user, byte[] passwrodHash, byte[] passwordSalt,string trasactionType)
         {
+
+            if (trasactionType == TransactionType.Reset.ToString())
+            {
+                var passwordHistoryList = _tcContext.UserPasswordHistories
+                  .Where(x => x.UserId == user.UserId).OrderByDescending(x => x.TrackingId).Take(5).ToList();
+
+                if (PasswordManager.IsPreviousUsedPassword(passwordHistoryList, user.UserPassword))
+                {
+                    throw new ServiceException(new ErrorMessage[]
+                     {
+                            new ErrorMessage()
+                            {
+                                Message = $"Cannot use old 5 passwrods"
+                            }
+                     });
+                }
+            }
             List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter {ParameterName = UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[0].ToString(), Value = user.UserId.AsDbValue() },

@@ -51,7 +51,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             var result = await _tcContext.Set<LoginValidationResult>().FromSqlRaw(LoginStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
-            if (result.FirstOrDefault().Code == "1004")// password expired
+            if (result.FirstOrDefault().Code == "1011")// password expired
             {
                 var userLoginResponse = new UserLoginResponse()
                 {
@@ -86,14 +86,41 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                     var resultPermission = await _tcContext.Set<UserModulePermission>().FromSqlRaw(LoginPermissionStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
+                    var userInfo = GetUserOtherInfo(model.UserName);
+
                     return new UserLoginResponse()
                     {
                         UserName = model.UserName,
+                        UserFirstName = userInfo.UserFirstName,
+                        UserLastName=userInfo.UserLastName,
+                        UserRole =userInfo.UserRole,
                         Token = _tokenServiceRepository.CreateToken(model.UserName),
                         Permissions = resultPermission
 
                     };
                 }
+                else
+                {
+                    parms = new List<SqlParameter>
+                    {
+                        new SqlParameter {ParameterName = LoginAttemptsUpdateStoredProcedure.StoredProcedureParameters[0].ToString(),Value = model.UserName.AsDbValue() },
+                        new SqlParameter {ParameterName = LoginAttemptsUpdateStoredProcedure.StoredProcedureParameters[1].ToString(),Value = 0 }
+
+                    };
+
+                     await _tcContext.Set<LoginValidationResult>().FromSqlRaw(LoginAttemptsUpdateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+
+                    throw new ServiceException(new ErrorMessage[]
+                     {
+                            new ErrorMessage()
+                            {
+                                Code = "1010",
+                                Message = "Invalid Password"
+                            }
+                     });
+
+                }
+
             }
 
             throw new ServiceException(new ErrorMessage[]
@@ -106,12 +133,47 @@ namespace tlrsCartonManager.DAL.Reporsitory
             });
 
         }
+        
+        private UserLoginInfo GetUserOtherInfo(string userName)
+        {
+            try
+            {
+
+                var result = _tcContext.Users.Where(x => x.UserName.ToLower() == userName.ToLower()).FirstOrDefault();
+
+                int roleId = _tcContext.UserRoles.Where(x => x.UserId == result.UserId).OrderBy(x => x.Id).FirstOrDefault().Id;
+
+                var roleName = _tcContext.Roles.Where(x => x.Id == roleId).FirstOrDefault().Description;
+
+                string[] userFullnames = result.UserFullName.Split(' ');
+
+                return new UserLoginInfo()
+                {
+                    UserFirstName = userFullnames.Length >= 1 ? userFullnames[0] : userName,
+                    UserLastName = userFullnames.Length > 1 ? userFullnames[1] : string.Empty,
+                    UserRole = roleName
+                };
+            }
+            catch(Exception ex)
+            {
+                return new UserLoginInfo()
+                {
+                    UserFirstName = userName,
+                    UserLastName = string.Empty,
+                    UserRole = string.Empty
+                };
+
+            }
+        }
+
+       
+
         public bool ChangePassword(UserChangePassword model)
         {
             var userId = _tcContext.Users.Where(x => x.UserName.ToLower() == model.UserName.ToLower()).FirstOrDefault().UserId;
 
             var passwordHistoryList = _tcContext.UserPasswordHistories
-                   .Where(x => x.UserId == userId).OrderByDescending(x => x.TrackingId).Take(3).ToList();
+                   .Where(x => x.UserId == userId).OrderByDescending(x => x.TrackingId).Take(5).ToList();
 
             if (!PasswordManager.IsPreviousUsedPassword(passwordHistoryList, model.Password))
             {
