@@ -48,7 +48,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var cartonList = await _tcContext.Set<CartonInquiry>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             cartonOverView.CartonHeader = cartonList.FirstOrDefault();
 
-            cartonOverView.RequestHeader = _tcContext.InvoiceConfirmations.Where(x => x.CartonNo == cartonNo.ToString()).OrderBy(x => x.LastTransactionDate).ToList();
+            cartonOverView.RequestHeader = _tcContext.InvoiceConfirmations.Where(x => x.CartonNo == cartonNo.ToString()).OrderBy(x => x.TrackingId).ToList();
 
             var cartonLocationList = _tcContext.CartonLocations.Where(x => x.CartonNo == cartonNo).OrderBy(x => x.Id).ToList();
             cartonOverView.LocationDetail = _mapper.Map<List<CartonLocationDto>>(cartonLocationList);

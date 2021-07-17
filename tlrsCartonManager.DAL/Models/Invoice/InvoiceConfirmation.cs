@@ -21,6 +21,11 @@ namespace tlrsCartonManager.DAL.Models
         [Column("woType")]
         [StringLength(50)]
         public string WoType { get; set; }
+
+        [Column("status")]
+        [StringLength(50)]
+        public string Status { get; set; }
+
         [Column("storageType")]
         public int? StorageType { get; set; }
         [Column("deliveryRouteId")]
