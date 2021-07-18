@@ -13,8 +13,13 @@ namespace tlrsCartonManager.DAL.Models
     {
         [Key]
         [Column("code")]
-        [StringLength(20)]
+        [StringLength(20)]       
         public string Code { get; set; }
+
+        [Column("id")]
+        public int Id { get; set; }
+
+
         [Required]
         [Column("name")]
         [StringLength(200)]
@@ -40,5 +45,8 @@ namespace tlrsCartonManager.DAL.Models
         public int? LuUserId { get; set; }
         [Column("luDate", TypeName = "datetime")]
         public DateTime? LuDate { get; set; }
+
+        [Column("deleted")]
+        public bool Deleted { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Dtos.Import;
+using tlrsCartonManager.DAL.Dtos.Location;
 using tlrsCartonManager.DAL.Dtos.Menu;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Models.Carton;
@@ -1290,6 +1291,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<DailyPalletedDetail>().HasNoKey();
             modelBuilder.Entity<DashBoardWeeklyPendingRetrievalByTypeDetail>().HasNoKey();
             modelBuilder.Entity<DailyDashBoardData>().HasNoKey();
+            modelBuilder.Entity<LocationDto>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 

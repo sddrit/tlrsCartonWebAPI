@@ -14,5 +14,17 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     {
         Task<IEnumerable<LocationDto>> GetLocationListByCode(string locationCode);
         
+        Task<LocationDto> GetLocationByCode(string locationCode);
+        bool AddLocation(LocationDto location);
+
+        bool UpdateLocation(LocationDto location);
+
+
+        bool DeleteLocation(LocationDto location);
+
+        Task<PagedResponse<LocationDto>> SearchLocation(string columnValue, int pageIndex, int pageSize);
+
+
+
     }
 }

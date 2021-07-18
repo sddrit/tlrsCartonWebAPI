@@ -31,7 +31,11 @@ namespace tlrsCartonManager.Api.Controllers
             _locationRepository = locationRepository;
         }
 
-       
+        [HttpGet("getLocations")]
+        public async Task<ActionResult<CustomerSearchDto>> SearchCustomer(string columnValue, int pageIndex, int pageSize)
+        {
+            return Ok(await _locationRepository.SearchLocation(columnValue, pageIndex, pageSize));
+        }
 
         [HttpGet("getLocationByCode/{locationCode}")]
         public async Task<ActionResult<LocationDto>> GetSingleSearch(string locationCode)
@@ -42,8 +46,37 @@ namespace tlrsCartonManager.Api.Controllers
             else              
                 return new JsonErrorResult(new { Message = "Location Not Found" }, HttpStatusCode.BadRequest);
         }
-       
-       
-       
+
+
+        [HttpGet("getLocation")]
+        public async Task<ActionResult> GetLocation(string locationCode)
+        {
+            var locationList = await _locationRepository.GetLocationByCode(locationCode);
+            if (locationList != null)
+                return Ok(locationList);
+            else
+                return new JsonErrorResult(new { Message = "Location Not Found" }, HttpStatusCode.BadRequest);
+        }
+
+
+        [HttpPost]
+        public ActionResult AddLocation(LocationDto location)
+        {
+            return Ok(_locationRepository.AddLocation(location));
+        }
+
+        [HttpPut]
+        public ActionResult UpdateCustomer(LocationDto location)
+        {
+            return Ok(_locationRepository.UpdateLocation(location));
+        }
+
+        [HttpDelete]
+        public ActionResult DeleteCustomer(LocationDto location)
+        {
+            return Ok(_locationRepository.DeleteLocation(location));
+
+        }
+
     }
 }
