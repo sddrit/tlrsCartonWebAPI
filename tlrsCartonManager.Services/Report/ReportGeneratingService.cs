@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Models.GenericReport;
 using tlrsCartonManager.DAL.Models.Report;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
@@ -59,13 +60,31 @@ namespace tlrsCartonManager.Services.Report
 
             if (reportData == null)
             {
-                throw new Exception("Unable to generate the report data");
+                throw new ServiceException(new ErrorMessage[]
+               {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to generate the report data"
+                        }
+               });
+
             }
 
             if (!reportData.Any())
             {
-                throw new Exception("No data for generate report");
+                throw new ServiceException(new ErrorMessage[]
+                 {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"No data to generate report"
+                        }
+                 });
+
             }
+
+           
 
             var headerPointer = 0;
             var rowPointer = 1;

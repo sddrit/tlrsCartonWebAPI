@@ -212,7 +212,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             var modulePermission = await _tcContext.ModuleSubs
                 .Include(x => x.ModulePermissions)
-                .Include(x => x.Module)
+                .Include(x => x.Module).OrderBy(x=>x.ModuleId)
                 .ToListAsync();
 
             return _mapper.Map<List<SubModuleDto>>(modulePermission);

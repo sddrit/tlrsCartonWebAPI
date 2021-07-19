@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using tlrsCartonManager.Core.Enums;
 using tlrsCartonManager.DAL.Dtos.Import;
+using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
 
 
@@ -50,9 +51,23 @@ namespace tlrsCartonManager.Services.ImportData
             switch (importOption)
             {
                 case ImportType.AlternativeNoUpdate:
+
                     var importDetails = rows.Skip(1).Take(rows.Count() - 1).Select(currentRow =>
                     {
                         int.TryParse(currentRow[0].ToString() ?? "0", out var cartonNo);
+
+                        if (currentRow.ItemArray.Length != 2)
+                        {
+                            throw new ServiceException(new ErrorMessage[]
+                            {
+                                new ErrorMessage()
+                                {
+                                    Code = string.Empty,
+                                    Message = $"Invalid file format"
+                                }
+                        });
+
+                        }
                         return new ExcelParseAlternativeNoUpdateViewModel()
                         {
                             AlternativeNo = currentRow[1].ToString(),
@@ -69,6 +84,20 @@ namespace tlrsCartonManager.Services.ImportData
                     var importDestructionDetails = rows.Skip(1).Take(rows.Count() - 1).Select(currentRow =>
                     {
                         int.TryParse(currentRow[0].ToString() ?? "0", out var cartonNo);
+
+                        if (currentRow.ItemArray.Length != 3)
+                        {
+                            throw new ServiceException(new ErrorMessage[]
+                            {
+                                new ErrorMessage()
+                                {
+                                    Code = string.Empty,
+                                    Message = $"Invalid file format"
+                                }
+                        });
+
+                        }
+
                         return new ExcelParseDestructioDateUpdateViewModel()
                         {
                             DestructionDate = currentRow[1].ToString(),
