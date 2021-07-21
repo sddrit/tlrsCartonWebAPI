@@ -38,12 +38,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         #region Invoicing
         public async Task<InvoicePrintModel> GetInvoiceList(string invoiceNo)
-        {           
+        {
 
             var invoiceHeader = _mapper.Map<InvoicePrintModel>(await _tcContext.ViewCreatedInvoiceLists
                 .Where(x => x.InvoiceId == invoiceNo).FirstOrDefaultAsync());
 
-            if(invoiceHeader==null)
+            if (invoiceHeader == null)
             {
                 throw new ServiceException(new ErrorMessage[]
                 {
@@ -55,13 +55,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 });
             }
 
-            invoiceHeader.InvoiceDetails = _mapper.Map<List<InvoiceDetailDto>>( await _tcContext.InvoiceDetails
-                .Where(x => x.InvoiceId == invoiceNo).ToListAsync());                        
+            invoiceHeader.InvoiceDetails = _mapper.Map<List<InvoiceDetailDto>>(await _tcContext.InvoiceDetails
+                .Where(x => x.InvoiceId == invoiceNo).ToListAsync());
 
             return invoiceHeader;
 
         }
-        public List<InvoiceReturn> GetInvoiceById(string invoiceNo)
+        public List<InvoiceResponse> GetInvoiceById(string invoiceNo)
         {
             #region Sql Parameter loading
             List<SqlParameter> parms = new List<SqlParameter>
@@ -71,7 +71,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             };
             #endregion
 
-           return  _tcContext.Set<InvoiceReturn>().FromSqlRaw(InvoiceStoredProcedureById.Sql, parms.ToArray()).ToList();        
+            return _tcContext.Set<InvoiceResponse>().FromSqlRaw(InvoiceStoredProcedureById.Sql, parms.ToArray()).ToList();
 
         }
         public async Task<PagedResponse<InvoiceSearchDto>> SearchInvoice(string searchText, int pageIndex, int pageSize)
@@ -95,39 +95,98 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return paginationResponse;
         }
-        public TableResponse<InvoiceReturn> CreateInvoice(int fromDate, int toDate, string customerCode)
-        {
-
-            #region Sql Parameter loading
+        public InvoiceResponse CreateInvoice(int fromDate, int toDate, string customerCode, string invoiceNo)
+        {         
             List<SqlParameter> parms = new List<SqlParameter>
             {
-
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[0].ToString(), Value = fromDate.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[1].ToString(), Value = toDate.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[2].ToString(), Value = customerCode.AsDbValue() },
-
+                new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[3].ToString(), Value = 1 },
+                new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[4].ToString(), Value = invoiceNo.AsDbValue() }
             };
-            #endregion
-            var resultTable = _tcContext.Set<InvoiceReturn>().FromSqlRaw(InvoiceStoredProcedure.Sql, parms.ToArray()).ToList();
+            
+            var resultTable = _tcContext.Set<InvoiceResponseDetail>().FromSqlRaw(InvoiceStoredProcedure.Sql, parms.ToArray()).ToList();
 
-            var errorTable = resultTable.Where(x => string.IsNullOrEmpty(x.InvoiceId) == true).FirstOrDefault();
-            var tableResponse = new TableResponse<InvoiceReturn>
+            var distinctInvoice = resultTable.Select(x => x.InvoiceNo).Distinct().ToList();
+
+          
+            var mainInvoiceDetail = resultTable.Where(x => x.InvoiceNoGroup == 1).ToList();
+            var mainInvoiceNo = resultTable[0].InvoiceNo;
+            var mainInvoiceHeader =_mapper.Map<InvoiceHeaderResponse> (_tcContext.ViewCreatedInvoiceLists.Where(x => x.InvoiceId == mainInvoiceNo).FirstOrDefault());
+            var mainInvoiceTransactionSummry = GetTransactionSummry(fromDate, toDate, mainInvoiceNo);
+           
+           var subInvoiceDetail=  resultTable.Where(x => x.InvoiceNoGroup == 2).ToList().GroupBy(item => new { item.CustomerCode, item.InvoiceNo })
+              .Select(item => new InvoiceSubResponse()
+              {                 
+
+                  InvoiceHeaders = _mapper.Map<InvoiceHeaderResponse>(_tcContext.ViewCreatedInvoiceListSubs.Where(x => x.InvoiceId ==item.Key.InvoiceNo 
+                            && x.CustomerCode==item.Key.CustomerCode).FirstOrDefault()),
+                  InvoiceDetails =item.ToList(),
+                  TransactionSummaryResponses= GetTransactionSummry(fromDate, toDate,item.Key.InvoiceNo)
+                 
+              }).ToList();
+
+
+            var separateInvoiceDetail = resultTable.Where(x => x.InvoiceNoGroup == 3).ToList().GroupBy(item => new { item.CustomerCode, item.InvoiceNo })
+             .Select(item => new InvoiceSeparateResponse()
+             {
+
+                 InvoiceHeaders = _mapper.Map<InvoiceHeaderResponse>(_tcContext.ViewCreatedInvoiceLists.Where(x => x.InvoiceId == item.Key.InvoiceNo).FirstOrDefault()),
+                 InvoiceDetails = item.ToList(),
+                 TransactionSummaryResponses = GetTransactionSummry(fromDate, toDate, item.Key.InvoiceNo)
+
+             }).ToList();
+
+            parms = new List<SqlParameter>
             {
+                new SqlParameter { ParameterName = InvoiceBrachWiseStoredProcedure.StoredProcedureParameters[0].ToString(), Value = fromDate.AsDbValue() },
+                new SqlParameter { ParameterName = InvoiceBrachWiseStoredProcedure.StoredProcedureParameters[1].ToString(), Value = toDate.AsDbValue() },                      
+                new SqlParameter { ParameterName = InvoiceBrachWiseStoredProcedure.StoredProcedureParameters[2].ToString(), Value = mainInvoiceNo.AsDbValue() }
+            };
 
-                Message = errorTable == null ? "Invoice Created" : "Invoice Creation Failed",
-                OutList = errorTable == null ? resultTable : null
+            var branchWiseDetail = _tcContext.Set<BranchWiseDetail>().FromSqlRaw(InvoiceBrachWiseStoredProcedure.Sql, parms.ToArray()).ToList();
 
+            var invoiceResponse = new InvoiceResponse()
+            {
+                InvoiceCount = distinctInvoice.Count(),
+                InvoiceMainResponses = new InvoiceMainResponse()
+                {
+                     InvoiceHeaders=mainInvoiceHeader,
+                     InvoiceDetails=mainInvoiceDetail,
+                     TransactionSummaryResponses= mainInvoiceTransactionSummry
+
+                },
+                InvoiceSubDetails=subInvoiceDetail,
+                InvoiceSeparateDetails=separateInvoiceDetail,
+                BranchWiseDetails= branchWiseDetail
 
             };
-            return tableResponse;
+
+
+            return invoiceResponse;
+        }
+
+
+        private List<TransactionSummaryResponse> GetTransactionSummry(int fromDate, int toDate,  string invoiceNo)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[0].ToString(), Value = fromDate.AsDbValue() },
+                new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[1].ToString(), Value = toDate.AsDbValue() },           
+                new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[2].ToString(), Value = invoiceNo.AsDbValue() }
+            };
+
+            return _tcContext.Set<TransactionSummaryResponse>().FromSqlRaw(InvoiceTransactionSummaryStoredProcedure.Sql, parms.ToArray()).ToList();
+
 
         }
-        #endregion
+            #endregion
 
-        #region Invoice Confirmation
-        public async Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string type, string searchText, int pageIndex, int pageSize)
+            #region Invoice Confirmation
+            public async Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string type, string searchText, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("invoiceConfirmDisapproveSearch",type, searchText, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("invoiceConfirmDisapproveSearch", type, searchText, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<InvoiceConfirmationSearch>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
@@ -146,7 +205,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return paginationResponse;
         }
-       
+
         public async Task<TableResponse<TableReturn>> ValidateInvoiceDisConfirmation(string requestNo)
         {
             List<SqlParameter> parms = new List<SqlParameter>
@@ -154,26 +213,26 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = InvoiceDisaprroveValidateStoredProcedure.StoredProcedureParameters[0].ToString(), Value = requestNo.AsDbValue() }
             };
 
-            var errorList= await _tcContext.Set<TableReturn>().FromSqlRaw(InvoiceDisaprroveValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var errorList = await _tcContext.Set<TableReturn>().FromSqlRaw(InvoiceDisaprroveValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var tableResponse = new TableResponse<TableReturn>
             {
-                Message ="Failed",               
+                Message = "Failed",
                 OutList = errorList
             };
             return tableResponse;
-           
-               
+
+
         }
         public async Task<List<InvoiceConfirmationDetail>> GetInvoiceConfirmationDetailByRequestNo(string requestNo)
-        {            
+        {
             List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter { ParameterName = InvoiceConfirmationByRequestNoStoredProcedure.StoredProcedureParameters[0].ToString(), Value = requestNo.AsDbValue() }
-               
+
             };
-           
-           return await _tcContext.Set<InvoiceConfirmationDetail>().FromSqlRaw(InvoiceConfirmationByRequestNoStoredProcedure.Sql, parms.ToArray()).ToListAsync();
-         }
+
+            return await _tcContext.Set<InvoiceConfirmationDetail>().FromSqlRaw(InvoiceConfirmationByRequestNoStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+        }
         public bool SaveInvoiceConfirmation(List<InvoiceConfirmationDto> invoiceConfirmation)
         {
             List<SqlParameter> parms = new List<SqlParameter>
@@ -187,7 +246,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
             };
 
-            return  _tcContext.Set<BoolReturn>().FromSqlRaw(InvoiceConfirmationStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+            return _tcContext.Set<BoolReturn>().FromSqlRaw(InvoiceConfirmationStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
         public bool DeleteInvoiceConfirmation(string requestNo, string reason, int userId)
         {
@@ -228,9 +287,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             var invoiceP = _mapper.Map<InvoicePosting>(invoicePosting);
             _tcContext.InvoicePostings.Add(invoiceP);
-           return  await _tcContext.SaveChangesAsync()>0 ?true:false;
+            return await _tcContext.SaveChangesAsync() > 0 ? true : false;
 
-          
+
         }
     }
     #endregion

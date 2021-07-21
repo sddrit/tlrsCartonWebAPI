@@ -46,7 +46,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("{invoiceId}")]
-        public  ActionResult<InvoiceReturn> GetInvoiceById(string invoiceId)
+        public  ActionResult<InvoiceResponse> GetInvoiceById(string invoiceId)
         {
             var invoice =  _invoiceRepository.GetInvoiceById(invoiceId);
             if (invoice != null)
@@ -55,11 +55,10 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Invoice Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpPost]
-        public ActionResult CreateInvoice(int fromDate, int toDate, string customerCode)
+        public ActionResult CreateInvoice(int fromDate, int toDate, string customerCode, string invoiceNo)        
         {
-            //var invoiceList =  _invoiceRepository.CreateInvoice(fromDate, toDate, customerId);
-            return Ok(_invoiceRepository.CreateInvoice(fromDate, toDate, customerCode));
-
+       
+            return Ok(_invoiceRepository.CreateInvoice(fromDate, toDate, customerCode, invoiceNo));
         }
 
     }

@@ -111,6 +111,8 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewCreatedPickList> ViewCreatedPickLists { get; set; }
 
         public virtual DbSet<ViewCreatedInvoiceList> ViewCreatedInvoiceLists { get; set; }
+
+        public virtual DbSet<ViewCreatedInvoiceListSub> ViewCreatedInvoiceListSubs { get; set; }
         public virtual DbSet<ViewCustomerAuthorizationList> ViewCustomerAuthorizationLists { get; set; }
         #endregion
         public virtual DbSet<ViewWorkerUserList> ViewWorkerUserLists { get; set; }
@@ -1157,6 +1159,19 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.Name).IsUnicode(false);
             });
 
+            modelBuilder.Entity<ViewCreatedInvoiceListSub>(entity =>
+            {
+                entity.ToView("viewCreatedInvoiceListSub");
+
+                entity.Property(e => e.CreatedUser).IsUnicode(false);
+
+                entity.Property(e => e.InvoiceId).IsUnicode(false);
+
+                entity.Property(e => e.LuUser).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+            });
+
             modelBuilder.Entity<ViewCustomerAuthorizationList>(entity =>
             {
                 entity.ToView("viewCustomerAuthorizationList");
@@ -1249,7 +1264,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<IntReturn>().HasNoKey();
             modelBuilder.Entity<StringReturn>().HasNoKey();
             modelBuilder.Entity<TableReturn>().HasNoKey();
-            modelBuilder.Entity<InvoiceReturn>();
+            modelBuilder.Entity<InvoiceResponse>();
             modelBuilder.Entity<DocketPrintDetail>().HasNoKey();
             modelBuilder.Entity<CartonRequest>().HasNoKey();
             modelBuilder.Entity<OperationOverviewByWoType>().HasNoKey();
@@ -1292,6 +1307,10 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<DashBoardWeeklyPendingRetrievalByTypeDetail>().HasNoKey();
             modelBuilder.Entity<DailyDashBoardData>().HasNoKey();
             modelBuilder.Entity<LocationDto>().HasNoKey();
+            modelBuilder.Entity<InvoiceResponseDetail>().HasNoKey();
+            modelBuilder.Entity<BranchWiseDetail>().HasNoKey();
+            modelBuilder.Entity<TransactionSummaryResponse>().HasNoKey();
+
             OnModelCreatingPartial(modelBuilder);
         }
 

@@ -8,16 +8,45 @@ namespace tlrsCartonManager.DAL.Utility
 {
     public class InvoiceStoredProcedure
 	{
-		public static string StoredProcedureName = "invoiceInsertUpdateDelete";
+		public static string StoredProcedureName = "invoiceCalculation";
 		public static List<string> StoredProcedureParameters = new List<string>()
 		{
 			"@fromDate",
 			"@toDate",
-			"@customerCode"
+			"@customerCode",
+			"@userId",
+			"@invoiceNo"
 
 		};		
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 	}
+
+	public class InvoiceBrachWiseStoredProcedure
+	{
+		public static string StoredProcedureName = "invoiceCalculationBranchWiseReport";
+		public static List<string> StoredProcedureParameters = new List<string>()
+		{
+			"@fromDate",
+			"@toDate",			
+			"@invoiceNo"
+
+		};
+		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+	}
+
+	public class InvoiceTransactionSummaryStoredProcedure
+	{
+		public static string StoredProcedureName = "invoiceCalculationTransactionSummaryReport";
+		public static List<string> StoredProcedureParameters = new List<string>()
+		{
+			"@fromDate",
+			"@toDate",
+			"@invoiceNo"
+
+		};
+		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+	}
+
 	public class InvoiceStoredProcedureById
 	{
 		public static string StoredProcedureName = "invoicesearchbyid";

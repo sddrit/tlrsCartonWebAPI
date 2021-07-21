@@ -259,7 +259,9 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<DashBoardWeeklyWOStatusDetail, DashBoardWeeklyWOStaus>().ReverseMap();
             CreateMap<DashBoardWeeklyWOStatusDetail, DashBoardWeeklyWOStausCarton>().ReverseMap();
-            //
+
+            CreateMap<ViewCreatedInvoiceList, InvoiceHeaderResponse>().ReverseMap();            
+            CreateMap<ViewCreatedInvoiceListSub, InvoiceHeaderResponse>().ReverseMap();
         }
 
 
