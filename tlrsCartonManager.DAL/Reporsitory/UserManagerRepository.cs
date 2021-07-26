@@ -60,7 +60,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 var passwordHistoryList = _tcContext.UserPasswordHistories
                   .Where(x => x.UserId == user.UserId).OrderByDescending(x => x.TrackingId).Take(5).ToList();
 
-                if (PasswordManager.IsPreviousUsedPassword(passwordHistoryList, user.UserPassword))
+                if (trasactionType!=TransactionType.Reset.ToString() && PasswordManager.IsPreviousUsedPassword(passwordHistoryList, user.UserPassword))
                 {
                     throw new ServiceException(new ErrorMessage[]
                      {

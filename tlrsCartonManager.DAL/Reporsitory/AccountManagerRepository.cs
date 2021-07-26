@@ -90,6 +90,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                     return new UserLoginResponse()
                     {
+                        UserId=userInfo.UserId,
                         UserName = model.UserName,
                         UserFirstName = userInfo.UserFirstName,
                         UserLastName=userInfo.UserLastName,
@@ -149,6 +150,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                 return new UserLoginInfo()
                 {
+                    UserId=result.UserId,
                     UserFirstName = userFullnames.Length >= 1 ? userFullnames[0] : userName,
                     UserLastName = userFullnames.Length > 1 ? userFullnames[1] : string.Empty,
                     UserRole = roleName
@@ -168,22 +170,22 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
        
 
-        public bool ChangePassword(UserChangePassword model)
+        public bool ChangeProfile(UserDto model)
         {
             var userId = _tcContext.Users.Where(x => x.UserName.ToLower() == model.UserName.ToLower()).FirstOrDefault().UserId;
 
             var passwordHistoryList = _tcContext.UserPasswordHistories
                    .Where(x => x.UserId == userId).OrderByDescending(x => x.TrackingId).Take(5).ToList();
 
-            if (!PasswordManager.IsPreviousUsedPassword(passwordHistoryList, model.Password))
+            if (!PasswordManager.IsPreviousUsedPassword(passwordHistoryList, model.UserPassword))
             {
-                UserDto user = new UserDto() { UserId = userId, UserName = model.UserName, UserPassword = model.Password };
+               
 
                 byte[] paswordHash;
                 byte[] passworSalt;
 
-                PasswordManager.GeneratePasswordHash(model.Password, out paswordHash, out passworSalt);
-                if (_userManagerRepository.SaveUser(user, paswordHash, passworSalt, TransactionType.Reset.ToString()) == 0)
+                PasswordManager.GeneratePasswordHash(model.UserPassword, out paswordHash, out passworSalt);
+                if (_userManagerRepository.SaveUser(model, paswordHash, passworSalt, TransactionType.ChangeProfile.ToString()) == 0)
                 {
                     throw new ServiceException(new ErrorMessage[]
                     {

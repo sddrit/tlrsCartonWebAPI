@@ -55,6 +55,8 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _userService.ResetUser(request));
         }
 
+       
+
         [HttpDelete]
         public async Task<ActionResult<User>> DeleteUser(UserDto request)
         {

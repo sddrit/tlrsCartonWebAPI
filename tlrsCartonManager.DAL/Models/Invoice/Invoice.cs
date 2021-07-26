@@ -9,16 +9,25 @@ using System.Threading.Tasks;
 
 namespace tlrsCartonManager.DAL.Models
 {
+
+    public class InvoicePostModel
+    {
+        public DateTime fromDate { get; set; }
+        public DateTime toDate { get; set; }
+        public string customerCode { get; set; }
+        public string invoiceNo { get; set; }
+    }
+
     [Keyless]
     [NotMapped]
     public class InvoiceResponse
     {
-        public int InvoiceCount { get; set; }
+        public string MainInvoiceNo  { get; set; }
         public InvoiceMainResponse InvoiceMainResponses { get; set; }
         public List<InvoiceSubResponse> InvoiceSubDetails { get; set; }
         public List<InvoiceSeparateResponse> InvoiceSeparateDetails { get; set; }
         public List<BranchWiseDetail> BranchWiseDetails { get; set; }
-     
+
     }
 
     [Keyless]
@@ -75,6 +84,9 @@ namespace tlrsCartonManager.DAL.Models
         public string PoNo { get; set; }
         public string VatNo { get; set; }
         public string InvoiceTye { get; set; }
+        public int FromDate { get; set; }
+
+        public int ToDate { get; set; }
 
     }
 
@@ -93,27 +105,37 @@ namespace tlrsCartonManager.DAL.Models
         public string InvoiceNo { get; set; }
 
     }
+
+    public class BranchWiseHeader
+    {
+        public decimal? Discount { get; set; }
+        public List<BranchWiseDetail>  BranchWiseDetails { get; set; }
+    }
+
     public class BranchWiseDetail
     {
+        public int Id { get; set; }
         public string CustomerCode { get; set; }
-        public string StorageType { get; set; }
-        public int? StorageQty { get; set; }
-        public int? CollectionQty { get; set; }
-        public int? EmptyQty { get; set; }
-        public int? RetrievalQty { get; set; }
-        public int? DisposalQty { get; set; }
-        public int? OtherQty { get; set; }
-        public int? IncomeQty { get; set; }
-        public decimal? StorageAmt { get; set; }
-        public decimal? CollectionAmt { get; set; }
-        public decimal? EmptyAmt { get; set; }
-        public decimal? EmptyDiscount { get; set; }
-        public decimal? RetrievalAmt { get; set; }
-        public decimal? DisposalAmt { get; set; }
-        public decimal? OtherAmt { get; set; }
-        public decimal? IncomeAmt { get; set; }
+        public string Name { get; set; }
+
+        public string Type { get; set; }
+
+        public int? CartonQty { get; set; }
+
         public decimal? Amount { get; set; }
-        public decimal? VatAmt { get; set; }
-        public decimal? NbtAmt { get; set; }
+        
+    }
+
+    public class InvoiceModel
+    {
+        [Key]
+
+        public string InvoiceId { get; set; }
+        public string CustomerCode { get; set; }
+        public string Name { get; set; }
+        public decimal? InvoiceValue { get; set; }
+        public int FromDate { get; set; }
+        public int ToDate { get; set; }  
+
     }
 }

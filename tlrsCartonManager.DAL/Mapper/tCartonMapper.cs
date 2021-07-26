@@ -262,6 +262,8 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<ViewCreatedInvoiceList, InvoiceHeaderResponse>().ReverseMap();            
             CreateMap<ViewCreatedInvoiceListSub, InvoiceHeaderResponse>().ReverseMap();
+
+            CreateMap<ViewCreatedInvoiceList, InvoiceModel>().ReverseMap();
         }
 
 

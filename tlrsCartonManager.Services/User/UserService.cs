@@ -79,6 +79,7 @@ namespace tlrsCartonManager.Services.User
 
             return await _userManagerRepository.GetUserById(userId);
         }
+       
 
         public async Task<DAL.Dtos.UserDto> ResetUser(DAL.Dtos.UserDto user)
         {

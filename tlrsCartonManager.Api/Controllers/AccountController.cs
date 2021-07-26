@@ -34,10 +34,10 @@ namespace tlrsCartonManager.Api.Controllers
            return Ok(await _accountRepository.Login(model));           
         }
         
-        [HttpPost("changePassword")]
-        public  ActionResult ChangePassword(UserChangePassword model)
+        [HttpPost("UpdateProfile")]
+        public  ActionResult UpdateProfile(UserDto model)
         {
-            return Ok( _accountRepository.ChangePassword(model));
+            return Ok( _accountRepository.ChangeProfile(model));
         }
 
     }

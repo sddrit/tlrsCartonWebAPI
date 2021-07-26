@@ -17,6 +17,7 @@ namespace tlrsCartonManager.DAL.Dtos
 
     public class UserLoginResponse
     {
+        public int UserId { get; set; }
         public string UserName { get; set; }
 
         public string UserFirstName { get; set; }
@@ -32,6 +33,7 @@ namespace tlrsCartonManager.DAL.Dtos
 
     public class UserLoginInfo
     {
+        public int UserId { get; set; }
         public string UserName { get; set; }
 
         public string UserFirstName { get; set; }

@@ -13,6 +13,7 @@ using tlrsCartonManager.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
+using tlrsCartonManager.Core.Enums;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -54,11 +55,39 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Invoice Not Found" }, HttpStatusCode.NotFound);
         }
-        [HttpPost]
-        public ActionResult CreateInvoice(int fromDate, int toDate, string customerCode, string invoiceNo)        
+        [HttpGet("GeneratedInvoice")]
+        public ActionResult CreateInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo)        
         {
        
-            return Ok(_invoiceRepository.CreateInvoice(fromDate, toDate, customerCode, invoiceNo));
+            return Ok(_invoiceRepository.CreateInvoice(fromDate, toDate, customerCode, invoiceNo, TransactionType.Insert.ToString(), false));
+        }
+
+        [HttpGet("PreviewInvoice")]
+        public ActionResult PreviewInvoice(string invoiceNo)
+        {
+
+            return Ok(_invoiceRepository.CreateInvoice(DateTime.Today, DateTime.Today, string.Empty, invoiceNo, TransactionType.PreView.ToString(), false));
+        }
+
+        [HttpGet("PreviewSubInvoice")]
+        public ActionResult PreviewSubInvoice(string invoiceNo)
+        {
+
+            return Ok(_invoiceRepository.PreviewSubInvoice(DateTime.Today, DateTime.Today, string.Empty, invoiceNo, TransactionType.PreView.ToString(), true));
+        }
+
+        [HttpGet("GetBranchWiseInvoiceDetail")]
+        public ActionResult GetBranchWiseInvoiceDetail(string invoiceNo)
+        {
+
+            return Ok(_invoiceRepository.GetInvoiceSummaryBranchWise (invoiceNo));
+        }
+
+        [HttpGet("ValidateInvoiceGeneration")]
+        public ActionResult ValidateInvoiceGeneration(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, bool isSubInvoice)
+        {
+
+            return Ok(_invoiceRepository.ValidateInvoiceGeneration(fromDate, toDate,customerCode, invoiceNo, isSubInvoice));
         }
 
     }

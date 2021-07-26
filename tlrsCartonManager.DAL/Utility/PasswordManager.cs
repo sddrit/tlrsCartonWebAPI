@@ -37,25 +37,40 @@ namespace tlrsCartonManager.DAL.Utility
 
         public static bool IsPreviousUsedPassword(List<UserPasswordHistory> userpassowrHistoryyList, string password)
         {
+
+            byte[] paswordHash;
+            byte[] passworSalt;
+
+            PasswordManager.GeneratePasswordHash(password, out paswordHash, out passworSalt);
+
             foreach (UserPasswordHistory userpassword in userpassowrHistoryyList)
-            {
+            {               
+
                 using var hmac = new HMACSHA512(userpassword.PasswordSalt);
 
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-
+               
+                var passwordOk = false;
                 for (int i = 0; i < computedHash.Length; i++)
                 {
-                    if (computedHash[i] == userpassword.PasswordHash[i])
+                    if (computedHash[i] != userpassword.PasswordHash[i])
+                    {
+                        passwordOk = true;
+                    }
+
+                    if(!passwordOk)
                     {
                         throw new ServiceException(new ErrorMessage[]
-                     {
-                        new ErrorMessage()
                         {
-                            Code = "1012",
-                            Message = "Previous password cannot be used"
-                        }
-                     });
+                            new ErrorMessage()
+                            {
+                                Code = "1012",
+                                Message = "Previous password cannot be used"
+                            }
+                        });
+
                     }
+                    passwordOk = false;
                 }
             }
             return false;
