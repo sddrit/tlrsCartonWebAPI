@@ -144,6 +144,25 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _mapper.Map<IEnumerable<CustomerSearchDto>>(mainAccList);
         }
 
+        public async Task<IEnumerable<CustomerSearchDto>> GetCustomerForInvoice(string customerName)
+        {
+            var customers = await _tcContext.Customers.
+               Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false && x.Active == true &&( x.IsSeparateInvoice==true || x.AccountType=="M"))).ToListAsync();           
+
+            if (customers == null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                    {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to find Customer by name {customerName}"
+                        }
+                    });
+            }
+            return _mapper.Map<IEnumerable<CustomerSearchDto>>(customers);
+        }
+
         public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByCode(string customerCode, bool isAll)
         {
             var mainAccList = await _tcContext.Customers.

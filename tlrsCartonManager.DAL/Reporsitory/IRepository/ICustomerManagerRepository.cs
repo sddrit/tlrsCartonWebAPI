@@ -20,6 +20,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnValue, int pageIndex, int pageSize);
         Task<List<CustomerAuthorizationHeaderDto>> GetCustomerAuthorizationById(int customerId);
 
+        Task<IEnumerable<CustomerSearchDto>> GetCustomerForInvoice(string customerName);
+
         int? GetCustomerId(string customerCode);
         bool ValidateCustomer(CustomerDto customer, string transcationType);
         bool AddCustomer(CustomerDto customerInsert);

@@ -31,15 +31,7 @@ namespace tlrsCartonManager.DAL.Helper
             return new PageList<T>(items, count, pageNumber, pageSize);
         }
 
-        internal static Task<PageList<InvoiceProfileDto>> CreateAsync(Task<List<List<InvoiceProfileDto>>> invProfileList, int pageIndex, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static Task<PageList<InvoiceSlabTypeHeaderDto>> CreateAsync(List<List<InvoiceSlabTypeHeaderDto>> invSlabHeaderList, int pageIndex, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
+     
     }
 
     /// <summary>

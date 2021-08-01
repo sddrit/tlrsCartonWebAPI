@@ -18,6 +18,7 @@ using tlrsCartonManager.DAL.Models.Base;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.DashBoard;
 using tlrsCartonManager.DAL.Models.Invoice;
+using tlrsCartonManager.DAL.Models.InvoiceProfile;
 using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
@@ -78,16 +79,9 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<CustomerAuthorizationListHeaderDto, CustomerAuthorizationListUtdDto>();
 
             CreateMap<CustomerAuthorizationListDetailUdtDto, CustomerAuthorizationListDetailDto>();
-            CreateMap<CustomerAuthorizationListDetailDto, CustomerAuthorizationListDetailUdtDto>();
+            CreateMap<CustomerAuthorizationListDetailDto, CustomerAuthorizationListDetailUdtDto>();           
 
            
-
-            CreateMap<SlabTypeHeader, SlabTypeHeaderDto>();
-            CreateMap<SlabTypeHeaderDto, SlabTypeHeader>();
-
-            CreateMap<SlabTypeDetail, SlabTypeDetailDto>();
-            CreateMap<SlabTypeDetailDto, SlabTypeDetail>();
-
             CreateMap<Role, RoleDto>();
             CreateMap<RoleDto, Role>();
 
@@ -264,6 +258,10 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<ViewCreatedInvoiceListSub, InvoiceHeaderResponse>().ReverseMap();
 
             CreateMap<ViewCreatedInvoiceList, InvoiceModel>().ReverseMap();
+            CreateMap<InvoiceTemplateHeaderCustomer, InvoiceProfileHeaderModel>().ReverseMap();
+            CreateMap<SupportingDocsViewModel, InvoiceTemplateSuportingDocsCustomer>()
+                 .ForMember(d => d.DocId, s => s.MapFrom(d => d.Id))
+                .ReverseMap();
         }
 
 

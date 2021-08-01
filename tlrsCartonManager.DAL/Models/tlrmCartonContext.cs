@@ -10,6 +10,7 @@ using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.DashBoard;
 using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.Invoice;
+using tlrsCartonManager.DAL.Models.InvoiceProfile;
 using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Ownership;
@@ -46,16 +47,11 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerAuthorizationListDetail> CustomerAuthorizationListDetails { get; set; }
         public virtual DbSet<CustomerAuthorizationListHeader> CustomerAuthorizationListHeaders { get; set; }
-        public virtual DbSet<CustomerRightUser> CustomerRightUsers { get; set; }
-        public virtual DbSet<CutomerInvoiceProfile> CutomerInvoiceProfiles { get; set; }
+        public virtual DbSet<CustomerRightUser> CustomerRightUsers { get; set; }       
         public virtual DbSet<DisposalTimeFrame> DisposalTimeFrames { get; set; }
         public virtual DbSet<InvoiceConfirmation> InvoiceConfirmations { get; set; }
         public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
-        public virtual DbSet<InvoiceHeader> InvoiceHeaders { get; set; }
-        public virtual DbSet<InvoiceProfile> InvoiceProfiles { get; set; }
-        public virtual DbSet<InvoiceProfileold> InvoiceProfileolds { get; set; }
-        public virtual DbSet<InvoiceSlabTypeDetail> InvoiceSlabTypeDetails { get; set; }
-        public virtual DbSet<InvoiceSlabTypeHeader> InvoiceSlabTypeHeaders { get; set; }
+        public virtual DbSet<InvoiceHeader> InvoiceHeaders { get; set; }         
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<MenuRight> MenuRights { get; set; }
         public virtual DbSet<MenuRightAttachedUser> MenuRightAttachedUsers { get; set; }
@@ -123,6 +119,12 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ModulePermission> ModulePermissions { get; set; }
         public virtual DbSet<ModuleSub> ModuleSubs { get; set; }
         public virtual DbSet<UserPasswordHistory> UserPasswordHistories { get; set; }
+
+        public virtual DbSet<InvoiceTemplateSuportingDocsCustomer> InvoiceTemplateSuportingDocsCustomers { get; set; }
+
+
+        public virtual DbSet<InvoiceTemplateHeaderCustomer> InvoiceTemplateHeaderCustomers { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -343,24 +345,7 @@ namespace tlrsCartonManager.DAL.Models
             {
                 entity.Property(e => e.CustomerCode).IsUnicode(false);
             });
-
-            modelBuilder.Entity<CutomerInvoiceProfile>(entity =>
-            {
-                entity.HasKey(e => e.TrackingId)
-                    .HasName("PK_cutomerInvoiceProfile");
-
-                entity.Property(e => e.TrackingId).ValueGeneratedNever();
-
-                entity.HasOne(d => d.InvoiceProfile)
-                    .WithMany(p => p.CutomerInvoiceProfiles)
-                    .HasForeignKey(d => d.InvoiceProfileId)
-                    .HasConstraintName("FK_CutomerInvoiceProfile_InvoiceProfile");
-
-                entity.HasOne(d => d.InvoiceProfileNavigation)
-                    .WithMany(p => p.CutomerInvoiceProfiles)
-                    .HasForeignKey(d => d.InvoiceProfileId)
-                    .HasConstraintName("FK_CutomerInvoiceProfile_Customer");
-            });
+         
 
             modelBuilder.Entity<DisposalTimeFrame>(entity =>
             {
@@ -412,45 +397,8 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.TrackingId).ValueGeneratedOnAdd();
             });
 
-            modelBuilder.Entity<InvoiceProfile>(entity =>
-            {
-                entity.HasKey(e => e.ProfileId)
-                    .HasName("PK_InvoiceProfile_1");
-
-                entity.Property(e => e.ProfileDesc).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<InvoiceProfileold>(entity =>
-            {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Description).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<InvoiceSlabTypeDetail>(entity =>
-            {
-                entity.HasKey(e => e.TrackingId)
-                    .HasName("PK_SlabTypeDetail");
-
-                entity.HasOne(d => d.IdNavigation)
-                    .WithMany(p => p.InvoiceSlabTypeDetails)
-                    .HasForeignKey(d => d.Id)
-                    .HasConstraintName("FK_SlabTypeDetail_SlabTypeHeader");
-            });
-
-            modelBuilder.Entity<InvoiceSlabTypeHeader>(entity =>
-            {
-                entity.HasKey(e => e.TrackingId)
-                    .HasName("PK_SlabType");
-
-                entity.Property(e => e.Description).IsUnicode(false);
-
-                entity.HasOne(d => d.InvoiceProfile)
-                    .WithMany(p => p.InvoiceSlabTypeHeaders)
-                    .HasForeignKey(d => d.InvoiceProfileId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SlabTypeHeader_InvoiceProfile");
-            });
+          
+           
 
             modelBuilder.Entity<MenuRight>(entity =>
             {
@@ -1250,6 +1198,37 @@ namespace tlrsCartonManager.DAL.Models
                     .HasConstraintName("FK_ModuleSub_Module");
             });
 
+
+            modelBuilder.Entity<InvoiceTemplateHeaderCustomer>(entity =>
+            {
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.CreatedUserId).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CustomerCode).IsUnicode(false);
+
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.InvoiceTypeCode).IsUnicode(false);
+
+                entity.Property(e => e.LuDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.LuUserId).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.StorageType).HasDefaultValueSql("((1))");
+            });
+
+            modelBuilder.Entity<InvoiceTemplateSuportingDocsCustomer>(entity =>
+            {
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.CustomerCode).IsUnicode(false);
+
+                entity.Property(e => e.LuDate).HasDefaultValueSql("(getdate())");
+            });
+
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -1310,6 +1289,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<InvoiceResponseDetail>().HasNoKey();
             modelBuilder.Entity<BranchWiseDetail>().HasNoKey();
             modelBuilder.Entity<TransactionSummaryResponse>().HasNoKey();
+            modelBuilder.Entity<InvoiceProfileSearch>().HasNoKey();
+            modelBuilder.Entity<InvoiceProfileRate>().HasNoKey();
 
             OnModelCreatingPartial(modelBuilder);
         }

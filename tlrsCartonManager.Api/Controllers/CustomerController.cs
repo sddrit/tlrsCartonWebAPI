@@ -72,6 +72,12 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _customerRepository.GetCustomerByMainId(customerId));         
         }
 
+        [HttpGet("getCustomerByNameForInvoice/{customerName}")]
+        public async Task<ActionResult<CustomerSearchDto>> GetCustomerByNameForInvoice(string customerName)
+        {
+            return Ok(await _customerRepository.GetCustomerForInvoice(customerName));
+        }
+
         [HttpPost]
         public ActionResult AddCustomer(CustomerDto customer)
         {

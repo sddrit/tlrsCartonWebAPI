@@ -53,6 +53,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<ImportDataService>();
             services.AddScoped<IAccountManagerRepository, AccountManagerRepository>();
             services.AddScoped<IDashBoardManagerRepository, DashBoardManagerRepository>();
+            services.AddScoped<IInvoiceProfileManagerRepository, InvoiceProfileManagerRepository>();
 
             //---Meta Data registration
 
