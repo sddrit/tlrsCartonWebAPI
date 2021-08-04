@@ -62,7 +62,14 @@ namespace tlrsCartonManager.Api.Controllers
         public async Task<ActionResult> GetWorkerList()
         {
            return Ok( await _workerRepository.GetWorkersList());
-        }     
+        }
+
+        [HttpGet("pendingPickListSummary")]
+        public  ActionResult GetPendingPickListSummary(string type)
+        {
+          return Ok(_pickListRepository.GetPendingPickListSummary(type));
+           
+        }
 
         [HttpPost]
         public async Task<ActionResult> AddPickList(PickListResponseDto pickList)

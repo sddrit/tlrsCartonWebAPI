@@ -65,7 +65,12 @@ namespace tlrsCartonManager.DAL.Models
         [Column("Invoice Tye")]
         public string InvoiceTye { get; set; }
 
+        [Column("Svat No")]
+        public string SvatNo { get; set; }
 
-     
+        [Column("Vat Percentage")]
+        public decimal? VatPercentage { get; set; }
+
+
     }
 }

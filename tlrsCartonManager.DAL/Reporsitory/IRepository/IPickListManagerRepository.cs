@@ -18,5 +18,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         bool AddPickList (PickListResponseDto pickListInsert);
         TableReturn UpdatePickList(PickListResponseDto pickListInsert);
        TableReturn DeletePickList(PickListResponseDto pickListInsert);
+
+        object GetPendingPickListSummary(string type);
     }
 }

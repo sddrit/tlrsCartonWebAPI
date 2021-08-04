@@ -22,7 +22,7 @@ namespace tlrsCartonManager.DAL.Models
     [NotMapped]
     public class InvoiceResponse
     {
-        public string MainInvoiceNo  { get; set; }
+        public string MainInvoiceNo  { get; set; }   
         public InvoiceMainResponse InvoiceMainResponses { get; set; }
         public List<InvoiceSubResponse> InvoiceSubDetails { get; set; }
         public List<InvoiceSeparateResponse> InvoiceSeparateDetails { get; set; }
@@ -88,20 +88,23 @@ namespace tlrsCartonManager.DAL.Models
 
         public int ToDate { get; set; }
 
+        public string SvatNo { get; set; }
+
+        public decimal VatPercentage { get; set; }
     }
 
     [NotMapped]
     public class InvoiceResponseDetail
     {
-        public int InvoiceNoGroup { get; set; }
+        public int? InvoiceNoGroup { get; set; }
         public string Description { get; set; }
         public string CustomerCode { get; set; }
-        public int StorageType { get; set; }
-        public int LineId { get; set; }
-        public int Qty { get; set; }
-        public decimal Rate { get; set; }
-        public decimal Amount { get; set; }
-        public decimal Total { get; set; }
+        public int? StorageType { get; set; }
+        public int? LineId { get; set; }
+        public int? Qty { get; set; }
+        public decimal? Rate { get; set; }
+        public decimal? Amount { get; set; }
+        public decimal? Total { get; set; }
         public string InvoiceNo { get; set; }
 
     }

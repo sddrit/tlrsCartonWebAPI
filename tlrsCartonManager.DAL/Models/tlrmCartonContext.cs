@@ -6,6 +6,7 @@ using tlrsCartonManager.DAL.Dtos.Import;
 using tlrsCartonManager.DAL.Dtos.Location;
 using tlrsCartonManager.DAL.Dtos.Menu;
 using tlrsCartonManager.DAL.Dtos.Ownership;
+using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.DashBoard;
 using tlrsCartonManager.DAL.Models.Docket;
@@ -1291,6 +1292,9 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<TransactionSummaryResponse>().HasNoKey();
             modelBuilder.Entity<InvoiceProfileSearch>().HasNoKey();
             modelBuilder.Entity<InvoiceProfileRate>().HasNoKey();
+            modelBuilder.Entity<PickListSummaryRequest>().HasNoKey();
+            modelBuilder.Entity<PickListSummaryDate>().HasNoKey();
+            modelBuilder.Entity<PickListSummaryWareHouse>().HasNoKey();
 
             OnModelCreatingPartial(modelBuilder);
         }

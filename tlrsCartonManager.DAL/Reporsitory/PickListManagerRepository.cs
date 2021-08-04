@@ -142,5 +142,31 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return paginationResponse;
         }
+
+        public object GetPendingPickListSummary(string type)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = PickListSummaryStoredProcedure.StoredProcedureParameters[0].ToString(),
+                    Value = type }
+            };
+
+            if (type == "Request")
+                return _tcContext.Set<PickListSummaryRequest>().FromSqlRaw(PickListSummaryStoredProcedure.Sql, parms.ToArray()).AsEnumerable().ToList();
+            if (type == "Date")
+                return _tcContext.Set<PickListSummaryDate>().FromSqlRaw(PickListSummaryStoredProcedure.Sql, parms.ToArray()).AsEnumerable().ToList();
+            if (type == "WareHouse")
+                return _tcContext.Set<PickListSummaryWareHouse>().FromSqlRaw(PickListSummaryStoredProcedure.Sql, parms.ToArray()).AsEnumerable().ToList();
+
+            throw new ServiceException(new ErrorMessage[]
+                {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"Summary type not implemeted"
+                     }
+                });
+
+        }
     }
 }

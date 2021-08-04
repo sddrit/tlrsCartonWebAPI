@@ -148,9 +148,24 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[5].ToString(), Value = transactionType.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[6].ToString(), Value = isSubInvoice.AsDbValue() }
 
-            };
+            };           
 
-           return _tcContext.Set<InvoiceResponseDetail>().FromSqlRaw(InvoiceStoredProcedure.Sql, parms.ToArray()).ToList();
+            var result= _tcContext.Set<InvoiceResponseDetail>().FromSqlRaw(InvoiceStoredProcedure.Sql, parms.ToArray()).ToList();           
+
+           if(result==null)
+            {
+
+                throw new ServiceException(new ErrorMessage[]
+                {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"Unable generate invoice "
+                     }
+                });
+
+            }
+            return result;
 
         }
 
@@ -158,13 +173,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             int fDate = fromDate.DateToInt();
             int tDate = toDate.DateToInt();
-
+         
             var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice);
 
             var subInvoiceDetail = resultTable.Where(x => x.InvoiceNoGroup == 2).ToList().GroupBy(item => new { item.CustomerCode, item.InvoiceNo })
                .Select(item => new InvoiceSubResponse()
                {
-
+                 
                    InvoiceHeaders = _mapper.Map<InvoiceHeaderResponse>(_tcContext.ViewCreatedInvoiceListSubs.Where(x => x.InvoiceId == item.Key.InvoiceNo
                              && x.CustomerCode == item.Key.CustomerCode).FirstOrDefault()),
                    InvoiceDetails = item.ToList()
@@ -182,7 +197,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             int tDate = toDate.DateToInt();
             if(transactionType !=TransactionType.PreView.ToString())
                 ValidateInvoiceGeneration(fromDate, toDate, customerCode, invoiceNo,false);
-
+        
 
             var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice);
 
@@ -212,7 +227,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             var invoiceResponse = new InvoiceResponse()
             {
-                MainInvoiceNo = mainInvoiceNo,
+                MainInvoiceNo = mainInvoiceNo,            
                 InvoiceMainResponses = new InvoiceMainResponse()
                 {
                     InvoiceHeaders = mainInvoiceHeader,
