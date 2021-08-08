@@ -18,7 +18,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public TokenServicesRepository(IConfiguration config)
         {
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            //_key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
         }
 
         public string CreateToken(string  username)

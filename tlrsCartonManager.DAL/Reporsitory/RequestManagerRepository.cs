@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.Core.Enums;
+using tlrsCartonManager.Core.Environment;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -28,13 +29,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
         private readonly IMapper _mapper;
         private readonly ISearchManagerRepository _searchManager;
         private readonly IDocketPrintManagerRepository _docketManager;
+        private readonly IEnvironment _environment;
         public RequestManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager,
-            IDocketPrintManagerRepository docketManager)
+            IDocketPrintManagerRepository docketManager, IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
             _searchManager = searchManager;
             _docketManager = docketManager;
+            _environment = environment;
         }
         public async Task<RequestHeaderDto> GetRequestList(string requestNo, string type)
         {          
@@ -238,6 +241,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket)
         {
+
             List<SqlParameter> parms = new List<SqlParameter>
             {
 
@@ -246,7 +250,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = AddDocketStoredProcedure.StoredProcedureParameters[1].ToString(),
                     Value =  originalDocket.DocketNo.AsDbValue()},
                 new SqlParameter { ParameterName = AddDocketStoredProcedure.StoredProcedureParameters[2].ToString(),
-                    Value =  originalDocket.LuUser.AsDbValue()}
+                    Value =  _environment.GetCurrentEnvironment().UserId.AsDbValue()}
             };
             return _tcContext.Set<BoolReturn>().FromSqlRaw(AddDocketStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }

@@ -21,6 +21,8 @@ using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Dtos.Invoice;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.Core.Enums;
+using tlrsCartonManager.Core.Environment;
+
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -29,12 +31,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
         private readonly ISearchManagerRepository _searchManager;
+        private readonly IEnvironment _environment;
 
-        public InvoiceManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager)
+        public InvoiceManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager, IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
             _searchManager = searchManager;
+            _environment = environment;
         }
 
         #region Invoicing
@@ -136,14 +140,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
         private List<InvoiceResponseDetail> ExecuteCreateInvoice(int fDate, int tDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice)
-        {
+        {        
+          
 
             List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[0].ToString(), Value = fDate.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[1].ToString(), Value = tDate.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[2].ToString(), Value = customerCode.AsDbValue() },
-                new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[3].ToString(), Value = 1 },
+                new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[3].ToString(), Value = _environment.GetCurrentEnvironment().UserId },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[4].ToString(), Value = invoiceNo.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[5].ToString(), Value = transactionType.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[6].ToString(), Value = isSubInvoice.AsDbValue() }

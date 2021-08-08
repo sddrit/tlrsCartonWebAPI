@@ -19,6 +19,10 @@ using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Dtos.MetaData;
 using tlrsCartonManager.DAL.Dtos.Module;
+using tlrsCartonManager.Api.Util.Options;
+using tlrsCartonManager.Core.Environment;
+using Microsoft.AspNetCore.Http;
+using tlrsCartonManager.Api.Util.Enviroment;
 
 namespace tlrsCartonManager.Api.Extensions
 {
@@ -32,7 +36,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);
             services.AddScoped<IUserManagerRepository, UserManagerRepository>();
             services.AddScoped<IUserPasswordManagerRepository, UserPasswordManagerRepository>();
-            services.AddScoped<ITokenServicesRepository, TokenServicesRepository>();
+            services.AddScoped<ITokenServicesRepository, TokenServicesRepository>();            
             services.AddScoped<ICustomerManagerRepository, CustomerManagerRepository>();
             services.AddScoped<ICartonStorageManagerRepository, CartonStorageManagerRepository>();
             services.AddScoped<ISearchManagerRepository, SearchManagerRepository>();
@@ -54,7 +58,9 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IAccountManagerRepository, AccountManagerRepository>();
             services.AddScoped<IDashBoardManagerRepository, DashBoardManagerRepository>();
             services.AddScoped<IInvoiceProfileManagerRepository, InvoiceProfileManagerRepository>();
-
+          
+            services.AddScoped<IEnvironment, WebEnvironment>();
+           
             //---Meta Data registration
 
             services.AddScoped<BaseMetaRepositoryValidator>();

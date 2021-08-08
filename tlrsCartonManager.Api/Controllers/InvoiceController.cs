@@ -14,13 +14,14 @@ using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.Core.Enums;
+using System.Security.Claims;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    public class InvoiceController : Controller
+    public class InvoiceController : ControllerBase
     {
         private readonly IInvoiceManagerRepository _invoiceRepository;
 
@@ -56,9 +57,9 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Invoice Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpGet("GeneratedInvoice")]
-        public ActionResult CreateInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo)        
-        {
-       
+        public ActionResult CreateInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo)
+        {       
+
             return Ok(_invoiceRepository.CreateInvoice(fromDate, toDate, customerCode, invoiceNo, TransactionType.Insert.ToString(), false));
         }
 

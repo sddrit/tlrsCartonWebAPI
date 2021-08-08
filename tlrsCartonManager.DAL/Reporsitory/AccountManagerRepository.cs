@@ -55,8 +55,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
             {
                 var userLoginResponse = new UserLoginResponse()
                 {
-                    UserName = model.UserName,
-                    Token = _tokenServiceRepository.CreateToken(model.UserName)
+                    UserName = model.UserName
+                    //Token = _tokenServiceRepository.CreateToken(model.UserName)
 
                 };
 
@@ -95,7 +95,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                         UserFirstName = userInfo.UserFirstName,
                         UserLastName=userInfo.UserLastName,
                         UserRole =userInfo.UserRole,
-                        Token = _tokenServiceRepository.CreateToken(model.UserName),
+                        //Token = _tokenServiceRepository.CreateToken(model.UserName),
                         Permissions = resultPermission
 
                     };
@@ -199,5 +199,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return true;
 
         }
+
+
+
     }
 }
