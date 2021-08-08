@@ -84,9 +84,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[8].ToString() , Value =user.Email.AsDbValue() },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[9].ToString() , Value =user.Active.AsDbValue() },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[10].ToString() , Value =trasactionType },
-                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[11].ToString(), Value = user.TransactionUserId.AsDbValue() }
+                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[11].ToString(), Value = user.TransactionUserId.AsDbValue() },
+                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[12].ToString(), Value =PasswordManagerMobile.EncryptPlainTextToCipherText( user.UserPassword).AsDbValue()}
 
-            };
+            };            
 
             return _tcContext.Set<IntReturn>().FromSqlRaw(UserInsertUpdateDeleteStoredProcedureSearch.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }

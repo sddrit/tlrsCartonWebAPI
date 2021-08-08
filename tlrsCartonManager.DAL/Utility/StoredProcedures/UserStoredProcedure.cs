@@ -35,7 +35,8 @@ namespace tlrsCartonManager.DAL.Utility
             "@email",
             "@active",
             "@statementType" ,
-            "@createdId"
+            "@createdId",
+            "@passwordEncryptionMobile"
         };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) ;
     }
