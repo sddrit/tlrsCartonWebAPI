@@ -13,24 +13,33 @@ using tlrsCartonManager.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
+using tlrsCartonManager.Api.Util.Authorization;
+using tlrsCartonManager.Core.Enums;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class RequestController : Controller
     {
         private readonly IRequestManagerRepository _requestRepository;
+        private readonly AuthorizeService _authorizeService;
 
-        public RequestController(IRequestManagerRepository requestRepository)
+        public RequestController(IRequestManagerRepository requestRepository, AuthorizeService authorizeService)
         {
             _requestRepository = requestRepository;
+            _authorizeService = authorizeService;
         }
 
         [HttpGet]
         public async Task<ActionResult<CartonStorageSearchDto>> SearchCarton(string requestType,string searchText, int pageIndex, int pageSize)
         {
+            if (!Authorize(requestType, tlrsCartonManager.Core.Enums.ModulePermission.View))
+            {
+                return Unauthorized();
+            }
+
             var requestList = await _requestRepository.SearchRequest(requestType, searchText, pageIndex, pageSize);
             return Ok(requestList);
         }
@@ -48,6 +57,12 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPost]
         public ActionResult AddRequest(RequestHeaderDto request)
         {
+            if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Add))
+            {
+                return Unauthorized();
+            }
+
+
             var response = _requestRepository.AddRequest(request);
             if (response.OutList!=null && response.OutList.Count()>0)
                 return new JsonErrorResult(response, HttpStatusCode.PartialContent);
@@ -60,6 +75,11 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPut]
         public ActionResult UpdateRequest(RequestHeaderDto request)
         {
+            if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Edit))
+            {
+                return Unauthorized();
+            }
+
             var response = _requestRepository.UpdateRequest(request);
             if (response.OutList != null && response.OutList.Count() > 0)
                 return new JsonErrorResult(response, HttpStatusCode.PartialContent);
@@ -72,6 +92,11 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpDelete]
         public ActionResult DeleteRequest(RequestHeaderDto request)
         {
+            if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Delete))
+            {
+                return Unauthorized();
+            }
+
             return Ok(_requestRepository.DeleteRequest(request.RequestNo));
         }
 
@@ -92,6 +117,57 @@ namespace tlrsCartonManager.Api.Controllers
         {
             DocketPrintModel model = new DocketPrintModel() { RequestNo = requestNo, RequestType = requestType, PrintedBy = printedBy };
             return Ok( await _requestRepository.GetDocket(model));
+
+        }
+
+
+        private bool Authorize(string type, tlrsCartonManager.Core.Enums.ModulePermission permission)
+        {
+
+
+            if (type.ToLower() == RequestTypes.empty.ToString().ToLower()
+               && !_authorizeService.HasPermission("Empty", permission))
+            {
+                return false;
+            }
+
+            if (type.ToLower() == RequestTypes.emptyallocate.ToString().ToLower()
+            && !_authorizeService.HasPermission("Empty Allocate", permission))
+            {
+                return false;
+            }
+            if (type.ToLower() == RequestTypes.emptydeallocate.ToString().ToLower()
+            && !_authorizeService.HasPermission("Empty Deallocate", permission))
+            {
+                return false;
+            }
+
+            if (type.ToLower() == RequestTypes.collection.ToString().ToLower()
+              && !_authorizeService.HasPermission("Collection", permission))
+            {
+                return false;
+            }
+
+
+            if (type.ToLower() == RequestTypes.retrieval.ToString().ToLower()
+              && !_authorizeService.HasPermission("Retrieval", permission))
+            {
+                return false;
+            }
+
+            if (type.ToLower() == RequestTypes.disposal.ToString().ToLower()
+             && !_authorizeService.HasPermission("Disposal", permission))
+            {
+                return false;
+            }
+
+            if (type.ToLower() == RequestTypes.permout.ToString().ToLower()
+            && !_authorizeService.HasPermission("PermOut", permission))
+            {
+                return false;
+            }
+
+            return true;
 
         }
     }

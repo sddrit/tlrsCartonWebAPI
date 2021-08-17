@@ -15,12 +15,13 @@ using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.Core.Enums;
 using tlrsCartonManager.DAL.Models.InvoiceProfile;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class InvoiceProfileController : Controller
     {
         private readonly IInvoiceProfileManagerRepository _invoiceProfileRepository;
@@ -31,6 +32,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
+        [RmsAuthorization("Invoice Profile", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult>SearchInvoiceProfile(string searchText, int pageIndex, int pageSize)
         {
             var invoiceList = await _invoiceProfileRepository.SearchInvoiceProfile(searchText, pageIndex, pageSize);
@@ -38,6 +40,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("RateSheet")]
+        [RmsAuthorization("Invoice Profile", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
         public async Task<ActionResult> SearchInvoiceProfile(int id,string customerCode,string transactionType)
         {
             var invoiceList = await _invoiceProfileRepository.GetInvoiceProfileRateSheet(id,customerCode,transactionType);
@@ -45,6 +48,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [RmsAuthorization("Invoice Profile", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public ActionResult GetInvoiceProfielById(int id)
         {
             var invoiceList =  _invoiceProfileRepository.GetInvoiceProfileById(id);
@@ -52,6 +56,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPost]
+        [RmsAuthorization("Invoice Profile", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
         public async Task<ActionResult> AddInvoiceProfileHeader(InvoiceProfileHeaderModel model)
         {
            return Ok( _invoiceProfileRepository.InsertInvoiceProfileHeader(model, TransactionType.Insert.ToString()));
@@ -59,6 +64,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPut]
+        [RmsAuthorization("Invoice Profile", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
         public async Task<ActionResult> UpdateInvoiceProfileHeader(InvoiceProfileHeaderModel model)
         {
             return Ok(_invoiceProfileRepository.InsertInvoiceProfileHeader(model, TransactionType.Update.ToString()));
@@ -66,6 +72,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPost("AddRates")]
+        [RmsAuthorization("Invoice Profile", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
         public async Task<ActionResult> AddInvoiceProfileRates(InvoiceProfileRateModel model)
         {
             return Ok(_invoiceProfileRepository.InsertInvoiceProfileRates(model));

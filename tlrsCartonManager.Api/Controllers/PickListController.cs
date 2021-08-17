@@ -14,12 +14,13 @@ using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.DAL.Dtos.Pick;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class PickListController : Controller
     {
         private readonly IPickListManagerRepository _pickListRepository;
@@ -31,6 +32,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
+        [RmsAuthorization("PickList", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<PickListSearchDto>> SearchPickList(string searchText, int pageIndex, int pageSize)
         {
             var pickList = await _pickListRepository.SearchPickList(searchText, pageIndex, pageSize);
@@ -39,6 +41,7 @@ namespace tlrsCartonManager.Api.Controllers
 
 
         [HttpGet("{pickListNo}")]
+        [RmsAuthorization("PickList", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<PickListHeaderDto>> GetSingleSearch(string pickListNo)
         {
             var request = await _pickListRepository.GetPickList(pickListNo);
@@ -72,12 +75,14 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPost]
+        [RmsAuthorization("PickList", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
         public async Task<ActionResult> AddPickList(PickListResponseDto pickList)
         {
             return Ok(_pickListRepository.AddPickList(pickList));
         }
 
         [HttpPut]
+        [RmsAuthorization("PickList", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
         public ActionResult UpdatePickList(PickListResponseDto pickList)
         {
             var request = _pickListRepository.UpdatePickList(pickList);
@@ -88,6 +93,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpDelete]
+        [RmsAuthorization("PickList", tlrsCartonManager.Core.Enums.ModulePermission.Delete)]
         public ActionResult DeletePickList(PickListResponseDto pickList)
         {
             var request = _pickListRepository.DeletePickList(pickList);

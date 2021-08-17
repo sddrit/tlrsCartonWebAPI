@@ -23,6 +23,7 @@ using tlrsCartonManager.Api.Util.Options;
 using tlrsCartonManager.Core.Environment;
 using Microsoft.AspNetCore.Http;
 using tlrsCartonManager.Api.Util.Enviroment;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Extensions
 {
@@ -58,7 +59,8 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IAccountManagerRepository, AccountManagerRepository>();
             services.AddScoped<IDashBoardManagerRepository, DashBoardManagerRepository>();
             services.AddScoped<IInvoiceProfileManagerRepository, InvoiceProfileManagerRepository>();
-          
+            services.AddScoped<AuthorizeService>();
+
             services.AddScoped<IEnvironment, WebEnvironment>();
            
             //---Meta Data registration

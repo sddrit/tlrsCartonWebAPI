@@ -20,6 +20,7 @@ using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models.Pick;
 using tlrsCartonManager.DAL.Exceptions;
+using tlrsCartonManager.Core.Environment;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -28,12 +29,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
         private readonly ISearchManagerRepository _searchManager;
+        private readonly IEnvironment _environment;
 
-        public PickListManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager)
+        public PickListManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager, IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
             _searchManager = searchManager;
+            _environment = environment;
         }
 
         private TableReturn SavePickList(PickListResponseDto pickListInsert,string transcationType)

@@ -23,6 +23,12 @@ namespace tlrsCartonManager.DAL.Dtos
         public int TransactionUserId { get; set; }
         public string Email { get; set; }
         public bool Active { get; set; }
+        public int? LoginAttempts { get; set; }
+        public bool Lock { get; set; }
+        
+        public DateTime? PasswordLockedDate { get; set; }
+       
+
         public ICollection<UserRoleDto> UserRoles { get; set; }
     }
     public class UserRoleDto

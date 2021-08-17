@@ -18,11 +18,11 @@ namespace tlrsCartonManager.DAL.Dtos.Menu
 
     public class UserModulePermission
     {
-        public int? ModuleId  { get; set; }
+        public int? ModuleId { get; set; }
         public string ModuleName { get; set; }
         public int? SubModuleId { get; set; }
         public string SubModuleName { get; set; }
-        public int? Permission { get; set; }
+        public int Permission { get; set; }
     }
 
     public class UserRolePermission

@@ -19,6 +19,7 @@ using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Dtos.Import;
 using tlrsCartonManager.DAL.Exceptions;
+using tlrsCartonManager.Core.Environment;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -26,18 +27,20 @@ namespace tlrsCartonManager.DAL.Reporsitory
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
+        private readonly IEnvironment _environment;
 
-        public ImportDataManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public ImportDataManagerRepository(tlrmCartonContext tccontext, IMapper mapper, IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
+            _environment = environment;
         }
 
         public ImportResultDto GetAlternativeNoUpdateResult(List<ExcelParseAlternativeNoUpdateViewModel> alternativeNoList, int userId)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
-                 new SqlParameter { ParameterName = ImportDataAlternativeNoStoredprocedure.StoredProcedureParameters[0].ToString(), Value = userId.AsDbValue() } ,
+                 new SqlParameter { ParameterName = ImportDataAlternativeNoStoredprocedure.StoredProcedureParameters[0].ToString(), Value = _environment.GetCurrentEnvironment().UserId.AsDbValue() } ,
 
                 new SqlParameter
                 {
@@ -69,7 +72,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
-                 new SqlParameter { ParameterName = ImportDataDestructionDateStoredprocedure.StoredProcedureParameters[0].ToString(), Value = userId.AsDbValue() } ,
+                 new SqlParameter { ParameterName = ImportDataDestructionDateStoredprocedure.StoredProcedureParameters[0].ToString(), Value =_environment.GetCurrentEnvironment().UserId.AsDbValue() } ,
 
                 new SqlParameter
                 {

@@ -63,6 +63,8 @@ namespace tlrsCartonManager.DAL.Dtos.Pick
         public long? PickDate { get; set; }
 
         public int? LastScannedDate { get; set; }
+        public string Status { get; set; }
+
     }
     public class PickListDto
     {

@@ -13,12 +13,13 @@ using tlrsCartonManager.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class DocketPrintController : Controller
     {
         private readonly IDocketPrintManagerRepository _docketPrintRepository;
@@ -31,6 +32,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
         
         [HttpGet("getDocketRePrint")]
+        [RmsAuthorization("Re Print Dockets", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> GetDocketRePrint(int serialNo,string requestNo, string requestType, string printedBy)
         {
             DocketRePrintModel model = new DocketRePrintModel() {SerialNo=serialNo, RequestNo = requestNo, RequestType = requestType, PrintedBy = printedBy };
@@ -39,6 +41,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getDocket")]
+        [RmsAuthorization("Print Dockets", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public ActionResult GetDocket(string requestNo,string requestType, string printedBy)
         {
             DocketPrintModel model = new DocketPrintModel() { RequestNo = requestNo, RequestType = requestType, PrintedBy = printedBy };
@@ -59,6 +62,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpDelete]
+        [RmsAuthorization("Re Print Dockets", tlrsCartonManager.Core.Enums.ModulePermission.Delete)]
         public ActionResult DeleteRePrintedDockets(DocketRePrintModel model)
         {
             return Ok(_docketPrintRepository.DeleteDocketRePrint(model));

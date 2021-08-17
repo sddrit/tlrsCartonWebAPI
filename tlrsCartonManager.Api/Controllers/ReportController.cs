@@ -18,24 +18,28 @@ using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Models.Report;
 using tlrsCartonManager.Services.Report;
 using tlrsCartonManager.Services.Report.Core;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ReportController : Controller
     {
         private readonly IReportManagerRepository _reportRepository;
         private readonly ReportGeneratingService _reportGeneratingService;
+        private readonly AuthorizeService _authorizeService;
 
-        public ReportController(IReportManagerRepository reportRepository, ReportGeneratingService reportGeneratingService)
+        public ReportController(IReportManagerRepository reportRepository, ReportGeneratingService reportGeneratingService, AuthorizeService authorizeService)
         {
             _reportRepository = reportRepository;
             _reportGeneratingService = reportGeneratingService;
+            _authorizeService = authorizeService;
         }
 
         [HttpGet("getInventoryByCustomer")]
+        //[RmsAuthorization("Inventory by Customer", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<InventoryByCustomerReponse>> GetInventoryByCustomer(
             int customerId, string woType,DateTime asAtDate, bool includeSubAccount)
         {
@@ -45,42 +49,50 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getPendingRequestSummary")]
+        //[RmsAuthorization("Pending Request Summary", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<ViewPendingRequestPivot>> GetPendingRequestSummary(DateTime asAtDate)
         {
            return Ok( await _reportRepository.GetPendingRequestSummary(asAtDate));
           
         }
         [HttpGet("getDailyLogCollection")]
+        //[RmsAuthorization("Daily Collection log", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<ViewPendingRequestPivot>> GetDailyLogCollection(bool asAtToday, DateTime fromDate, DateTime toDate, string route)
         {
             return Ok(await _reportRepository.GetDailyLogCollection(asAtToday,fromDate, toDate,route));
 
         }
         [HttpGet("getToBeDisposedCartonList")]
+        //[RmsAuthorization("To Be Disposed Carton List", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<ViewPendingRequestPivot>> GetToBeDisposedCartonList(string customerCode,  bool includeSubAccount)
         {
             return Ok(await _reportRepository.GetToBeDisposedCartonList(customerCode, includeSubAccount));
 
         }
         [HttpGet("getCartonsInPendingRequest")]
+        //[RmsAuthorization("Cartons In Pending Requests", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<ViewPendingRequestPivot>> GetCartonsInPendingRequest(string customerCode, bool includeSubAccount)
         {
             return Ok(await _reportRepository.GetCartonsInPendingRequest(customerCode, includeSubAccount));
 
         }
         [HttpGet("getCustomerTransactions")]
+        //[RmsAuthorization("Customer Transactions", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<ViewPendingRequestPivot>> GetCustomerTransactions(string customerCode, DateTime fromDate, DateTime toDate, bool includeSubAccount)
         {
             return Ok(await _reportRepository.GetCustomerTransactions(customerCode,fromDate, toDate, includeSubAccount));
 
         }
         [HttpGet("getCartonsInLocation")]
+        //[RmsAuthorization("Cartons in Locations", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<ViewPendingRequestPivot>> GetCartonsInLocation(string locationCode)
         {
             return Ok(await _reportRepository.GetCartonsInLocation(locationCode));
 
         }
         [HttpGet("trackersPertainingRetension")]
+        //[RmsAuthorization("Trackers Pertaining", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+
         public async Task<ActionResult<RetentionTracker>> GetRetensionTracker(string customerCode, DateTime asAtDate, bool includeSubAccount)
         {
             return Ok(await _reportRepository.GetRetentionTracker(customerCode, asAtDate, includeSubAccount));
@@ -108,11 +120,16 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPost("generate-report")]
         public async Task<IActionResult> GenerateReport([FromBody]GenerateReportRequest request)
         {
-            var excelReportData = _reportGeneratingService.GenerateReportData(request);
-            return File(excelReportData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "report.xlsx");
+            if (_authorizeService.HasPermission(request.ModuleName, tlrsCartonManager.Core.Enums.ModulePermission.View))
+            {
+                var excelReportData = _reportGeneratingService.GenerateReportData(request);
+                return File(excelReportData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "report.xlsx");
+            }
+            return Unauthorized();
         }
 
         [HttpGet("InventorySummaryAsAtDate")]
+        //[RmsAuthorization("Inventory Summary", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> InventorySummaryAsAtDate( DateTime asAtDate)
         {
             return Ok(await _reportRepository.GetnventorySummaryAsAtDate( asAtDate));
@@ -120,6 +137,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("CartonsInRCCollectionWoPending")]
+        //[RmsAuthorization("Collection WO Pending", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> CartonsInRCCollectionWoPending(DateTime asAtDate)
         {
             return Ok(await _reportRepository.GetCartonsInRCCollectionWoPending(asAtDate));
@@ -127,6 +145,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("CartonsInRCWoPending")]
+        //[RmsAuthorization("WO Pending", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> CartonsInRCWoPending(DateTime asAtDate)
         {
             return Ok(await _reportRepository.GetCartonsInRCWoPending(asAtDate));
@@ -134,6 +153,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("DailyPalletedSummary")]
+        //[RmsAuthorization("Daily Palleted Summary", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> DailyPalletedSummary(DateTime asAtDate, string locationCode)
         {
             return Ok(await _reportRepository.GetDailyPalletedSummary(asAtDate, locationCode));

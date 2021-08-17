@@ -37,19 +37,23 @@ namespace tlrsCartonManager.Api
         }
 
         public IConfiguration Configuration { get; }
-        
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var authorizationConfiguration = Configuration.GetSection("Token");
             services.Configure<TokenConfiguration>(Configuration.GetSection("Token"));
-            
+
             services.AddHttpContextAccessor();
 
             services.AddCors();
 
-            services.AddAuthentication()
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
@@ -57,13 +61,13 @@ namespace tlrsCartonManager.Api
 
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
+                       
                         ValidIssuer = authorizationConfiguration["Issuer"],
                         ValidAudience = authorizationConfiguration["Issuer"],
                         IssuerSigningKey =
                             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authorizationConfiguration["Key"]))
                     };
                 });
-
             services.AddApplicationServices(Configuration);
 
 
@@ -116,7 +120,7 @@ namespace tlrsCartonManager.Api
                     }
                 });
 
-               
+
 
             });
 
@@ -126,7 +130,7 @@ namespace tlrsCartonManager.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {              
+            {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tlrsCartonManager.Api v1"));
@@ -138,7 +142,7 @@ namespace tlrsCartonManager.Api
 
             app.UseCors(XmlConfigurationExtensions => XmlConfigurationExtensions.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
 
-            app.UseAuthentication();           
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

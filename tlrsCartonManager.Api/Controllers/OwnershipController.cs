@@ -15,12 +15,13 @@ using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Models.Ownership;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class OwnershipController : Controller
     {
         private readonly IOwnershipManagerRepository _ownershipRepository;
@@ -30,6 +31,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getOwnership")]
+        [RmsAuthorization("Ownership Transfer", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<CartonOwnershipSearch>> SearchOwnership(string fromValue,string toValue, 
            string searchBy, int pageIndex, int pageSize)
         {
@@ -63,6 +65,7 @@ namespace tlrsCartonManager.Api.Controllers
 
         }
         [HttpPost]
+        [RmsAuthorization("Ownership Transfer", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
         public IActionResult InsertOwnershipTransfer(CartonOwnershipTransfer cartonOwnership)
         {
             if (_ownershipRepository.InsertOwnership(cartonOwnership))

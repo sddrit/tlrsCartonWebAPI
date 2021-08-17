@@ -21,6 +21,7 @@ using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Dtos.Menu;
 using tlrsCartonManager.Core.Enums;
 
+
 namespace tlrsCartonManager.DAL.Reporsitory
 {
     public class AccountManagerRepository : IAccountManagerRepository
@@ -90,12 +91,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                     return new UserLoginResponse()
                     {
-                        UserId=userInfo.UserId,
+                        UserId = userInfo.UserId,
                         UserName = model.UserName,
                         UserFirstName = userInfo.UserFirstName,
-                        UserLastName=userInfo.UserLastName,
-                        UserRole =userInfo.UserRole,
-                        //Token = _tokenServiceRepository.CreateToken(model.UserName),
+                        UserLastName = userInfo.UserLastName,
+                        UserRole = userInfo.UserRole,
+                        UserRoles= userInfo.UserRoles,
                         Permissions = resultPermission
 
                     };
@@ -109,7 +110,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                     };
 
-                     await _tcContext.Set<LoginValidationResult>().FromSqlRaw(LoginAttemptsUpdateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+                    await _tcContext.Set<LoginValidationResult>().FromSqlRaw(LoginAttemptsUpdateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
                     throw new ServiceException(new ErrorMessage[]
                      {
@@ -134,29 +135,30 @@ namespace tlrsCartonManager.DAL.Reporsitory
             });
 
         }
-        
+
         private UserLoginInfo GetUserOtherInfo(string userName)
         {
             try
             {
 
-                var result = _tcContext.Users.Where(x => x.UserName.ToLower() == userName.ToLower()).FirstOrDefault();
+                var result = _tcContext.Users.Where(x => x.UserName.ToLower() == userName.ToLower() && x.Deleted == false).FirstOrDefault();
 
-                int roleId = _tcContext.UserRoles.Where(x => x.UserId == result.UserId).OrderBy(x => x.Id).FirstOrDefault().Id;
+               var userRoles = _tcContext.UserRoles.Where(x => x.UserId == result.UserId).OrderBy(x => x.Id).ToList();
 
-                var roleName = _tcContext.Roles.Where(x => x.Id == roleId).FirstOrDefault().Description;
+                var roleName = _tcContext.Roles.Where(x => x.Id == userRoles[0].Id).FirstOrDefault().Description;
 
                 string[] userFullnames = result.UserFullName.Split(' ');
 
                 return new UserLoginInfo()
                 {
-                    UserId=result.UserId,
+                    UserId = result.UserId,
                     UserFirstName = userFullnames.Length >= 1 ? userFullnames[0] : userName,
                     UserLastName = userFullnames.Length > 1 ? userFullnames[1] : string.Empty,
-                    UserRole = roleName
+                    UserRole = roleName,
+                    UserRoles=userRoles
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new UserLoginInfo()
                 {
@@ -168,7 +170,6 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
         }
 
-       
 
         public bool ChangeProfile(UserDto model)
         {
@@ -179,13 +180,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             if (!PasswordManager.IsPreviousUsedPassword(passwordHistoryList, model.UserPassword))
             {
-               
+
 
                 byte[] paswordHash;
                 byte[] passworSalt;
 
                 PasswordManager.GeneratePasswordHash(model.UserPassword, out paswordHash, out passworSalt);
-                if (_userManagerRepository.SaveUser(model, paswordHash, passworSalt, TransactionType.ChangeProfile.ToString()) == 0)
+                if (_userManagerRepository.SaveUser(model, paswordHash, passworSalt, TransactionType.ChangeProfile.ToString(), model.UserId) == 0)
                 {
                     throw new ServiceException(new ErrorMessage[]
                     {
@@ -199,8 +200,17 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return true;
 
         }
+        public  int GetUserRolePermissionsInt(int userId, string moduleName)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter {ParameterName = UserPermissionOnAuthorized.StoredProcedureParameters[0].ToString(),Value = userId.AsDbValue() },
+               new SqlParameter {ParameterName = UserPermissionOnAuthorized.StoredProcedureParameters[1].ToString(),Value = moduleName.AsDbValue() }
 
+            };
 
+          return _tcContext.Set<IntReturn>().FromSqlRaw(UserPermissionOnAuthorized.Sql, parms.ToArray()).AsEnumerable().First().Value;        
 
+        }
     }
 }

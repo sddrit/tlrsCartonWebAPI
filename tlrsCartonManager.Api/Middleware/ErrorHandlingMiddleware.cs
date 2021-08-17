@@ -27,6 +27,7 @@ namespace tlrsCartonManager.Api.Middleware
             {
                 await HandleExceptionAsync(context, ex);
             }
+           
             catch (Exception ex)
             {
                 await HandleExceptionAsync(context, new Exception($"Internal server error", ex));
@@ -43,7 +44,7 @@ namespace tlrsCartonManager.Api.Middleware
                 code = HttpStatusCode.BadRequest;
                 var serviceException = ((ServiceException)(exception));
                 errorMessages.AddRange(serviceException.Messages);
-            }
+            }           
             else
             {
                 errorMessages.Add(new ErrorMessage()

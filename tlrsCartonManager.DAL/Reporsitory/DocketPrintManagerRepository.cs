@@ -21,6 +21,7 @@ using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Dtos.MetaData;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.Core.Enums;
+using tlrsCartonManager.Core.Environment;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -29,12 +30,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
         private readonly ISearchManagerRepository _searchManager;
+        private readonly IEnvironment _environment;
 
-        public DocketPrintManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager)
+        public DocketPrintManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager, IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
             _searchManager = searchManager;
+            _environment = environment;
         }
         #region Docket reprinting
         public object GetDocketRePrint(DocketRePrintModel model)
@@ -84,7 +87,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             {
 
                 new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[0].ToString(), Value = model.RequestNo.AsDbValue() },
-                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[1].ToString(), Value = model.PrintedBy.AsDbValue() },
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[1].ToString(), Value =_environment.GetCurrentEnvironment().UserName.AsDbValue().AsDbValue() },
                 new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[2].ToString(), Value = model.RequestType.AsDbValue()},
                 new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[3].ToString(), Value = model.SerialNo.AsDbValue() }
 
@@ -157,7 +160,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             {
 
                 new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[0].ToString(), Value = model.RequestNo.AsDbValue() },
-                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[1].ToString(), Value = model.PrintedBy.AsDbValue() },
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[1].ToString(), Value = _environment.GetCurrentEnvironment().UserName.AsDbValue() },
                 new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[2].ToString(), Value = model.RequestType.AsDbValue() }
 
             };
@@ -236,7 +239,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             {
 
                 new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[0].ToString(), Value = model.RequestNo.AsDbValue() },
-                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[1].ToString(), Value = model.PrintedBy.AsDbValue() },
+                new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[1].ToString(), Value =_environment.GetCurrentEnvironment().UserName.AsDbValue() },
                 new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[2].ToString(), Value = model.RequestType.AsDbValue()},
                 new SqlParameter { ParameterName = DocketStoredProcedure.StoredProcedureParameters[3].ToString(), Value = model.SerialNo.AsDbValue() }
 

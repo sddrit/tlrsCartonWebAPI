@@ -13,12 +13,13 @@ using tlrsCartonManager.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class DashBoardController : Controller
     {
         private readonly IDashBoardManagerRepository _dashBoardRepository;
@@ -29,6 +30,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getWeeklyStatusbyRequetType")]
+        [RmsAuthorization("Daily Dashboard", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> GetWeeklyWoStatus()
         {
             return Ok(await _dashBoardRepository.GetWeelklyWoStatusAsync());
@@ -36,6 +38,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getWeeklyPendingRetrievalByWoType")]
+        [RmsAuthorization("Daily Dashboard", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> GetWeeklyWoStatusByType()
         {
             return Ok(await _dashBoardRepository.GetWeelklyPendingRetrievalByTypeAsync());
@@ -43,6 +46,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getDailyDashBoard")]
+        [RmsAuthorization("Daily Dashboard", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> GetDashBoard()
         {
             return Ok(await _dashBoardRepository.GetDailyDashBoard());
@@ -50,6 +54,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getWeeklyCartonInAndConfirm")]
+        [RmsAuthorization("Daily Dashboard", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> GetWeeklyCartonInAndConfirm()
         {
             return Ok(await _dashBoardRepository.GetWeelklyCartonsInAndConfirm());
@@ -57,6 +62,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getWeeklyScannedCartons")]
+        [RmsAuthorization("Daily Dashboard", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> GetWeeklyScannedCartons()
         {
             return Ok(await _dashBoardRepository.GetWeelklyScannedCartons());
@@ -64,6 +70,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("gettWeeklyScannedCartonsByWH")]
+        [RmsAuthorization("Daily Dashboard", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> GetWeeklyScannedCartonsByWH()
         {
             return Ok(await _dashBoardRepository.GetWeelklyWeeklyScannedCartonsByWH());

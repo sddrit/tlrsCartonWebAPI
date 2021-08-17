@@ -262,6 +262,8 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<SupportingDocsViewModel, InvoiceTemplateSuportingDocsCustomer>()
                  .ForMember(d => d.DocId, s => s.MapFrom(d => d.Id))
                 .ReverseMap();
+
+            CreateMap<UserModulePermission, UserPermissionItem>().ReverseMap();
         }
 
 

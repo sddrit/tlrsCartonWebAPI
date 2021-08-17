@@ -58,7 +58,8 @@ namespace tlrsCartonManager.DAL.Utility
 		{
 			"@fromDate",
 			"@toDate",
-			"@invoiceNo"
+			"@invoiceNo",
+			"@separteTransactionSummary"
 
 		};
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);

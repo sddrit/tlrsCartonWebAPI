@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Models.Ownership;
+using tlrsCartonManager.Core.Environment;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -28,12 +29,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
         private readonly ISearchManagerRepository _searchManager;
+        private readonly IEnvironment _environment;
 
-        public OwnershipManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager)
+        public OwnershipManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager, IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
             _searchManager = searchManager;
+            _environment = environment;
         }
         public async Task<PagedResponse<CartonOwnershipSearch>> SearchOwnership(string fromValue, string toValue, string searchBy,
             int pageIndex, int pageSize)
@@ -100,7 +103,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = CartonOwnershipTransferStoredProcedure.StoredProcedureParameters[1].ToString(), Value = cartonOwnership.ToCartonNo.AsDbValue()},
                 new SqlParameter { ParameterName = CartonOwnershipTransferStoredProcedure.StoredProcedureParameters[2].ToString(), Value = cartonOwnership.SearchBy.AsDbValue()},
                 new SqlParameter { ParameterName = CartonOwnershipTransferStoredProcedure.StoredProcedureParameters[3].ToString(), Value = cartonOwnership.ToCustomerCode.AsDbValue()},
-                new SqlParameter { ParameterName = CartonOwnershipTransferStoredProcedure.StoredProcedureParameters[4].ToString(), Value = cartonOwnership.UserId.AsDbValue()}
+                new SqlParameter { ParameterName = CartonOwnershipTransferStoredProcedure.StoredProcedureParameters[4].ToString(), Value = _environment.GetCurrentEnvironment().UserId.AsDbValue()}
             };
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CartonOwnershipTransferStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }

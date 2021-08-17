@@ -13,6 +13,7 @@ using tlrsCartonManager.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -29,6 +30,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
+        [RmsAuthorization("Original Docket Entry", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<OriginalDocketSearchDto>> SearchOriginalDocket(string searchtext, int pageIndex, int pageSize)
         {
             var requestList = await _requestRepository.SearchOriginalDockets(searchtext, pageIndex, pageSize);
@@ -36,17 +38,16 @@ namespace tlrsCartonManager.Api.Controllers
         }           
 
         [HttpPost]
+        [RmsAuthorization("Original Docket Entry", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
         public ActionResult AddOriginalDocket(RequestOriginalDocket request)
         {           
 
             if (_requestRepository.AddOriginalDocketNoAsync(request))
                 return new JsonErrorResult(new { Message = "Docket No Updated" }, HttpStatusCode.OK);
             else
-                return new JsonErrorResult(new { Message = "Docket No Updation Failed" }, HttpStatusCode.NotFound);
-         
+                return new JsonErrorResult(new { Message = "Docket No Updation Failed" }, HttpStatusCode.NotFound);         
           
-        }
-       
+        }       
 
     }
 }

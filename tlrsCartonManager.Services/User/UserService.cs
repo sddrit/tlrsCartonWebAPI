@@ -10,6 +10,7 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using tlrsCartonManager.Core;
 using tlrsCartonManager.Core.Enums;
+using tlrsCartonManager.Core.Environment;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Helper;
@@ -28,14 +29,15 @@ namespace tlrsCartonManager.Services.User
         private readonly IUserManagerRepository _userManagerRepository;
         private readonly IUserPasswordManagerRepository _userPasswordManagerRepository;
         private readonly ITokenServicesRepository _tokenServiceRepository;
-
+        private readonly IEnvironment _environment;
 
         public UserService(IUserManagerRepository userManagerRepository, IUserPasswordManagerRepository userPasswordManagerRepository,
-            ITokenServicesRepository tokenServiceRepository, IMapper mapper)
+            ITokenServicesRepository tokenServiceRepository, IMapper mapper, IEnvironment environment)
         {
             _userManagerRepository = userManagerRepository;
             _userPasswordManagerRepository = userPasswordManagerRepository;
             _tokenServiceRepository = tokenServiceRepository;
+            _environment = environment;
 
         }
 
@@ -45,7 +47,7 @@ namespace tlrsCartonManager.Services.User
             using var hmac = new HMACSHA512();
             var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.UserPassword));
             var passwordSalt = hmac.Key;
-            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Insert.ToString());
+            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Insert.ToString(), _environment.GetCurrentEnvironment().UserId);
             if (userId == 0)
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -65,7 +67,7 @@ namespace tlrsCartonManager.Services.User
             var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(string.Empty));
             var passwordSalt = hmac.Key;
 
-            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Update.ToString());
+            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Update.ToString(), _environment.GetCurrentEnvironment().UserId);
             if (userId == 0)
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -88,7 +90,7 @@ namespace tlrsCartonManager.Services.User
             var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.UserPassword));
             var passwordSalt = hmac.Key;
 
-            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Reset.ToString());
+            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Reset.ToString(), _environment.GetCurrentEnvironment().UserId);
             if (userId == 0)
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -109,7 +111,7 @@ namespace tlrsCartonManager.Services.User
             var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(string.Empty));
             var passwordSalt = hmac.Key;
 
-            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Delete.ToString());
+            var userId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, TransactionType.Delete.ToString(), _environment.GetCurrentEnvironment().UserId);
             if (userId == 0)
             {
                 throw new ServiceException(new ErrorMessage[]

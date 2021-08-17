@@ -23,6 +23,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         List<BranchWiseDetail> GetInvoiceSummaryBranchWise(string invoiceNo);
         string ValidateInvoiceGeneration(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, bool isSubInvoice);
         InvoiceModel GetInvoiceById(string invoiceNo);
+        InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo);
+
         #endregion
 
         #region Invoice Confirmation

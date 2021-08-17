@@ -15,12 +15,14 @@ using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
 using static tlrsCartonManager.DAL.Utility.Status;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
+
     public class CustomerController : Controller
     {
         private readonly ICustomerManagerRepository _customerRepository;
@@ -31,6 +33,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getCustomer")]
+        [RmsAuthorization("Customer", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<CustomerSearchDto>> SearchCustomer( string columnValue, int pageIndex, int pageSize)
         {
             return Ok(await _customerRepository.SearchCustomer(columnValue, pageIndex, pageSize));         
@@ -85,18 +88,21 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPost]
+        [RmsAuthorization("Customer", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
         public ActionResult AddCustomer(CustomerDto customer)
         {
             return Ok(_customerRepository.AddCustomer(customer));
         }
 
         [HttpPut]
+        [RmsAuthorization("Customer", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
         public ActionResult UpdateCustomer(CustomerDto customer)
         {
             return Ok(_customerRepository.UpdateCustomer(customer));
         }
 
         [HttpDelete]
+        [RmsAuthorization("Customer", tlrsCartonManager.Core.Enums.ModulePermission.Delete)]
         public ActionResult DeleteCustomer(CustomerDeleteDto customer)
         {
             return Ok(_customerRepository.DeleteCustomer(customer));        

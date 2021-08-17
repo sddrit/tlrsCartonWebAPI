@@ -107,10 +107,7 @@ namespace tlrsCartonManager.DAL.Models
         [Column("docketNo")]
         [StringLength(20)]
         public string DocketNo { get; set; }
-        [Column("luUser")]
-        public int? LuUser { get; set; }
-        [Column("luDate", TypeName = "datetime")]
-        public DateTime? LuDate { get; set; }
+       
 
     }
     public class OriginalDocketSearch

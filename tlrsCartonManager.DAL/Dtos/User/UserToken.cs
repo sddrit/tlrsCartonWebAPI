@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos.Menu;
+using tlrsCartonManager.DAL.Models;
 
 namespace tlrsCartonManager.DAL.Dtos
 {
@@ -29,6 +30,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Token { get; set; }
 
         public IEnumerable<UserModulePermission> Permissions { get; set; }
+
+        public List<UserRole> UserRoles  { get; set; }
     }
 
     public class UserLoginInfo
@@ -42,6 +45,7 @@ namespace tlrsCartonManager.DAL.Dtos
 
         public string UserRole { get; set; }
 
-        
+        public List<UserRole> UserRoles { get; set; }
+
     }
 }

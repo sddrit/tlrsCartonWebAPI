@@ -36,7 +36,8 @@ namespace tlrsCartonManager.DAL.Utility
             "@active",
             "@statementType" ,
             "@createdId",
-            "@passwordEncryptionMobile"
+            "@passwordEncryptionMobile",
+            "@lock"
         };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) ;
     }
@@ -78,6 +79,22 @@ namespace tlrsCartonManager.DAL.Utility
         {
             "@userName",
             "@isReset"
+        };
+
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
+    }
+
+    public static class UserPermissionOnAuthorized
+    {
+
+        public static string StoredProcedureName = "userPermissionOnAuthorized";
+
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+            "@id",
+            "@submoduleName"
+
         };
 
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using tlrsCartonManager.Core.Environment;
 using tlrsCartonManager.DAL.Dtos.Menu;
 using tlrsCartonManager.DAL.Dtos.Module;
 using tlrsCartonManager.DAL.Exceptions;
@@ -22,11 +23,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
+        private readonly IEnvironment _environment;
 
-        public RolePermissionManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public RolePermissionManagerRepository(tlrmCartonContext tccontext, IMapper mapper, IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
+            _environment = environment;
         }
         public bool AddRolePermission(RoleResponse response)
         {
@@ -97,7 +100,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = UserRoleStoredProcedure.StoredProcedureParameters[1].ToString(),
                     Value = response.RoleName.AsDbValue() },
                 new SqlParameter { ParameterName = UserRoleStoredProcedure.StoredProcedureParameters[2].ToString(),
-                    Value = userId.AsDbValue() },
+                    Value =  _environment.GetCurrentEnvironment().UserId.AsDbValue() },
                 new SqlParameter { ParameterName = UserRoleStoredProcedure.StoredProcedureParameters[3].ToString(),
                     Value = transactionType },
                  new SqlParameter

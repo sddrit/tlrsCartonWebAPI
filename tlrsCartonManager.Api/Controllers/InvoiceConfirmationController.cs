@@ -14,12 +14,13 @@ using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.DAL.Models.Invoice;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class InvoiceConfirmationController : Controller
     {
         private readonly IInvoiceManagerRepository _invoiceRepository;
@@ -30,6 +31,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
+        [RmsAuthorization("Invoice Confirmation Approve", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string searchText, int pageIndex, int pageSize)
         {
             var invoiceList = await _invoiceRepository.SearchInvoiceConfirmation("Approve",searchText, pageIndex, pageSize);
@@ -37,6 +39,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("{requestNo}")]
+        [RmsAuthorization("Invoice Confirmation Approve", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<InvoiceConfirmationDetail>> GetSingleSearch(string requestNo)
         {
             var invoiceConfirmationDetailList = await _invoiceRepository.GetInvoiceConfirmationDetailByRequestNo(requestNo);
@@ -46,6 +49,7 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Invoice Confirmation Details Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpPost]
+        [RmsAuthorization("Invoice Confirmation Approve", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
         public ActionResult AddInvoiceConfirmation(List<InvoiceConfirmationDto> invoiceConfirmList)
         {
             if(_invoiceRepository.SaveInvoiceConfirmation(invoiceConfirmList))

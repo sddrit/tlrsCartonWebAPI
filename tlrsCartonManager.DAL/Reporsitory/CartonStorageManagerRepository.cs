@@ -19,6 +19,7 @@ using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Exceptions;
+using tlrsCartonManager.Core.Environment;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -27,12 +28,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
         private readonly ISearchManagerRepository _searchManager;
+        private readonly IEnvironment _environment;
 
-        public CartonStorageManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager)
+        public CartonStorageManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager ,IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
             _searchManager = searchManager;
+            _environment = environment;
         }
 
         public async Task<CartonStorageDto> GetCartonById(int cartonId)
@@ -111,7 +114,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[5].ToString(), 
                     Value = carton.CartonType.AsDbValue()},
                 new SqlParameter { ParameterName = CartonStoredProcedure.StoredProcedureParameters[6].ToString(), 
-                    Value = carton.CreatedUserId.AsDbValue()},
+                    Value = _environment.GetCurrentEnvironment().UserId.AsDbValue()},
 
             };
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CartonStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;

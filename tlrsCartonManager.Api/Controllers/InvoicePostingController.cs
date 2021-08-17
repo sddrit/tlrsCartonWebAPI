@@ -15,12 +15,13 @@ using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Dtos.Invoice;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class InvoicePostingController : Controller
     {
         private readonly IInvoiceManagerRepository _invoiceRepository;
@@ -31,6 +32,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
+        [RmsAuthorization("Invoice Posting", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<InvoicePostingSearch>> SearchInvoicePosting(string searchText, int pageIndex, int pageSize)
         {
             var invoiceList = await _invoiceRepository.SearchInvoicePosting(searchText, pageIndex, pageSize);
@@ -38,16 +40,15 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPost]
+        [RmsAuthorization("Invoice Posting", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
         public async Task<ActionResult> AddInvoiceConfirmation(InvoicePostingDto invoicePosting)
         {
             if (await _invoiceRepository.SaveInvoicePostingAsync(invoicePosting))
                 return new JsonErrorResult(new { Message = "Invoice Posting Created" }, HttpStatusCode.OK);
             else
-                return new JsonErrorResult(new { Message = "Invoice Posting Creation Failed" }, HttpStatusCode.InternalServerError);       
-
-
+                return new JsonErrorResult(new { Message = "Invoice Posting Creation Failed" }, HttpStatusCode.InternalServerError);
         }
-        
+
 
     }
 }

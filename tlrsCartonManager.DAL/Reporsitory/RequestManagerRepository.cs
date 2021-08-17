@@ -30,6 +30,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         private readonly ISearchManagerRepository _searchManager;
         private readonly IDocketPrintManagerRepository _docketManager;
         private readonly IEnvironment _environment;
+
         public RequestManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager,
             IDocketPrintManagerRepository docketManager, IEnvironment environment)
         {
@@ -142,7 +143,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[5].ToString(), Value = requestTransaction.AuthorizedOfficerId.AsDbValue()},
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[6].ToString(), Value = requestTransaction.CartonCount.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[7].ToString(), Value = requestTransaction.RequestType.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[8].ToString(), Value = requestTransaction.UserId.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[8].ToString(), Value =  _environment.GetCurrentEnvironment().UserId.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[9].ToString(), Value = requestTransaction.Status.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[10].ToString(), Value = requestTransaction.ServiceTypeId.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[11].ToString(), Value = requestTransaction.WorkOrderType.AsDbValue() },

@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Dtos.Location;
 using tlrsCartonManager.DAL.Utility.StoredProcedures;
 using tlrsCartonManager.DAL.Exceptions;
+using tlrsCartonManager.Core.Environment;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -28,12 +29,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
         private readonly ISearchManagerRepository _searchManager;
+        private readonly IEnvironment _environment;
 
-        public LocationManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager)
+        public LocationManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager, IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
             _searchManager = searchManager;
+            _environment = environment;
         }
         public async Task<IEnumerable<LocationDto>> GetLocationListByCode(string locationCode)
         {
@@ -63,7 +66,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                  new SqlParameter { ParameterName = LocationStoredProcedure.StoredProcedureParameters[6].ToString(), Value = location.IsBay.AsDbValue() } ,
                  new SqlParameter { ParameterName = LocationStoredProcedure.StoredProcedureParameters[7].ToString(), Value = location.WareHouseCode.AsDbValue() } ,
                  new SqlParameter { ParameterName = LocationStoredProcedure.StoredProcedureParameters[8].ToString(), Value = transcationType } ,
-                 new SqlParameter { ParameterName = LocationStoredProcedure.StoredProcedureParameters[9].ToString(), Value = 0 } ,
+                 new SqlParameter { ParameterName = LocationStoredProcedure.StoredProcedureParameters[9].ToString(), Value =  _environment.GetCurrentEnvironment().UserId.AsDbValue()} ,
 
 
             };

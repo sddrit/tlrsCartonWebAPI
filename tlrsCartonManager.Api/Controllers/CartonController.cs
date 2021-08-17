@@ -13,12 +13,13 @@ using tlrsCartonManager.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class CartonController : Controller
     {
         private readonly ICartonStorageManagerRepository _cartonRepository;
@@ -28,6 +29,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
+        [RmsAuthorization("Carton", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<CartonStorageSearchDto>> SearchCarton(string searchText, int pageIndex, int pageSize)
         {
             var cartonList = await _cartonRepository.SearchCarton(searchText, pageIndex, pageSize);
@@ -35,6 +37,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("{cartonId}")]
+        [RmsAuthorization("Carton", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<CartonStorageDto>> GetSingleSearch(int cartonId)
         {
             var carton = await _cartonRepository.GetCartonById(cartonId);
@@ -45,6 +48,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPut]
+        [RmsAuthorization("Carton", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
         public IActionResult UpdateCarton(CartonStorageDto carton)
         {
             if (_cartonRepository.UpdateCarton(carton))
@@ -53,8 +57,7 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Carton  Updation Failed" }, HttpStatusCode.NotFound);
 
-            
         }
-        //to do request tab
+
     }
 }

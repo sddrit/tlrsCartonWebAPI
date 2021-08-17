@@ -18,6 +18,7 @@ using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Exceptions;
+using tlrsCartonManager.Core.Environment;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -25,11 +26,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
+        private readonly IEnvironment _environment;
 
-        public CustomerManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        public CustomerManagerRepository(tlrmCartonContext tccontext, IMapper mapper, IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
+            _environment = environment;
         }
 
         public async Task<IEnumerable<CustomerDto>> GetCustomerList()
@@ -390,7 +393,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[46].ToString(), Value = customerTransaction.AccountType.AsDbValue() },
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[47].ToString(), Value = customerTransaction.MainCustomerCode.AsDbValue() },
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[48].ToString(), Value = customerTransaction.Active.AsDbValue() },
-                new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[49].ToString(), Value = customerTransaction.User.AsDbValue() },
+                new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[49].ToString(), Value = _environment.GetCurrentEnvironment().UserId.AsDbValue() },
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[50].ToString(), Value = transcationType.AsDbValue() } ,
 
                 new SqlParameter

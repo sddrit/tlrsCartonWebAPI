@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.Core.Enums;
+using tlrsCartonManager.Core.Environment;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Extensions;
@@ -22,10 +23,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
+       
+
         public UserManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
         {
             _tcContext = tccontext;
             _mapper = mapper;
+         
+           
         }
 
         public async Task<IEnumerable<UserDto>> GetUsersList()
@@ -52,7 +57,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return await _tcContext.ViewWorkerUserLists.ToListAsync();
 
         }
-        public int SaveUser(UserDto user, byte[] passwrodHash, byte[] passwordSalt,string trasactionType)
+        public int SaveUser(UserDto user, byte[] passwrodHash, byte[] passwordSalt,string trasactionType, int? userId)
         {
 
             if (trasactionType == TransactionType.Reset.ToString())
@@ -84,8 +89,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[8].ToString() , Value =user.Email.AsDbValue() },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[9].ToString() , Value =user.Active.AsDbValue() },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[10].ToString() , Value =trasactionType },
-                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[11].ToString(), Value = user.TransactionUserId.AsDbValue() },
-                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[12].ToString(), Value =PasswordManagerMobile.EncryptPlainTextToCipherText( user.UserPassword).AsDbValue()}
+                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[11].ToString(), Value = userId.AsDbValue() },
+                new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[12].ToString(), Value =PasswordManagerMobile.EncryptPlainTextToCipherText( user.UserPassword).AsDbValue()},
+                  new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[13].ToString(), Value =user.Lock.AsDbValue()}
 
             };            
 

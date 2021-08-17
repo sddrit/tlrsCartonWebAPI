@@ -9,6 +9,8 @@ namespace tlrsCartonManager.Services.Report.Core
     public class GenerateReportRequest
     {
         public string ReportName { get; set; }
+        public string ModuleName { get; set; }
+
         public ICollection<GenerateReportOption> ReportFilters { get; set; }
 
     }

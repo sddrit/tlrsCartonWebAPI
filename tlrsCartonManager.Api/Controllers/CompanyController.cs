@@ -14,12 +14,13 @@ using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.DAL.Dtos.Company;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class CompanyController : Controller
     {
         private readonly ICompanyManagerRepository _companyRepository;
@@ -29,6 +30,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
+        [RmsAuthorization("Company Profile", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
         public ActionResult<Company> GetCompany()
         {
             var company = _companyRepository.GetCompany();
@@ -39,6 +41,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPut]
+        [RmsAuthorization("Company Profile", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
         public ActionResult UpdateCompanyProfile(CompanyDto request)
         {         
             if (_companyRepository.UpdateCompanyProfile(request))

@@ -91,5 +91,10 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(_invoiceRepository.ValidateInvoiceGeneration(fromDate, toDate,customerCode, invoiceNo, isSubInvoice));
         }
 
+        [HttpGet("PreviewTransactionSummary")]
+        public ActionResult PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo)
+        {
+            return Ok(_invoiceRepository.PreviewTransactionSummary(fromDate, toDate, invoiceNo));
+        }
     }
 }

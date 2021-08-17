@@ -16,12 +16,13 @@ using System.Net;
 using tlrsCartonManager.DAL.Dtos.Carton;
 using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Invoice;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class InquiryController : Controller
     {
         private readonly IInquiryManagerRepository _inquiryRepository;
@@ -33,6 +34,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("CartonHeader")]
+        [RmsAuthorization("Carton Header", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<CartonInquiry>> SearchCartonHeader(string searchTextFrom, string searchTextTo, int pageIndex, int pageSize)
         {
             var cartonList = await _inquiryRepository.SearchCartonHeader(searchTextFrom, searchTextTo, pageIndex, pageSize);
@@ -41,6 +43,7 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpGet("CartonHeaderRMS1")]
         public async Task<ActionResult<CartonInquiry>> SearchCartonHeaderRMS1(string searchTextFrom, string searchTextTo, int pageIndex, int pageSize)
         {
@@ -50,22 +53,26 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpGet("CartonOverview")]
+        [RmsAuthorization("Carton Overview", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<CartonOverviewDto>> GetCartonOverview(int cartonNo)
         {
             var cartonList = await _inquiryRepository.GetCartonOverview(cartonNo);
-            if(cartonList!=null)
+            if (cartonList != null)
                 return Ok(cartonList);
-             else
+            else
                 return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpGet("OperationOverview")]
+        [RmsAuthorization("Operation Overview", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<OperationOverview>> GetOperationOverview(int date)
         {
             var operationList = await _inquiryRepository.GetOperationOverview(date);
-            if(operationList!=null)
+            if (operationList != null)
                 return Ok(operationList);
-              else
+            else
                 return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
         }
 
@@ -73,7 +80,7 @@ namespace tlrsCartonManager.Api.Controllers
         public async Task<ActionResult<OperationOverviewByWoType>> GetOperationOverviewByWoType(int date, string woType)
         {
             var operationList = await _inquiryRepository.GetOperationOverviewByWoTypeAsync(date, woType);
-            if(operationList!=null)
+            if (operationList != null)
                 return Ok(operationList);
             else
                 return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
@@ -81,17 +88,19 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet("OperationOverviewByUserLocation")]
         public async Task<ActionResult<OperationOverviewByUserLocaion>> GetOperationOverviewByUserLocation(int date, string user,
-            string locationCode,bool isRcLocation, bool isVehicle, string searchText, int pageIndex, int pageSize)
+            string locationCode, bool isRcLocation, bool isVehicle, string searchText, int pageIndex, int pageSize)
         {
-            var operationList = await _inquiryRepository.GetOperationOverviewByUserLocationAsync(date, user,locationCode, isRcLocation, 
-                isVehicle, searchText,pageIndex, pageSize);
+            var operationList = await _inquiryRepository.GetOperationOverviewByUserLocationAsync(date, user, locationCode, isRcLocation,
+                isVehicle, searchText, pageIndex, pageSize);
             if (operationList != null)
                 return Ok(operationList);
             else
                 return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpGet("RequestSummaryByCustomer")]
-        public async Task<ActionResult<RequestSearch>> GetRequestSummaryByCustomer( string customerCode,string searchText,int pageIndex, int pageSize)
+        [RmsAuthorization("Request Summary", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        public async Task<ActionResult<RequestSearch>> GetRequestSummaryByCustomer(string customerCode, string searchText, int pageIndex, int pageSize)
         {
             var requestList = await _inquiryRepository.GetRequestInquiryByCustomer(customerCode, searchText, pageIndex, pageSize);
             if (requestList != null)
@@ -99,7 +108,9 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpGet("RequestSummaryByCustomer/{requestNo}")]
+        [RmsAuthorization("Request Summary", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<InvoiceConfirmationDetail>> GetSingleSearch(string requestNo)
         {
             var invoiceConfirmationDetailList = await _invoiceRepository.GetInvoiceConfirmationDetailByRequestNo(requestNo);

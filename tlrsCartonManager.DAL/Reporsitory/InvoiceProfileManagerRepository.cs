@@ -22,6 +22,7 @@ using tlrsCartonManager.DAL.Dtos.Invoice;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.Core.Enums;
 using tlrsCartonManager.DAL.Models.InvoiceProfile;
+using tlrsCartonManager.Core.Environment;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -30,12 +31,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
         private readonly ISearchManagerRepository _searchManager;
+        private readonly IEnvironment _environment;
 
-        public InvoiceProfileManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager)
+        public InvoiceProfileManagerRepository(tlrmCartonContext tccontext, IMapper mapper, ISearchManagerRepository searchManager, IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
             _searchManager = searchManager;
+            _environment = environment;
         }
 
         public async Task<PagedResponse<InvoiceProfileSearch>> SearchInvoiceProfile(string searchText, int pageIndex, int pageSize)
@@ -83,7 +86,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = InvoiceProfileHeaderStoredProcedure.StoredProcedureParameters[3].ToString(), Value = model.StorageType.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceProfileHeaderStoredProcedure.StoredProcedureParameters[4].ToString(), Value = model.InvoiceTypeCode.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceProfileHeaderStoredProcedure.StoredProcedureParameters[5].ToString(), Value = model.IsSplitInvoice.AsDbValue() },
-                new SqlParameter { ParameterName = InvoiceProfileHeaderStoredProcedure.StoredProcedureParameters[6].ToString(), Value = 1 },
+                new SqlParameter { ParameterName = InvoiceProfileHeaderStoredProcedure.StoredProcedureParameters[6].ToString(), Value = _environment.GetCurrentEnvironment().UserId.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceProfileHeaderStoredProcedure.StoredProcedureParameters[7].ToString(), Value = transactionType },
                 new SqlParameter { ParameterName =InvoiceProfileHeaderStoredProcedure.StoredProcedureParameters[8].ToString(), Value =model.SupportingDocs!=null? string.Join(",",model.SupportingDocs.Select(x => x.Id.ToString()).ToArray()): string.Empty },
                 new SqlParameter { ParameterName = InvoiceProfileHeaderStoredProcedure.StoredProcedureParameters[9].ToString(), Value = model.Active.AsDbValue()},
@@ -132,7 +135,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = InvoiceProfileRateInsertStoredProcedure.StoredProcedureParameters[0].ToString(), Value = model.Id.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceProfileRateInsertStoredProcedure.StoredProcedureParameters[1].ToString(), Value = model.CustomerCode.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceProfileRateInsertStoredProcedure.StoredProcedureParameters[2].ToString(), Value = model.StorageType.AsDbValue() },
-                new SqlParameter { ParameterName = InvoiceProfileRateInsertStoredProcedure.StoredProcedureParameters[3].ToString(), Value = 1 } ,
+                new SqlParameter { ParameterName = InvoiceProfileRateInsertStoredProcedure.StoredProcedureParameters[3].ToString(), Value =  _environment.GetCurrentEnvironment().UserId.AsDbValue() } ,
                 new SqlParameter
                 {
                    ParameterName = InvoiceProfileRateInsertStoredProcedure.StoredProcedureParameters[4].ToString(),

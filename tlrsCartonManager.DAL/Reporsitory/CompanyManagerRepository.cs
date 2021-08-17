@@ -18,6 +18,7 @@ using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Dtos.Company;
+using tlrsCartonManager.Core.Environment;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -25,10 +26,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
     {
         private readonly tlrmCartonContext _tcContext;
         private readonly IMapper _mapper;
-        public CompanyManagerRepository(tlrmCartonContext tccontext, IMapper mapper)
+        private readonly IEnvironment _environment;
+        public CompanyManagerRepository(tlrmCartonContext tccontext, IMapper mapper, IEnvironment environment)
         {
             _tcContext = tccontext;
             _mapper = mapper;
+            _environment = environment;
         }
 
         public CompanyDto GetCompany()
@@ -57,7 +60,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                  new SqlParameter { ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[9].ToString(), Value = request.VatNo.AsDbValue() } ,
                  new SqlParameter { ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[10].ToString(), Value = request.NbtNo.AsDbValue() } ,
                  new SqlParameter { ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[11].ToString(), Value = request.SvatNo.AsDbValue() } ,
-                 new SqlParameter { ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[12].ToString(), Value = request.UserId.AsDbValue() } ,
+                 new SqlParameter { ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[12].ToString(), Value =  _environment.GetCurrentEnvironment().UserId.AsDbValue() } ,
                 new SqlParameter
                 {
                    ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[13].ToString(),

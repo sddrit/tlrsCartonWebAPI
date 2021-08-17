@@ -34,7 +34,7 @@ namespace tlrsCartonManager.DAL.Models
         [Column("lastLoginDate", TypeName = "datetime")]
         public DateTime? LastLoginDate { get; set; }
         [Column("passwordLockedDate", TypeName = "datetime")]
-        public DateTime? PasswordLockedDate { get; set; }
+        public DateTime PasswordLockedDate { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; }
 
@@ -45,9 +45,24 @@ namespace tlrsCartonManager.DAL.Models
         [Column("departmentId")]
         public int? DepartmentId { get; set; }
         [Column("email")]
-        public string Email { get; set; }    
-        
+        public string Email { get; set; }
 
+        [Column("loginAttempts")]
+        public int? LoginAttempts { get; set; }
+
+        [NotMapped]
+        public bool Lock
+        {
+            get
+            {
+                if (LoginAttempts > 3)
+                    return true;
+                else
+                    return false;
+
+            }
+            set { }
+        }
         [InverseProperty(nameof(MenuRightUser.User))]
         public virtual ICollection<MenuRightUser> MenuRightUsers { get; set; }
         [InverseProperty(nameof(UserPassword.User))]

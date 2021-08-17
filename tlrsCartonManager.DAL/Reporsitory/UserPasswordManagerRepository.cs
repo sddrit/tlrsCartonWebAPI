@@ -34,7 +34,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public async Task<UserPasswordDto> GetSystemUserPasswords(string userID)
         {
-            var userName = await _tcContext.Users.SingleOrDefaultAsync(x => x.UserName == userID);
+            var userName = await _tcContext.Users.SingleOrDefaultAsync(x => x.UserName == userID && x.Deleted==false);
 
             int systemUserID = userName.UserId;
 

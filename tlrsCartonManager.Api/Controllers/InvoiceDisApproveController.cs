@@ -14,12 +14,13 @@ using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.DAL.Models.Invoice;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class InvoiceDisapproveController : Controller
     {
         private readonly IInvoiceManagerRepository _invoiceRepository;
@@ -30,21 +31,23 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
+        [RmsAuthorization("Invoice Confirmation Disapprove", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string searchText, int pageIndex, int pageSize)
         {
-            var invoiceList = await _invoiceRepository.SearchInvoiceConfirmation("Disapprove",searchText, pageIndex, pageSize);
+            var invoiceList = await _invoiceRepository.SearchInvoiceConfirmation("Disapprove", searchText, pageIndex, pageSize);
             return Ok(invoiceList);
         }
+
         [HttpGet("validateRequest")]
         public async Task<ActionResult> ValidateRequest(string requestNo)
         {
             var outList = await _invoiceRepository.ValidateInvoiceDisConfirmation(requestNo);
             return new JsonErrorResult(outList);
-            
-           
+
         }
 
         [HttpGet("{requestNo}")]
+        [RmsAuthorization("Invoice Confirmation Disapprove", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<InvoiceConfirmationDetail>> GetSingleSearch(string requestNo)
         {
             var invoiceConfirmationDetailList = await _invoiceRepository.GetInvoiceConfirmationDetailByRequestNo(requestNo);
@@ -55,6 +58,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPost]
+        [RmsAuthorization("Invoice Confirmation Disapprove", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
         public ActionResult DeleteInvoiceConfirmation(InvoiceDisConfirmationDto invoiceDisConfirmation)
         {
             if (_invoiceRepository.DeleteInvoiceConfirmation(invoiceDisConfirmation.RequestNo,
@@ -63,7 +67,6 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Request Disapproved" }, HttpStatusCode.OK);
             else
                 return new JsonErrorResult(new { Message = "Request Disapprove Failed" }, HttpStatusCode.NotFound);
-
         }
 
     }

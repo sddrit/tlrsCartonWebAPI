@@ -23,7 +23,7 @@ namespace tlrsCartonManager.Api.Util.Enviroment
                 {
                     Service = "Web API",
                     MachineName = Environment.MachineName,
-                    UserId = null,
+                    UserId = 0,
                     UserName = "admin"
                 };
             }
@@ -42,7 +42,7 @@ namespace tlrsCartonManager.Api.Util.Enviroment
             {
                 Service = "Web API",
                 MachineName = Environment.MachineName,
-                UserId = string.IsNullOrEmpty(userId)? null: long.Parse(userId),
+                UserId = string.IsNullOrEmpty(userId)? 0: int.Parse(userId),
                 UserName = username
             };
         }

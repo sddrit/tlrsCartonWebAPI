@@ -55,7 +55,7 @@ namespace tlrsCartonManager.DAL.Models
         [Column("pickDate")]
         public long? PickDate { get; set; }
         [Column("status")]
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         [Column("deleted")]
         public bool? Deleted { get; set; }

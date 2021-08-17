@@ -21,7 +21,7 @@ namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class GenericReportController : Controller
     {
         private readonly IGenericReportManagerRepository _reportRepository;
