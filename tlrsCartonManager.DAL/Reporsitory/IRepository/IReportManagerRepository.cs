@@ -7,6 +7,7 @@ using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Report;
+using tlrsCartonManager.DAL.Utility;
 
 namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
@@ -27,6 +28,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<IEnumerable<CartonsInRCCollectionWoPending>> GetCartonsInRCCollectionWoPending(DateTime asAtDate);
         Task<IEnumerable<CartonsInRCCollectionWoPending>> GetCartonsInRCWoPending(DateTime asAtDate);
         Task<DailyPalletedSummary> GetDailyPalletedSummary(DateTime asAtDate, string locationCode);
+        Task<IEnumerable<CartonsEnteredByCs>> CartonEnteredByCs(DateTime fromDate, DateTime toDate);
 
+        Task<IEnumerable<ViewCustomerLoyality>> CustomerLoyality();
     }
 }

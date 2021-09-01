@@ -62,7 +62,7 @@ namespace tlrsCartonManager.DAL.Models
         [Column("Vat No")]
         public string VatNo { get; set; }
 
-        [Column("Invoice Tye")]
+        [Column("Invoice Type")]
         public string InvoiceTye { get; set; }
 
         [Column("Svat No")]

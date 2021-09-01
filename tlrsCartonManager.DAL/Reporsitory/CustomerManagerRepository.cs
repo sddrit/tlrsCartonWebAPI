@@ -74,7 +74,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 .Select(p => new CustomerAuthorizationHeaderDto()
                 {
                     TrackingId = p.TrackingId,
-                    Name = p.Name
+                    Name = p.Name,
+                    ContactNo=p.ContactNo
+
                 }).ToListAsync());
             if(authorizedList==null || (authorizedList!=null && authorizedList.Count==0))
             {                   
@@ -409,7 +411,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    TypeName = CustomerStoredProcedure.StoredProcedureTypeNames[1].ToString(),
                    SqlDbType = SqlDbType.Structured,
                    Value =  lstAuthorizationLevel.ToDataTable()
-                }
+                },
+                new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[53].ToString(), Value =customerTransaction.IncludeMainAccountAuthorization.AsDbValue() } ,
             };
             #endregion
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;

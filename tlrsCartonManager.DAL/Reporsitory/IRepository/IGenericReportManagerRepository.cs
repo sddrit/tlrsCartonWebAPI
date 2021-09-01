@@ -11,5 +11,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     {
         IList<IList<KeyValuePair<string, string>>> GetReportData(GenericReportData model);
         List<GenericReportColumn> GetReportColumns(string reportName);
+
+        object GetReportDataforView(GenericReportData model);
     }
 }

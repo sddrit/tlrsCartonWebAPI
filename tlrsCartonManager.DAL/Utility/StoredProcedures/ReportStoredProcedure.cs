@@ -134,4 +134,17 @@ namespace tlrsCartonManager.DAL.Utility
 
     }
 
+    public class CartonEnteredByCsStoredProcedure
+    {
+        public static string StoredProcedureName = "reportCartonEnteredByCs";
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+               "@fromDate",
+               "@toDate"
+
+        };
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
+    }
+
 }

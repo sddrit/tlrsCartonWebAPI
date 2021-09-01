@@ -17,9 +17,10 @@ namespace tlrsCartonManager.DAL.Dtos.Invoice
         public decimal Percentage { get; set; }
         public int TransactionDateFrom { get; set; }
         public int TransactionDateTo { get; set; }
-        public int CreatedUserId { get; set; }      
-      
-     
+        public int CreatedUserId { get; set; }
+        public bool Invisible { get; set; }
+
+
     }
 
 }

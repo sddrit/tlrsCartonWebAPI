@@ -21,7 +21,7 @@ namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class GenericReportController : Controller
     {
         private readonly IGenericReportManagerRepository _reportRepository;
@@ -45,6 +45,12 @@ namespace tlrsCartonManager.Api.Controllers
 
             return Ok(_reportRepository.GetReportColumns(reportName));
 
+        }
+
+        [HttpPost("GetReportDataforView")]
+        public ActionResult GetReportDataforView(GenericReportData model)
+        {
+            return Ok(_reportRepository.GetReportDataforView(model));
         }
     }
 }

@@ -10,6 +10,7 @@ using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.DashBoard;
 using tlrsCartonManager.DAL.Models.Docket;
+using tlrsCartonManager.DAL.Models.GenericReport;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.DAL.Models.InvoiceProfile;
 using tlrsCartonManager.DAL.Models.MetaData;
@@ -123,7 +124,7 @@ namespace tlrsCartonManager.DAL.Models
 
         public virtual DbSet<InvoiceTemplateSuportingDocsCustomer> InvoiceTemplateSuportingDocsCustomers { get; set; }
 
-
+        public virtual DbSet<ViewCustomerLoyality> ViewCustomerLoyalities { get; set; }
         public virtual DbSet<InvoiceTemplateHeaderCustomer> InvoiceTemplateHeaderCustomers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -1230,6 +1231,14 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.LuDate).HasDefaultValueSql("(getdate())");
             });
 
+
+            modelBuilder.Entity<ViewCustomerLoyality>(entity =>
+            {
+                entity.ToView("viewCustomerLoyality");
+
+                entity.Property(e => e.Name).IsUnicode(false);
+            });
+
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -1295,7 +1304,10 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<PickListSummaryRequest>().HasNoKey();
             modelBuilder.Entity<PickListSummaryDate>().HasNoKey();
             modelBuilder.Entity<PickListSummaryWareHouse>().HasNoKey();
+            modelBuilder.Entity<ViewDocketPrintSummary>().HasNoKey();
+            modelBuilder.Entity<CartonsEnteredByCs>().HasNoKey();
 
+            
             OnModelCreatingPartial(modelBuilder);
         }
 

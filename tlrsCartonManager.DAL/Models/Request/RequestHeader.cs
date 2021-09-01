@@ -50,7 +50,7 @@ namespace tlrsCartonManager.DAL.Models
         [Column("status")]
         public int? Status { get; set; }
         [Column("cartonType")]
-        public int? CartonType { get; set; }
+        public int? StorageType { get; set; }
         [Column("woType")]
         [StringLength(20)]
         public string WorkOrderType { get; set; }

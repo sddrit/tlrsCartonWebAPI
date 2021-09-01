@@ -24,18 +24,20 @@ namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ReportController : Controller
     {
         private readonly IReportManagerRepository _reportRepository;
         private readonly ReportGeneratingService _reportGeneratingService;
         private readonly AuthorizeService _authorizeService;
+        private readonly IInvoiceManagerRepository _invoiceRepository;
 
-        public ReportController(IReportManagerRepository reportRepository, ReportGeneratingService reportGeneratingService, AuthorizeService authorizeService)
+        public ReportController(IReportManagerRepository reportRepository, ReportGeneratingService reportGeneratingService, AuthorizeService authorizeService, IInvoiceManagerRepository invoiceRepository)
         {
             _reportRepository = reportRepository;
             _reportGeneratingService = reportGeneratingService;
             _authorizeService = authorizeService;
+            _invoiceRepository = invoiceRepository;
         }
 
         [HttpGet("getInventoryByCustomer")]
@@ -160,5 +162,23 @@ namespace tlrsCartonManager.Api.Controllers
 
         }
 
+        [HttpGet("CartonsEnteredByCs")]
+        //[RmsAuthorization("Cartons EnteredBy Cs", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        public async Task<ActionResult> CartonsEnteredByCs(DateTime fromDate, DateTime toDate)
+        {
+            return Ok(await _reportRepository.CartonEnteredByCs(fromDate, toDate));
+
+        }
+
+        [HttpGet("CustomerLoyality")]
+        //[RmsAuthorization("Customer Loyality", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        public async Task<ActionResult> CustomerLoyalityReport()
+        {
+            return Ok(await _reportRepository.CustomerLoyality());
+
+        }
+
     }
+
 }
+

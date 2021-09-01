@@ -92,7 +92,9 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpDelete]
         public ActionResult DeleteRequest(RequestHeaderDto request)
         {
-            if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Delete))
+            request.RequestType="EmptyDeallocate";
+
+            if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Add))
             {
                 return Unauthorized();
             }
@@ -163,6 +165,11 @@ namespace tlrsCartonManager.Api.Controllers
 
             if (type.ToLower() == RequestTypes.permout.ToString().ToLower()
             && !_authorizeService.HasPermission("PermOut", permission))
+            {
+                return false;
+            }
+            if (type.ToLower() == RequestTypes.container.ToString().ToLower()
+           && !_authorizeService.HasPermission("Empty Container", permission))
             {
                 return false;
             }

@@ -96,21 +96,28 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public List<BranchWiseDetail> GetInvoiceSummaryBranchWise(string invoiceNo)
         {
-           
-
-            var parms = new List<SqlParameter>
+            try
             {
-               
+                var parms = new List<SqlParameter>
+            {
+
                 new SqlParameter { ParameterName = InvoiceBrachWiseStoredProcedure.StoredProcedureParameters[0].ToString(), Value = invoiceNo.AsDbValue() }
             };
 
-            var branchWiseDetail = _tcContext.Set<BranchWiseDetail>().FromSqlRaw(InvoiceBrachWiseStoredProcedure.Sql, parms.ToArray()).ToList();
+                var branchWiseDetail = _tcContext.Set<BranchWiseDetail>().FromSqlRaw(InvoiceBrachWiseStoredProcedure.Sql, parms.ToArray()).ToList();
 
-            return branchWiseDetail;
+                return branchWiseDetail;
+            }
+
+            catch (Exception)
+            {
+                return null;
+            }
+
 
         }
 
-        public string ValidateInvoiceGeneration(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, bool isSubInvoice)
+        public string ValidateInvoiceGeneration(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, bool isSubInvoice, bool isTransactionSummary)
         {
             int fDate = fromDate.DateToInt();
             int tDate = toDate.DateToInt();
@@ -121,7 +128,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = InvoiceValidationStoredProcedure.StoredProcedureParameters[1].ToString(), Value = tDate.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceValidationStoredProcedure.StoredProcedureParameters[2].ToString(), Value = customerCode.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceValidationStoredProcedure.StoredProcedureParameters[3].ToString(), Value = invoiceNo.AsDbValue() },
-                new SqlParameter { ParameterName = InvoiceValidationStoredProcedure.StoredProcedureParameters[4].ToString(), Value = isSubInvoice.AsDbValue() }
+                new SqlParameter { ParameterName = InvoiceValidationStoredProcedure.StoredProcedureParameters[4].ToString(), Value = isSubInvoice.AsDbValue() },
+                new SqlParameter { ParameterName = InvoiceValidationStoredProcedure.StoredProcedureParameters[5].ToString(), Value = isTransactionSummary.AsDbValue() }
             };
 
             var validateMessage= _tcContext.Set<StringReturn>().FromSqlRaw(InvoiceValidationStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
@@ -202,7 +210,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             int tDate = toDate.DateToInt();
 
             if(transactionType !=TransactionType.PreView.ToString())
-                ValidateInvoiceGeneration(fromDate, toDate, customerCode, invoiceNo,false);
+                ValidateInvoiceGeneration(fromDate, toDate, customerCode, invoiceNo,false, false);
         
 
             var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice);
@@ -218,7 +226,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             if (mainInvoiceDetail.Count > 0)
             {              
                 mainInvoiceHeader = _mapper.Map<InvoiceHeaderResponse>(_tcContext.ViewCreatedInvoiceLists.Where(x => x.InvoiceId == mainInvoiceNo).FirstOrDefault());
-                mainInvoiceTransactionSummry = GetTransactionSummry(fDate, tDate, mainInvoiceNo,false);
+                mainInvoiceTransactionSummry = GetTransactionSummry(fDate, tDate, mainInvoiceNo,false,null);
             }
 
             var separateInvoiceDetail = resultTable.Where(x => x.InvoiceNoGroup == 3).ToList().GroupBy(item => new { item.CustomerCode, item.InvoiceNo })
@@ -227,7 +235,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                  InvoiceHeaders = _mapper.Map<InvoiceHeaderResponse>(_tcContext.ViewCreatedInvoiceLists.Where(x => x.InvoiceId == item.Key.InvoiceNo).FirstOrDefault()),
                  InvoiceDetails = item.ToList(),
-                 TransactionSummaryResponses = GetTransactionSummry(fDate, tDate, item.Key.InvoiceNo,false)
+                 TransactionSummaryResponses = GetTransactionSummry(fDate, tDate, item.Key.InvoiceNo,false, null)
 
              }).ToList();
 
@@ -250,7 +258,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
 
-        private List<TransactionSummaryResponse> GetTransactionSummry(int fromDate, int toDate, string invoiceNo, bool isSeparateTransSummary)
+        private List<TransactionSummaryResponse> GetTransactionSummry(int fromDate, int toDate, string invoiceNo, bool isSeparateTransSummary, string customerCode)
         {
             try
             {
@@ -259,7 +267,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[0].ToString(), Value = fromDate.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[1].ToString(), Value = toDate.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[2].ToString(), Value = invoiceNo.AsDbValue() },
-                new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[3].ToString(), Value = isSeparateTransSummary }
+                new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[3].ToString(), Value = isSeparateTransSummary },
+                new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[4].ToString(), Value = customerCode.AsDbValue() }
             };
 
                 return _tcContext.Set<TransactionSummaryResponse>().FromSqlRaw(InvoiceTransactionSummaryStoredProcedure.Sql, parms.ToArray()).ToList();
@@ -273,14 +282,27 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
 
-        public InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate,  string invoiceNo)
+        public InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate,  string invoiceNo, string customerCode)
         {
             int fDate = fromDate.DateToInt();
             int tDate = toDate.DateToInt();                      
 
             InvoiceHeaderResponse mainInvoiceHeader = new InvoiceHeaderResponse();           
 
-            var transactionSummary= GetTransactionSummry(fDate, tDate, invoiceNo, true);
+            var transactionSummary= GetTransactionSummry(fDate, tDate, invoiceNo, true, customerCode);
+
+            if(!transactionSummary.Any())
+            {
+
+                throw new ServiceException(new ErrorMessage[]
+               {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"No transactions for invoice no: {invoiceNo}"
+                     }
+               });
+            }
 
             var invoiceResponse = new InvoiceResponse()
             {
@@ -405,6 +427,23 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return await _tcContext.SaveChangesAsync() > 0 ? true : false;
 
 
+        }
+
+
+        public bool UpdatePosting(InvoicePostingDto request)
+        {
+
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+
+                new SqlParameter { ParameterName = PostingStoredProcedure.StoredProcedureParameters[0].ToString(),
+                    Value =  request.TrackingId.AsDbValue()},
+                new SqlParameter { ParameterName = PostingStoredProcedure.StoredProcedureParameters[1].ToString(),
+                    Value =  request.Invisible.AsDbValue()},
+                new SqlParameter { ParameterName = PostingStoredProcedure.StoredProcedureParameters[2].ToString(),
+                    Value =  _environment.GetCurrentEnvironment().UserId.AsDbValue()}
+            };
+            return _tcContext.Set<BoolReturn>().FromSqlRaw(PostingStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
     }
     #endregion

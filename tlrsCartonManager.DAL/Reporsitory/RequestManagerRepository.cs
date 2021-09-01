@@ -55,7 +55,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 });
             }
 
-            if (type.ToLower() == RequestTypes.emptyallocate.ToString() || type.ToLower()== RequestTypes.emptydeallocate.ToString())            
+            if (type.ToLower() == RequestTypes.emptyallocate.ToString() || type.ToLower()== RequestTypes.emptydeallocate.ToString() || type.ToLower()== RequestTypes.container.ToString())            
                 type = "Empty";   
 
                 var request = await _tcContext.RequestHeaders.
@@ -159,6 +159,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    SqlDbType = SqlDbType.Structured,
                    Value =requestTransaction.RequestDetails.ToList().ToDataTable()
                 },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[17].ToString(), Value = requestTransaction.StorageType.AsDbValue() } ,
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[18].ToString(), Value = requestTransaction.ContactNo.AsDbValue() }
             };
             #endregion
             var resultTable = _tcContext.Set<TableReturn>().FromSqlRaw(RequestStoredProcedure.Sql, parms.ToArray()).ToList();

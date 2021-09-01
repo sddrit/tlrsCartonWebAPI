@@ -21,9 +21,9 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
 
         List<BranchWiseDetail> GetInvoiceSummaryBranchWise(string invoiceNo);
-        string ValidateInvoiceGeneration(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, bool isSubInvoice);
+        string ValidateInvoiceGeneration(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, bool isSubInvoice, bool isTransactionSummary);
         InvoiceModel GetInvoiceById(string invoiceNo);
-        InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo);
+        InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo, string customerCode);
 
         #endregion
 
@@ -42,6 +42,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<PagedResponse<InvoicePostingSearch>> SearchInvoicePosting(string searchText, 
             int pageIndex, int pageSize);
         Task<bool> SaveInvoicePostingAsync(InvoicePostingDto invoicePosting);
+
+        bool UpdatePosting(InvoicePostingDto request);
 
         #endregion
 

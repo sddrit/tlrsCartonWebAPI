@@ -307,6 +307,26 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return dailyPalletedSummary;
 
         }
+
+        public async Task<IEnumerable<CartonsEnteredByCs>> CartonEnteredByCs(DateTime fromDate, DateTime toDate)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = CartonEnteredByCsStoredProcedure.StoredProcedureParameters[0].ToString(),
+                        Value =fromDate.DateToInt().AsDbValue() },
+                     new SqlParameter { ParameterName = CartonEnteredByCsStoredProcedure.StoredProcedureParameters[1].ToString(),
+                        Value =toDate.DateToInt().AsDbValue() }
+                };
+
+            return await _tcContext.Set<CartonsEnteredByCs>().FromSqlRaw(CartonEnteredByCsStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+
+        }
+
+        public async Task<IEnumerable<ViewCustomerLoyality>> CustomerLoyality()
+        {
+            return await _tcContext.ViewCustomerLoyalities.ToListAsync();
+
+        }
     }
 }
 

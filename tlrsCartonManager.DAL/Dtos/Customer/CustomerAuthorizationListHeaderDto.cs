@@ -24,8 +24,10 @@ namespace tlrsCartonManager.DAL.Dtos
     public class CustomerAuthorizationHeaderDto
     {
         public int TrackingId { get; set; } = 0;       
-        public string Name { get; set; } = string.Empty;     
-      
+        public string Name { get; set; } = string.Empty;
+
+        public string ContactNo { get; set; } 
+
     }
 
     public class CustomerAuthorizationListUtdDto

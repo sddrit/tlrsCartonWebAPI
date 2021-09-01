@@ -15,12 +15,13 @@ using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.Core.Enums;
 using System.Security.Claims;
+using tlrsCartonManager.Api.Util.Authorization;
 
 namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class InvoiceController : ControllerBase
     {
         private readonly IInvoiceManagerRepository _invoiceRepository;
@@ -57,6 +58,7 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Invoice Not Found" }, HttpStatusCode.NotFound);
         }
         [HttpGet("GeneratedInvoice")]
+        [RmsAuthorization("Create Invoice", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public ActionResult CreateInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo)
         {       
 
@@ -85,16 +87,16 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("ValidateInvoiceGeneration")]
-        public ActionResult ValidateInvoiceGeneration(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, bool isSubInvoice)
+        public ActionResult ValidateInvoiceGeneration(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, bool isSubInvoice, bool isTransactionSummary)
         {
 
-            return Ok(_invoiceRepository.ValidateInvoiceGeneration(fromDate, toDate,customerCode, invoiceNo, isSubInvoice));
+            return Ok(_invoiceRepository.ValidateInvoiceGeneration(fromDate, toDate,customerCode, invoiceNo, isSubInvoice, isTransactionSummary));
         }
 
         [HttpGet("PreviewTransactionSummary")]
-        public ActionResult PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo)
+        public ActionResult PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo, string customerCode)
         {
-            return Ok(_invoiceRepository.PreviewTransactionSummary(fromDate, toDate, invoiceNo));
+            return Ok(_invoiceRepository.PreviewTransactionSummary(fromDate, toDate, invoiceNo, customerCode));
         }
     }
 }

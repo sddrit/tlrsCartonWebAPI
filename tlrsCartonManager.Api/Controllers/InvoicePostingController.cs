@@ -49,6 +49,14 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Invoice Posting Creation Failed" }, HttpStatusCode.InternalServerError);
         }
 
-
+        [HttpPut]
+        [RmsAuthorization("Invoice Posting", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
+        public async Task<ActionResult> UpdateInvoicePosting(InvoicePostingDto invoicePosting)
+        {
+            if ( _invoiceRepository.UpdatePosting(invoicePosting))
+                return new JsonErrorResult(new { Message = "Invoice Posting Updated" }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = "Invoice Posting Updation Failed" }, HttpStatusCode.InternalServerError);
+        }
     }
 }

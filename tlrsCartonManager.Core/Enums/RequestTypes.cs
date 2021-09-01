@@ -14,6 +14,7 @@ namespace tlrsCartonManager.Core.Enums
         retrieval,
         permout,
         disposal,
-        collection
+        collection,
+        container
     }
 }

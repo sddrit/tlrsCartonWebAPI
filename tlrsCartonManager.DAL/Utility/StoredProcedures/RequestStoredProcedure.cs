@@ -28,8 +28,10 @@ namespace tlrsCartonManager.DAL.Utility
 			"@deliveryLocation",
 			"@deliveryRouteId",
 			"@statementType",
-			"@requestDetail"
-			
+			"@requestDetail",
+			"@storageType",
+			"@contactNo"
+
 
 		};
         public static List<string> StoredProcedureTypeNames = new List<string>()

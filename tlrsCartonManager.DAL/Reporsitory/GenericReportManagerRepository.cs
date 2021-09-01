@@ -13,6 +13,7 @@ using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Extensions;
 using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.DAL.Models;
+using tlrsCartonManager.DAL.Models.GenericReport;
 using tlrsCartonManager.DAL.Models.Report;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
 using tlrsCartonManager.DAL.Utility;
@@ -56,13 +57,53 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     var viewCreatedPickListData = GetSearchResult<ViewCreatedPickList>(model);
                     return viewCreatedPickListData.Select(item => item.GetValues()).ToList();
 
-                case "GeneratedCreatedInvoiceList":
+                case "GenerateCreatedInvoiceList":
                     var viewCreatedInvoiceListData = GetSearchResult<ViewCreatedInvoiceList>(model);
                     return viewCreatedInvoiceListData.Select(item => item.GetValues()).ToList();
 
                 case "GenerateCustomerAuthorizationList":
                     var viewCustomerAuthorizationListData = GetSearchResult<ViewCustomerAuthorizationList>(model);
                     return viewCustomerAuthorizationListData.Select(item => item.GetValues()).ToList();
+
+                case "GenerateDocketPrintSummary":
+                    var viewDocketPrintSummaryData = GetSearchResult<ViewDocketPrintSummary>(model);
+                    return viewDocketPrintSummaryData.Select(item => item.GetValues()).ToList();
+                default:
+                    throw new Exception("Report not implemented");
+            }
+        }
+
+
+
+
+        public object GetReportDataforView(GenericReportData model)
+        {
+            switch (model.ReportName)
+            {
+                case "GenerateInventorySummaryByCustomer":
+                    return GetSearchResult<ViewInventorySummaryByCustomer>(model);                  
+
+                case "GenerateDisposalDatesOfCustomer":
+                    return GetSearchResult<ViewDisposalDatesOfCustomer>(model);                    
+
+                case "GenerateRequestSummary":
+                    return GetSearchResult<ViewRequestSummary>(model);                    
+
+                case "GenerateCustomerSummary":
+                    return GetSearchResult<ViewCustomerSummary>(model);                    
+
+                case "GenerateCreatedPickList":
+                    return GetSearchResult<ViewCreatedPickList>(model);                    
+
+                case "GenerateCreatedInvoiceList":
+                    return GetSearchResult<ViewCreatedInvoiceList>(model);
+                   
+
+                case "GenerateCustomerAuthorizationList":
+                    return GetSearchResult<ViewCustomerAuthorizationList>(model);
+
+                case "GenerateDocketPrintSummary":
+                    return GetSearchResult<ViewDocketPrintSummary>(model);
 
                 default:
                     throw new Exception("Report not implemented");

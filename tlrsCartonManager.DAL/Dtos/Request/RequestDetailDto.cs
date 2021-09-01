@@ -33,6 +33,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public DateTime? StatusInDate { get; set; }
 
         public int? User { get; set; }
+
+        public int? ToCartonNo { get; set; }
     }
     
 }

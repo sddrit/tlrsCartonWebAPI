@@ -177,6 +177,21 @@ namespace tlrsCartonManager.DAL.Models
         public virtual ServiceCategory ServiceProvidedNavigation { get; set; }
         [InverseProperty(nameof(CustomerAuthorizationListHeader.Customer))]
         public virtual ICollection<CustomerAuthorizationListHeader> CustomerAuthorizationListHeaders { get; set; }
-      
+
+        [Column("includeMainAccountAuthorization")]
+        public bool? IncludeMainAccountAuthorization { get; set; }
+
+        [NotMapped]       
+        public string Address
+        {
+            get
+            {
+                return Address1 + " " + Address2 + "" + Address3;
+
+            }
+            set { }
+        }
+
+
     }
 }

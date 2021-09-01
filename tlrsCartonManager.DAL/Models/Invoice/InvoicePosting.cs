@@ -58,5 +58,8 @@ namespace tlrsCartonManager.DAL.Models
         public int TransactionDateFrom { get; set; }
         public int TransactionDateTo { get; set; }
 
+        public int TrackingId { get; set; }
+
+        public bool Invisible { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public int? CartonCount { get; set; }  
         public string RequestType { get; set; }       
         public int? Status { get; set; }       
-        public int? CartonType { get; set; }        
+        public int? StorageType { get; set; }        
         public string WorkOrderType { get; set; }      
         public string DeviceId { get; set; }       
         public string MobileRequestNo { get; set; }       
@@ -41,6 +41,9 @@ namespace tlrsCartonManager.DAL.Dtos
         public string CustomerAddress { get; set; }
         public virtual ICollection<RequestDetailDto> RequestDetails { get; set; }
         public virtual ICollection<CustomerAuthorizationHeaderDto> AuthorizedOfficers { get; set; }
+        public string ContactNo { get; set; }
+
+
     }
     public class RequestSearchDto
     {
