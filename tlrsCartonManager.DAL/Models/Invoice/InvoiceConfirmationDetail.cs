@@ -10,11 +10,12 @@ namespace tlrsCartonManager.DAL.Models.Invoice
     public class InvoiceConfirmationDetail
     {
         [Key]
-        public int CartonNo { get; set; }
-        public int? DisposalDate { get; set; }
-        public string DisposalTimeFrame { get; set; }
+        public int CartonNo { get; set; }       
         public bool? Picked { get; set; }
         public string PickListNo { get; set; }
         public string LocationCode { get; set; }
+        public int ToCartonNo { get; set; }
+        public int CartonCount { get; set; }
+
     }
 }

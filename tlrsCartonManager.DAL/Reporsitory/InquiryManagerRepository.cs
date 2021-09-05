@@ -23,7 +23,7 @@ using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Ownership;
-
+using tlrsCartonManager.DAL.Exceptions;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -227,8 +227,31 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             };
             return paginationResponse;
-
         }
 
+        public List<CartonHistory> GetCartonHistory(int cartonNo, string rms)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = InquiryCartonHistoryStoredProcedure.StoredProcedureParameters[0].ToString(), Value = cartonNo.AsDbValue() },
+               new SqlParameter { ParameterName = InquiryCartonHistoryStoredProcedure.StoredProcedureParameters[1].ToString(), Value = rms.AsDbValue() }
+
+            };
+            var cartonHistoryList= _tcContext.Set<CartonHistory>().FromSqlRaw(InquiryCartonHistoryStoredProcedure.Sql, parms.ToArray()).ToList();
+            if(rms=="RMS2" &&( cartonHistoryList == null || cartonHistoryList.Count==0 ))
+            {
+                throw new ServiceException(new ErrorMessage[]
+                 {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to find carton history "
+                        }
+                 });
+
+
+            }
+            return cartonHistoryList;
+        }
     }
 }

@@ -120,5 +120,12 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Request  Details Not Found" }, HttpStatusCode.NotFound);
         }
 
+        [HttpGet("CartonHistory/{cartonNo}")]
+        [RmsAuthorization("Carton History", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        public ActionResult GetCartonHistory(string cartonNo, string rms)
+        {
+            return Ok( _inquiryRepository.GetCartonHistory(Convert.ToInt32( cartonNo),rms));
+        }
+
     }
 }

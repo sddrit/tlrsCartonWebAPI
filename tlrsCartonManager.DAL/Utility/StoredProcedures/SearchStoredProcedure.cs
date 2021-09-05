@@ -116,5 +116,34 @@ namespace tlrsCartonManager.DAL.Utility
 
     }
 
+    public static class SearchStoredProcedureFromToSearchByType
+    {
+        public static string StoredProcedureName { get; set; }
+        public static List<string> StoredProcedureParameters
+        {
+            get
+            {
+                return new List<string>()
+                {
+                   "@valueFrom",
+                   "@valueTo",
+                   "@searchBy",
+                   "@type",
+                   "@pageIndex",
+                   "@pageSize",
+                   "@totalRecords"
+
+                };
+            }
+        }
+        public static string Sql
+        {
+            get
+            {
+                return "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) + " OUTPUT";
+            }
+        }
+
+    }
 
 }

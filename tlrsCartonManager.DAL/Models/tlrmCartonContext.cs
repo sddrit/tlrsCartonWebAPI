@@ -1306,7 +1306,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<PickListSummaryWareHouse>().HasNoKey();
             modelBuilder.Entity<ViewDocketPrintSummary>().HasNoKey();
             modelBuilder.Entity<CartonsEnteredByCs>().HasNoKey();
-
+            modelBuilder.Entity<CartonHistory>().HasNoKey();
             
             OnModelCreatingPartial(modelBuilder);
         }

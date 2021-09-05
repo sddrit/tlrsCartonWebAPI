@@ -8,14 +8,14 @@ namespace tlrsCartonManager.DAL.Utility
 {
     public class InquiryDocketByCartonStoredProcedure
     {
-        
+
         public static string StoredProcedureName = "docketInquiryByCartonNo";
         public static List<string> StoredProcedureParameters = new List<string>()
         {
-           "@cartonNo"          
+           "@cartonNo"
         };
-            public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) ;
-        
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
     }
     public class InquiryOperationOverviewStoredProcedure
     {
@@ -58,6 +58,19 @@ namespace tlrsCartonManager.DAL.Utility
             "@totalRecords"
         };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) + " OUTPUT";
+    }
+
+    public class InquiryCartonHistoryStoredProcedure
+    {
+
+        public static string StoredProcedureName = "cartonHistory";
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+           "@cartoNo",
+           "@rms"
+
+        };
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 
     }
 }

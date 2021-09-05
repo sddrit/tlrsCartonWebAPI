@@ -14,7 +14,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     {
         Task<PickListHeaderDto> GetPickList(string requestNo);
         Task<PagedResponse<PickListSearchDto>> SearchPickList(string searchText, int pageIndex, int pageSize);
-        Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue,string searchText, int pageIndex, int pageSize);
+        Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue,string searchText, int pageIndex, int pageSize, string type);
         bool AddPickList (PickListResponseDto pickListInsert);
         TableReturn UpdatePickList(PickListResponseDto pickListInsert);
        TableReturn DeletePickList(PickListResponseDto pickListInsert);

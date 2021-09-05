@@ -52,9 +52,9 @@ namespace tlrsCartonManager.Api.Controllers
         }
         [HttpGet("pendingPickList")]
         public async Task<ActionResult<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue, string searchText, 
-            int pageIndex, int pageSize)
+            int pageIndex, int pageSize, string type)
         {
-            var request = await _pickListRepository.GetPendingPickList(fromValue, toValue, searchText, pageIndex, pageSize);
+            var request = await _pickListRepository.GetPendingPickList(fromValue, toValue, searchText, pageIndex, pageSize, type);
             if (request != null)
                 return Ok(request);
             else

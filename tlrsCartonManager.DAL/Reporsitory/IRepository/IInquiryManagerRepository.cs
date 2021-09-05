@@ -26,5 +26,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         Task<PagedResponse<ViewRequestSummary>> GetRequestInquiryByCustomer(string cusomerCode, string searchText, int pageIndex, int pageSize);
 
+        List<CartonHistory> GetCartonHistory(int cartonNo,string rms);
+
     }
 }
