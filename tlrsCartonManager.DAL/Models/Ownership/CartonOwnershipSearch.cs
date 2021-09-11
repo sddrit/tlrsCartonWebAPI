@@ -13,5 +13,7 @@ namespace tlrsCartonManager.DAL.Models.Ownership
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
         public string AlternativeCartonNo { get; set; }
+        public string Status { get; set; }
+        public string LastConfirmedStatus { get; set; }
     }
 }

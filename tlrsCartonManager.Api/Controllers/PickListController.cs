@@ -50,6 +50,7 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
         }
+
         [HttpGet("pendingPickList")]
         public async Task<ActionResult<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue, string searchText, 
             int pageIndex, int pageSize, string type)
@@ -104,5 +105,15 @@ namespace tlrsCartonManager.Api.Controllers
 
         }
 
+        [HttpPut("updatePrintStatus")]
+        //[RmsAuthorization("PickList", tlrsCartonManager.Core.Enums.ModulePermission.Print)]
+        public ActionResult UpdatePickListPrint(PickListResponseDto pickList)
+        {
+            var request = _pickListRepository.UpdatePickListPrintStatus(pickList);
+            if (request.Reason == "OK")
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
+        }
     }
 }

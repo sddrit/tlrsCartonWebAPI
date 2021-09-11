@@ -35,16 +35,16 @@ namespace tlrsCartonManager.DAL.Models
         public string StatusConfirmed { get; set; }
 
         [Column("Disposal Date")]
-        public int? DisposalDate { get; set; }
+        public string DisposalDate { get; set; }
 
         [Column("Disposal Time Frame")]
-        public int? DisposalTimeFrame { get; set; }
+        public string DisposalTimeFrame { get; set; }
 
         [Column("First In Date")]
-        public int FirstInDate { get; set; }
+        public string FirstInDate { get; set; }
 
         [Column("Last Transaction Date")]
-        public int LastTransactionDate { get; set; }
+        public string LastTransactionDate { get; set; }
 
         public IList<KeyValuePair<string, string>> GetValues()
         {
@@ -55,11 +55,10 @@ namespace tlrsCartonManager.DAL.Models
                 new KeyValuePair<string, string>("Name", Name),
                 new KeyValuePair<string, string>("Status", Status),
                 new KeyValuePair<string, string>("Status Confirmed", StatusConfirmed),
-                new KeyValuePair<string, string>("Disposal Date", DisposalDate.HasValue ? DisposalDate.ToString() : string.Empty),
-                new KeyValuePair<string, string>("Disposal Time",
-                    DisposalTimeFrame.HasValue ? DisposalTimeFrame.ToString() : string.Empty),
-                new KeyValuePair<string, string>("First In Date", FirstInDate.ToString()),
-                new KeyValuePair<string, string>("Last Transaction Date", LastTransactionDate.ToString())
+                new KeyValuePair<string, string>("Disposal Date", DisposalDate),
+                new KeyValuePair<string, string>("Disposal Time Frame",DisposalTimeFrame),
+                new KeyValuePair<string, string>("First In Date", FirstInDate),
+                new KeyValuePair<string, string>("Last Transaction Date", LastTransactionDate)
             };
         }
     }

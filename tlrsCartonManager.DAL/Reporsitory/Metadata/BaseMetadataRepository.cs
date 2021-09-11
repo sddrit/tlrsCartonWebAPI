@@ -47,7 +47,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<TDto> EditItem(TDto item)
         {
             var entity = _mapper.Map<TEntity>(item);
-
+            
             await ValidateItem(entity);
 
             _dbSet.Update(entity);

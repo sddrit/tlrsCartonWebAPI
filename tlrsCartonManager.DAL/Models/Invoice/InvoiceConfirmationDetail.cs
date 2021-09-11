@@ -16,6 +16,7 @@ namespace tlrsCartonManager.DAL.Models.Invoice
         public string LocationCode { get; set; }
         public int ToCartonNo { get; set; }
         public int CartonCount { get; set; }
+        public DateTime? LastScannedDateTime { get; set; }
 
     }
 }

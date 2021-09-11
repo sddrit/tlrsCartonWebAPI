@@ -69,6 +69,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
             pickListUpdate.PickListDetail = new List<PickListResponseDetailDto>();
             return SavePickList(pickListUpdate, TransactionTypes.Update.ToString());
         }
+
+        public TableReturn UpdatePickListPrintStatus(PickListResponseDto pickListUpdate)
+        {
+            pickListUpdate.PickListDetail = new List<PickListResponseDetailDto>();
+            return SavePickList(pickListUpdate, TransactionTypes.Print.ToString());
+        }
         public async Task<PickListHeaderDto> GetPickList(string pickListNo)
         {
             var pickList = await _tcContext.ViewPickListByNos.Where(x => x.PickListNo == pickListNo).OrderBy(x=>x.WareHouseCode).ToListAsync();

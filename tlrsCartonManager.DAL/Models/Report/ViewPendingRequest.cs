@@ -59,6 +59,8 @@ namespace tlrsCartonManager.DAL.Models
         [Required]
         [Column("reminder")]
         public string Reminder { get; set; }
+        [Column("requestType")]
+        public string RequestType { get; set; }
 
         [Column("mainCustomerCode")]
         public int? MainCustomerCode { get; set; }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Dtos.DailyCollectionMark;
 using tlrsCartonManager.DAL.Dtos.Import;
 using tlrsCartonManager.DAL.Dtos.Location;
 using tlrsCartonManager.DAL.Dtos.Menu;
@@ -126,7 +127,7 @@ namespace tlrsCartonManager.DAL.Models
 
         public virtual DbSet<ViewCustomerLoyality> ViewCustomerLoyalities { get; set; }
         public virtual DbSet<InvoiceTemplateHeaderCustomer> InvoiceTemplateHeaderCustomers { get; set; }
-
+        public virtual DbSet<ViewPendingRequestDailyCollection> ViewPendingRequestDailyCollections { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -1238,7 +1239,24 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.Name).IsUnicode(false);
             });
+            modelBuilder.Entity<ViewPendingRequestDailyCollection>(entity =>
+            {
+                entity.ToView("viewPendingRequestDailyCollection");
 
+                entity.Property(e => e.ContactPersonName).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryLocation).IsUnicode(false);
+
+                entity.Property(e => e.DeliveryRoute).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.Reminder).IsUnicode(false);
+
+                entity.Property(e => e.RequestNo).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
+            });
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -1307,6 +1325,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<ViewDocketPrintSummary>().HasNoKey();
             modelBuilder.Entity<CartonsEnteredByCs>().HasNoKey();
             modelBuilder.Entity<CartonHistory>().HasNoKey();
+            modelBuilder.Entity<DailyCollectionMarkDto>().HasNoKey();
             
             OnModelCreatingPartial(modelBuilder);
         }

@@ -14,7 +14,8 @@ namespace tlrsCartonManager.DAL.Dtos.MetaData
         public string TypeCode { get; set; }       
         public string RequestTypeCode { get; set; }
         public string Description { get; set; }
-        public bool? Active { get; set; }      
+        public bool? Active { get; set; }
+        public bool? ShowInventoryReport { get; set; }
 
     }
 }

@@ -24,6 +24,7 @@ using tlrsCartonManager.Core.Environment;
 using Microsoft.AspNetCore.Http;
 using tlrsCartonManager.Api.Util.Enviroment;
 using tlrsCartonManager.Api.Util.Authorization;
+using tlrsDailyCollectionManager.DAL.Reporsitory;
 
 namespace tlrsCartonManager.Api.Extensions
 {
@@ -59,6 +60,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IAccountManagerRepository, AccountManagerRepository>();
             services.AddScoped<IDashBoardManagerRepository, DashBoardManagerRepository>();
             services.AddScoped<IInvoiceProfileManagerRepository, InvoiceProfileManagerRepository>();
+            services.AddScoped<IMarkDailyCollectionManagerRepository, MarkDailyCollectionManagerRepository>();
             services.AddScoped<AuthorizeService>();
 
             services.AddScoped<IEnvironment, WebEnvironment>();

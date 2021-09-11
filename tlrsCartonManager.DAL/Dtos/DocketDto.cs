@@ -61,6 +61,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public bool IsPrintAlternativeNo { get; set; }
         public List<DocketPrintEmptyDetailModel> EmptyList { get; set; }
         public List<DocketPrintDetailModel> CartonList { get; set; }
+        public string Route { get; set; }
 
     }
     public class DocketPrintBulkModel

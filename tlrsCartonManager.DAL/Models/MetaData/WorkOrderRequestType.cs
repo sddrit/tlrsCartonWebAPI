@@ -38,8 +38,9 @@ namespace tlrsCartonManager.DAL.Models
       
         [Column("luUserId")]
         public int LuUserId { get; set; }
-       
 
+        [Column("showInventoryReport")]
+        public bool? ShowInventoryReport { get; set; }
         //[ForeignKey(nameof(RequestTypeCode))]
         //[InverseProperty(nameof(RequestType.WorkOrderRequestTypes))]
         //public virtual RequestType RequestTypeCodeNavigation { get; set; }

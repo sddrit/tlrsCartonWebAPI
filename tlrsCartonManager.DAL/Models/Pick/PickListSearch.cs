@@ -14,5 +14,7 @@ namespace tlrsCartonManager.DAL.Models.Pick
         public string LastSentDeviceId { get; set; }
         public string AssignedUser { get; set; }
         public int  NoOfCartons { get; set; }
+        public bool? Printed { get; set; }
+        public int noOfCartonsPicked { get; set; }
     }
 }

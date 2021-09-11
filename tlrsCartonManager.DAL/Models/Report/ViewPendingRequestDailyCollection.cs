@@ -9,14 +9,13 @@ using Microsoft.EntityFrameworkCore;
 namespace tlrsCartonManager.DAL.Models
 {
     [Keyless]
-    public partial class ViewPendingRequestPivot
+    public partial class ViewPendingRequestDailyCollection
     {
         [Required]
         [Column("requestNo")]
         [StringLength(20)]
         public string RequestNo { get; set; }
         [Column("customerCode")]
-        
         [StringLength(20)]
         public string CustomerCode { get; set; }
         [Column("name")]
@@ -28,10 +27,10 @@ namespace tlrsCartonManager.DAL.Models
         [Column("status")]
         [StringLength(100)]
         public string Status { get; set; }
-        [Column("deliveryDateInt")]
-        public int? DeliveryDateInt { get; set; }
+        [Column("collectionCartonCount")]
+        public int? CollectionCartonCount { get; set; }
         [Column("deliveryDate")]
-        [StringLength(10)]
+        [StringLength(4000)]
         public string DeliveryDate { get; set; }
         [Required]
         [Column("contactPersonName")]
@@ -42,38 +41,16 @@ namespace tlrsCartonManager.DAL.Models
         [StringLength(200)]
         public string DeliveryLocation { get; set; }
         [Required]
-        [Column("remarkCarton")]
-        [StringLength(50)]
-        public string RemarkCarton { get; set; }
-        [Required]
         [Column("deliveryRoute")]
-        [StringLength(100)]
+        [StringLength(8000)]
         public string DeliveryRoute { get; set; }
         [Required]
         [Column("reminder")]
         public string Reminder { get; set; }
-        [Column("collectionCartonCount")]
-        public int CollectionCartonCount { get; set; }
-        [Column("emptyCartonCount")]
-        public int EmptyCartonCount { get; set; }
-        [Column("cityLimitCartonCount")]
-        public int CityLimitCartonCount { get; set; }
-        [Column("greaterColomboCartonCount")]
-        public int GreaterColomboCartonCount { get; set; }
-        [Column("outstationCartonCount")]
-        public int OutstationCartonCount { get; set; }
-        [Column("northernAreaoCartonCount")]
-        public int NorthernAreaoCartonCount { get; set; }
-        [Column("retrievalCartonCount")]
-        public int RetrievalCartonCount { get; set; }
+        [Column("collected")]
+        public bool Collected { get; set; }
 
-        [Column("collectionCmbCartonCount")]
-        public int CollectionCmbCartonCount { get; set; }
-
-        [Column("collectionOutCartonCount")]
-        public int CollectionOutCartonCount { get; set; }
-
-        [Column("collectionProCartonCount")]
-        public int CollectionProCartonCount { get; set; }
+        [Column("deliveryDateInt")]
+        public int? DeliveryDateInt { get; set; }
     }
 }

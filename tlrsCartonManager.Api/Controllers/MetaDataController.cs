@@ -387,12 +387,14 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPost("workOrderType")]
         public async Task<IActionResult> AddWorkOrderType(WorkOrderTypeDto model)
         {
+            model.ShowInventoryReport = true;
             return Ok(await _workOrderTypeRepository.AddItem(model));
         }
 
         [HttpPut("workOrderType")]
         public async Task<IActionResult> UpdateWorkOrderType(WorkOrderTypeDto model)
         {
+            //model.ShowInventoryReport = true;
             return Ok(await _workOrderTypeRepository.EditItem(model));
         }
 

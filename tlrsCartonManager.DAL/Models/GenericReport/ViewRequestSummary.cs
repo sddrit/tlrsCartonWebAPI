@@ -120,6 +120,9 @@ namespace tlrsCartonManager.DAL.Models
         [Column("Is PrintAlternative No")]
         public bool IsPrintAlternativeNo { get; set; }
 
+        [Column("Route")]
+        public string Route { get; set; }
+
         public IList<KeyValuePair<string, string>> GetValues()
         {
             return new List<KeyValuePair<string, string>>()
@@ -136,8 +139,7 @@ namespace tlrsCartonManager.DAL.Models
                  new KeyValuePair<string, string>("Request Type",RequestType),
                  new KeyValuePair<string, string>("Status",Status),
                  new KeyValuePair<string, string>("Storage Type",StorageType),
-                 new KeyValuePair<string, string>("Wo Type",WoType),
-                 new KeyValuePair<string, string>("Storage Type",StorageType),
+                 new KeyValuePair<string, string>("Wo Type",WoType),               
                  new KeyValuePair<string, string>("Created User",CreatedUser),
                  new KeyValuePair<string, string>("Created Date",CreatedDate),
                  new KeyValuePair<string, string>("Created Date Time",CreatedDateTime),

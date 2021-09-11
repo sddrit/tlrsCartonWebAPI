@@ -17,8 +17,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue,string searchText, int pageIndex, int pageSize, string type);
         bool AddPickList (PickListResponseDto pickListInsert);
         TableReturn UpdatePickList(PickListResponseDto pickListInsert);
-       TableReturn DeletePickList(PickListResponseDto pickListInsert);
-
+        TableReturn DeletePickList(PickListResponseDto pickListInsert);
+        TableReturn UpdatePickListPrintStatus(PickListResponseDto pickListUpdate);
         object GetPendingPickListSummary(string type);
     }
 }

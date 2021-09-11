@@ -109,8 +109,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return await _tcContext.ViewPendingRequestPivot.Where(x =>
             x.DeliveryDateInt <= Convert.ToInt32(asAtDate.ToString("yyyyMMdd"))).ToListAsync();
         }
+        //public async Task<IEnumerable<ViewPendingRequestPivot>> GetPendingRequestSummary(DateTime asAtDate)
+        //{
+        //    return await _tcContext.ViewPendingRequests.Where(x =>
+        //    x.DeliveryDateInt <= Convert.ToInt32(asAtDate.ToString("yyyyMMdd"))).ToListAsync();
+        //}
 
-        public async Task<IEnumerable<ViewPendingRequestPivot>> GetDailyLogCollection(bool asAtToday, DateTime fromDate, DateTime toDate, string route)
+        public async Task<IEnumerable<ViewPendingRequestDailyCollection>> GetDailyLogCollection(bool asAtToday, DateTime fromDate, DateTime toDate, string route)
         {
             if (asAtToday)
             {
@@ -119,17 +124,17 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
             if (string.IsNullOrEmpty(route))
             {
-                return await _tcContext.ViewPendingRequestPivot
+                return await _tcContext.ViewPendingRequestDailyCollections
                     .Where(x => x.DeliveryDateInt >= Convert.ToInt32(fromDate.ToString("yyyyMMdd")) &&
-                    x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd"))).ToListAsync();
+                    x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd")) && x.Collected==false).ToListAsync();
 
             }
             else
             {
-                return await _tcContext.ViewPendingRequestPivot
+                return await _tcContext.ViewPendingRequestDailyCollections
                     .Where(x => x.DeliveryDateInt >= Convert.ToInt32(fromDate.ToString("yyyyMMdd")) &&
                     x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd")) &&
-                    x.DeliveryRoute == route
+                    x.DeliveryRoute == route && x.Collected == false
                     ).ToListAsync();
             }
 

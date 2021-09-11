@@ -15,7 +15,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     {
         Task<InventoryByCustomerReponse> GetInventoryByCustomer(int customerId,string woType, DateTime asAtDate, bool includeSubAccount);
         Task<IEnumerable<ViewPendingRequestPivot>> GetPendingRequestSummary(DateTime asAtDate);
-        Task<IEnumerable<ViewPendingRequestPivot>> GetDailyLogCollection(bool asAtToday ,DateTime fromDate, DateTime toDate, string route);
+        Task<IEnumerable<ViewPendingRequestDailyCollection>> GetDailyLogCollection(bool asAtToday ,DateTime fromDate, DateTime toDate, string route);
         Task<IEnumerable<ViewTobeDisposedCartonList>> GetToBeDisposedCartonList(string customerCode, bool includeSubAccount);
         Task<IEnumerable<ViewPendingRequest>> GetCartonsInPendingRequest(string customerCode, bool includeSubAccount);
         Task<IEnumerable<ViewCustomerTransaction>> GetCustomerTransactions(string customerCode,DateTime fromDate, DateTime toDate, bool includeSubAccount);

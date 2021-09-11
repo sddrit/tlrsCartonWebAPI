@@ -19,6 +19,7 @@ using tlrsCartonManager.DAL.Models.Report;
 using tlrsCartonManager.Services.Report;
 using tlrsCartonManager.Services.Report.Core;
 using tlrsCartonManager.Api.Util.Authorization;
+using tlrsCartonManager.DAL.Dtos.Pick;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -31,13 +32,15 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly ReportGeneratingService _reportGeneratingService;
         private readonly AuthorizeService _authorizeService;
         private readonly IInvoiceManagerRepository _invoiceRepository;
+        private readonly IPickListManagerRepository _pickListRepository;
 
-        public ReportController(IReportManagerRepository reportRepository, ReportGeneratingService reportGeneratingService, AuthorizeService authorizeService, IInvoiceManagerRepository invoiceRepository)
+        public ReportController(IReportManagerRepository reportRepository, ReportGeneratingService reportGeneratingService, AuthorizeService authorizeService, IInvoiceManagerRepository invoiceRepository, IPickListManagerRepository pickListRepository)
         {
             _reportRepository = reportRepository;
             _reportGeneratingService = reportGeneratingService;
             _authorizeService = authorizeService;
             _invoiceRepository = invoiceRepository;
+            _pickListRepository = pickListRepository;
         }
 
         [HttpGet("getInventoryByCustomer")]
@@ -54,9 +57,18 @@ namespace tlrsCartonManager.Api.Controllers
         //[RmsAuthorization("Pending Request Summary", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<ViewPendingRequestPivot>> GetPendingRequestSummary(DateTime asAtDate)
         {
-           return Ok( await _reportRepository.GetPendingRequestSummary(asAtDate));
-          
+            return Ok(await _reportRepository.GetPendingRequestSummary(asAtDate));
+
         }
+
+        //[HttpGet("getPendingRequestSummary")]
+        ////[RmsAuthorization("Pending Request Summary", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        //public async Task<ActionResult<ViewPendingRequest>> GetPendingRequestSummary(DateTime asAtDate)
+        //{
+        //    return Ok(await _reportRepository.GetPendingRequestSummary(asAtDate));
+
+        //}
+
         [HttpGet("getDailyLogCollection")]
         //[RmsAuthorization("Daily Collection log", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<ViewPendingRequestPivot>> GetDailyLogCollection(bool asAtToday, DateTime fromDate, DateTime toDate, string route)
@@ -177,6 +189,17 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _reportRepository.CustomerLoyality());
 
         }
+
+        [HttpGet("PickList")]
+        public async Task<ActionResult> GetPickList(string pickListNo)
+        {
+            var request = await _pickListRepository.GetPickList(pickListNo);
+            if (request != null)
+                return Ok(request);
+            else
+                return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
+        }
+
 
     }
 

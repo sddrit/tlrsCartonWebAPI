@@ -86,7 +86,8 @@ namespace tlrsCartonManager.DAL.Models
         [Column("requestType")]
         public string RequestType { get; set; }
 
-
+        [Column("printed")]
+        public bool Printed { get; set; }
 
     }
 }
