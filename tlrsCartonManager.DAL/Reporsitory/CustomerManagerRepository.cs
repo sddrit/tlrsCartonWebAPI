@@ -418,16 +418,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
 
-        public async Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnValue, int pageIndex, int pageSize)
+        public async Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnValue,string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
                new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[0].ToString(), Value = columnValue==null ? string.Empty :columnValue },
-               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[1].ToString(), Value = pageIndex },
-               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[2].ToString(), Value = pageSize },
+               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[1].ToString(), Value = searchColumn.AsDbValue() },
+               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[2].ToString(), Value = sortOrder.AsDbValue() },
+               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[3].ToString(), Value = pageIndex },
+               new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[4].ToString(), Value = pageSize },
             };
 
-            var outParam = new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[3].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            var outParam = new SqlParameter { ParameterName = CustomerStoredProcedureSearch.StoredProcedureParameters[5].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
             parms.Add(outParam);
 
             var customerList = await _tcContext.Set<CustomerSearch>().FromSqlRaw(CustomerStoredProcedureSearch.Sql, parms.ToArray()).ToListAsync();

@@ -12,7 +12,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface IMarkDailyCollectionManagerRepository
     {
         Task<ViewPendingRequestDailyCollection> GetDailyCollectionById(string requestNo);
-        Task<PagedResponse<DailyCollectionMarkDto>> SearchDailyCollection(string columnValue, int pageIndex, int pageSize);
+        Task<PagedResponse<DailyCollectionMarkDto>> SearchDailyCollection(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize);
 
         bool UpdateDailyCollection(DailyCollectionMarkUpdateDto DailyCollection);
     }

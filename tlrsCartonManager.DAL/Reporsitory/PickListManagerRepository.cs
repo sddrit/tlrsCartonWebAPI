@@ -88,9 +88,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return pickListHeader;
         }
 
-        public async Task<PagedResponse<PickListSearchDto>> SearchPickList(string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<PickListSearchDto>> SearchPickList(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("pickListSearch",  searchText, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("pickListSearch",  searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<PickListSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging

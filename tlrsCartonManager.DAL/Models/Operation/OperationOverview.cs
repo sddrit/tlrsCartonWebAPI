@@ -63,5 +63,7 @@ namespace tlrsCartonManager.DAL.Models.Operation
         public DateTime ScanDateTime { get; set; }
         public string LocationCode { get; set; }
         public string  UserName { get; set; }
+
+        public string WoNumber { get; set; }
     }
 }

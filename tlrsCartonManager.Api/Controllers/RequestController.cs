@@ -33,14 +33,14 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<CartonStorageSearchDto>> SearchCarton(string requestType,string searchText, int pageIndex, int pageSize)
+        public async Task<ActionResult<CartonStorageSearchDto>> SearchCarton(string requestType,string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
             if (!Authorize(requestType, tlrsCartonManager.Core.Enums.ModulePermission.View))
             {
                 return Unauthorized();
             }
 
-            var requestList = await _requestRepository.SearchRequest(requestType, searchText, pageIndex, pageSize);
+            var requestList = await _requestRepository.SearchRequest(requestType, searchText,searchColumn, sortOrder, pageIndex, pageSize);
             return Ok(requestList);
         }
 

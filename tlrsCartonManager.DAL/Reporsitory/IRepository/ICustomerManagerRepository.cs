@@ -17,7 +17,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<IEnumerable<CustomerSearchDto>> GetCustomerByCode(string customerName, bool isAll);
         Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainName(string customerName);
         Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainId(int customerId);
-        Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnValue, int pageIndex, int pageSize);
+        Task<PagedResponse<CustomerSearchDto>> SearchCustomer(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize);
         Task<List<CustomerAuthorizationHeaderDto>> GetCustomerAuthorizationById(int customerId);
 
         Task<IEnumerable<CustomerSearchDto>> GetCustomerForInvoiceByCode(string customerCode);

@@ -68,6 +68,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 case "GenerateDocketPrintSummary":
                     var viewDocketPrintSummaryData = GetSearchResult<ViewDocketPrintSummary>(model);
                     return viewDocketPrintSummaryData.Select(item => item.GetValues()).ToList();
+
+                case "GenerateOwnershipTransfers":
+                    var viewOwnershipTransferData = GetSearchResult<ViewCartonOwnershipTransfer>(model);
+                    return viewOwnershipTransferData.Select(item => item.GetValues()).ToList();
                 default:
                     throw new Exception("Report not implemented");
             }
@@ -104,6 +108,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                 case "GenerateDocketPrintSummary":
                     return GetSearchResult<ViewDocketPrintSummary>(model);
+
+                case "GenerateOwnershipTransfers":
+                    return GetSearchResult<ViewCartonOwnershipTransfer>(model);
 
                 default:
                     throw new Exception("Report not implemented");

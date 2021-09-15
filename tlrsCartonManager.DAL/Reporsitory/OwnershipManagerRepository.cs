@@ -38,10 +38,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _searchManager = searchManager;
             _environment = environment;
         }
-        public async Task<PagedResponse<CartonOwnershipSearch>> SearchOwnership(string fromValue, string toValue, string searchBy,
-            int pageIndex, int pageSize)
+        public async Task<PagedResponse<CartonOwnershipSearch>> SearchOwnership(string fromValue, string toValue, string searchBy, string searchColumn, string sortOrder,int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.SearchFromToSearchBy("ownershipSearch", fromValue, toValue, searchBy,
+            List<SqlParameter> parms = _searchManager.SearchFromToSearchBy("ownershipSearch", fromValue, toValue, searchBy,searchColumn,sortOrder,
                 pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<CartonOwnershipSearch>().FromSqlRaw(SearchStoredProcedureFromToSearchBy.Sql,
                 parms.ToArray()).ToListAsync();

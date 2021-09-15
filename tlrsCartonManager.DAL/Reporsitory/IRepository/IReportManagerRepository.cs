@@ -29,7 +29,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<IEnumerable<CartonsInRCCollectionWoPending>> GetCartonsInRCWoPending(DateTime asAtDate);
         Task<DailyPalletedSummary> GetDailyPalletedSummary(DateTime asAtDate, string locationCode);
         Task<IEnumerable<CartonsEnteredByCs>> CartonEnteredByCs(DateTime fromDate, DateTime toDate);
-
         Task<IEnumerable<ViewCustomerLoyality>> CustomerLoyality();
+        Task<IEnumerable<DateWiseCollectionSummaryByCustomer>> DateWiseCollectionSummaryByCustomer(DateTime fromDate, DateTime toDate);
     }
 }

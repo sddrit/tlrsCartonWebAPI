@@ -22,7 +22,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         bool DeleteLocation(LocationDto location);
 
-        Task<PagedResponse<LocationDto>> SearchLocation(string columnValue, int pageIndex, int pageSize);
+        Task<PagedResponse<LocationDto>> SearchLocation(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize);
 
 
 

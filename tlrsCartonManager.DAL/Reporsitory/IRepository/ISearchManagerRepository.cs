@@ -11,11 +11,15 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public  interface ISearchManagerRepository
     {
         List<SqlParameter> Search(string storedProcedure, string columnValue, int pageIndex, int pageSize, out SqlParameter outParam);
+
+        List<SqlParameter> Search(string storedProcedure, string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize, out SqlParameter outParam);
         List<SqlParameter> Search(string storedProcedure, string type, string columnValue, int pageIndex, int pageSize, out SqlParameter outParam);
+
+        List<SqlParameter> Search(string storedProcedure, string type, string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize, out SqlParameter outParam);
+        
         List<SqlParameter> SearchFromTo(string storedProcedure, string fromValue, string toValue, int pageIndex, int pageSize, out SqlParameter outParam);
 
-        List<SqlParameter> SearchFromToSearchBy(string storedProcedure, string fromValue, string toValue, string searchBy,
-            int pageIndex, int pageSize, out SqlParameter outParam);
+        List<SqlParameter> SearchFromToSearchBy(string storedProcedure, string fromValue, string toValue, string searchBy, string searchColumn, string sortOrder,int pageIndex, int pageSize, out SqlParameter outParam);
 
         List<SqlParameter> SearchFromToSearchByType(string storedProcedure, string fromValue, string toValue,
       string searchBy, int pageIndex, int pageSize, string type, out SqlParameter outParam);

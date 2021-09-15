@@ -21,34 +21,34 @@ namespace tlrsCartonManager.Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class DailyCollectionController : Controller
+    public class ReminderController : Controller
     {
-        private readonly IMarkDailyCollectionManagerRepository _dailyCollectionRepository;
-        public DailyCollectionController(IMarkDailyCollectionManagerRepository dailyCollectionRepository)
+        private readonly IReminderManagerRepository _reminderRepository;
+        public ReminderController(IReminderManagerRepository reminderRepository)
         {
-            _dailyCollectionRepository = dailyCollectionRepository;
+            _reminderRepository = reminderRepository;
         }
 
         [HttpGet]
-        [RmsAuthorization("Mark Daily Collection", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        [RmsAuthorization("Add Reminders", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> SearchDailyCollection(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            var cartonList = await _dailyCollectionRepository.SearchDailyCollection(searchText,searchColumn,sortOrder, pageIndex, pageSize);
+            var cartonList = await _reminderRepository.SearchReminders(searchText, searchColumn,sortOrder, pageIndex, pageSize);
             return Ok(cartonList);
         }
 
         [HttpGet("{requestNo}")]
-        [RmsAuthorization("Mark Daily Collection", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        [RmsAuthorization("Add Reminders", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> GetSingleSearch(string requestNo)
         {
-            return Ok(await _dailyCollectionRepository.GetDailyCollectionById(requestNo));
+            return Ok(await _reminderRepository.GetReminderListById(requestNo));
         }
 
         [HttpPut]
-        [RmsAuthorization("Mark Daily Collection", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
-        public IActionResult MarkDailyCollection(DailyCollectionMarkUpdateDto request)
+        [RmsAuthorization("Add Reminders", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
+        public IActionResult MarkDailyCollection(ReminderUpdateDto request)
         {
-            return Ok( _dailyCollectionRepository.UpdateDailyCollection(request));
+            return Ok( _reminderRepository.UpdateReminders(request));
         }
 
     }

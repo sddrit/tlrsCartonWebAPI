@@ -34,9 +34,9 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet("getCustomer")]
         [RmsAuthorization("Customer", tlrsCartonManager.Core.Enums.ModulePermission.View)]
-        public async Task<ActionResult<CustomerSearchDto>> SearchCustomer( string columnValue, int pageIndex, int pageSize)
+        public async Task<ActionResult<CustomerSearchDto>> SearchCustomer( string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            return Ok(await _customerRepository.SearchCustomer(columnValue, pageIndex, pageSize));         
+            return Ok(await _customerRepository.SearchCustomer(columnValue,searchColumn, sortOrder, pageIndex, pageSize));         
         }
 
         [HttpGet("getCustomerById/{customerId}")]

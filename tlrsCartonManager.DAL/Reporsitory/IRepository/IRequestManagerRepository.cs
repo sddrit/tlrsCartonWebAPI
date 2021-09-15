@@ -13,7 +13,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     {
         Task<RequestHeaderDto> GetRequestList(string requestNo, string type);
 
-        Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType, string searchText, int pageIndex, int pageSize);
+        Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize);
 
         TableResponse<TableReturn> AddRequest(RequestHeaderDto requestInsert);
 
@@ -23,7 +23,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket);
 
-        Task<PagedResponse<OriginalDocketSearchDto>> SearchOriginalDockets(string searchText, int pageIndex, int pageSize);
+        Task<PagedResponse<OriginalDocketSearchDto>> SearchOriginalDockets(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize);
 
         Task<List<CartonValidationResult>> ValidateCartonsInRequest(RequestValidationModel validation);
         

@@ -31,9 +31,9 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet]
         [RmsAuthorization("Original Docket Entry", tlrsCartonManager.Core.Enums.ModulePermission.View)]
-        public async Task<ActionResult<OriginalDocketSearchDto>> SearchOriginalDocket(string searchtext, int pageIndex, int pageSize)
+        public async Task<ActionResult<OriginalDocketSearchDto>> SearchOriginalDocket(string searchtext, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            var requestList = await _requestRepository.SearchOriginalDockets(searchtext, pageIndex, pageSize);
+            var requestList = await _requestRepository.SearchOriginalDockets(searchtext, searchColumn, sortOrder, pageIndex, pageSize);
             return Ok(requestList);
         }           
 

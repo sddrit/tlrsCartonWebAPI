@@ -34,9 +34,9 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet("getLocations")]
         [RmsAuthorization("Location", tlrsCartonManager.Core.Enums.ModulePermission.View)]
-        public async Task<ActionResult<CustomerSearchDto>> SearchCustomer(string columnValue, int pageIndex, int pageSize)
+        public async Task<ActionResult<CustomerSearchDto>> SearchLocation(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            return Ok(await _locationRepository.SearchLocation(columnValue, pageIndex, pageSize));
+            return Ok(await _locationRepository.SearchLocation(columnValue,searchColumn,sortOrder, pageIndex, pageSize));
         }
 
         [HttpGet("getLocationByCode/{locationCode}")]

@@ -40,9 +40,9 @@ namespace tlrsDailyCollectionManager.DAL.Reporsitory
 
 
         }
-        public async Task<PagedResponse<DailyCollectionMarkDto>> SearchDailyCollection(string columnValue, int pageIndex, int pageSize)
+        public async Task<PagedResponse<DailyCollectionMarkDto>> SearchDailyCollection(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("dailyCollectionMarkSearch", columnValue, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("dailyCollectionMarkSearch", columnValue,searchColumn,sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var dailyCollectionList = await _tcContext.Set<DailyCollectionMarkDto>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging

@@ -200,6 +200,14 @@ namespace tlrsCartonManager.Api.Controllers
                 return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
         }
 
+        [HttpGet("DateWiseCollectionSummaryByCustomer")]
+        //[RmsAuthorization("Customer Loyality", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        public async Task<ActionResult> DateWiseCollectionSummaryByCustomeReport(DateTime fromDate, DateTime toDate)
+        {
+            return Ok(await _reportRepository.DateWiseCollectionSummaryByCustomer(fromDate, toDate));
+
+        }
+
 
     }
 

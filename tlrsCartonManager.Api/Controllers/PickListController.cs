@@ -33,9 +33,9 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet]
         [RmsAuthorization("PickList", tlrsCartonManager.Core.Enums.ModulePermission.View)]
-        public async Task<ActionResult<PickListSearchDto>> SearchPickList(string searchText, int pageIndex, int pageSize)
+        public async Task<ActionResult<PickListSearchDto>> SearchPickList(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            var pickList = await _pickListRepository.SearchPickList(searchText, pageIndex, pageSize);
+            var pickList = await _pickListRepository.SearchPickList(searchText,searchColumn,sortOrder, pageIndex, pageSize);
             return Ok(pickList);
         }
 

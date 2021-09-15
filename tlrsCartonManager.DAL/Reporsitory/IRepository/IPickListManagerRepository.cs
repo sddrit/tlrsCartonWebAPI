@@ -13,7 +13,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface IPickListManagerRepository
     {
         Task<PickListHeaderDto> GetPickList(string requestNo);
-        Task<PagedResponse<PickListSearchDto>> SearchPickList(string searchText, int pageIndex, int pageSize);
+        Task<PagedResponse<PickListSearchDto>> SearchPickList(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize);
         Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue,string searchText, int pageIndex, int pageSize, string type);
         bool AddPickList (PickListResponseDto pickListInsert);
         TableReturn UpdatePickList(PickListResponseDto pickListInsert);

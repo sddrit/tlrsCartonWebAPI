@@ -15,7 +15,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface IInvoiceProfileManagerRepository
     {
        
-        Task<PagedResponse<InvoiceProfileSearch>> SearchInvoiceProfile(string searchText, int pageIndex, int pageSize);
+        Task<PagedResponse<InvoiceProfileSearch>> SearchInvoiceProfile(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize);
         Task<List<InvoiceProfileRate>> GetInvoiceProfileRateSheet(int id,string customerCode, string transactionType);
         string InsertInvoiceProfileHeader(InvoiceProfileHeaderModel model, string transactionType);
         InvoiceProfileHeaderModel GetInvoiceProfileById(int id);

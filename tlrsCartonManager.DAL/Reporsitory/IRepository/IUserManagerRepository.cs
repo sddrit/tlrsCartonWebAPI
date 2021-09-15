@@ -15,7 +15,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<IEnumerable<UserDto>> GetUsersList();
         Task<IEnumerable<ViewWorkerUserList>> GetWorkersList();
         Task<UserDto> GetUserById(int id);
-        Task<PagedResponse<UserSerachDto>> SearchUser(string columnValue, int pageIndex, int pageSize);
+        Task<PagedResponse<UserSerachDto>> SearchUser(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize);
       
         Task<User> GetUserByName(string userName);
         int SaveUser(UserDto user, byte[] passwrodHash, byte[] passwordSalt, string trasactionType, int? userId);

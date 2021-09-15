@@ -41,9 +41,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _environment = environment;
         }
 
-        public async Task<PagedResponse<InvoiceProfileSearch>> SearchInvoiceProfile(string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<InvoiceProfileSearch>> SearchInvoiceProfile(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("invoiceTemplateCustomerSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("invoiceTemplateCustomerSearch", searchText,searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var invoiceProfielList = await _tcContext.Set<InvoiceProfileSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
 

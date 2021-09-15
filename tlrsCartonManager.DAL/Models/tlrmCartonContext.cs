@@ -128,6 +128,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewCustomerLoyality> ViewCustomerLoyalities { get; set; }
         public virtual DbSet<InvoiceTemplateHeaderCustomer> InvoiceTemplateHeaderCustomers { get; set; }
         public virtual DbSet<ViewPendingRequestDailyCollection> ViewPendingRequestDailyCollections { get; set; }
+        public virtual DbSet<ViewCartonOwnershipTransfer> ViewCartonOwnershipTransfers { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -1257,6 +1258,22 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.Status).IsUnicode(false);
             });
+
+            modelBuilder.Entity<ViewCartonOwnershipTransfer>(entity =>
+            {
+                entity.ToView("viewCartonOwnershipTransfers");
+
+                entity.Property(e => e.ChangedBy).IsUnicode(false);
+
+                entity.Property(e => e.FromCustomerCode).IsUnicode(false);
+
+                entity.Property(e => e.FromCustomerName).IsUnicode(false);
+
+                entity.Property(e => e.ToCustomerCode).IsUnicode(false);
+
+                entity.Property(e => e.ToCustomerName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -1326,7 +1343,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<CartonsEnteredByCs>().HasNoKey();
             modelBuilder.Entity<CartonHistory>().HasNoKey();
             modelBuilder.Entity<DailyCollectionMarkDto>().HasNoKey();
-            
+            modelBuilder.Entity<DateWiseCollectionSummaryByCustomer>().HasNoKey();
+            modelBuilder.Entity<ReminderDto>().HasNoKey();
             OnModelCreatingPartial(modelBuilder);
         }
 

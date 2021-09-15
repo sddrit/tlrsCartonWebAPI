@@ -32,9 +32,9 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<InvoiceSearchDto>> SearchInvoice(string searchText, int pageIndex, int pageSize)
+        public async Task<ActionResult<InvoiceSearchDto>> SearchInvoice(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            var invoiceList = await _invoiceRepository.SearchInvoice(searchText, pageIndex, pageSize);
+            var invoiceList = await _invoiceRepository.SearchInvoice(searchText,searchColumn,sortOrder, pageIndex, pageSize);
             return Ok(invoiceList);
         }
 

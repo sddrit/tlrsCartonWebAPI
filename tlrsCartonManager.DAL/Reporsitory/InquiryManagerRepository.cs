@@ -45,7 +45,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             CartonOverviewDto cartonOverView = new CartonOverviewDto();
 
             List<SqlParameter> parms = _searchManager.Search("cartonInquiry", cartonNo.ToString(), SearchStoredProcedure.PageIndex, SearchStoredProcedure.PageSize, out SqlParameter outParam);
-            var cartonList = await _tcContext.Set<CartonInquiry>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            
+            var cartonList = await _tcContext.Set<CartonInquiry>().FromSqlRaw(SearchStoredProcedureBasic.Sql, parms.ToArray()).ToListAsync();
+           
             cartonOverView.CartonHeader = cartonList.FirstOrDefault();
 
             cartonOverView.RequestHeader = _tcContext.InvoiceConfirmations.Where(x => x.CartonNo == cartonNo.ToString()).OrderBy(x => x.TrackingId).ToList();

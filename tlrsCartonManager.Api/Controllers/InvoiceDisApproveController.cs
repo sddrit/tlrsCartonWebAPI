@@ -32,9 +32,9 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet]
         [RmsAuthorization("Invoice Confirmation Disapprove", tlrsCartonManager.Core.Enums.ModulePermission.View)]
-        public async Task<ActionResult<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string searchText, int pageIndex, int pageSize)
+        public async Task<ActionResult<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            var invoiceList = await _invoiceRepository.SearchInvoiceConfirmation("Disapprove", searchText, pageIndex, pageSize);
+            var invoiceList = await _invoiceRepository.SearchInvoiceConfirmation("Disapprove", searchText,searchColumn,sortOrder, pageIndex, pageSize);
             return Ok(invoiceList);
         }
 

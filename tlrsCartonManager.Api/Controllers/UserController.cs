@@ -35,9 +35,9 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet("getUser")]
         [RmsAuthorization("User", tlrsCartonManager.Core.Enums.ModulePermission.View)]
-        public async Task<ActionResult<UserSerachDto>> SearchUser(string columnValue, int pageIndex, int pageSize)
+        public async Task<ActionResult<UserSerachDto>> SearchUser(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            return Ok(await _userService.SearchUser(columnValue, pageIndex, pageSize));
+            return Ok(await _userService.SearchUser(columnValue, searchColumn, sortOrder, pageIndex, pageSize));
         }
 
         [HttpPost]

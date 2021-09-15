@@ -147,4 +147,17 @@ namespace tlrsCartonManager.DAL.Utility
 
     }
 
+    public class DateWiseCollectionSummaryByCustomerStoredProcedure
+    {
+        public static string StoredProcedureName = "reportDateWiseCollectionSummaryByCustomer";
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+               "@fromDate",
+               "@toDate"
+
+        };
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
+    }
+
 }

@@ -126,7 +126,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             {
                 return await _tcContext.ViewPendingRequestDailyCollections
                     .Where(x => x.DeliveryDateInt >= Convert.ToInt32(fromDate.ToString("yyyyMMdd")) &&
-                    x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd")) && x.Collected==false).ToListAsync();
+                    x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd")) && x.Collected == false).ToListAsync();
 
             }
             else
@@ -330,6 +330,20 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<IEnumerable<ViewCustomerLoyality>> CustomerLoyality()
         {
             return await _tcContext.ViewCustomerLoyalities.ToListAsync();
+
+        }
+
+        public async Task<IEnumerable<DateWiseCollectionSummaryByCustomer>> DateWiseCollectionSummaryByCustomer(DateTime fromDate, DateTime toDate)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = DateWiseCollectionSummaryByCustomerStoredProcedure.StoredProcedureParameters[0].ToString(),
+                        Value =fromDate.DateToInt().AsDbValue() },
+                     new SqlParameter { ParameterName = DateWiseCollectionSummaryByCustomerStoredProcedure.StoredProcedureParameters[1].ToString(),
+                        Value =toDate.DateToInt().AsDbValue() }
+                };
+
+            return await _tcContext.Set<DateWiseCollectionSummaryByCustomer>().FromSqlRaw(DateWiseCollectionSummaryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
         }
     }

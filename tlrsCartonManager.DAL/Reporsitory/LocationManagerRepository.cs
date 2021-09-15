@@ -152,9 +152,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return true;
         }
 
-        public async Task<PagedResponse<LocationDto>> SearchLocation(string columnValue, int pageIndex, int pageSize)
+        public async Task<PagedResponse<LocationDto>> SearchLocation(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("locationSearch", columnValue, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("locationSearch", columnValue,searchColumn,sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<LocationDto>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging

@@ -55,9 +55,9 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> SearchDocket(string status, string searchText, int pageIndex, int pageSize)
+        public async Task<ActionResult> SearchDocket(string status, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-           return Ok(  _docketPrintRepository.SearchDockets(status, searchText, pageIndex, pageSize));
+           return Ok(  _docketPrintRepository.SearchDockets(status, searchText,searchColumn,sortOrder, pageIndex, pageSize));
            
         }
 

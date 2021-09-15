@@ -15,7 +15,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     {
         #region Invoicing
         Task<InvoicePrintModel> GetInvoiceList(string invoiceNo);
-        Task<PagedResponse<InvoiceSearchDto>> SearchInvoice(string searchText, int pageIndex, int pageSize);
+        Task<PagedResponse<InvoiceSearchDto>> SearchInvoice(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize);
         InvoiceResponse CreateInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice);
         List<InvoiceSubResponse> PreviewSubInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice);
 
@@ -28,7 +28,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         #endregion
 
         #region Invoice Confirmation
-        Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string type,string searchText, int pageIndex, int pageSize);
+        Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string type,string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize);
         Task<List<InvoiceConfirmationDetail>> GetInvoiceConfirmationDetailByRequestNo(string requestNo);
         bool SaveInvoiceConfirmation(List<InvoiceConfirmationDto> invoiceConfirmation);
         bool DeleteInvoiceConfirmation(string requestNo, string reason, int userId);
@@ -39,7 +39,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         #endregion
 
         #region Invoice Posting
-        Task<PagedResponse<InvoicePostingSearch>> SearchInvoicePosting(string searchText, 
+        Task<PagedResponse<InvoicePostingSearch>> SearchInvoicePosting(string searchText, string searchColumn, string sortOrder,
             int pageIndex, int pageSize);
         Task<bool> SaveInvoicePostingAsync(InvoicePostingDto invoicePosting);
 

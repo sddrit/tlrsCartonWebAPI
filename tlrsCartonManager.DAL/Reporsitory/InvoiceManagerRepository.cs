@@ -72,9 +72,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
 
         }
-        public async Task<PagedResponse<InvoiceSearchDto>> SearchInvoice(string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<InvoiceSearchDto>> SearchInvoice(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("invoiceSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("invoiceSearch", searchText,searchColumn,sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<InvoiceSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
@@ -321,11 +321,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         #endregion
 
         #region Invoice Confirmation
-        public async Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string type, string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string type, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("invoiceConfirmDisapproveSearch", type, searchText, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("invoiceConfirmDisapproveSearch", type, searchText,searchColumn,sortOrder, pageIndex, pageSize, out SqlParameter outParam);
+            
             var cartonList = await _tcContext.Set<InvoiceConfirmationSearch>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
+            
             var totalRows = (int)outParam.Value;
+            
             #region paging
             var postResponse = _mapper.Map<List<InvoiceConfirmationSearchDto>>(cartonList);
 
@@ -398,9 +401,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _tcContext.Set<BoolReturn>().FromSqlRaw(InvoiceDisaprroveStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
 
-        public async Task<PagedResponse<InvoicePostingSearch>> SearchInvoicePosting(string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<InvoicePostingSearch>> SearchInvoicePosting(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("invoicePostingSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("invoicePostingSearch", searchText,searchColumn,sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<InvoicePostingSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging

@@ -68,5 +68,16 @@ namespace tlrsCartonManager.DAL.Models
 
         [Column("trackingId")]
         public int? TrackingId { get; set; }
+
+
+        [Column("reminder1")]
+        public string Reminder1 { get; set; }
+
+
+        [Column("reminder2")]
+        public string Reminder2 { get; set; }
+
+        [Column("reminder3")]
+        public string Reminder3 { get; set; }
     }
 }

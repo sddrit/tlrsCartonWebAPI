@@ -126,9 +126,9 @@ namespace tlrsCartonManager.Services.User
             return await _userManagerRepository.GetUserById(userId);
         }
 
-        public Task<PagedResponse<UserSerachDto>> SearchUser(string columnValue, int pageIndex, int pageSize)
+        public Task<PagedResponse<UserSerachDto>> SearchUser(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            var userList= _userManagerRepository.SearchUser(columnValue, pageIndex , pageSize);
+            var userList= _userManagerRepository.SearchUser(columnValue,searchColumn,sortOrder, pageIndex , pageSize);
             if(userList==null)
             {
                 throw new ServiceException(new ErrorMessage[]

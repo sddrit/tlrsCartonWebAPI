@@ -42,7 +42,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         #region Docket reprinting
         public object GetDocketRePrint(DocketRePrintModel model)
         {
-            var authorizedDocket=  SearchDockets("Printed", model.RequestNo, 1, 1);
+            var authorizedDocket=  SearchDockets("Printed", model.RequestNo,string.Empty, string.Empty, 1, 1);
             if(authorizedDocket==null || authorizedDocket!=null && authorizedDocket.Data.Count()==0)
             {
                throw new ServiceException(new ErrorMessage[]
@@ -115,7 +115,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public object GetDocket(DocketPrintModel model)
         {
             int serialNo = 0;
-            var authorizedDocket =  SearchDockets("Not Printed", model.RequestNo, 1, 1);
+            var authorizedDocket =  SearchDockets("Not Printed", model.RequestNo,string.Empty, string.Empty, 1, 1);
 
             if (authorizedDocket == null || authorizedDocket != null && authorizedDocket.Data.Count() == 0)
             {
@@ -189,9 +189,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return result;
         }
 
-        public PagedResponse<ViewPrintedDocket> SearchDockets(string printStatus, string searchText, int pageIndex, int pageSize)
+        public PagedResponse<ViewPrintedDocket> SearchDockets(string printStatus, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("docketPrintSearch", printStatus, searchText, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("docketPrintSearch", printStatus, searchText,searchColumn,sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var docketList =  _tcContext.Set<ViewPrintedDocket>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToList();
             var totalRows = (int)outParam.Value;
 

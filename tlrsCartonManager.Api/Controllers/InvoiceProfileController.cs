@@ -33,9 +33,9 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet]
         [RmsAuthorization("Invoice Profile", tlrsCartonManager.Core.Enums.ModulePermission.View)]
-        public async Task<ActionResult>SearchInvoiceProfile(string searchText, int pageIndex, int pageSize)
+        public async Task<ActionResult>SearchInvoiceProfile(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            var invoiceList = await _invoiceProfileRepository.SearchInvoiceProfile(searchText, pageIndex, pageSize);
+            var invoiceList = await _invoiceProfileRepository.SearchInvoiceProfile(searchText,searchColumn, sortOrder, pageIndex, pageSize);
             return Ok(invoiceList);
         }
 

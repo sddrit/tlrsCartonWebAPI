@@ -33,9 +33,9 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet("getOwnership")]
         [RmsAuthorization("Ownership Transfer", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<CartonOwnershipSearch>> SearchOwnership(string fromValue,string toValue, 
-           string searchBy, int pageIndex, int pageSize)
+           string searchBy, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            var ownershipList = await _ownershipRepository.SearchOwnership(fromValue,toValue, searchBy, pageIndex, pageSize);
+            var ownershipList = await _ownershipRepository.SearchOwnership(fromValue,toValue, searchBy,searchColumn,sortOrder, pageIndex, pageSize);
             if (ownershipList != null)
                 return Ok(ownershipList);
             else

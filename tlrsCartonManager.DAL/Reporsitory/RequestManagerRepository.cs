@@ -42,7 +42,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public async Task<RequestHeaderDto> GetRequestList(string requestNo, string type)
         {          
-            var result = await SearchRequest(type, requestNo, 1, 1);// call search function to check the request is valid to get data.
+            var result = await SearchRequest(type, requestNo, string.Empty, string.Empty, 1, 1);// call search function to check the request is valid to get data.
             if (result.Data == null || result.Data!=null && result.Data.Count()==0)
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -90,9 +90,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return requestDto;
         }
 
-        public async Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType, string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("requestSearch", requestType, searchText, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("requestSearch", requestType, searchText,searchColumn,sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<RequestSearch>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
@@ -258,9 +258,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _tcContext.Set<BoolReturn>().FromSqlRaw(AddDocketStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
 
-        public async Task<PagedResponse<OriginalDocketSearchDto>> SearchOriginalDockets(string searchText, int pageIndex, int pageSize)
+        public async Task<PagedResponse<OriginalDocketSearchDto>> SearchOriginalDockets(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("originalDocketSearch", searchText, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("originalDocketSearch", searchText,searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<OriginalDocketSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
@@ -282,7 +282,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<object> GetDocket(DocketPrintModel model)
         {
             int serialNo = 0;
-            var authorizedDocket = await SearchRequest(model.RequestType,model.RequestNo, 1, 1);
+            var authorizedDocket = await SearchRequest(model.RequestType,model.RequestNo,string.Empty, string.Empty, 1, 1);
 
             if (authorizedDocket == null || authorizedDocket != null && authorizedDocket.Data.Count() == 0)
             {
