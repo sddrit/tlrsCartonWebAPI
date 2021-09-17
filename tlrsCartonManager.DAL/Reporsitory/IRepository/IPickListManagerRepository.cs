@@ -20,5 +20,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         TableReturn DeletePickList(PickListResponseDto pickListInsert);
         TableReturn UpdatePickListPrintStatus(PickListResponseDto pickListUpdate);
         object GetPendingPickListSummary(string type);
+
+        TableReturn MarkAsProcessed(PickListResponseDto pickListUpdate);
     }
 }

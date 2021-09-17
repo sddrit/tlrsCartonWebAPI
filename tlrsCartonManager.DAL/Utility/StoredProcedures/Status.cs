@@ -19,7 +19,8 @@ namespace tlrsCartonManager.DAL.Utility
             Insert,
             Update,
             Delete,
-            Print
+            Print,
+            Complete
         }
         public enum SearchCriterias
         {

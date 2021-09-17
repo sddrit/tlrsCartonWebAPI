@@ -25,15 +25,15 @@ namespace tlrsCartonManager.DAL.Utility
                    "@pageSize",
                    "@totalRecords"
                 };
-            }          
+            }
         }
         public static string Sql
         {
             get
-            { 
-                return  "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) + " OUTPUT"; 
-            } 
-        }    
+            {
+                return "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) + " OUTPUT";
+            }
+        }
 
     }
 
@@ -50,7 +50,35 @@ namespace tlrsCartonManager.DAL.Utility
             {
                 return new List<string>()
                 {
-                   "@value",                  
+                   "@value",
+                   "@pageIndex",
+                   "@pageSize",
+                   "@totalRecords"
+                };
+            }
+        }
+        public static string Sql
+        {
+            get
+            {
+                return "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) + " OUTPUT";
+            }
+        }
+
+    }
+
+
+    public static class SearchStoredProcedureByTypeBase
+    {
+        public static string StoredProcedureName { get; set; }
+        public static List<string> StoredProcedureParameters
+        {
+            get
+            {
+                return new List<string>()
+                {
+                   "@type",
+                   "@value",                   
                    "@pageIndex",
                    "@pageSize",
                    "@totalRecords"
@@ -104,7 +132,7 @@ namespace tlrsCartonManager.DAL.Utility
             get
             {
                 return new List<string>()
-                {                  
+                {
                    "@valueFrom",
                    "@valueTo",
                    "@pageIndex",

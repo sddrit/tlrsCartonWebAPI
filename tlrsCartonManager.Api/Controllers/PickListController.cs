@@ -115,5 +115,16 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
         }
+
+        [HttpPut("markAsProcess")]
+        //[RmsAuthorization("PickList", tlrsCartonManager.Core.Enums.ModulePermission.Print)]
+        public ActionResult MarkAsProcess(PickListResponseDto pickList)
+        {
+            var request = _pickListRepository.MarkAsProcessed(pickList);
+            if (request.Reason == "OK")
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
+        }
     }
 }

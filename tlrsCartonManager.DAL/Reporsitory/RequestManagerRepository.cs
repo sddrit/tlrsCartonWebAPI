@@ -59,7 +59,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 type = "Empty";   
 
                 var request = await _tcContext.RequestHeaders.
-                                 Include(x => x.RequestDetails.Where(x=>x.RequestNo==requestNo)).
+                                 Include(x => x.RequestDetails.Where(x=>x.RequestNo==requestNo & x.Deleted==false)).
                                  FirstOrDefaultAsync(x => x.RequestNo == requestNo & x.RequestType==type & x.Deleted==false);
             if (request == null)
             {
@@ -131,6 +131,21 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         private TableResponse<TableReturn> SaveRequest(RequestHeaderDto requestTransaction, string transcationType)
         {
+
+            List<RequestDetailDto> emptyList = new List<RequestDetailDto>();
+            if (requestTransaction.RequestType == "EmptyAllocate")
+            {
+                foreach (var item in requestTransaction.RequestDetails)
+                {
+                    if (item != null)
+                    {
+                        emptyList.Add(item);
+
+                    }
+
+                }
+            }
+
             #region Sql Parameter loading
             List<SqlParameter> parms = new List<SqlParameter>
             {
@@ -157,7 +172,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    ParameterName = RequestStoredProcedure.StoredProcedureParameters[16].ToString(),
                    TypeName = RequestStoredProcedure.StoredProcedureTypeNames[0].ToString(),
                    SqlDbType = SqlDbType.Structured,
-                   Value =requestTransaction.RequestDetails.ToList().ToDataTable()
+                   Value =requestTransaction.RequestType=="EmptyAllocate"?emptyList.ToDataTable(): requestTransaction.RequestDetails.ToList().ToDataTable()
                 },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[17].ToString(), Value = requestTransaction.StorageType.AsDbValue() } ,
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[18].ToString(), Value = requestTransaction.ContactNo.AsDbValue() }

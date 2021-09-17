@@ -217,7 +217,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             List<SqlParameter> parms = _searchManager.Search("requestInquiry",  searchText, cusomerCode,pageIndex, pageSize,out SqlParameter outParam);
 
-            var requestList = await _tcContext.Set<ViewRequestSummary>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
+            var requestList = await _tcContext.Set<ViewRequestSummary>().FromSqlRaw(SearchStoredProcedureByTypeBase.Sql, parms.ToArray()).ToListAsync();
 
             var paginationResponse = new PagedResponse<ViewRequestSummary>
             {
