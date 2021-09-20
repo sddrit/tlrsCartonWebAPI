@@ -89,5 +89,12 @@ namespace tlrsCartonManager.DAL.Models
         [Column("printed")]
         public bool Printed { get; set; }
 
+        [Column("splitWoNumber")]
+        public string SplitWoNumber { get; set; }
+
+        [Column("note")]
+        public string Note { get; set; }
+
+
     }
 }

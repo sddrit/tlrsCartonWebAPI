@@ -82,18 +82,37 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return SavePickList(pickListUpdate, TransactionTypes.Complete.ToString());
         }
 
-        public async Task<PickListHeaderDto> GetPickList(string pickListNo)
+        public async Task<PickListHeaderDto> GetPickList(string pickListNo, bool isPrint)
         {
             var pickList = await _tcContext.ViewPickListByNos.Where(x => x.PickListNo == pickListNo).OrderBy(x=>x.WareHouseCode).ToListAsync();
 
             PickListHeaderDto pickListHeader = new PickListHeaderDto();
             pickListHeader = _mapper.Map<PickListHeaderDto>(pickList.FirstOrDefault());
 
-            pickListHeader.PickListDetail= _mapper.Map<List<PickListDetailItemDto>>(pickList);
 
+            var splitWos = pickList.Select(x => x.SplitWoNumber).Distinct().ToList();
 
+            if(splitWos.Any())
+            {
+
+                pickListHeader.SplitWoNumber = string.Join(", ", splitWos);
+            }
+
+            pickListHeader.PickedCount = pickList.Where(x => x.IsPicked == true).Count();
+
+          
+
+            if(isPrint)
+            {
+                pickListHeader.PickListDetail = _mapper.Map<List<PickListDetailItemDto>>(pickList).OrderBy(x => x.WarehouseCode).ThenBy(x => x.LocationCode).ThenBy(x => x.Note).ToList();
+
+            }
+            else
+                pickListHeader.PickListDetail = _mapper.Map<List<PickListDetailItemDto>>(pickList);
             return pickListHeader;
         }
+
+       
 
         public async Task<PagedResponse<PickListSearchDto>> SearchPickList(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {

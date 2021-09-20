@@ -44,7 +44,9 @@ namespace tlrsCartonManager.Api.Controllers
         [RmsAuthorization("PickList", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<PickListHeaderDto>> GetSingleSearch(string pickListNo)
         {
-            var request = await _pickListRepository.GetPickList(pickListNo);
+            var request = await _pickListRepository.GetPickList(pickListNo,false);
+
+           
             if (request != null)
                 return Ok(request);
             else

@@ -16,5 +16,7 @@ namespace tlrsCartonManager.DAL.Models.Pick
         public int  NoOfCartons { get; set; }
         public bool? Printed { get; set; }
         public int noOfCartonsPicked { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
     }
 }

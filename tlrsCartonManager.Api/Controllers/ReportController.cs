@@ -193,7 +193,7 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpGet("PickList")]
         public async Task<ActionResult> GetPickList(string pickListNo)
         {
-            var request = await _pickListRepository.GetPickList(pickListNo);
+            var request = await _pickListRepository.GetPickList(pickListNo,true);
             if (request != null)
                 return Ok(request);
             else
