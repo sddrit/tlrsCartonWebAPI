@@ -39,14 +39,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _environment = environment;
         }
 
-        private TableReturn SavePickList(PickListResponseDto pickListInsert,string transcationType)
+        private TableReturn SavePickList(PickListResponseDto pickListInsert, string transcationType)
         {
-          
+
             List<SqlParameter> parms = new List<SqlParameter>
             {
                  new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[0].ToString(), Value = pickListInsert.PickListNo.AsDbValue() } ,
                  new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[1].ToString(), Value = transcationType.AsDbValue() } ,
-                 new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[2].ToString(), Value = pickListInsert.AssignedUserId.AsDbValue() } ,
+                 new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[2].ToString(), Value =
+                 pickListInsert.AssignedUserId!=null? string.Join(",",pickListInsert.AssignedUserId.Select(x => x.ToString()).ToArray()): string.Empty },
                  new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[3].ToString(), Value = pickListInsert.LastSentDeviceId.AsDbValue() } ,
                 new SqlParameter
                 {
@@ -56,8 +57,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    Value =pickListInsert.PickListDetail.ToList().ToDataTable()
                 },
             };
-           return _tcContext.Set<TableReturn>().FromSqlRaw(PickListStoredProcedure.Sql, parms.ToArray()).AsEnumerable().FirstOrDefault();
-        
+            return _tcContext.Set<TableReturn>().FromSqlRaw(PickListStoredProcedure.Sql, parms.ToArray()).AsEnumerable().FirstOrDefault();
+
         }
 
         public TableReturn DeletePickList(PickListResponseDto pickListDelete)
@@ -84,39 +85,64 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public async Task<PickListHeaderDto> GetPickList(string pickListNo, bool isPrint)
         {
-            var pickList = await _tcContext.ViewPickListByNos.Where(x => x.PickListNo == pickListNo).OrderBy(x=>x.WareHouseCode).ToListAsync();
+            var pickList = await _tcContext.ViewPickListByNos.Where(x => x.PickListNo == pickListNo).OrderBy(x => x.WareHouseCode).ToListAsync();
 
-            PickListHeaderDto pickListHeader = new PickListHeaderDto();
-            pickListHeader = _mapper.Map<PickListHeaderDto>(pickList.FirstOrDefault());
+            var item = _mapper.Map<PickListHeaderSingleSearchDto>(pickList.FirstOrDefault());
 
+            var assignedUserNames = pickList.Select(x => x.AssignedUserName).Distinct().ToList();
+
+            PickListHeaderDto pickListHeader = new PickListHeaderDto()
+            {
+                PickListNo = item.PickListNo,
+                AssignedUserName = string.Join(",", assignedUserNames),
+                CreatedDate = item.CreatedDate,
+                LastSentDeviceId = item.LastSentDeviceId,
+                PickedUserName = item.PickedUserName
+
+            };
+
+            var assignedUserList = pickList.Select(x => x.AssignedUserId.Value).Distinct().ToList();
+
+            if (assignedUserList.Any())
+            {
+                pickListHeader.AssignedUserId = assignedUserList;
+            }
 
             var splitWos = pickList.Select(x => x.SplitWoNumber).Distinct().ToList();
 
-            if(splitWos.Any())
+            if (splitWos.Any())
             {
-
                 pickListHeader.SplitWoNumber = string.Join(", ", splitWos);
             }
 
             pickListHeader.PickedCount = pickList.Where(x => x.IsPicked == true).Count();
 
-          
-
-            if(isPrint)
+            if (isPrint)
             {
                 pickListHeader.PickListDetail = _mapper.Map<List<PickListDetailItemDto>>(pickList).OrderBy(x => x.WarehouseCode).ThenBy(x => x.LocationCode).ThenBy(x => x.Note).ToList();
 
             }
             else
                 pickListHeader.PickListDetail = _mapper.Map<List<PickListDetailItemDto>>(pickList);
+
             return pickListHeader;
         }
 
-       
+        public async Task<List<PickListSummaryDto>> GetPickListSummaryByAssignedUser(string pickListNo)
+        {
+            return await _tcContext.ViewPickLists.Where(x => x.PickListNo == pickListNo).GroupBy(x => x.AssignedUser)
+                            .Select(t => new PickListSummaryDto()
+                            {
+                                AssignedUserName = t.Key,
+                                CartonCount = t.Sum(x=>x.NoOfCartons.Value),
+                                PickedCount= t.Sum(x => x.NoOfCartonsPicked.Value),
+
+                            }).ToListAsync();
+        }
 
         public async Task<PagedResponse<PickListSearchDto>> SearchPickList(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("pickListSearch",  searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("pickListSearch", searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<PickListSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
@@ -134,18 +160,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
             #endregion
 
             return paginationResponse;
-        }        
+        }
 
         public bool AddPickList(PickListResponseDto pickListInsert)
         {
-            var result= SavePickList(pickListInsert, TransactionTypes.Insert.ToString());
-            if(result.OutValue=="NOK")
+            var result = SavePickList(pickListInsert, TransactionTypes.Insert.ToString());
+            if (result.Reason == "NOK")
             {
                 throw new ServiceException(new ErrorMessage[]
                   {
                      new ErrorMessage()
                      {
-                         Code = string.Empty,
+                         Code = result.OutValue,
                          Message = $"Unable to create picklist"
                      }
                   });
@@ -156,9 +182,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
         }
 
-        public async Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue,string searchText, int pageIndex, int pageSize, string type)
+        public async Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue, string searchText, int pageIndex, int pageSize, string type)
         {
-            List<SqlParameter> parms = _searchManager.SearchFromToSearchByType("pickListPendingSearch", fromValue,toValue, searchText, pageIndex, pageSize,type, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.SearchFromToSearchByType("pickListPendingSearch", fromValue, toValue, searchText, pageIndex, pageSize, type, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<PickListPendingListItem>().FromSqlRaw(SearchStoredProcedureFromToSearchByType.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging

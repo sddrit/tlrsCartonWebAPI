@@ -413,6 +413,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    Value =  lstAuthorizationLevel.ToDataTable()
                 },
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[53].ToString(), Value =customerTransaction.IncludeMainAccountAuthorization.AsDbValue() } ,
+                new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[54].ToString(), Value =customerTransaction.IsManualInvoice.AsDbValue() } ,
             };
             #endregion
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;

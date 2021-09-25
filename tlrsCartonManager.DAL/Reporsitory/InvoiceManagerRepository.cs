@@ -215,6 +215,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice);
 
+            if(resultTable!=null && resultTable.Count==0)
+            throw new ServiceException(new ErrorMessage[]
+              {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"No invoice data for this customer: {customerCode}"
+                     }
+              });
+
+
+
             var mainInvoiceDetail = resultTable.Where(x => x.InvoiceNoGroup == 1).ToList();
 
             var mainInvoiceNo = resultTable[0].InvoiceNo;

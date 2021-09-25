@@ -65,6 +65,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public virtual ICollection<CustomerSubAccountListDto> CustomerSubAccountLists { get; set; } = new List<CustomerSubAccountListDto>();
 
         public bool IncludeMainAccountAuthorization { get; set; }
+        public bool IsManualInvoice { get; set; }
+        
 
     }
 
@@ -81,6 +83,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public string AccountType { get; set; }
         public int Route { get; set; }
         public string Address { get; set; }
+
+        public bool IsManualInvoice { get; set; }
     }
     public class CustomerMainCodeSearchDto
     {

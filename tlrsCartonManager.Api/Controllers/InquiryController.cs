@@ -100,6 +100,7 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet("RequestSummaryByCustomer")]
         [RmsAuthorization("Request Summary", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        [RmsAuthorization("Carton Dispatch", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<RequestSearch>> GetRequestSummaryByCustomer(string customerCode, string searchText, int pageIndex, int pageSize)
         {
             var requestList = await _inquiryRepository.GetRequestInquiryByCustomer(customerCode, searchText, pageIndex, pageSize);

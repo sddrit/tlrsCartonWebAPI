@@ -13,7 +13,7 @@ namespace tlrsCartonManager.DAL.Dtos.Pick
 
         public string PickListNo { get; set; }
         public string LastSentDeviceId { get; set; }
-        public int? AssignedUserId { get; set; }
+        public List<int> AssignedUserId { get; set; }
         public string AssignedUserName { get; set; }
         public string PickedUserName { get; set; }        
         public DateTime CreatedDate { get; set; }          
@@ -24,11 +24,40 @@ namespace tlrsCartonManager.DAL.Dtos.Pick
         public ICollection<PickListDetailItemDto> PickListDetail { get; set; }
 
     }
+
+    public class PickListSummaryDto
+    {            
+        public string AssignedUserName { get; set; }       
+        public int PickedCount { get; set; }
+        public int CartonCount { get; set; }
+        
+
+    }
+
+    public class PickListHeaderSingleSearchDto
+    {
+        [Key]
+
+        public string PickListNo { get; set; }
+        public string LastSentDeviceId { get; set; }
+        public int? AssignedUserId { get; set; }
+        public string AssignedUserName { get; set; }
+        public string PickedUserName { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public bool? Printed { get; set; }
+        public string SplitWoNumber { get; set; }
+        public int? PickedCount { get; set; }
+
+        public ICollection<PickListDetailItemDto> PickListDetail { get; set; }
+
+    }
+
+
     public class PickListResponseDto
     {
         public string PickListNo { get; set; }
         public string LastSentDeviceId { get; set; }
-        public int? AssignedUserId { get; set; }
+        public List<int> AssignedUserId { get; set; }
         public ICollection<PickListResponseDetailDto> PickListDetail { get; set; }
     }
     public class PickListResponseDetailDto

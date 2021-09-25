@@ -264,6 +264,9 @@ namespace tlrsCartonManager.DAL.Mapper
                 .ReverseMap();
 
             CreateMap<UserModulePermission, UserPermissionItem>().ReverseMap();
+
+            CreateMap<UserModulePermission, UserPermissionItem>().ReverseMap();
+            CreateMap < PickListHeaderSingleSearchDto, ViewPickListByNo>().ReverseMap();
         }
 
 

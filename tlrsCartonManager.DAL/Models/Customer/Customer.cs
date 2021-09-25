@@ -181,6 +181,10 @@ namespace tlrsCartonManager.DAL.Models
         [Column("includeMainAccountAuthorization")]
         public bool? IncludeMainAccountAuthorization { get; set; }
 
+        [Column("isManualInvoice")]
+        public bool? IsManualInvoice { get; set; }
+
+
         [NotMapped]       
         public string Address
         {

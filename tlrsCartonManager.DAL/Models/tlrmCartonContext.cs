@@ -129,6 +129,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<InvoiceTemplateHeaderCustomer> InvoiceTemplateHeaderCustomers { get; set; }
         public virtual DbSet<ViewPendingRequestDailyCollection> ViewPendingRequestDailyCollections { get; set; }
         public virtual DbSet<ViewCartonOwnershipTransfer> ViewCartonOwnershipTransfers { get; set; }
+        public virtual DbSet<ViewPickList> ViewPickLists { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -1272,6 +1273,16 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.ToCustomerCode).IsUnicode(false);
 
                 entity.Property(e => e.ToCustomerName).IsUnicode(false);
+            });
+            modelBuilder.Entity<ViewPickList>(entity =>
+            {
+                entity.ToView("viewPickList");
+
+                entity.Property(e => e.AssignedUser).IsUnicode(false);
+
+                entity.Property(e => e.LastSentDeviceId).IsUnicode(false);
+
+                entity.Property(e => e.PickListNo).IsUnicode(false);
             });
 
             modelBuilder.Entity<CustomerSearch>();

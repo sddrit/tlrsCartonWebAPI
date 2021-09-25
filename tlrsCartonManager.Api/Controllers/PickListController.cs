@@ -128,5 +128,12 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
         }
+
+        [HttpGet("getAssignedUserSummary")]
+        public async Task<ActionResult> GetAssignedUserSummaryAsync(string picklistNo)
+        {
+            return Ok(await _pickListRepository.GetPickListSummaryByAssignedUser(picklistNo));
+
+        }
     }
 }

@@ -22,5 +22,6 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         object GetPendingPickListSummary(string type);
 
         TableReturn MarkAsProcessed(PickListResponseDto pickListUpdate);
+        Task<List<PickListSummaryDto>> GetPickListSummaryByAssignedUser(string pickListNo);
     }
 }
