@@ -218,6 +218,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 return _tcContext.Set<PickListSummaryDate>().FromSqlRaw(PickListSummaryStoredProcedure.Sql, parms.ToArray()).AsEnumerable().ToList();
             if (type == "WareHouse")
                 return _tcContext.Set<PickListSummaryWareHouse>().FromSqlRaw(PickListSummaryStoredProcedure.Sql, parms.ToArray()).AsEnumerable().ToList();
+            if (type == "Customer")
+                return _tcContext.Set<PickListSummaryCustomer>().FromSqlRaw(PickListSummaryStoredProcedure.Sql, parms.ToArray()).AsEnumerable().ToList();
 
             throw new ServiceException(new ErrorMessage[]
                 {

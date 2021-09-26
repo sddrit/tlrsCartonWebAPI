@@ -20,6 +20,7 @@ using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
 using tlrsCartonManager.DAL.Models.Report;
 using tlrsCartonManager.DAL.Models.RoleResponse;
+using tlrsCartonManager.DAL.Models.Verification;
 
 #nullable disable
 
@@ -1356,6 +1357,10 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<DailyCollectionMarkDto>().HasNoKey();
             modelBuilder.Entity<DateWiseCollectionSummaryByCustomer>().HasNoKey();
             modelBuilder.Entity<ReminderDto>().HasNoKey();
+            modelBuilder.Entity<PickListSummaryCustomer>().HasNoKey();
+            modelBuilder.Entity<VerificationPickInvalidViewModel>().HasNoKey();
+            modelBuilder.Entity<VerificationPickViewModel>().HasNoKey();
+
             OnModelCreatingPartial(modelBuilder);
         }
 

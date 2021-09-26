@@ -63,6 +63,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IMarkDailyCollectionManagerRepository, MarkDailyCollectionManagerRepository>();
             services.AddScoped<IReminderManagerRepository, ReminderManagerRepository>();
             services.AddScoped<AuthorizeService>();
+            services.AddScoped<IVerficationManagerRepository, VerificationManagerRepository>();
 
             services.AddScoped<IEnvironment, WebEnvironment>();
            

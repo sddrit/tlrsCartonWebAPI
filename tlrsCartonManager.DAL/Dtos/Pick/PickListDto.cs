@@ -140,7 +140,15 @@ namespace tlrsCartonManager.DAL.Dtos.Pick
     {
         public string WareHouseCode { get; set; }
         public int CartonCount { get; set; }
+        public string RequestType { get; set; }
 
+    }
+
+    public class PickListSummaryCustomer
+    {
+        public string CustomerCode { get; set; }
+        public string Name { get; set; }
+        public int CartonCount { get; set; }
         public string RequestType { get; set; }
 
     }
