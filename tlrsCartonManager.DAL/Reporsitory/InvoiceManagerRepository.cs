@@ -294,14 +294,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
 
-        public InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate,  string invoiceNo, string customerCode)
+        public InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate,  string invoiceNo, string customerCode, bool isSeparate)
         {
             int fDate = fromDate.DateToInt();
             int tDate = toDate.DateToInt();                      
 
             InvoiceHeaderResponse mainInvoiceHeader = new InvoiceHeaderResponse();           
 
-            var transactionSummary= GetTransactionSummry(fDate, tDate, invoiceNo, true, customerCode);
+            var transactionSummary= GetTransactionSummry(fDate, tDate, invoiceNo, isSeparate, customerCode);
 
             if(!transactionSummary.Any())
             {

@@ -94,9 +94,9 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("PreviewTransactionSummary")]
-        public ActionResult PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo, string customerCode)
+        public ActionResult PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo, string customerCode, bool isSeparate)
         {
-            return Ok(_invoiceRepository.PreviewTransactionSummary(fromDate, toDate, invoiceNo, customerCode));
+            return Ok(_invoiceRepository.PreviewTransactionSummary(fromDate, toDate, invoiceNo, customerCode,isSeparate));
         }
     }
 }
