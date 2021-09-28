@@ -70,7 +70,7 @@ namespace tlrsCartonManager.DAL.Models
 
         [Column("Vat Percentage")]
         public decimal? VatPercentage { get; set; }
-
+        public string Status { get; set; }
         public IList<KeyValuePair<string, string>> GetValues()
         {
             return new List<KeyValuePair<string, string>>()
@@ -84,7 +84,8 @@ namespace tlrsCartonManager.DAL.Models
              new KeyValuePair<string, string>("Created User", CreatedUser),
              new KeyValuePair<string, string>("Created Date", CreatedDate),
              new KeyValuePair<string, string>("Last Updated User", LuUser),
-             new KeyValuePair<string, string>("Last Updated Date", LuDate)
+             new KeyValuePair<string, string>("Last Updated Date", LuDate),
+             new KeyValuePair<string, string>("Status", Status)
             };
 
         }

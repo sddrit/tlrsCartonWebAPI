@@ -93,6 +93,10 @@ namespace tlrsCartonManager.DAL.Models
         [Column("docketNo")]
         [StringLength(20)]
         public string DocketNo { get; set; }
+        [Column("contactNo")]
+        [StringLength(50)]
+        public string ContactNo { get; set; }
+
 
         [InverseProperty(nameof(RequestDetail.Request))]
         public virtual ICollection<RequestDetail> RequestDetails { get; set; }

@@ -25,6 +25,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         InvoiceModel GetInvoiceById(string invoiceNo);
         InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo, string customerCode, bool isSeparate);
 
+        List<InvoiceResponseDetail> CancelInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice);
         #endregion
 
         #region Invoice Confirmation

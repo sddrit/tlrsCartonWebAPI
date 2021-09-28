@@ -190,7 +190,7 @@ namespace tlrsCartonManager.DAL.Models
         {
             get
             {
-                return Address1 + " " + Address2 + "" + Address3;
+                return Address1 + ", " + Address2 + ", " + Address3;
 
             }
             set { }

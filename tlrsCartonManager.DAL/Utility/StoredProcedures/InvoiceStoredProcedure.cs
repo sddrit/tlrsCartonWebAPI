@@ -92,7 +92,8 @@ namespace tlrsCartonManager.DAL.Utility
 		public static string StoredProcedureName = "invoiceConfirmationInsert";
 		public static List<string> StoredProcedureParameters = new List<string>()
 		{
-			"@invoiceConfirmation"
+			"@invoiceConfirmation",
+			"@userId"
 
 		};
 		public static List<string> StoredProcedureTypeNames = new List<string>()

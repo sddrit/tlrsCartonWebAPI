@@ -74,7 +74,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
         public async Task<PagedResponse<InvoiceSearchDto>> SearchInvoice(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("invoiceSearch", searchText,searchColumn,sortOrder, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("invoiceSearch", searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<InvoiceSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
@@ -132,7 +132,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = InvoiceValidationStoredProcedure.StoredProcedureParameters[5].ToString(), Value = isTransactionSummary.AsDbValue() }
             };
 
-            var validateMessage= _tcContext.Set<StringReturn>().FromSqlRaw(InvoiceValidationStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+            var validateMessage = _tcContext.Set<StringReturn>().FromSqlRaw(InvoiceValidationStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
             if (validateMessage != "OK")
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -148,8 +148,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
         private List<InvoiceResponseDetail> ExecuteCreateInvoice(int fDate, int tDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice)
-        {        
-          
+        {
+
 
             List<SqlParameter> parms = new List<SqlParameter>
             {
@@ -161,11 +161,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[5].ToString(), Value = transactionType.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[6].ToString(), Value = isSubInvoice.AsDbValue() }
 
-            };           
+            };
 
-            var result= _tcContext.Set<InvoiceResponseDetail>().FromSqlRaw(InvoiceStoredProcedure.Sql, parms.ToArray()).ToList();           
+            var result = _tcContext.Set<InvoiceResponseDetail>().FromSqlRaw(InvoiceStoredProcedure.Sql, parms.ToArray()).ToList();
 
-           if(result==null)
+            if (result == null)
             {
 
                 throw new ServiceException(new ErrorMessage[]
@@ -186,22 +186,34 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             int fDate = fromDate.DateToInt();
             int tDate = toDate.DateToInt();
-         
+
             var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice);
 
             var subInvoiceDetail = resultTable.Where(x => x.InvoiceNoGroup == 2).ToList().GroupBy(item => new { item.CustomerCode, item.InvoiceNo })
                .Select(item => new InvoiceSubResponse()
                {
-                 
+
                    InvoiceHeaders = _mapper.Map<InvoiceHeaderResponse>(_tcContext.ViewCreatedInvoiceListSubs.Where(x => x.InvoiceId == item.Key.InvoiceNo
                              && x.CustomerCode == item.Key.CustomerCode).FirstOrDefault()),
                    InvoiceDetails = item.ToList()
-                 
+
 
                }).ToList();
-                      
+
 
             return subInvoiceDetail;
+        }
+
+        public List<InvoiceResponseDetail> CancelInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice)
+        {
+            int fDate = fromDate.DateToInt();
+            int tDate = toDate.DateToInt();
+
+            var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice);
+
+
+
+            return resultTable;
         }
 
         public InvoiceResponse CreateInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice)
@@ -209,21 +221,21 @@ namespace tlrsCartonManager.DAL.Reporsitory
             int fDate = fromDate.DateToInt();
             int tDate = toDate.DateToInt();
 
-            if(transactionType !=TransactionType.PreView.ToString())
-                ValidateInvoiceGeneration(fromDate, toDate, customerCode, invoiceNo,false, false);
-        
+            if (transactionType != TransactionType.PreView.ToString())
+                ValidateInvoiceGeneration(fromDate, toDate, customerCode, invoiceNo, false, false);
+
 
             var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice);
 
-            if(resultTable!=null && resultTable.Count==0)
-            throw new ServiceException(new ErrorMessage[]
-              {
+            if (resultTable != null && resultTable.Count == 0)
+                throw new ServiceException(new ErrorMessage[]
+                  {
                      new ErrorMessage()
                      {
                           Code = string.Empty,
                          Message = $"No invoice data for this customer: {customerCode}"
                      }
-              });
+                  });
 
 
 
@@ -231,14 +243,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             var mainInvoiceNo = resultTable[0].InvoiceNo;
 
-            InvoiceHeaderResponse mainInvoiceHeader =new InvoiceHeaderResponse();
+            InvoiceHeaderResponse mainInvoiceHeader = new InvoiceHeaderResponse();
             List<TransactionSummaryResponse> mainInvoiceTransactionSummry = new List<TransactionSummaryResponse>();
-        
+
 
             if (mainInvoiceDetail.Count > 0)
-            {              
+            {
                 mainInvoiceHeader = _mapper.Map<InvoiceHeaderResponse>(_tcContext.ViewCreatedInvoiceLists.Where(x => x.InvoiceId == mainInvoiceNo).FirstOrDefault());
-                mainInvoiceTransactionSummry = GetTransactionSummry(fDate, tDate, mainInvoiceNo,false,null);
+                mainInvoiceTransactionSummry = GetTransactionSummry(fDate, tDate, mainInvoiceNo, false, null);
             }
 
             var separateInvoiceDetail = resultTable.Where(x => x.InvoiceNoGroup == 3).ToList().GroupBy(item => new { item.CustomerCode, item.InvoiceNo })
@@ -247,14 +259,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                  InvoiceHeaders = _mapper.Map<InvoiceHeaderResponse>(_tcContext.ViewCreatedInvoiceLists.Where(x => x.InvoiceId == item.Key.InvoiceNo).FirstOrDefault()),
                  InvoiceDetails = item.ToList(),
-                 TransactionSummaryResponses = GetTransactionSummry(fDate, tDate, item.Key.InvoiceNo,false, null)
+                 TransactionSummaryResponses = GetTransactionSummry(fDate, tDate, item.Key.InvoiceNo, false, null)
 
              }).ToList();
 
 
             var invoiceResponse = new InvoiceResponse()
             {
-                MainInvoiceNo = mainInvoiceNo,            
+                MainInvoiceNo = mainInvoiceNo,
                 InvoiceMainResponses = new InvoiceMainResponse()
                 {
                     InvoiceHeaders = mainInvoiceHeader,
@@ -285,7 +297,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                 return _tcContext.Set<TransactionSummaryResponse>().FromSqlRaw(InvoiceTransactionSummaryStoredProcedure.Sql, parms.ToArray()).ToList();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return null;
             }
@@ -294,16 +306,16 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
 
-        public InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate,  string invoiceNo, string customerCode, bool isSeparate)
+        public InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo, string customerCode, bool isSeparate)
         {
             int fDate = fromDate.DateToInt();
-            int tDate = toDate.DateToInt();                      
+            int tDate = toDate.DateToInt();
 
-            InvoiceHeaderResponse mainInvoiceHeader = new InvoiceHeaderResponse();           
+            InvoiceHeaderResponse mainInvoiceHeader = new InvoiceHeaderResponse();
 
-            var transactionSummary= GetTransactionSummry(fDate, tDate, invoiceNo, isSeparate, customerCode);
+            var transactionSummary = GetTransactionSummry(fDate, tDate, invoiceNo, isSeparate, customerCode);
 
-            if(!transactionSummary.Any())
+            if (!transactionSummary.Any())
             {
 
                 throw new ServiceException(new ErrorMessage[]
@@ -311,7 +323,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                      new ErrorMessage()
                      {
                           Code = string.Empty,
-                         Message = $"No transactions for invoice no: {invoiceNo}"
+                         Message = $"No transactions found: {invoiceNo}"
                      }
                });
             }
@@ -321,10 +333,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 MainInvoiceNo = invoiceNo,
                 InvoiceMainResponses = new InvoiceMainResponse()
                 {
-                    
+
                     TransactionSummaryResponses = transactionSummary
                 },
-              
+
             };
 
             return invoiceResponse;
@@ -335,12 +347,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
         #region Invoice Confirmation
         public async Task<PagedResponse<InvoiceConfirmationSearchDto>> SearchInvoiceConfirmation(string type, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("invoiceConfirmDisapproveSearch", type, searchText,searchColumn,sortOrder, pageIndex, pageSize, out SqlParameter outParam);
-            
+            List<SqlParameter> parms = _searchManager.Search("invoiceConfirmDisapproveSearch", type, searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
+
             var cartonList = await _tcContext.Set<InvoiceConfirmationSearch>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
-            
+
             var totalRows = (int)outParam.Value;
-            
+
             #region paging
             var postResponse = _mapper.Map<List<InvoiceConfirmationSearchDto>>(cartonList);
 
@@ -395,10 +407,25 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 TypeName = InvoiceConfirmationStoredProcedure.StoredProcedureTypeNames[0].ToString(),
                 SqlDbType = SqlDbType.Structured,
                 Value = invoiceConfirmation.ToList().ToDataTable()
-            }
+            },
+            new SqlParameter { ParameterName = InvoiceConfirmationStoredProcedure.StoredProcedureParameters[1].ToString(), Value = _environment.GetCurrentEnvironment().UserId.AsDbValue() },
             };
 
-            return _tcContext.Set<BoolReturn>().FromSqlRaw(InvoiceConfirmationStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+            var result = _tcContext.Set<BoolReturn>().FromSqlRaw(InvoiceConfirmationStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+
+            if (result == false)
+            {
+                throw new ServiceException(new ErrorMessage[]
+             {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"Unable to process confirmation"
+                     }
+             });
+
+            }
+            return result;
         }
         public bool DeleteInvoiceConfirmation(string requestNo, string reason, int userId)
         {
@@ -415,7 +442,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public async Task<PagedResponse<InvoicePostingSearch>> SearchInvoicePosting(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("invoicePostingSearch", searchText,searchColumn,sortOrder, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("invoicePostingSearch", searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<InvoicePostingSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging

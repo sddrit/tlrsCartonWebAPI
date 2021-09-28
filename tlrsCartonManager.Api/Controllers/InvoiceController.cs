@@ -98,5 +98,11 @@ namespace tlrsCartonManager.Api.Controllers
         {
             return Ok(_invoiceRepository.PreviewTransactionSummary(fromDate, toDate, invoiceNo, customerCode,isSeparate));
         }
+
+        [HttpGet("CancelInvoice")]
+        public ActionResult InvoiceCancellation(string invoiceNo)
+        {
+            return Ok(_invoiceRepository.CancelInvoice(DateTime.Today, DateTime.Today, string.Empty, invoiceNo, TransactionType.Cancel.ToString(), false));
+        }
     }
 }

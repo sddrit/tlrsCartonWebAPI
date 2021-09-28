@@ -15,6 +15,7 @@ namespace tlrsCartonManager.Core.Enums
         Delete,
         Reset,
         ChangeProfile,
-        PreView
+        PreView,
+        Cancel
     }
 }
