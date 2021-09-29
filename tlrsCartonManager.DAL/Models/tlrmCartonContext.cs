@@ -10,6 +10,7 @@ using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.DashBoard;
+using tlrsCartonManager.DAL.Models.Dispatch;
 using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.GenericReport;
 using tlrsCartonManager.DAL.Models.Invoice;
@@ -1360,6 +1361,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<PickListSummaryCustomer>().HasNoKey();
             modelBuilder.Entity<VerificationPickInvalidViewModel>().HasNoKey();
             modelBuilder.Entity<VerificationPickViewModel>().HasNoKey();
+            modelBuilder.Entity<CartonDispatchViewModel>().HasNoKey();
+            
 
             OnModelCreatingPartial(modelBuilder);
         }

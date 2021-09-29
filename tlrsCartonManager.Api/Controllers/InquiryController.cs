@@ -17,6 +17,7 @@ using tlrsCartonManager.DAL.Dtos.Carton;
 using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Invoice;
 using tlrsCartonManager.Api.Util.Authorization;
+using tlrsCartonManager.DAL.Models.Dispatch;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -99,8 +100,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("RequestSummaryByCustomer")]
-        [RmsAuthorization("Request Summary", tlrsCartonManager.Core.Enums.ModulePermission.View)]
-        [RmsAuthorization("Carton Dispatch", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        [RmsAuthorization("Request Summary", tlrsCartonManager.Core.Enums.ModulePermission.View)]    
         public async Task<ActionResult<RequestSearch>> GetRequestSummaryByCustomer(string customerCode, string searchText, int pageIndex, int pageSize)
         {
             var requestList = await _inquiryRepository.GetRequestInquiryByCustomer(customerCode, searchText, pageIndex, pageSize);
@@ -128,5 +128,16 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok( _inquiryRepository.GetCartonHistory(Convert.ToInt32( cartonNo),rms));
         }
 
+        [RmsAuthorization("Carton Dispatch", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+
+        [HttpGet("CartonDispatchDetails")]
+        public async Task<ActionResult<CartonDispatchViewModel>> GetCartonDispatchDetails(string requestNo)
+        {
+            var requestList =  _inquiryRepository.GetCartonDispatch(requestNo);
+            if (requestList != null)
+                return Ok(requestList);
+            else
+                return new JsonErrorResult(new { Message = "Not Found" }, HttpStatusCode.NotFound);
+        }
     }
 }

@@ -24,6 +24,7 @@ using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.Operation;
 using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Exceptions;
+using tlrsCartonManager.DAL.Models.Dispatch;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -254,6 +255,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             }
             return cartonHistoryList;
+        }
+
+
+        public List<CartonDispatchViewModel> GetCartonDispatch(string requestNo)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = InquiryCartonDispatchStoredProcedure.StoredProcedureParameters[0].ToString(), Value = requestNo.AsDbValue() }
+
+            };
+
+           return _tcContext.Set<CartonDispatchViewModel>().FromSqlRaw(InquiryCartonDispatchStoredProcedure.Sql, parms.ToArray()).ToList();
         }
     }
 }

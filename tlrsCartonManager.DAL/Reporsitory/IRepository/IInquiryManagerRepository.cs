@@ -8,6 +8,7 @@ using tlrsCartonManager.DAL.Dtos.Carton;
 using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Carton;
+using tlrsCartonManager.DAL.Models.Dispatch;
 using tlrsCartonManager.DAL.Models.Operation;
 
 
@@ -27,6 +28,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<PagedResponse<ViewRequestSummary>> GetRequestInquiryByCustomer(string cusomerCode, string searchText, int pageIndex, int pageSize);
 
         List<CartonHistory> GetCartonHistory(int cartonNo,string rms);
+
+        List<CartonDispatchViewModel> GetCartonDispatch(string requestNo);
 
     }
 }
