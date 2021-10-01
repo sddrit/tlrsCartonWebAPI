@@ -138,5 +138,27 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         }
 
+
+        public List<SqlParameter> SearchFromToSearchByType(string storedProcedure, string fromValue, string toValue,
+       string searchBy, int pageIndex, int pageSize, string type, string searchColumn, string sortOrder, out SqlParameter outParam)
+        {
+            SearchStoredProcedureFromToSearchByTypeSearchColumn.StoredProcedureName = storedProcedure;
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchByTypeSearchColumn.StoredProcedureParameters[0].ToString(), Value = fromValue.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchByTypeSearchColumn.StoredProcedureParameters[1].ToString(), Value = toValue.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchByTypeSearchColumn.StoredProcedureParameters[2].ToString(), Value = searchBy.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchByTypeSearchColumn.StoredProcedureParameters[3].ToString(), Value = type.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchByTypeSearchColumn.StoredProcedureParameters[4].ToString(), Value = searchColumn.AsDbValue() },
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchByTypeSearchColumn.StoredProcedureParameters[5].ToString(), Value = sortOrder.AsDbValue() },
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchByTypeSearchColumn.StoredProcedureParameters[6].ToString(), Value = pageIndex },
+               new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchByTypeSearchColumn.StoredProcedureParameters[7].ToString(), Value = pageSize },
+
+            };
+            outParam = new SqlParameter { ParameterName = SearchStoredProcedureFromToSearchByTypeSearchColumn.StoredProcedureParameters[8].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            parms.Add(outParam);
+            return parms;
+
+        }
     }
 }

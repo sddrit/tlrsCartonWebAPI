@@ -182,10 +182,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
         }
 
-        public async Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue, string searchText, int pageIndex, int pageSize, string type)
+        public async Task<PagedResponse<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue, string searchText,string searchColumn, string sortOrder,int pageIndex, int pageSize, string type)
         {
-            List<SqlParameter> parms = _searchManager.SearchFromToSearchByType("pickListPendingSearch", fromValue, toValue, searchText, pageIndex, pageSize, type, out SqlParameter outParam);
-            var cartonList = await _tcContext.Set<PickListPendingListItem>().FromSqlRaw(SearchStoredProcedureFromToSearchByType.Sql, parms.ToArray()).ToListAsync();
+            List<SqlParameter> parms = _searchManager.SearchFromToSearchByType("pickListPendingSearch", fromValue, toValue, searchText, pageIndex, pageSize, type,searchColumn, sortOrder, out SqlParameter outParam);
+            var cartonList = await _tcContext.Set<PickListPendingListItem>().FromSqlRaw(SearchStoredProcedureFromToSearchByTypeSearchColumn.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
             var postResponse = _mapper.Map<List<PickListDetailItemDto>>(cartonList);
