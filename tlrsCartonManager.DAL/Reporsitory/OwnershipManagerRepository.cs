@@ -21,6 +21,7 @@ using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Dtos.Ownership;
 using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.Core.Environment;
+using tlrsCartonManager.DAL.Exceptions;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -71,8 +72,23 @@ namespace tlrsCartonManager.DAL.Reporsitory
             };           
 
             var ownershipSummaryList = await _tcContext.Set<CartonOwnershipSummary>().FromSqlRaw(CartonOwnershipSummaryStoredProcedure.Sql,
-                 parms.ToArray()).ToListAsync();          
-            return ownershipSummaryList.FirstOrDefault();
+                 parms.ToArray()).ToListAsync();     
+            
+            var ownershipItemData= ownershipSummaryList.FirstOrDefault(); 
+
+            if (ownershipItemData.TotalCartonCount==0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                    {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to find ownership data"
+                        }
+                    });
+
+            }
+            return ownershipItemData;
         }
 
         public async Task<List<CustomerMainCodeSearchDto>> SearchOwnershipSummaryCustomerList(string fromValue, string toValue, string searchBy)

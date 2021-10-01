@@ -39,6 +39,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string CustomerName { get; set; }
         public string InvoicePeriod { get; set; }
         public decimal InvoiceValue { get; set; }
+        public string InvoiceType { get; set; }
 
     }
     public class InvoicePrintModel
