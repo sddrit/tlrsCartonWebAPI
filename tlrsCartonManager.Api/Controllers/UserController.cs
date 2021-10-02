@@ -27,7 +27,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        [RmsAuthorization("User", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        //[RmsAuthorization("User", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUserbyId(int id)
         {
             return Ok(await _userService.GetUserById(id));
