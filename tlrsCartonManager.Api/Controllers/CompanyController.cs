@@ -30,7 +30,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        [RmsAuthorization("Company Profile", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
+        [RmsAuthorization("Company Profile", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public ActionResult<Company> GetCompany()
         {
             var company = _companyRepository.GetCompany();

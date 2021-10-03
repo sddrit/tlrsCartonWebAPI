@@ -76,6 +76,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
                      });
                 }
             }
+
+            if(trasactionType==TransactionType.Update.ToString() && string.IsNullOrEmpty(user.UserPassword))
+            {
+                user.UserPassword = "Tlr@1234";
+
+            }
             List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter {ParameterName = UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[0].ToString(), Value = user.UserId.AsDbValue() },
