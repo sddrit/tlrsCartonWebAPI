@@ -47,7 +47,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
-                new SqlParameter {ParameterName = LoginStoredProcedure.StoredProcedureParameters[0].ToString(),Value = model.UserName.AsDbValue() }
+                new SqlParameter {ParameterName = LoginStoredProcedure.StoredProcedureParameters[0].ToString(),Value = model.UserName.AsDbValue() },
+                new SqlParameter {ParameterName = LoginStoredProcedure.StoredProcedureParameters[1].ToString(),Value = model.HostName.AsDbValue() }
             };
 
             var result = await _tcContext.Set<LoginValidationResult>().FromSqlRaw(LoginStoredProcedure.Sql, parms.ToArray()).ToListAsync();

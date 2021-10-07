@@ -21,5 +21,7 @@ namespace tlrsCartonManager.DAL.Dtos
 
         [Required]
         public string Password { get; set; }
+
+        public string HostName { get; set; }
     }
 }

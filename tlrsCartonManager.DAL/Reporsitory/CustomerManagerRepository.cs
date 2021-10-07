@@ -152,7 +152,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<IEnumerable<CustomerSearchDto>> GetCustomerForInvoice(string customerName)
         {
             var customers = await _tcContext.Customers.
-               Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false && x.Active == true &&( x.IsSeparateInvoice==true || x.AccountType=="M"))).ToListAsync();           
+               Where(x => (EF.Functions.Like(x.Name, "%" + customerName + "%") && x.Deleted == false && x.Active == true &&( x.IsSeparateInvoice==true || x.AccountType=="M" || x.SubInvoice==true))).ToListAsync();           
 
             if (customers == null)
             {
@@ -172,7 +172,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<IEnumerable<CustomerSearchDto>> GetCustomerForInvoiceByCode(string customerCode)
         {
             var customers = await _tcContext.Customers.
-               Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false && x.Active == true && (x.IsSeparateInvoice == true || x.AccountType == "M"))).ToListAsync();
+               Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false && x.Active == true && (x.IsSeparateInvoice == true || x.AccountType == "M" || x.SubInvoice == true))).ToListAsync();
 
             if (customers == null)
             {

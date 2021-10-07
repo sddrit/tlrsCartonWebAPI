@@ -51,7 +51,8 @@ namespace tlrsCartonManager.DAL.Utility
 
         public static List<string> StoredProcedureParameters = new List<string>()
         {           
-            "@userName"
+            "@userName",
+            "@hostName"
         };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
       
