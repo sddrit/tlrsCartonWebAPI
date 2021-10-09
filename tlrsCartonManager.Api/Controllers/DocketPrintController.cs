@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authorization;
 using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.Api.Util.Authorization;
+using DevExtreme.AspNet.Mvc;
+using DevExtreme.AspNet.Data;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -56,9 +58,21 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet]
         public async Task<ActionResult> SearchDocket(string status, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
-        {
+        {          
+
+
            return Ok(  _docketPrintRepository.SearchDockets(status, searchText,searchColumn,sortOrder, pageIndex, pageSize));
            
+        }
+
+        [HttpGet("getNotPrintedDockets")]
+        public async Task<ActionResult> SearchNotPrintedDockets(string status, string searchColumn, string sortOrder,DataSourceLoadOptions loadOptions)
+        {
+
+            var result = _docketPrintRepository.SearchDockets(status, string.Empty, searchColumn, sortOrder, 1, int.MaxValue);
+            
+            return Ok(DataSourceLoader.Load(result.Data, loadOptions));
+
         }
 
         [HttpDelete]
