@@ -56,6 +56,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    SqlDbType = SqlDbType.Structured,
                    Value =pickListInsert.PickListDetail.ToList().ToDataTable()
                 },
+                 new SqlParameter { ParameterName = PickListStoredProcedure.StoredProcedureParameters[5].ToString(), Value = _environment.GetCurrentEnvironment().UserId.AsDbValue()} ,
             };
             return _tcContext.Set<TableReturn>().FromSqlRaw(PickListStoredProcedure.Sql, parms.ToArray()).AsEnumerable().FirstOrDefault();
 

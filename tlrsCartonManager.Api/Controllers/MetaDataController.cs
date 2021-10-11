@@ -35,6 +35,7 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IMetadataRepository<MobileDevice, MobileDeviceDto> _mobileDeviceRepository;
         private readonly IMetadataRepository<Module, ModuleMetaDataDto> _moduleRepository;
         private readonly IMetadataRepository<ModuleSub, ModuleSubMetaDataDto> _subModuleRepository;
+        private readonly IMetadataRepository<Tenant, TenantDto> _tenantRepository;
 
         private readonly IRolePermissionManagerRepository _rolePermission;
 
@@ -55,6 +56,7 @@ namespace tlrsCartonManager.Api.Controllers
               IMetadataRepository<TaxType, TaxTypeDto> taxTypeManagerRepository,
               IMetadataRepository<Module, ModuleMetaDataDto> moduleRepository,
               IMetadataRepository<ModuleSub, ModuleSubMetaDataDto> subModuleRepository,
+              IMetadataRepository<Tenant, TenantDto> tenantRepository,
               IRolePermissionManagerRepository rolePermission)
 
         {
@@ -73,6 +75,7 @@ namespace tlrsCartonManager.Api.Controllers
             _moduleRepository = moduleRepository;
             _subModuleRepository = subModuleRepository;
             _rolePermission = rolePermission;
+            _tenantRepository = tenantRepository;
         }
 
         [HttpGet]
@@ -105,6 +108,7 @@ namespace tlrsCartonManager.Api.Controllers
 
             //other
             var mobileDeviceList = await _mobileDeviceRepository.GetAllMetaData();
+            var tenantList = await _tenantRepository.GetAllMetaData();
             var moduleList = await _moduleRepository.GetAllMetaData();           
             var subModuleList = await _rolePermission.GeModulePermissionList();
 
@@ -126,7 +130,8 @@ namespace tlrsCartonManager.Api.Controllers
                 taxTypeList,
                 requestTypeList,
                 moduleList,
-                subModuleList
+                subModuleList,
+                tenantList
 
 
             });

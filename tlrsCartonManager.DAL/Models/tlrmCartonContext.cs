@@ -124,7 +124,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ModulePermission> ModulePermissions { get; set; }
         public virtual DbSet<ModuleSub> ModuleSubs { get; set; }
         public virtual DbSet<UserPasswordHistory> UserPasswordHistories { get; set; }
-
+        public virtual DbSet<Tenant> Tenants { get; set; }
         public virtual DbSet<InvoiceTemplateSuportingDocsCustomer> InvoiceTemplateSuportingDocsCustomers { get; set; }
 
         public virtual DbSet<ViewCustomerLoyality> ViewCustomerLoyalities { get; set; }

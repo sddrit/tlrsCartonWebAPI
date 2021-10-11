@@ -5,13 +5,12 @@ using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
-    public class StorageTypeManagerRepository : BaseMetadataRepository<StorageType, StorageTypeDto>
+    public class TenantManagerRepository :  BaseMetadataRepository<Tenant, TenantDto>
     {
-        public StorageTypeManagerRepository(tlrmCartonContext tccontext, IMapper mapper, BaseMetaRepositoryValidator validator) 
+        public TenantManagerRepository(tlrmCartonContext tccontext, IMapper mapper, BaseMetaRepositoryValidator validator) 
             : base(tccontext, mapper,validator)
         {
-                        
         }
-       
+
     }
 }

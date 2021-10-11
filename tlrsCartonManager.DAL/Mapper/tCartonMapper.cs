@@ -219,6 +219,7 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<MetadataBase, TaxType>().ReverseMap();
             CreateMap<MetadataBase, PostingType>().ReverseMap();
             CreateMap<MetadataBase, MobileDevice>().ReverseMap();
+            CreateMap<MetadataBase, Tenant>().ReverseMap();
             CreateMap<MetadataBase, Module>()
                 .ForMember(d=>d.Id, s=>s.MapFrom(d=>d.ModuleId))
                 .ForMember(d => d.Name, s => s.MapFrom(d => d.Description))
@@ -241,6 +242,8 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<MetadataBase, TaxTypeDto>().ReverseMap();
             CreateMap<MetadataBase, PostingTypeDto>().ReverseMap();
             CreateMap<MetadataBase, MobileDeviceDto>().ReverseMap();
+            CreateMap<MetadataBase, TenantDto>().ReverseMap();
+          
             CreateMap<MetadataBase, ModuleMetaDataDto>()
                 .ForMember(d => d.Id, s => s.MapFrom(d => d.ModuleId))
                 .ForMember(d => d.Name, s => s.MapFrom(d => d.Description))

@@ -19,6 +19,7 @@ using tlrsCartonManager.DAL.Extensions;
 using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Dtos.Company;
 using tlrsCartonManager.Core.Environment;
+using tlrsCartonManager.DAL.Exceptions;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -39,8 +40,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var company = _mapper.Map<CompanyDto>(_tcContext.Companies.FirstOrDefault());
             var taxEffectiveDates = _mapper.Map<List<TaxEffectiveDateDto>>(_tcContext.TaxEffectiveDates.
                 Where(x => x.Deleted == false).ToList());
-            if(company!=null)
-            company.TaxEffectiveDate = taxEffectiveDates==null? new List<TaxEffectiveDateDto>(): taxEffectiveDates;
+            if (company != null)
+                company.TaxEffectiveDate = taxEffectiveDates == null ? new List<TaxEffectiveDateDto>() : taxEffectiveDates;
             return company;
         }
 
@@ -68,8 +69,31 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    SqlDbType = SqlDbType.Structured,
                    Value =request.TaxEffectiveDate.Where(x=>x.Id==0).ToList().ToDataTable()
                 },
+
+                 new SqlParameter { ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[14].ToString(), Value =  request.TenantCode.AsDbValue() } ,
+                 new SqlParameter { ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[15].ToString(), Value =  request.AccountMangerName.AsDbValue() } ,
+                 new SqlParameter { ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[16].ToString(), Value =  request.AccountManagerEmail.AsDbValue() } ,
+                 new SqlParameter { ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[17].ToString(), Value =  request.BankAccountNo.AsDbValue() } ,
+                 new SqlParameter { ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[18].ToString(), Value =  request.BankName.AsDbValue() } ,
+                 new SqlParameter { ParameterName = CompanyProfileStoredProcedure.StoredProcedureParameters[19].ToString(), Value =  request.BranchName.AsDbValue() } ,
+
             };
-            return _tcContext.Set<BoolReturn>().FromSqlRaw(CompanyProfileStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+            var result = _tcContext.Set<StringReturn>().FromSqlRaw(CompanyProfileStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+
+            if (result != "OK")
+            {
+                throw new ServiceException(new ErrorMessage[]
+                   {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = result
+                        }
+                   });
+
+
+            }
+            return true;
         }
     }
 }

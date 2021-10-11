@@ -25,7 +25,13 @@ namespace tlrsCartonManager.DAL.Utility
             "@nbtNo",
             "@svatNo",
             "@userId",
-            "@taxEffectiveDate"
+            "@taxEffectiveDate",
+            "@tenantCode",
+            "@accountMangerName",
+            "@accountManagerEmail",
+            "@bankAccountNo",
+            "@bankName",
+            "@branchName"
             };
         public static List<string> StoredProcedureTypeNames = new List<string>()
         {

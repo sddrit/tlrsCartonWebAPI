@@ -85,7 +85,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped(typeof(IMetadataRepository<MobileDevice, MobileDeviceDto>), typeof(BaseMetadataRepository<MobileDevice, MobileDeviceDto>));
             services.AddScoped(typeof(IMetadataRepository<Module, ModuleMetaDataDto>), typeof(BaseMetadataRepository<Module, ModuleMetaDataDto>));
             services.AddScoped(typeof(IMetadataRepository<ModuleSub, ModuleSubMetaDataDto>), typeof(BaseMetadataRepository<ModuleSub, ModuleSubMetaDataDto>));
-
+            services.AddScoped(typeof(IMetadataRepository<Tenant, TenantDto>), typeof(BaseMetadataRepository<Tenant, TenantDto>));
             //---------------------------------------------------------------
 
             services.AddAutoMapper(typeof(tlrmCartonContext).Assembly);

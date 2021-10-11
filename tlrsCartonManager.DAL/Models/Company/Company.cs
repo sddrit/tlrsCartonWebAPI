@@ -57,7 +57,24 @@ namespace tlrsCartonManager.DAL.Models
         [Required]
         [Column("svatNo")]
         [StringLength(50)]
-        public string SvatNo { get; set; }      
+        public string SvatNo { get; set; }
 
+        [Column("tenantCode")]        
+        public string TenantCode { get; set; }        
+
+        [Column("accountMangerName")]
+        public string AccountMangerName { get; set; }
+
+        [Column("accountManagerEmail")]
+        public string AccountManagerEmail { get; set; }
+
+        [Column("bankAccountNo")]
+        public string BankAccountNo { get; set; }
+
+        [Column("bankName")]
+        public string BankName { get; set; }
+
+        [Column("branchName")]
+        public string BranchName { get; set; }
     }
 }

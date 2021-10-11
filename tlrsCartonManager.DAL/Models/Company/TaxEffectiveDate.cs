@@ -32,5 +32,9 @@ namespace tlrsCartonManager.DAL.Models
         public int CreatedUserId { get; set; }
         [Column("createdDate", TypeName = "datetime")]
         public DateTime? CreatedDate { get; set; }
+
+        public decimal? MinAmount { get; set; }
+        public string RateType { get; set; }
+
     }
 }
