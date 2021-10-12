@@ -129,11 +129,11 @@ namespace tlrsCartonManager.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsEnvironment("DevelopmentLk") || env.IsEnvironment("DevelopmentId"))
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tlrsCartonManager.Api v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tlrsCartonManager.Api v1 " + env.EnvironmentName));
             }
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseHttpsRedirection();

@@ -43,6 +43,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Status { get; set; }
         public string LastRequestNo { get; set; }
         public string CustomerName { get; set; }
+        public string CustomerCode { get; set; }
         public string LocationCode { get; set; }
         public string AlternativeCartonNo { get; set; }
         public string CartonType { get; set; }

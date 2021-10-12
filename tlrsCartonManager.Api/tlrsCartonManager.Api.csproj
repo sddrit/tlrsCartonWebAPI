@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="appsettings.DevelopmentId.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="DevExtreme.AspNet.Core" Version="20.2.6" />
@@ -29,6 +33,10 @@
 
   <ItemGroup>
     <Folder Include="Core\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.DevelopmentId.json" />
   </ItemGroup>
 
 </Project>
