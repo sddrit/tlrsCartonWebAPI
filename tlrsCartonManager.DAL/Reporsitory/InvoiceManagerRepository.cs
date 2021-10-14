@@ -200,7 +200,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                }).ToList();
 
-
+            if (subInvoiceDetail != null && subInvoiceDetail.Count == 0)
+                throw new ServiceException(new ErrorMessage[]
+                  {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"No sub invoice data for this customer: {customerCode}"
+                     }
+                  });
             return subInvoiceDetail;
         }
 

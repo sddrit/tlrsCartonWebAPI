@@ -94,7 +94,7 @@ namespace tlrsCartonManager.Api.Controllers
         {
             request.RequestType="EmptyDeallocate";
 
-            if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Add))
+            if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Delete))
             {
                 return Unauthorized();
             }
