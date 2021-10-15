@@ -272,6 +272,24 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return true;
         }
 
+        public bool SetCustomerStatus(CustomerDto cutomerTransaction)
+        {
+            cutomerTransaction.CustomerAuthorizationListHeaders = new List<CustomerAuthorizationListHeaderDto>();
+
+            if (!SaveCustomer(cutomerTransaction, TransactionTypes.SetStatus.ToString()))
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                    new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to set customer status"
+                        }
+                });
+            }
+            return true;
+        }
+
         public bool ValidateCustomer(CustomerDto customer, string transcationType)
         {
             if (transcationType == TransactionTypes.Insert.ToString())

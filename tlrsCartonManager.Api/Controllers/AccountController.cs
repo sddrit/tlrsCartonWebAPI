@@ -61,6 +61,12 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(_accountRepository.ChangeProfile(model));
         }
 
+        [HttpPost("ChangePassword")]
+        public async Task<ActionResult> ChangePasswordAsync(UserPasswordExpiredModel model)
+        {
+            return Ok(await _accountRepository.ChangePasswordAsync(model));
+        }
+
         private async Task<JwtSecurityToken> GenerateToken(UserLoginResponse user, string[] roles)
         {
             var claims = new List<Claim>()

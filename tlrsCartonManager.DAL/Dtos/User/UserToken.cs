@@ -31,7 +31,10 @@ namespace tlrsCartonManager.DAL.Dtos
 
         public IEnumerable<UserModulePermission> Permissions { get; set; }
 
-        public List<UserRole> UserRoles  { get; set; }
+        public List<UserRole> UserRoles { get; set; }
+
+        public bool IsPasswordExpired {get;set;}
+        public string TenantName { get; set; }
     }
 
     public class UserLoginInfo
@@ -46,6 +49,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public string UserRole { get; set; }
 
         public List<UserRole> UserRoles { get; set; }
+
+        public string TenantName { get; set; }
 
     }
 }

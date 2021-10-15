@@ -53,24 +53,22 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             var result = await _tcContext.Set<LoginValidationResult>().FromSqlRaw(LoginStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
-            if (result.FirstOrDefault().Code == "1011")// password expired
+            if (result.FirstOrDefault().Code == "1012")// password expired
             {
-                var userLoginResponse = new UserLoginResponse()
+               
+                var userInfo = GetUserOtherInfo(model.UserName);
+
+                return new UserLoginResponse()
                 {
-                    UserName = model.UserName
-                    //Token = _tokenServiceRepository.CreateToken(model.UserName)
+                    UserId = userInfo.UserId,
+                    UserName = model.UserName,
+                    UserFirstName = userInfo.UserFirstName,
+                    UserLastName = userInfo.UserLastName,
+                    UserRole = userInfo.UserRole,
+                    UserRoles = userInfo.UserRoles,
+                    IsPasswordExpired = true
 
                 };
-
-                throw new ServiceException(new ErrorMessage[]
-                {
-                     new ErrorMessage()
-                      {
-                         Code = result.FirstOrDefault().Code,
-                         Message = result.FirstOrDefault().Message,
-                         Meta= userLoginResponse
-                     }
-                });
 
             }
 
@@ -98,7 +96,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
                         UserLastName = userInfo.UserLastName,
                         UserRole = userInfo.UserRole,
                         UserRoles= userInfo.UserRoles,
-                        Permissions = resultPermission
+                        Permissions = resultPermission,
+                        TenantName=userInfo.TenantName
+                        
 
                     };
                 }
@@ -148,6 +148,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                 var roleName = _tcContext.Roles.Where(x => x.Id == userRoles[0].Id).FirstOrDefault().Description;
 
+               var tenantName= _tcContext.Companies.FirstOrDefault().Country;
+
                 string[] userFullnames = result.UserFullName.Split(' ');
 
                 return new UserLoginInfo()
@@ -156,7 +158,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     UserFirstName = userFullnames.Length >= 1 ? userFullnames[0] : userName,
                     UserLastName = userFullnames.Length > 1 ? userFullnames[1] : string.Empty,
                     UserRole = roleName,
-                    UserRoles=userRoles
+                    UserRoles=userRoles,
+                    TenantName=tenantName
                 };
             }
             catch (Exception ex)
@@ -194,6 +197,57 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     new ErrorMessage()
                     {
                         Message = $"Unable to reset user "
+                    }
+                    });
+                }
+            }
+            return true;
+
+        }
+
+
+        public async Task<bool> ChangePasswordAsync(UserPasswordExpiredModel model)
+        {
+            var userId = _tcContext.Users.Where(x => x.UserName.ToLower() == model.UserName.ToLower()).FirstOrDefault().UserId;
+
+            var systemUserPassword = await _userPasswordRepository.GetSystemUserPasswords(model.UserName);
+
+            if (!PasswordManager.IsValidPassword(systemUserPassword.PasswordSalt, systemUserPassword.PasswordHash, model.OldPassword))
+            {
+                throw new ServiceException(new ErrorMessage[]
+                    {
+                            new ErrorMessage()
+                            {
+                                Code = string.Empty,
+                                Message = "Old password is wrong"
+                            }
+                    });
+            }
+
+            var passwordHistoryList = _tcContext.UserPasswordHistories
+                   .Where(x => x.UserId == userId).OrderByDescending(x => x.TrackingId).Take(5).ToList();
+
+            if (!PasswordManager.IsPreviousUsedPassword(passwordHistoryList, model.NewPassword))
+            {
+                byte[] paswordHash;
+                byte[] passworSalt;
+
+                PasswordManager.GeneratePasswordHash(model.NewPassword, out paswordHash, out passworSalt);
+
+                UserDto user = new UserDto()
+                {
+                    UserId = userId,
+                    UserName = model.UserName
+
+                };
+
+                if (_userManagerRepository.SaveUser(user, paswordHash, passworSalt, TransactionType.Reset.ToString(), model.UserId) == 0)
+                {
+                    throw new ServiceException(new ErrorMessage[]
+                    {
+                    new ErrorMessage()
+                    {
+                        Message = $"Unable to update password "
                     }
                     });
                 }

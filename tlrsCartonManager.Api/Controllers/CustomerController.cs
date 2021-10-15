@@ -107,7 +107,14 @@ namespace tlrsCartonManager.Api.Controllers
         {
             return Ok(_customerRepository.DeleteCustomer(customer));        
            
-        }     
-       
+        }
+
+        [HttpPut("setCustomerStatus")]
+        [RmsAuthorization("CustomerStatus", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
+        public ActionResult SetCustomerStatus(CustomerDto customer)
+        {
+            return Ok(_customerRepository.SetCustomerStatus(customer));
+        }
+
     }
 }

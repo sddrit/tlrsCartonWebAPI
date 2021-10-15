@@ -29,5 +29,6 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         bool AddCustomer(CustomerDto customerInsert);
         bool UpdateCustomer(CustomerDto customerUpdate);
         bool DeleteCustomer(CustomerDeleteDto customerDelete);
+        bool SetCustomerStatus(CustomerDto cutomerTransaction);
     }
 }

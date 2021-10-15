@@ -85,6 +85,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Address { get; set; }
 
         public bool IsManualInvoice { get; set; }
+        public bool Active { get; set; }
     }
     public class CustomerMainCodeSearchDto
     {
