@@ -184,6 +184,9 @@ namespace tlrsCartonManager.DAL.Models
         [Column("isManualInvoice")]
         public bool? IsManualInvoice { get; set; }
 
+        [Column("billingName")]
+        public string BillingName { get; set; }
+
 
         [NotMapped]       
         public string Address

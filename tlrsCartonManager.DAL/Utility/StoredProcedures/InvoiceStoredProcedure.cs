@@ -28,7 +28,9 @@ namespace tlrsCartonManager.DAL.Utility
 		public static string StoredProcedureName = "invoiceCalculationBranchWiseReport";
 		public static List<string> StoredProcedureParameters = new List<string>()
 		{						
-			"@invoiceNo"
+			"@invoiceNo",
+			"@reportType"
+
 
 		};
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) ;

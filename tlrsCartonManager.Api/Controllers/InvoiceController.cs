@@ -83,7 +83,14 @@ namespace tlrsCartonManager.Api.Controllers
         public ActionResult GetBranchWiseInvoiceDetail(string invoiceNo)
         {
 
-            return Ok(_invoiceRepository.GetInvoiceSummaryBranchWise (invoiceNo));
+            return Ok(_invoiceRepository.GetInvoiceSummaryBranchWise (invoiceNo,1));
+        }
+
+        [HttpGet("GetBranchWiseCostSummary")]
+        public ActionResult GetBranchWiseCostSummary(string invoiceNo)
+        {
+
+            return Ok(_invoiceRepository.GetInvoiceSummaryBranchWise(invoiceNo, 4));
         }
 
         [HttpGet("ValidateInvoiceGeneration")]

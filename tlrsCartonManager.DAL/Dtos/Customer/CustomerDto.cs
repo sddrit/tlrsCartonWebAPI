@@ -66,7 +66,8 @@ namespace tlrsCartonManager.DAL.Dtos
 
         public bool IncludeMainAccountAuthorization { get; set; }
         public bool IsManualInvoice { get; set; }
-        
+        public string BillingName { get; set; } 
+
 
     }
 

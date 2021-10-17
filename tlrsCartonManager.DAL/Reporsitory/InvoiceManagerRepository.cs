@@ -94,14 +94,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return paginationResponse;
         }
 
-        public List<BranchWiseDetail> GetInvoiceSummaryBranchWise(string invoiceNo)
+        public List<BranchWiseDetail> GetInvoiceSummaryBranchWise(string invoiceNo, int reportType)
         {
             try
             {
                 var parms = new List<SqlParameter>
             {
 
-                new SqlParameter { ParameterName = InvoiceBrachWiseStoredProcedure.StoredProcedureParameters[0].ToString(), Value = invoiceNo.AsDbValue() }
+                new SqlParameter { ParameterName = InvoiceBrachWiseStoredProcedure.StoredProcedureParameters[0].ToString(), Value = invoiceNo.AsDbValue() },
+                new SqlParameter { ParameterName = InvoiceBrachWiseStoredProcedure.StoredProcedureParameters[1].ToString(), Value = reportType.AsDbValue() }
             };
 
                 var branchWiseDetail = _tcContext.Set<BranchWiseDetail>().FromSqlRaw(InvoiceBrachWiseStoredProcedure.Sql, parms.ToArray()).ToList();

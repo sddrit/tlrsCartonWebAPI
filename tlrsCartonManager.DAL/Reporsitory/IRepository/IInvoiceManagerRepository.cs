@@ -20,7 +20,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         List<InvoiceSubResponse> PreviewSubInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice);
 
 
-        List<BranchWiseDetail> GetInvoiceSummaryBranchWise(string invoiceNo);
+        List<BranchWiseDetail> GetInvoiceSummaryBranchWise(string invoiceNo, int reportType);
+
         string ValidateInvoiceGeneration(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, bool isSubInvoice, bool isTransactionSummary);
         InvoiceModel GetInvoiceById(string invoiceNo);
         InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo, string customerCode, bool isSeparate);
