@@ -57,4 +57,13 @@ namespace tlrsCartonManager.DAL.Dtos
         public int UserId { get; set; }
 
     }
+
+    public class InvoicePeriodPostModel
+    {      
+       
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public bool Cancel { get; set; }
+
+    }
 }

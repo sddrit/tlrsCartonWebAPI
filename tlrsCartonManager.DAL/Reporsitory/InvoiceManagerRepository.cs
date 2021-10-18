@@ -479,8 +479,6 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
 
         }
-
-
         public bool UpdatePosting(InvoicePostingDto request)
         {
 
@@ -496,6 +494,39 @@ namespace tlrsCartonManager.DAL.Reporsitory
             };
             return _tcContext.Set<BoolReturn>().FromSqlRaw(PostingStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
+
+        public bool PostInvoicePeriod(InvoicePeriodPostModel request)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = InvoicePeriodPostStoredProcedure.StoredProcedureParameters[0].ToString(),
+                    Value =  request.FromDate.DateToInt().AsDbValue()},
+                new SqlParameter { ParameterName = InvoicePeriodPostStoredProcedure.StoredProcedureParameters[1].ToString(),
+                    Value =  request.ToDate.DateToInt().AsDbValue()},
+                new SqlParameter { ParameterName = InvoicePeriodPostStoredProcedure.StoredProcedureParameters[2].ToString(),
+                    Value =  request.Cancel.AsDbValue()},
+                new SqlParameter { ParameterName = InvoicePeriodPostStoredProcedure.StoredProcedureParameters[3].ToString(),
+                    Value =  _environment.GetCurrentEnvironment().UserId.AsDbValue()}
+            };
+
+            var result = _tcContext.Set<BoolReturn>().FromSqlRaw(InvoicePeriodPostStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
+
+            if (result == false)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                 {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"Unable to close invoicing period "
+                     }
+                 });
+            }
+
+            return result;
+        }
+
+
     }
     #endregion
 }

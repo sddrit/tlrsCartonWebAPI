@@ -47,6 +47,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         bool UpdatePosting(InvoicePostingDto request);
 
+
+        bool PostInvoicePeriod(InvoicePeriodPostModel request);
         #endregion
 
     }

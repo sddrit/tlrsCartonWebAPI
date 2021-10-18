@@ -55,11 +55,18 @@ namespace tlrsCartonManager.Api.Controllers
             if(_invoiceRepository.SaveInvoiceConfirmation(invoiceConfirmList))
                 return new JsonErrorResult(new { Message = "Request Approved" }, HttpStatusCode.OK);
             else
-                return new JsonErrorResult(new { Message = "Request Approval Failed" }, HttpStatusCode.NotFound);
-            
+                return new JsonErrorResult(new { Message = "Request Approval Failed" }, HttpStatusCode.NotFound);           
 
         }
-       
+
+        [HttpPost("postInvoicePeriod")]
+        [RmsAuthorization("Invoice Confirmation Approve", tlrsCartonManager.Core.Enums.ModulePermission.Add)]
+        public ActionResult PostInvoicePeriod(InvoicePeriodPostModel model)
+        {
+            return Ok(_invoiceRepository.PostInvoicePeriod(model));
+              
+
+        }
 
     }
 }

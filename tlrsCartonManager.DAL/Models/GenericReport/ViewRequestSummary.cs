@@ -123,6 +123,9 @@ namespace tlrsCartonManager.DAL.Models
         [Column("Route")]
         public string Route { get; set; }
 
+        [Column("Last Confirmed Date")]
+        public int? LastConfirmedDate { get; set; }
+
         public IList<KeyValuePair<string, string>> GetValues()
         {
             return new List<KeyValuePair<string, string>>()
