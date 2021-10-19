@@ -110,7 +110,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPut("setCustomerStatus")]
-        [RmsAuthorization("CustomerStatus", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
+        [RmsAuthorization("Customer Status", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
         public ActionResult SetCustomerStatus(CustomerDto customer)
         {
             return Ok(_customerRepository.SetCustomerStatus(customer));

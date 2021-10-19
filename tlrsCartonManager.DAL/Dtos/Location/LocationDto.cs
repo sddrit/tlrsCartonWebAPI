@@ -23,6 +23,10 @@ namespace tlrsCartonManager.DAL.Dtos.Location
 
         public bool? IsBay { get; set; }
 
+        public bool? IsChamber { get; set; }
+
+        public int? Capacity { get; set; }
+
         public string WareHouseCode { get; set; }
 
     }

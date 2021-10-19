@@ -17,9 +17,9 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         TableResponse<TableReturn> AddRequest(RequestHeaderDto requestInsert);
 
-        TableResponse<TableReturn> UpdateRequest(RequestHeaderDto requestUpdate);
+        Task<TableResponse<TableReturn>> UpdateRequest(RequestHeaderDto requestUpdate);
 
-        TableResponse<TableReturn> DeleteRequest(string requestNo);
+        Task<TableResponse<TableReturn>> DeleteRequest(string requestNo, string requestType);           
 
         bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket);
 

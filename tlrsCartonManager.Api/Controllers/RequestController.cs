@@ -73,14 +73,14 @@ namespace tlrsCartonManager.Api.Controllers
         }             
      
         [HttpPut]
-        public ActionResult UpdateRequest(RequestHeaderDto request)
+        public async Task<ActionResult> UpdateRequestAsync(RequestHeaderDto request)
         {
             if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Edit))
             {
                 return Unauthorized();
             }
 
-            var response = _requestRepository.UpdateRequest(request);
+            var response =await  _requestRepository.UpdateRequest(request);
             if (response.OutList != null && response.OutList.Count() > 0)
                 return new JsonErrorResult(response, HttpStatusCode.PartialContent);
             else if (response.Ok)
@@ -90,16 +90,16 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpDelete]
-        public ActionResult DeleteRequest(RequestHeaderDto request)
+        public async Task<ActionResult> DeleteRequestAsync(RequestHeaderDto request)
         {
-            request.RequestType="EmptyDeallocate";
+            //request.RequestType="EmptyDeallocate";
 
             if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Delete))
             {
                 return Unauthorized();
             }
 
-            return Ok(_requestRepository.DeleteRequest(request.RequestNo));
+            return Ok(await _requestRepository.DeleteRequest(request.RequestNo, request.RequestType));
         }
 
         [HttpPost("validateCarton")]

@@ -67,7 +67,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                  new SqlParameter { ParameterName = LocationStoredProcedure.StoredProcedureParameters[7].ToString(), Value = location.WareHouseCode.AsDbValue() } ,
                  new SqlParameter { ParameterName = LocationStoredProcedure.StoredProcedureParameters[8].ToString(), Value = transcationType } ,
                  new SqlParameter { ParameterName = LocationStoredProcedure.StoredProcedureParameters[9].ToString(), Value =  _environment.GetCurrentEnvironment().UserId.AsDbValue()} ,
-
+                 new SqlParameter { ParameterName = LocationStoredProcedure.StoredProcedureParameters[10].ToString(), Value = location.IsChamber.AsDbValue() } ,
+                 new SqlParameter { ParameterName = LocationStoredProcedure.StoredProcedureParameters[11].ToString(), Value = location.Capacity.AsDbValue() } ,
 
             };
             return _tcContext.Set<BoolReturn>().FromSqlRaw(LocationStoredProcedure.Sql, parms.ToArray()).AsEnumerable().FirstOrDefault().Value;

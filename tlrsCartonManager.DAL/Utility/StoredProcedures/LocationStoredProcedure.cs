@@ -21,7 +21,9 @@ namespace tlrsCartonManager.DAL.Utility.StoredProcedures
             "@isBay" ,
             "@warehouseCode" ,
             "@statementType",
-            "@userId"
+            "@userId",
+            "@isChamber" ,
+            "@capacity" ,
         };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 

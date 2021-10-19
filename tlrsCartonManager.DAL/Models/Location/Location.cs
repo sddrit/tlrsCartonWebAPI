@@ -48,5 +48,11 @@ namespace tlrsCartonManager.DAL.Models
 
         [Column("deleted")]
         public bool Deleted { get; set; }
+
+        [Column("isChamber")]
+        public bool? IsChamber { get; set; }
+
+        [Column("capacity")]
+        public int? Capacity { get; set; }
     }
 }

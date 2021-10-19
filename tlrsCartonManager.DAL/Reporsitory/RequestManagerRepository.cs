@@ -116,17 +116,48 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             return SaveRequest(requestInsert, TransactionTypes.Insert.ToString());
         }
-        public TableResponse<TableReturn> UpdateRequest(RequestHeaderDto requestUpdate)
+        public async Task<TableResponse<TableReturn>> UpdateRequest(RequestHeaderDto requestUpdate)
         {
+            var result =await  SearchRequest(requestUpdate.RequestType, requestUpdate.RequestNo, string.Empty, string.Empty, 1, 1);
+            
+            if (result.Data == null || result.Data != null && result.Data.Count() == 0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"Request details modifed unable to save"
+                     }
+                });
+            }
+
+
             return SaveRequest(requestUpdate, TransactionTypes.Update.ToString());
         }
-        public TableResponse<TableReturn> DeleteRequest(string requestNo)
+        public async Task<TableResponse<TableReturn>> DeleteRequest(string requestNo, string requestType)
         {
             var requestTransaction = new RequestHeaderDto
             {
                 RequestNo = requestNo,
+                RequestType= requestType,
                 RequestDetails = new List<RequestDetailDto>()
             };
+
+            var result = await SearchRequest(requestTransaction.RequestType, requestTransaction.RequestNo, string.Empty, string.Empty, 1, 1);
+
+            if (result.Data == null || result.Data != null && result.Data.Count() == 0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                     new ErrorMessage()
+                     {
+                          Code = string.Empty,
+                         Message = $"Request details modifed unable to save"
+                     }
+                });
+            }
+
             return SaveRequest(requestTransaction, TransactionTypes.Delete.ToString());
         }
         private TableResponse<TableReturn> SaveRequest(RequestHeaderDto requestTransaction, string transcationType)
