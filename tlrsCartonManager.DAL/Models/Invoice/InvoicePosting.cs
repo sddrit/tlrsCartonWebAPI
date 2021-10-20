@@ -29,9 +29,11 @@ namespace tlrsCartonManager.DAL.Models
         public int Qty { get; set; }
         [Column("amount")]
         public decimal Amount { get; set; }
-        [Column("percentage")]
+
+        [Column("percentage", TypeName = "decimal(18,3)")]
         public decimal Percentage { get; set; }
-        [Column("transactionDateFrom")]
+
+        [Column("transactionDateFrom")]       
         public int TransactionDateFrom { get; set; }
         [Column("transactionDateTo")]
         public int TransactionDateTo { get; set; }
