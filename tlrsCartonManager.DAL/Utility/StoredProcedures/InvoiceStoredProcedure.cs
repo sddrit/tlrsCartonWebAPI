@@ -17,7 +17,8 @@ namespace tlrsCartonManager.DAL.Utility
 			"@userId",
 			"@invoiceNo",
 			"@statementType",
-			"@isSubInvoice"
+			"@isSubInvoice",
+			"@reason"
 
 		};		
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);

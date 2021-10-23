@@ -148,7 +148,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return validateMessage;
         }
 
-        private List<InvoiceResponseDetail> ExecuteCreateInvoice(int fDate, int tDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice)
+        private List<InvoiceResponseDetail> ExecuteCreateInvoice(int fDate, int tDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice, string reason)
         {
 
 
@@ -160,7 +160,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[3].ToString(), Value = _environment.GetCurrentEnvironment().UserId },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[4].ToString(), Value = invoiceNo.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[5].ToString(), Value = transactionType.AsDbValue() },
-                new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[6].ToString(), Value = isSubInvoice.AsDbValue() }
+                new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[6].ToString(), Value = isSubInvoice.AsDbValue() },
+                 new SqlParameter { ParameterName = InvoiceStoredProcedure.StoredProcedureParameters[7].ToString(), Value = reason.AsDbValue() }
 
             };
 
@@ -188,7 +189,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             int fDate = fromDate.DateToInt();
             int tDate = toDate.DateToInt();
 
-            var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice);
+            var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice, string.Empty);
 
             var subInvoiceDetail = resultTable.Where(x => x.InvoiceNoGroup == 2).ToList().GroupBy(item => new { item.CustomerCode, item.InvoiceNo })
                .Select(item => new InvoiceSubResponse()
@@ -213,12 +214,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return subInvoiceDetail;
         }
 
-        public List<InvoiceResponseDetail> CancelInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice)
+        public List<InvoiceResponseDetail> CancelInvoice(DateTime fromDate, DateTime toDate, string customerCode, string invoiceNo, string transactionType, bool isSubInvoice, string reason)
         {
             int fDate = fromDate.DateToInt();
             int tDate = toDate.DateToInt();
 
-            var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice);
+            var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice, reason);
 
 
 
@@ -234,7 +235,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 ValidateInvoiceGeneration(fromDate, toDate, customerCode, invoiceNo, false, false);
 
 
-            var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice);
+            var resultTable = ExecuteCreateInvoice(fDate, tDate, customerCode, invoiceNo, transactionType, isSubInvoice, string.Empty);
 
             if (resultTable != null && resultTable.Count == 0)
                 throw new ServiceException(new ErrorMessage[]
