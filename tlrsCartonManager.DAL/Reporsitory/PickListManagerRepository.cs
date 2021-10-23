@@ -138,7 +138,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                                 CartonCount = t.Sum(x=>x.NoOfCartons.Value),
                                 PickedCount= t.Sum(x => x.NoOfCartonsPicked.Value),
 
-                            }).ToListAsync();
+                            }).OrderByDescending(x=>x.CartonCount).ToListAsync();
         }
 
         public async Task<PagedResponse<PickListSearchDto>> SearchPickList(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)

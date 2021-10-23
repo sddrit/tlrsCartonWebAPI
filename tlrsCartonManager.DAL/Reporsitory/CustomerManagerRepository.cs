@@ -333,6 +333,24 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     });
                 }
             }
+
+            if(customer.AccountType=="S" && customer.IsSeparateInvoice==false)
+            {
+
+                if(_tcContext.Customers.Any(c=>c.MainCustomerCode==customer.MainCustomerCode && c.BillingCycle!=customer.BillingCycle))
+                {
+                    throw new ServiceException(new ErrorMessage[]
+                    {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"{customer.CustomerCode} billing cycle cannot be differernt with main customer billing cycle"
+                        }
+                    });
+                }
+
+            }
+
             return true;
         }
 
