@@ -36,6 +36,8 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IMetadataRepository<Module, ModuleMetaDataDto> _moduleRepository;
         private readonly IMetadataRepository<ModuleSub, ModuleSubMetaDataDto> _subModuleRepository;
         private readonly IMetadataRepository<Tenant, TenantDto> _tenantRepository;
+        private readonly IMetadataRepository<StorageCategory, StorageCategoryDto> _storageCategoryRepository;
+        private readonly IMetadataRepository<PriorityLevel, PriorityLevelDto> _priorityRepository;
 
         private readonly IRolePermissionManagerRepository _rolePermission;
 
@@ -57,6 +59,8 @@ namespace tlrsCartonManager.Api.Controllers
               IMetadataRepository<Module, ModuleMetaDataDto> moduleRepository,
               IMetadataRepository<ModuleSub, ModuleSubMetaDataDto> subModuleRepository,
               IMetadataRepository<Tenant, TenantDto> tenantRepository,
+              IMetadataRepository<StorageCategory, StorageCategoryDto> storageCategoryRepository,
+              IMetadataRepository<PriorityLevel, PriorityLevelDto> priorityRepository,
               IRolePermissionManagerRepository rolePermission)
 
         {
@@ -76,6 +80,8 @@ namespace tlrsCartonManager.Api.Controllers
             _subModuleRepository = subModuleRepository;
             _rolePermission = rolePermission;
             _tenantRepository = tenantRepository;
+            _storageCategoryRepository = storageCategoryRepository;
+            _priorityRepository = priorityRepository;
         }
 
         [HttpGet]
@@ -92,11 +98,14 @@ namespace tlrsCartonManager.Api.Controllers
             var receiveTypeList = await _receiveTypeRepository.GetAllMetaData();
             var requestTypeList = await _requestTypeTypeManagerRepository.GetAllMetaData();
             var workOrderTypeList = await _workOrderTypeRepository.GetAllMetaData();
-
+            var priorityList = await _priorityRepository.GetAllMetaData();
 
             //carton
             var storageType = await _storageTypeRepository.GetAllMetaData();
             var disposalTimeFrameList = await _disposalTimeFrameRepository.GetAllMetaData();
+            var storageCategoryList = await _storageCategoryRepository.GetAllMetaData();
+            
+
 
             //company
             var departmentList = await _departmentRepository.GetAllMetaData();
@@ -131,7 +140,9 @@ namespace tlrsCartonManager.Api.Controllers
                 requestTypeList,
                 moduleList,
                 subModuleList,
-                tenantList
+                tenantList,
+                storageCategoryList,
+                priorityList
 
 
             });

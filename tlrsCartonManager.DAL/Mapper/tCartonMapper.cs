@@ -193,6 +193,7 @@ namespace tlrsCartonManager.DAL.Mapper
             //meta data section
             CreateMap<StorageType, StorageTypeDto>().ReverseMap();
             CreateMap<BillingCycle, BillingCycleDto>().ReverseMap();
+            CreateMap<PriorityLevel, PriorityLevelDto>().ReverseMap();
             CreateMap<Route, RouteDto>().ReverseMap();
             CreateMap<ServiceCategory, ServiceCategoryDto>().ReverseMap();
             CreateMap<Department, DepartmentDto>().ReverseMap();
@@ -208,6 +209,8 @@ namespace tlrsCartonManager.DAL.Mapper
                
 
             CreateMap<MetadataBase, StorageType>().ReverseMap();
+            CreateMap<MetadataBase, StorageCategory>().ReverseMap();
+            CreateMap<MetadataBase, PriorityLevel>().ReverseMap();
             CreateMap<MetadataBase, BillingCycle>().ReverseMap();
             CreateMap<MetadataBase, Route>().ReverseMap();
             CreateMap<MetadataBase, ServiceCategory>().ReverseMap();
@@ -231,7 +234,9 @@ namespace tlrsCartonManager.DAL.Mapper
 
 
             CreateMap<MetadataBase, StorageTypeDto>().ReverseMap();
+            CreateMap<MetadataBase, StorageCategoryDto>().ReverseMap();
             CreateMap<MetadataBase, BillingCycleDto>().ReverseMap();
+            CreateMap<MetadataBase, PriorityLevelDto>().ReverseMap();
             CreateMap<MetadataBase, RouteDto>().ReverseMap();
             CreateMap<MetadataBase, ServiceCategoryDto>().ReverseMap();
             CreateMap<MetadataBase, DepartmentDto>().ReverseMap();

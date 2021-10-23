@@ -101,9 +101,9 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("PreviewTransactionSummary")]
-        public ActionResult PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo, string customerCode, bool isSeparate)
+        public ActionResult PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo, string customerCode, bool isSeparate, bool includeSubAccount, int reportType)
         {
-            return Ok(_invoiceRepository.PreviewTransactionSummary(fromDate, toDate, invoiceNo, customerCode,isSeparate));
+            return Ok(_invoiceRepository.PreviewTransactionSummary(fromDate, toDate, invoiceNo, customerCode,isSeparate, includeSubAccount,reportType));
         }
 
         [HttpGet("CancelInvoice")]

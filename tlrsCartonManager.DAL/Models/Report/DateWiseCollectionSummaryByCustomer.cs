@@ -12,7 +12,7 @@ namespace tlrsCartonManager.DAL.Models.Report
         public string Name { get; set; }
         public int LastTransactionDate { get; set; }
         public bool IsNew { get; set; }
-        public int CartonCount { get; set; }
+        public int? CartonCount { get; set; }
 
     }
 }

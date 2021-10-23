@@ -42,7 +42,9 @@ namespace tlrsCartonManager.DAL.Models
       
         [Column("luUser")]
         public int LuUser { get; set; }
-       
+
+        [Column("category")]
+        public int? Category { get; set; }
 
         [InverseProperty(nameof(CartonStorage.CartonTypeNavigation))]
         public virtual ICollection<CartonStorage> CartonStorages { get; set; }

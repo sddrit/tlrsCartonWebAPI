@@ -43,6 +43,9 @@ namespace tlrsCartonManager.DAL.Dtos
         public virtual ICollection<CustomerAuthorizationHeaderDto> AuthorizedOfficers { get; set; }
         public string ContactNo { get; set; }
 
+    
+
+
 
     }
     public class RequestSearchDto

@@ -7,16 +7,14 @@ using System.Threading.Tasks;
 
 namespace tlrsCartonManager.DAL.Dtos
 {
-    public class StorageTypeDto
+    public class StorageCategoryDto
     {
         [Key]       
-        public int Id { get; set; }     
-        public string Type { get; set; }      
-        public string Description { get; set; }       
-        public string Size { get; set; }       
+        public int Id { get; set; }             
+        public string Description { get; set; }    
+        
         public bool? Active { get; set; }
-        public int? Category { get; set; }
-
+      
     }
 
 }

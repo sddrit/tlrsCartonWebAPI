@@ -190,6 +190,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByCode(string customerCode, bool isAll)
         {
+
             var mainAccList = await _tcContext.Customers.
                Where(x => (EF.Functions.Like(x.CustomerCode, "%" + customerCode + "%") && x.Deleted == false && x.Active == true)).ToListAsync();
             if (isAll)

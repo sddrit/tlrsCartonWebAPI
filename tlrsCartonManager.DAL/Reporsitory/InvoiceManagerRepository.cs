@@ -259,7 +259,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             if (mainInvoiceDetail.Count > 0)
             {
                 mainInvoiceHeader = _mapper.Map<InvoiceHeaderResponse>(_tcContext.ViewCreatedInvoiceLists.Where(x => x.InvoiceId == mainInvoiceNo).FirstOrDefault());
-                mainInvoiceTransactionSummry = GetTransactionSummry(fDate, tDate, mainInvoiceNo, false, null);
+                mainInvoiceTransactionSummry = GetTransactionSummry(fDate, tDate, mainInvoiceNo, false, null,false,0);
             }
 
             var separateInvoiceDetail = resultTable.Where(x => x.InvoiceNoGroup == 3).ToList().GroupBy(item => new { item.CustomerCode, item.InvoiceNo })
@@ -268,7 +268,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                  InvoiceHeaders = _mapper.Map<InvoiceHeaderResponse>(_tcContext.ViewCreatedInvoiceLists.Where(x => x.InvoiceId == item.Key.InvoiceNo).FirstOrDefault()),
                  InvoiceDetails = item.ToList(),
-                 TransactionSummaryResponses = GetTransactionSummry(fDate, tDate, item.Key.InvoiceNo, false, null)
+                 TransactionSummaryResponses = GetTransactionSummry(fDate, tDate, item.Key.InvoiceNo, false, null,false,0)
 
              }).ToList();
 
@@ -291,7 +291,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
 
-        private List<TransactionSummaryResponse> GetTransactionSummry(int fromDate, int toDate, string invoiceNo, bool isSeparateTransSummary, string customerCode)
+        private List<TransactionSummaryResponse> GetTransactionSummry(int fromDate, int toDate, string invoiceNo, bool isSeparateTransSummary, string customerCode,bool includeSubAccount, int reportType)
         {
             try
             {
@@ -301,7 +301,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[1].ToString(), Value = toDate.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[2].ToString(), Value = invoiceNo.AsDbValue() },
                 new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[3].ToString(), Value = isSeparateTransSummary },
-                new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[4].ToString(), Value = customerCode.AsDbValue() }
+                new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[4].ToString(), Value = customerCode.AsDbValue() },
+                new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[5].ToString(), Value = includeSubAccount.AsDbValue() },
+                new SqlParameter { ParameterName = InvoiceTransactionSummaryStoredProcedure.StoredProcedureParameters[6].ToString(), Value = reportType.AsDbValue() }
             };
 
                 return _tcContext.Set<TransactionSummaryResponse>().FromSqlRaw(InvoiceTransactionSummaryStoredProcedure.Sql, parms.ToArray()).ToList();
@@ -315,14 +317,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
         }
 
 
-        public InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo, string customerCode, bool isSeparate)
+        public InvoiceResponse PreviewTransactionSummary(DateTime fromDate, DateTime toDate, string invoiceNo, string customerCode, bool isSeparate,bool includeSubAccount, int reportType)
         {
             int fDate = fromDate.DateToInt();
             int tDate = toDate.DateToInt();
 
             InvoiceHeaderResponse mainInvoiceHeader = new InvoiceHeaderResponse();
 
-            var transactionSummary = GetTransactionSummry(fDate, tDate, invoiceNo, isSeparate, customerCode);
+            var transactionSummary = GetTransactionSummry(fDate, tDate, invoiceNo, isSeparate, customerCode,includeSubAccount, reportType);
 
             if (!transactionSummary.Any())
             {

@@ -63,7 +63,9 @@ namespace tlrsCartonManager.DAL.Utility
 			"@toDate",
 			"@invoiceNo",
 			"@separteTransactionSummary",
-			"@customerCode"
+			"@customerCode",
+			"@includeSubAccount",
+			"@reportType"
 
 		};
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);

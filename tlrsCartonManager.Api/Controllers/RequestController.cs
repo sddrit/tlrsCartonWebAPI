@@ -169,7 +169,7 @@ namespace tlrsCartonManager.Api.Controllers
                 return false;
             }
             if (type.ToLower() == RequestTypes.container.ToString().ToLower()
-           && !_authorizeService.HasPermission("Empty Container", permission))
+           && !_authorizeService.HasPermission("Secure-Valut-Container", permission))
             {
                 return false;
             }

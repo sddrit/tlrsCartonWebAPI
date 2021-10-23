@@ -206,7 +206,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                    Value =requestTransaction.RequestType=="EmptyAllocate"?emptyList.ToDataTable(): requestTransaction.RequestDetails.ToList().ToDataTable()
                 },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[17].ToString(), Value = requestTransaction.StorageType.AsDbValue() } ,
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[18].ToString(), Value = requestTransaction.ContactNo.AsDbValue() }
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[18].ToString(), Value = requestTransaction.ContactNo.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[19].ToString(), Value = requestTransaction.Priority.AsDbValue() }
             };
             #endregion
             var resultTable = _tcContext.Set<TableReturn>().FromSqlRaw(RequestStoredProcedure.Sql, parms.ToArray()).ToList();

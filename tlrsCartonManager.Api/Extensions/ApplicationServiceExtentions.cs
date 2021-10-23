@@ -64,6 +64,7 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<IReminderManagerRepository, ReminderManagerRepository>();
             services.AddScoped<AuthorizeService>();
             services.AddScoped<IVerficationManagerRepository, VerificationManagerRepository>();
+            services.AddScoped<ILogManagerRepository, LogManagerRepository>();
 
             services.AddScoped<IEnvironment, WebEnvironment>();
            
@@ -72,6 +73,8 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<BaseMetaRepositoryValidator>();
 
             services.AddScoped(typeof(IMetadataRepository<StorageType, StorageTypeDto>), typeof(BaseMetadataRepository<StorageType, StorageTypeDto>));
+            services.AddScoped(typeof(IMetadataRepository<StorageCategory, StorageCategoryDto>), typeof(BaseMetadataRepository<StorageCategory, StorageCategoryDto>));
+            services.AddScoped(typeof(IMetadataRepository<PriorityLevel, PriorityLevelDto>), typeof(BaseMetadataRepository<PriorityLevel, PriorityLevelDto>));
             services.AddScoped(typeof(IMetadataRepository<BillingCycle, BillingCycleDto>), typeof(BaseMetadataRepository<BillingCycle, BillingCycleDto>));
             services.AddScoped(typeof(IMetadataRepository<Route, RouteDto>), typeof(BaseMetadataRepository<Route, RouteDto>));
             services.AddScoped(typeof(IMetadataRepository<ServiceCategory, ServiceCategoryDto>), typeof(BaseMetadataRepository<ServiceCategory, ServiceCategoryDto>));

@@ -48,6 +48,8 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<CartonLocation> CartonLocations { get; set; }
 
         public virtual DbSet<CartonStorage> CartonStorages { get; set; }
+        public virtual DbSet<StorageCategory> StorageCategories { get; set; }
+        public virtual DbSet<PriorityLevel> PriorityLevels { get; set; }
         public virtual DbSet<CartonType> CartonTypes { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerAuthorizationListDetail> CustomerAuthorizationListDetails { get; set; }
