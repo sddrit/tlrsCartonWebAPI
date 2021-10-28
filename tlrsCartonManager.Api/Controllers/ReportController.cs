@@ -208,6 +208,13 @@ namespace tlrsCartonManager.Api.Controllers
 
         }
 
+        [HttpGet("InvoiceNotGeneratedCustomerList")]
+        //[RmsAuthorization("Customer Loyality", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        public async Task<ActionResult> InvoiceNotGeneratedCustomerList(DateTime fromDate, DateTime toDate, string billingCycle)
+        {
+            return Ok(await _reportRepository.InvoiceNotGeneratedCustomerList(fromDate, toDate,billingCycle));
+
+        }
 
     }
 

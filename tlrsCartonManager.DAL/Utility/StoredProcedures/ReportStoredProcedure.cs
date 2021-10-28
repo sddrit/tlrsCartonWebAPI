@@ -159,5 +159,19 @@ namespace tlrsCartonManager.DAL.Utility
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 
     }
+    public class InvoiceNotGeneratedCustomerListStoredProcedure
+    {
+        public static string StoredProcedureName = "reportInvoiceNotGeneratedCustomerList";
+        public static List<string> StoredProcedureParameters = new List<string>()
+        {
+               "@fromDate",
+               "@toDate",
+               "@billingCycle"
+
+        };
+        public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+
+    }
+
 
 }

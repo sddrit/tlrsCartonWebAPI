@@ -346,6 +346,26 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return await _tcContext.Set<DateWiseCollectionSummaryByCustomer>().FromSqlRaw(DateWiseCollectionSummaryByCustomerStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
         }
+
+        public async Task<IEnumerable<InvoiceNotGeneratedCustomerList>> InvoiceNotGeneratedCustomerList(DateTime fromDate, DateTime toDate, string billingCycle)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter { ParameterName = InvoiceNotGeneratedCustomerListStoredProcedure.StoredProcedureParameters[0].ToString(),
+                        Value =fromDate.DateToInt().AsDbValue() },
+                     new SqlParameter { ParameterName = InvoiceNotGeneratedCustomerListStoredProcedure.StoredProcedureParameters[1].ToString(),
+                        Value =toDate.DateToInt().AsDbValue() },
+                     new SqlParameter { ParameterName = InvoiceNotGeneratedCustomerListStoredProcedure.StoredProcedureParameters[2].ToString(),
+                        Value =billingCycle.AsDbValue() },
+                };
+
+            return await _tcContext.Set<InvoiceNotGeneratedCustomerList>().FromSqlRaw(InvoiceNotGeneratedCustomerListStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+
+        }
     }
+
+
+   
+
 }
 

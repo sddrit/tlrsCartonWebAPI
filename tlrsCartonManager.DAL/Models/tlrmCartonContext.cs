@@ -1364,6 +1364,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<VerificationPickInvalidViewModel>().HasNoKey();
             modelBuilder.Entity<VerificationPickViewModel>().HasNoKey();
             modelBuilder.Entity<CartonDispatchViewModel>().HasNoKey();
+            modelBuilder.Entity<InvoiceNotGeneratedCustomerList>().HasNoKey();
+
             
 
             OnModelCreatingPartial(modelBuilder);

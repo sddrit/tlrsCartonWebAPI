@@ -95,6 +95,12 @@ namespace tlrsCartonManager.DAL.Models
         [Column("note")]
         public string Note { get; set; }
 
+        [Column("customerCode")]
+        public string CustomerCode { get; set; }
+
+        [Column("name")]
+        public string Name { get; set; }
+
 
     }
 }
