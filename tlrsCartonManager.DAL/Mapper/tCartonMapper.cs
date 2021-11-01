@@ -23,6 +23,7 @@ using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
 using tlrsCartonManager.DAL.Models.RoleResponse;
+using tlrsCartonManager.DAL.Models.SequenceMonthEnd;
 
 namespace tlrsCartonManager.DAL.Mapper
 {
@@ -275,6 +276,8 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<UserModulePermission, UserPermissionItem>().ReverseMap();
             CreateMap < PickListHeaderSingleSearchDto, ViewPickListByNo>().ReverseMap();
+
+            CreateMap<Sequence, SequenceModel>().ReverseMap();
         }
 
 

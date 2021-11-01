@@ -25,5 +25,8 @@ namespace tlrsCartonManager.DAL.Models
         [Column("requestTypeCode")]
         [StringLength(50)]
         public string RequestTypeCode { get; set; }
+
+        [Column("active")]
+        public bool Active { get; set; }
     }
 }

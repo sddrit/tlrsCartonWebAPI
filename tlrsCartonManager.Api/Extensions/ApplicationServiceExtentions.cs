@@ -67,7 +67,8 @@ namespace tlrsCartonManager.Api.Extensions
             services.AddScoped<ILogManagerRepository, LogManagerRepository>();
 
             services.AddScoped<IEnvironment, WebEnvironment>();
-           
+            services.AddScoped<ISequenceManagerRepository, SequenceManagerRepository>();
+
             //---Meta Data registration
 
             services.AddScoped<BaseMetaRepositoryValidator>();
