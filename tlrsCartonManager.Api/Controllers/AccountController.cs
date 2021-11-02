@@ -101,5 +101,11 @@ namespace tlrsCartonManager.Api.Controllers
             }
 
         }
+
+        [HttpPost("LogOut")]
+        public ActionResult LogOut(UserDto model)
+        {
+            return Ok(_accountRepository.LogOutUser(model));
+        }
     }
 }

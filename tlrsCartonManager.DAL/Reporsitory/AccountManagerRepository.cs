@@ -66,7 +66,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     UserLastName = userInfo.UserLastName,
                     UserRole = userInfo.UserRole,
                     UserRoles = userInfo.UserRoles,
-                    IsPasswordExpired = true
+                    IsPasswordExpired = true,
+                    Id=result.FirstOrDefault().Id.Value
 
                 };
 
@@ -97,8 +98,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                         UserRole = userInfo.UserRole,
                         UserRoles= userInfo.UserRoles,
                         Permissions = resultPermission,
-                        TenantName=userInfo.TenantName
-                        
+                        TenantName=userInfo.TenantName,
+                        Id = result.FirstOrDefault().Id.Value
 
                     };
                 }
@@ -267,5 +268,19 @@ namespace tlrsCartonManager.DAL.Reporsitory
           return _tcContext.Set<IntReturn>().FromSqlRaw(UserPermissionOnAuthorized.Sql, parms.ToArray()).AsEnumerable().First().Value;        
 
         }
+
+        public bool LogOutUser(UserDto model)
+        {
+
+            using var hmac = new HMACSHA512();
+            var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(string.Empty));
+            var passwordSalt = hmac.Key;
+
+            _userManagerRepository.SaveUser(model, passwordHash, passwordSalt, TransactionType.LogOut.ToString(), model.UserId);          
+           
+            return true;
+
+        }
+
     }
 }

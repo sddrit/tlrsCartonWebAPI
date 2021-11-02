@@ -21,6 +21,7 @@ using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
 using tlrsCartonManager.DAL.Models.Report;
 using tlrsCartonManager.DAL.Models.RoleResponse;
+using tlrsCartonManager.DAL.Models.SystemLogs;
 using tlrsCartonManager.DAL.Models.Verification;
 
 #nullable disable
@@ -1365,9 +1366,10 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<VerificationPickViewModel>().HasNoKey();
             modelBuilder.Entity<CartonDispatchViewModel>().HasNoKey();
             modelBuilder.Entity<InvoiceNotGeneratedCustomerList>().HasNoKey();
+            modelBuilder.Entity<AuditTrailUserActivityModel>().HasNoKey();
+            modelBuilder.Entity<AuditTrailUserLoginModel>().HasNoKey();
 
             
-
             OnModelCreatingPartial(modelBuilder);
         }
 

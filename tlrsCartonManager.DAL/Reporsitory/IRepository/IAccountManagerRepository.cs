@@ -16,5 +16,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         bool ChangeProfile(UserDto model);
         int GetUserRolePermissionsInt(int userId, string moduleName);
         Task<bool> ChangePasswordAsync(UserPasswordExpiredModel model);
+
+        bool LogOutUser(UserDto model);
     }
 }

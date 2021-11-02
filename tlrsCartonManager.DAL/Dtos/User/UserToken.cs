@@ -35,6 +35,7 @@ namespace tlrsCartonManager.DAL.Dtos
 
         public bool IsPasswordExpired {get;set;}
         public string TenantName { get; set; }
+        public int? Id { get; set; }
     }
 
     public class UserLoginInfo
