@@ -196,22 +196,39 @@ namespace tlrsCartonManager.DAL.Reporsitory
             };
             var outParam = new SqlParameter { ParameterName = InquiryOperationOverviewByUserLocationStoredProcedure.StoredProcedureParameters[8].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
             parms.Add(outParam);
-            var operationOverviewByUserLocation = await _tcContext.Set<OperationOverviewByUserLocaion>().FromSqlRaw(InquiryOperationOverviewByUserLocationStoredProcedure.Sql, parms.ToArray()).ToListAsync();
-            var totalRows = (int)outParam.Value;
-            #region paging
-            var postResponse = _mapper.Map<List<OperationOverviewByUserLocaion>>(operationOverviewByUserLocation);
 
-            var paginationResponse = new PagedResponse<OperationOverviewByUserLocaion>
+            try
             {
-                Data = postResponse,
-                pageNumber = pageIndex,
-                pageSize = pageSize,
-                totalCount = totalRows,
-                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+                var operationOverviewByUserLocation = await _tcContext.Set<OperationOverviewByUserLocaion>().FromSqlRaw(InquiryOperationOverviewByUserLocationStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
-            };
+
+
+
+                var totalRows = (int)outParam.Value;
+                #region paging
+                var postResponse = _mapper.Map<List<OperationOverviewByUserLocaion>>(operationOverviewByUserLocation);
+
+                var paginationResponse = new PagedResponse<OperationOverviewByUserLocaion>
+                {
+                    Data = postResponse,
+                    pageNumber = pageIndex,
+                    pageSize = pageSize,
+                    totalCount = totalRows,
+                    totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+
+                };
+
+                return paginationResponse;
+            }
+           
             #endregion
-            return paginationResponse;
+          
+
+             catch (Exception ex)
+            {
+                throw ex;
+
+            }
         }
 
         public async Task<PagedResponse<ViewRequestSummary>> GetRequestInquiryByCustomer(string cusomerCode,string searchText, int pageIndex, int pageSize)
