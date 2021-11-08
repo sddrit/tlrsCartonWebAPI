@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace tlrsCartonManager.Core.Enums
 {
-    public enum ModulePermission
+    [Flags]
+    public enum ModulePermission : int
     {
         None = 0,
         Add = 1,
@@ -14,6 +15,6 @@ namespace tlrsCartonManager.Core.Enums
         Delete = 4,
         Print = 8,
         View = 16,
-        All = 32
+        All = 31
     }
 }

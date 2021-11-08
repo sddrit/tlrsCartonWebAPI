@@ -41,10 +41,9 @@ namespace tlrsCartonManager.Api.Util.Authorization
 
             int userId = Convert.ToInt32(context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            var permission=_accountManagerRepository.GetUserRolePermissionsInt(userId, _moduleName.ToLower());
+            var permission = _accountManagerRepository.GetUserRolePermissionsInt(userId, _moduleName.ToLower());
 
             int[] permissionClaim = permission.GetPermissions();          
-
 
             if (permissionClaim == null)
             {
@@ -54,11 +53,12 @@ namespace tlrsCartonManager.Api.Util.Authorization
                     ContentType = "application/json",
                     Content = System.Text.Json.JsonSerializer.Serialize(new { error = "Unauthorized" })
                 };
+
                 return;
+            }
 
-            }           
-
-            if (!permissionClaim.Contains((int)_permission))
+            if (!permissionClaim.Select(item => (ModulePermission)item)
+                .Any(item => item.HasFlag(_permission)))
             {
                 context.Result = new ContentResult()
                 {
@@ -67,7 +67,6 @@ namespace tlrsCartonManager.Api.Util.Authorization
                     Content = System.Text.Json.JsonSerializer.Serialize(new { error = "Unauthorized" })
                 };
                 return;
-
             }
         }
 
