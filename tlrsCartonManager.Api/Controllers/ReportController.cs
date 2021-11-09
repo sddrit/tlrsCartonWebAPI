@@ -152,9 +152,9 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet("CartonsInRCCollectionWoPending")]
         //[RmsAuthorization("Collection WO Pending", tlrsCartonManager.Core.Enums.ModulePermission.View)]
-        public async Task<ActionResult> CartonsInRCCollectionWoPending(DateTime asAtDate)
+        public async Task<ActionResult> CartonsInRCCollectionWoPending(DateTime asAtDate, bool isAsAtDate)
         {
-            return Ok(await _reportRepository.GetCartonsInRCCollectionWoPending(asAtDate));
+            return Ok(await _reportRepository.GetCartonsInRCCollectionWoPending(asAtDate, isAsAtDate));
 
         }
 

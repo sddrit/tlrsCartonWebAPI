@@ -103,7 +103,8 @@ namespace tlrsCartonManager.DAL.Utility
         public static string StoredProcedureName = "reportCartonsInRCCollectionWoPending";
         public static List<string> StoredProcedureParameters = new List<string>()
         {
-               "@asAtDate"
+               "@asAtDate",
+               "@isAsAtDate"
 
         };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
