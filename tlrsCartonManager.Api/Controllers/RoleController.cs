@@ -1,18 +1,7 @@
-﻿using AutoMapper;
-using tlrsCartonManager.DAL.Dtos;
-using tlrsCartonManager.DAL.Reporsitory.IRepository;
+﻿using tlrsCartonManager.DAL.Reporsitory.IRepository;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using tlrsCartonManager.DAL.Helper;
-using tlrsCartonManager.Api.Extensions;
-using tlrsCartonManager.DAL.Models.ResponseModels;
-using tlrsCartonManager.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
-using tlrsCartonManager.Api.Error;
-using System.Net;
 using tlrsCartonManager.DAL.Models.RoleResponse;
 using tlrsCartonManager.Api.Util.Authorization;
 
@@ -55,23 +44,16 @@ namespace tlrsCartonManager.Api.Controllers
 
 
         [HttpGet("getRoles")]
-        [RmsAuthorization("Role Permission", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<RoleResponseListItem>> GetRoleList()
         {
             return Ok(await _menuRoleRepository.GetRoleList());          
         }      
 
         [HttpGet("getRole/{id}")]
-        [RmsAuthorization("Role Permission", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult<RolePermissionListItem>> GetRolePermissionListById(int id)
         {
             return Ok(await _menuRoleRepository.GetRolePermissionListById(id));          
         }
 
-
-       
-
-       
-       
     }
 }
