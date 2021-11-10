@@ -43,7 +43,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 ).ToList();
             }
 
-            var paginationResponse = new PagedResponse<Log>(result, pageIndex, pageSize, result.Count);
+            var pageResult=result.Skip((pageIndex - 1)*pageSize).Take(pageSize);
+            var paginationResponse = new PagedResponse<Log>(pageResult, pageIndex, pageSize, result.Count);
 
             if (paginationResponse == null)
             {

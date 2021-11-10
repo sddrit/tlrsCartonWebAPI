@@ -36,10 +36,12 @@ namespace tlrsCartonManager.Api.Controllers
         [RmsAuthorization("Db Error Log", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> GetDbErrorLog(string searchColumn, int pageIndex, DataSourceLoadOptions loadOptions)
         {
-
+            
             var result = _logRepository.GetDbErrorLogAsync(searchColumn, pageIndex, 10);
-
-            return Ok(DataSourceLoader.Load(result.Data, loadOptions));
+            
+            return Ok(result);
+            
+          
         }
 
         [HttpGet("getAuditTrailUserActivity")]
