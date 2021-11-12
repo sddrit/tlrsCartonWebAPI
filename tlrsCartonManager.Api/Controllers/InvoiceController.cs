@@ -21,7 +21,7 @@ namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class InvoiceController : ControllerBase
     {
         private readonly IInvoiceManagerRepository _invoiceRepository;

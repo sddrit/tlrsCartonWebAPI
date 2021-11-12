@@ -150,7 +150,8 @@ namespace tlrsCartonManager.DAL.Models
                  new KeyValuePair<string, string>("Last Updated Date",LuDate),
                  new KeyValuePair<string, string>("Last Updated Date Time",LuDateTime),
                  new KeyValuePair<string, string>("Delivery Route",DeliveryRoute),
-                 new KeyValuePair<string, string>("Docket No",DocketNo)
+                 new KeyValuePair<string, string>("Docket No",DocketNo),
+                 new KeyValuePair<string, string>("Delivery Location",Department)
             };
         }
     }

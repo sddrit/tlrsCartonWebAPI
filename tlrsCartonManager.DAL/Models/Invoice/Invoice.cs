@@ -69,6 +69,8 @@ namespace tlrsCartonManager.DAL.Models
         public string LastTransactionDate { get; set; }
         public string DocketNo { get; set; }
         public int? CartonCount { get; set; }
+
+        public string DeliveryLocation { get; set; }
     }
 
     public class InvoiceHeaderResponse
