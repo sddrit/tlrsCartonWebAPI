@@ -19,6 +19,12 @@ namespace tlrsCartonManager.DAL.Models.Report
         public string LocationCode { get; set; }
         public string WareHouseCode { get; set; }
         public string ScannedUser { get; set; }
+        public DateTime? ScanDateTime { get; set; }
+        public string PallettedLocation { get; set; }
+        public DateTime? LastScannedDateTime { get; set; }
+        public string LastScannedUser { get; set; }
+
+        
     }
     public class DailyPalletedSummaryByScannedUser
     {

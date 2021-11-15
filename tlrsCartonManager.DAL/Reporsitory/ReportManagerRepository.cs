@@ -278,14 +278,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return await _tcContext.Set<CartonsInRCCollectionWoPending>().FromSqlRaw(CartonsInRCWoPendingStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
         }
-        public async Task<DailyPalletedSummary> GetDailyPalletedSummary(DateTime asAtDate, string locationCode)
+        public async Task<DailyPalletedSummary> GetDailyPalletedSummary(DateTime asAtDate,DateTime toDate, string locationCode)
         {
             List<SqlParameter> parms = new List<SqlParameter>
                 {
                     new SqlParameter { ParameterName = DailyPalletedSummaryStoredProcedure.StoredProcedureParameters[0].ToString(),
                         Value = asAtDate.DateToInt().AsDbValue() },
-
                     new SqlParameter { ParameterName = DailyPalletedSummaryStoredProcedure.StoredProcedureParameters[1].ToString(),
+                        Value = toDate.DateToInt().AsDbValue() },
+                    new SqlParameter { ParameterName = DailyPalletedSummaryStoredProcedure.StoredProcedureParameters[2].ToString(),
                         Value = locationCode.AsDbValue() }
                 };
 

@@ -168,9 +168,9 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpGet("DailyPalletedSummary")]
         //[RmsAuthorization("Daily Palleted Summary", tlrsCartonManager.Core.Enums.ModulePermission.View)]
-        public async Task<ActionResult> DailyPalletedSummary(DateTime asAtDate, string locationCode)
+        public async Task<ActionResult> DailyPalletedSummary(DateTime asAtDate,DateTime toDate, string locationCode)
         {
-            return Ok(await _reportRepository.GetDailyPalletedSummary(asAtDate, locationCode));
+            return Ok(await _reportRepository.GetDailyPalletedSummary(asAtDate,toDate, locationCode));
 
         }
 

@@ -128,6 +128,7 @@ namespace tlrsCartonManager.DAL.Utility
         public static List<string> StoredProcedureParameters = new List<string>()
         {
                "@asAtDate",
+               "@toDate",
                "@locationCode"
 
         };
