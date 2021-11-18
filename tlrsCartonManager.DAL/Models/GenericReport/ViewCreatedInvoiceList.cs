@@ -81,6 +81,8 @@ namespace tlrsCartonManager.DAL.Models
              new KeyValuePair<string, string>("From Date", FromDate.ToString()),
              new KeyValuePair<string, string>("To Date", ToDate.ToString()),
              new KeyValuePair<string, string>("Invoice Value", InvoiceValue.ToString()),
+             new KeyValuePair<string, string>("Invoice Type", InvoiceTye),
+             new KeyValuePair<string, string>("Vat Percentage", VatPercentage.ToString()),
              new KeyValuePair<string, string>("Created User", CreatedUser),
              new KeyValuePair<string, string>("Created Date", CreatedDate),
              new KeyValuePair<string, string>("Last Updated User", LuUser),
