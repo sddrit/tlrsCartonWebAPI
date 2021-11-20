@@ -337,7 +337,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
             if(customer.AccountType=="S" && customer.IsSeparateInvoice==false)
             {
 
-                if(_tcContext.Customers.Any(c=>c.MainCustomerCode==customer.MainCustomerCode && c.BillingCycle!=customer.BillingCycle))
+                var maincustomerList = _tcContext.Customers.Where(c => c.MainCustomerCode == customer.MainCustomerCode).FirstOrDefault();
+
+
+                if(maincustomerList!=null && maincustomerList.BillingCycle != customer.BillingCycle )
                 {
                     throw new ServiceException(new ErrorMessage[]
                     {
