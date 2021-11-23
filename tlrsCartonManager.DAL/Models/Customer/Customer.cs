@@ -193,7 +193,11 @@ namespace tlrsCartonManager.DAL.Models
         {
             get
             {
-                return Address1 + ", " + Address2 + ", " + Address3;
+                var address1= string.IsNullOrEmpty(Address2) ? Address1 : Address1 + ", ";
+                var address2 = string.IsNullOrEmpty(Address2) ? " " : Address2 +", ";
+                var address3= string.IsNullOrEmpty(Address3) ? " " : Address3 + ", ";
+
+                return address1 + address2 + address3;
 
             }
             set { }

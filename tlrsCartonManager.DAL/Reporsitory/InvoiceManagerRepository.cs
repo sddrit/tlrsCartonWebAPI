@@ -106,7 +106,13 @@ namespace tlrsCartonManager.DAL.Reporsitory
             };
 
                 var branchWiseDetail = _tcContext.Set<BranchWiseDetail>().FromSqlRaw(InvoiceBrachWiseStoredProcedure.Sql, parms.ToArray()).ToList();
-
+                if(branchWiseDetail.Count==1)
+                {
+                   if(string.IsNullOrEmpty( branchWiseDetail[0].CustomerCode))
+                    {
+                        return null;
+                    }
+                }
                 return branchWiseDetail;
             }
 
