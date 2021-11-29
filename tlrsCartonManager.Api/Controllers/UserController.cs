@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using tlrsCartonManager.DAL.Dtos;
+﻿using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using tlrsCartonManager.Services.User;
-using tlrsCartonManager.Services.Report;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.Api.Util.Authorization;
 

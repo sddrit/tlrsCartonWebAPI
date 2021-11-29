@@ -1,31 +1,17 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using tlrsCartonManager.Api.Extensions;
 using tlrsCartonManager.Api.Middleware;
 using tlrsCartonManager.Api.Util.Options;
-using tlrsCartonManager.Api.Util.Util;
-using tlrsCartonManager.DAL.Models;
-using tlrsCartonManager.DAL.Reporsitory;
-using tlrsCartonManager.DAL.Reporsitory.IRepository;
 
 namespace tlrsCartonManager.Api
 {
@@ -140,7 +126,10 @@ namespace tlrsCartonManager.Api
 
             app.UseRouting();
 
-            app.UseCors(XmlConfigurationExtensions => XmlConfigurationExtensions.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+            app.UseCors(cors => cors
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowAnyOrigin());
 
             app.UseAuthentication();
 

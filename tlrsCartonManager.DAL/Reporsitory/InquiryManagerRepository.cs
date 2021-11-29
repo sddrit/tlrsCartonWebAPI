@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using tlrsCartonManager.DAL.Reporsitory;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
 using tlrsCartonManager.DAL.Models;
@@ -16,13 +13,11 @@ using System.Data;
 using tlrsCartonManager.DAL.Helper;
 using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
-using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Dtos.Carton;
 using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Docket;
 using tlrsCartonManager.DAL.Models.Operation;
-using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Models.Dispatch;
 

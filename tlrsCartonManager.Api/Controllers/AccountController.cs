@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using tlrsCartonManager.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,10 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using tlrsCartonManager.Api.Util.Options;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using tlrsCartonManager.Api.Util.Permission;
 using AutoMapper;
 
 namespace tlrsCartonManager.Api.Controllers

@@ -1,21 +1,9 @@
-﻿using AutoMapper;
-using tlrsCartonManager.DAL.Dtos;
-using tlrsCartonManager.DAL.Reporsitory.IRepository;
+﻿using tlrsCartonManager.DAL.Reporsitory.IRepository;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using tlrsCartonManager.DAL.Helper;
-using tlrsCartonManager.Api.Extensions;
-using tlrsCartonManager.DAL.Models.ResponseModels;
-using tlrsCartonManager.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
-using tlrsCartonManager.Api.Error;
-using System.Net;
 using tlrsCartonManager.Api.Util.Authorization;
 using DevExtreme.AspNet.Mvc;
-using DevExtreme.AspNet.Data;
 
 namespace tlrsCartonManager.Api.Controllers
 {

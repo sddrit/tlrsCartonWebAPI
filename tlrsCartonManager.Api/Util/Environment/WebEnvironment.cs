@@ -1,10 +1,9 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using tlrsCartonManager.Core.Environment;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
 
-namespace tlrsCartonManager.Api.Util.Enviroment
+namespace tlrsCartonManager.Api.Util.Environment
 {
     public class WebEnvironment : IEnvironment
     {
@@ -22,7 +21,7 @@ namespace tlrsCartonManager.Api.Util.Enviroment
                 return new CurrentEnvironment()
                 {
                     Service = "Web API",
-                    MachineName = Environment.MachineName,
+                    MachineName = System.Environment.MachineName,
                     UserId = 0,
                     UserName = "admin"
                 };
@@ -41,7 +40,7 @@ namespace tlrsCartonManager.Api.Util.Enviroment
             return new CurrentEnvironment()
             {
                 Service = "Web API",
-                MachineName = Environment.MachineName,
+                MachineName = System.Environment.MachineName,
                 UserId = string.IsNullOrEmpty(userId)? 0: int.Parse(userId),
                 UserName = username
             };

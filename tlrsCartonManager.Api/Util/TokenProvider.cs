@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using tlrsCartonManager.DAL.Models;
 
-namespace tlrsCartonManager.Api.Util.Util
+namespace tlrsCartonManager.Api.Util
 {
     public class TokenProvider : DataProtectorTokenProvider<User>
     {

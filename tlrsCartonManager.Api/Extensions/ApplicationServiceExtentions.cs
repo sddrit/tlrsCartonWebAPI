@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper.Configuration;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Reporsitory;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
-using tlrsCartonManager.DAL.Mapper;
 using tlrsCartonManager.Services.Report;
 using tlrsCartonManager.Services.User;
 using tlrsCartonManager.Services.ImportData;
@@ -19,11 +13,9 @@ using tlrsCartonManager.DAL.Reporsitory.Metadata.Core;
 using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Dtos.MetaData;
 using tlrsCartonManager.DAL.Dtos.Module;
-using tlrsCartonManager.Api.Util.Options;
 using tlrsCartonManager.Core.Environment;
-using Microsoft.AspNetCore.Http;
-using tlrsCartonManager.Api.Util.Enviroment;
 using tlrsCartonManager.Api.Util.Authorization;
+using tlrsCartonManager.Api.Util.Environment;
 using tlrsDailyCollectionManager.DAL.Reporsitory;
 
 namespace tlrsCartonManager.Api.Extensions

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Security.Claims;
-using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
 using tlrsCartonManager.Core.Enums;
 using tlrsCartonManager.Api.Util.Permission;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;

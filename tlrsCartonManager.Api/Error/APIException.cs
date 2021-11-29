@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace tlrsCartonManager.Api.Error
+﻿namespace tlrsCartonManager.Api.Error
 {
     public class APIException
     {

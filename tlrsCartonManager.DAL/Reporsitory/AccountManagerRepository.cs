@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using tlrsCartonManager.DAL.Reporsitory;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,11 +11,7 @@ using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Dtos;
 using Microsoft.Data.SqlClient;
 using tlrsCartonManager.DAL.Utility;
-using System.Data;
-using tlrsCartonManager.DAL.Helper;
-using static tlrsCartonManager.DAL.Utility.Status;
 using tlrsCartonManager.DAL.Extensions;
-using Newtonsoft.Json;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Dtos.Menu;
 using tlrsCartonManager.Core.Enums;
