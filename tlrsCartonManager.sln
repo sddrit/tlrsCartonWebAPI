@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tlrsCartonManager.DAL", "tl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tlrsCartonManager.Services", "tlrsCartonManager.Services\tlrsCartonManager.Services.csproj", "{AE94A39C-63D0-4941-B752-923B8402F563}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tlrsCartonManager.Core", "tlrsCartonManager.Core\tlrsCartonManager.Core.csproj", "{B1CB26D4-2112-4CFD-A7CE-7CBDA18AF792}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tlrsCartonManager.Core", "tlrsCartonManager.Core\tlrsCartonManager.Core.csproj", "{B1CB26D4-2112-4CFD-A7CE-7CBDA18AF792}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

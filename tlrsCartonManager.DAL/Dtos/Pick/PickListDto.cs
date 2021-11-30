@@ -119,6 +119,7 @@ namespace tlrsCartonManager.DAL.Dtos.Pick
         public int PickedUserId { get; set; }
         public bool IsPicked { get; set; }
         public long? PickDate { get; set; }
+        public string DeviceId { get; set; }
 
     }
     public class PickListSummaryRequest

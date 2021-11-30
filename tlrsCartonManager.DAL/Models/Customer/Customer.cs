@@ -25,7 +25,7 @@ namespace tlrsCartonManager.DAL.Models
         [StringLength(20)]
         public string CustomerCode { get; set; }
         [Column("name")]
-        [StringLength(50)]
+       
         public string Name { get; set; }
         [Column("address1")]
         [StringLength(50)]
