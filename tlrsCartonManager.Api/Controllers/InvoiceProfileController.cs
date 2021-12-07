@@ -29,7 +29,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("RateSheet")]
-        [RmsAuthorization("Invoice Profile", tlrsCartonManager.Core.Enums.ModulePermission.Edit)]
+        [RmsAuthorization("Invoice Profile", tlrsCartonManager.Core.Enums.ModulePermission.View)]
         public async Task<ActionResult> SearchInvoiceProfile(int id,string customerCode,string transactionType)
         {
             var invoiceList = await _invoiceProfileRepository.GetInvoiceProfileRateSheet(id,customerCode,transactionType);
