@@ -129,7 +129,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     .Where(x => x.DeliveryDateInt >= Convert.ToInt32(fromDate.ToString("yyyyMMdd")) &&
                     x.DeliveryDateInt <= Convert.ToInt32(toDate.ToString("yyyyMMdd")) &&
                     x.DeliveryRoute == route && x.Collected == false
-                    ).ToListAsync();
+                    ).OrderBy(x=>x.DeliveryDate)
+                    .ToListAsync();
             }
 
         }
