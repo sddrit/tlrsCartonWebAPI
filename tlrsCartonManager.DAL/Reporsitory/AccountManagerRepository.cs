@@ -62,7 +62,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     UserRole = userInfo.UserRole,
                     UserRoles = userInfo.UserRoles,
                     IsPasswordExpired = true,
-                    Id=result.FirstOrDefault().Id.Value
+                    TenantName = string.Empty,
+                    Id =result.FirstOrDefault().Id.Value
 
                 };
 
