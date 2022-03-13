@@ -20,7 +20,7 @@ namespace tlrsCartonManager.DAL.Models.MetaData
         [StringLength(20)]
         public string Code { get; set; }
         
-        [Column("description")]
+        [Column("deviceUniqueId")]
         [StringLength(50)]
         public string Description { get; set; }
         
