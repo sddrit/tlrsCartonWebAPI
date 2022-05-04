@@ -42,12 +42,10 @@ namespace tlrsCartonManager.DAL.Dtos
         public virtual ICollection<RequestDetailDto> RequestDetails { get; set; }
         public virtual ICollection<CustomerAuthorizationHeaderDto> AuthorizedOfficers { get; set; }
         public string ContactNo { get; set; }
-
-    
-
-
-
+        public string Type { get; set; } = string.Empty;//03.05.2022 customer portal
+        public string ProcessStatus { get; set; } = string.Empty;//03.05.2022 customer portal
     }
+
     public class RequestSearchDto
     {
         public string RequestNo { get; set; }

@@ -31,7 +31,9 @@ namespace tlrsCartonManager.DAL.Utility
 			"@requestDetail",
 			"@storageType",
 			"@contactNo",
-			"@priority"
+			"@priority",
+			"@type",
+			"@processStaus"
 
 
 		};
