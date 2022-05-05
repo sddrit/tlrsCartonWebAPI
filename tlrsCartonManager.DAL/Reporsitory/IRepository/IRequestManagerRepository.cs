@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Dtos.Request;
 using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.DAL.Models;
 
@@ -31,6 +29,9 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         Task<object> GetDocket(DocketPrintModel model);
 
+        TableResponse<TableReturn> AddRequestCustomerPortal(CustomerPortalRequestHeaderDto requestInsert);
+        
+        bool ApproveCustomerPortalRequest(CustomerPortaRequestApprove request);
 
 
 

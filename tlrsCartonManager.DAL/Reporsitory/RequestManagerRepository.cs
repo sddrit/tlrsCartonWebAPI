@@ -16,6 +16,7 @@ using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.Core.Enums;
 using tlrsCartonManager.Core.Environment;
+using tlrsCartonManager.DAL.Dtos.Request;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -112,6 +113,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             return SaveRequest(requestInsert, TransactionTypes.Insert.ToString());
         }
+
         public async Task<TableResponse<TableReturn>> UpdateRequest(RequestHeaderDto requestUpdate)
         {
             var result = await SearchRequest(requestUpdate.RequestType, requestUpdate.RequestNo, string.Empty, string.Empty, 1, 1);
@@ -366,6 +368,50 @@ namespace tlrsCartonManager.DAL.Reporsitory
             headerResult.SerialNo = serialNo;
             return headerResult;
 
+        }
+
+
+        public TableResponse<TableReturn> AddRequestCustomerPortal(CustomerPortalRequestHeaderDto customerPortlRequestInsert)
+        {
+            RequestHeaderDto requestInsert = new RequestHeaderDto()
+            {
+                AuthorizedOfficerId = customerPortlRequestInsert.AuthorizedOfficerId,
+                CartonCount = customerPortlRequestInsert.CartonCount,
+                ContactNo = customerPortlRequestInsert.ContactNo,
+                ContactPersonName = customerPortlRequestInsert.ContactPersonName,
+                CustomerCode = customerPortlRequestInsert.CustomerCode,
+                DeliveryDate = customerPortlRequestInsert.DeliveryDate,
+                DeliveryLocation = customerPortlRequestInsert.DeliveryLocation,
+                DeliveryRoute = customerPortlRequestInsert.DeliveryRoute,
+                Remarks = customerPortlRequestInsert.Remarks,
+                RequestType = customerPortlRequestInsert.RequestType,
+                Type = customerPortlRequestInsert.Type,
+                ProcessStatus = customerPortlRequestInsert.ProcessStatus,
+                RequestDetails = customerPortlRequestInsert.RequestDetails.Select(x => new RequestDetailDto()
+                {
+                    //do your variable mapping here 
+                    CartonNo = x.CartonNo,
+                    ToCartonNo = x.CartonNo
+                }).ToList()
+
+            };
+
+            return SaveRequest(requestInsert, TransactionTypes.Insert.ToString());
+        }
+
+        public bool ApproveCustomerPortalRequest(CustomerPortaRequestApprove request)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter { ParameterName = CustomerPortalRequestApproveStoredProcedure.StoredProcedureParameters[0].ToString(),
+                    Value =  request.RequestNumber.AsDbValue()},
+                  new SqlParameter { ParameterName = CustomerPortalRequestApproveStoredProcedure.StoredProcedureParameters[1].ToString(),
+                    Value = "In Progress"},
+                new SqlParameter { ParameterName = CustomerPortalRequestApproveStoredProcedure.StoredProcedureParameters[2].ToString(),
+                    Value =  _environment.GetCurrentEnvironment().UserId.AsDbValue()}
+            };
+
+            return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerPortalRequestApproveStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
 
     }

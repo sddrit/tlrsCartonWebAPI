@@ -8,6 +8,7 @@ using System.Net;
 using tlrsCartonManager.Api.Util.Authorization;
 using tlrsCartonManager.Core.Enums;
 using System.Threading.Tasks;
+using tlrsCartonManager.DAL.Dtos.Request;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -26,14 +27,14 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPost("addRequest")]
-        public ActionResult AddRequest(RequestHeaderDto request)
+        public ActionResult AddRequest(CustomerPortalRequestHeaderDto request)
         {
             if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Add))
             {
                 return Unauthorized();
             }
 
-            var response = _requestRepository.AddRequest(request);
+            var response = _requestRepository.AddRequestCustomerPortal(request);
             if (response.OutList!=null && response.OutList.Count()>0)
                 return new JsonErrorResult(response, HttpStatusCode.PartialContent);
             else if (response.Ok)
@@ -43,20 +44,11 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPut("approveRequest")]
-        public async Task<ActionResult> ApproveRequest(RequestHeaderDto request)
+        public async Task<ActionResult> ApproveRequest(CustomerPortaRequestApprove request)
         {
-            if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Edit))
-            {
-                return Unauthorized();
-            }
-
-            var response = await _requestRepository.UpdateRequest(request);
-            if (response.OutList != null && response.OutList.Count() > 0)
-                return new JsonErrorResult(response, HttpStatusCode.PartialContent);
-            else if (response.Ok)
-                return Ok(response);
-            else
-                return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);
+            
+            var response =  _requestRepository.ApproveCustomerPortalRequest(request);
+            return Ok(response);
         }
 
 

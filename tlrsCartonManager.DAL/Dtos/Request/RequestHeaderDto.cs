@@ -92,6 +92,24 @@ namespace tlrsCartonManager.DAL.Dtos
     {
         public string AlternateNo { get; set; }
     }
-   
-  
+
+
+    public class CustomerPortalRequestHeaderDto
+    {
+                        
+        public int? DeliveryDate { get; set; }      
+        public string Remarks { get; set; }       
+        public int AuthorizedOfficerId { get; set; }
+        public int? CartonCount { get; set; }
+        public string RequestType { get; set; }        
+        public string ContactPersonName { get; set; }
+        public string DeliveryLocation { get; set; }
+        public string DeliveryRoute { get; set; }       
+        public string CustomerCode { get; set; }     
+        public virtual ICollection<CustomerPortalRequestDetailDto> RequestDetails { get; set; }       
+        public string ContactNo { get; set; }
+        public string Type { get; set; } = string.Empty;//03.05.2022 customer portal
+        public string ProcessStatus { get; set; } = string.Empty;//03.05.2022 customer portal
+    }
+
 }

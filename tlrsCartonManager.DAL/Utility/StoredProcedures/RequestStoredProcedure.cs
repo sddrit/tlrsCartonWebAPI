@@ -97,5 +97,17 @@ namespace tlrsCartonManager.DAL.Utility
 		};
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 	}
-	
+
+	public static class CustomerPortalRequestApproveStoredProcedure
+	{
+		public static string StoredProcedureName = "requestCustomerPortalApprove";
+		public static List<string> StoredProcedureParameters = new List<string>()
+		{
+			"@requestNumber",			
+			"@processStaus",
+			"@userId"
+		};
+		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
+	}
+
 }
