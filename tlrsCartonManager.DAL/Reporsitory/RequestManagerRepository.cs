@@ -370,7 +370,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         }
 
-
+        //Customer Portal
         public TableResponse<TableReturn> AddRequestCustomerPortal(CustomerPortalRequestHeaderDto customerPortlRequestInsert)
         {
             RequestHeaderDto requestInsert = new RequestHeaderDto()
@@ -414,5 +414,27 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerPortalRequestApproveStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
 
+        public async Task<PagedResponse<RequestSearchDto>> SearchRequestCustomerPortal(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        {
+            List<SqlParameter> parms = _searchManager.Search("requestSearchcustomerPortal", searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
+
+            var cartonList = await _tcContext.Set<RequestSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var totalRows = (int)outParam.Value;
+            #region paging
+            var postResponse = _mapper.Map<List<RequestSearchDto>>(cartonList);
+
+            var paginationResponse = new PagedResponse<RequestSearchDto>
+            {
+                Data = postResponse,
+                pageNumber = pageIndex,
+                pageSize = pageSize,
+                totalCount = totalRows,
+                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+
+            };
+            #endregion
+
+            return paginationResponse;
+        }
     }
 }

@@ -29,11 +29,14 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         Task<object> GetDocket(DocketPrintModel model);
 
+        //Customer Portal
         TableResponse<TableReturn> AddRequestCustomerPortal(CustomerPortalRequestHeaderDto requestInsert);
         
         bool ApproveCustomerPortalRequest(CustomerPortaRequestApprove request);
 
+        Task<PagedResponse<RequestSearchDto>> SearchRequestCustomerPortal(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize);
 
+        //
 
     }
 }

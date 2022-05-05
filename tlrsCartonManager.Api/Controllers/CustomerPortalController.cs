@@ -51,7 +51,13 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(response);
         }
 
+        [HttpGet("searchRequest")]
+        public async Task<ActionResult> searchRequest( string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        {
 
+            var requestList = await _requestRepository.SearchRequestCustomerPortal( searchText, searchColumn, sortOrder, pageIndex, pageSize);
+            return Ok(requestList);
+        }
 
         private bool Authorize(string type, tlrsCartonManager.Core.Enums.ModulePermission permission)
         {
