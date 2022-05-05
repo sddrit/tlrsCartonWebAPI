@@ -47,7 +47,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
                                 FirstOrDefaultAsync(x => x.TrackingId == customerId && x.Deleted == false));
 
             if (customerList != null)
+            {
                 customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
+
+                customerList.DocketCopies = _tcContext.ViewCustomerDocketCopies.Where(x => x.CustomerCode == customerList.CustomerCode).Select(x=>x.DocketType).ToList();
+            }
             else
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -449,7 +453,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 },
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[53].ToString(), Value =customerTransaction.IncludeMainAccountAuthorization.AsDbValue() } ,
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[54].ToString(), Value =customerTransaction.IsManualInvoice.AsDbValue() } ,
-                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[55].ToString(), Value =customerTransaction.BillingName.AsDbValue() } ,
+                new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[55].ToString(), Value =customerTransaction.BillingName.AsDbValue() } ,
+                new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[56].ToString(), Value = customerTransaction.DocketCopies!=null? string.Join(",",customerTransaction.DocketCopies.Select(x => x.ToString()).ToArray()): string.Empty } ,
             };
             #endregion
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
