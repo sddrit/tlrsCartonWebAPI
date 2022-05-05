@@ -494,5 +494,38 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return paginationResponse;
         }
 
+        public async Task<CustomerDto> GetCustomerByCode(string customerCode)
+        {
+            var customerId = _tcContext.Customers.Where(x => x.CustomerCode == customerCode && x.Deleted==false).First().TrackingId;
+
+
+            var subAccList = _mapper.Map<IEnumerable<CustomerSubAccountListDto>>(await _tcContext.Customers.
+                                Where(x => x.MainCustomerCode == customerId && x.AccountType != "M" && x.Deleted == false).ToListAsync());
+
+            var customerList = _mapper.Map<CustomerDto>(await _tcContext.Customers.
+                                Include(x => x.CustomerAuthorizationListHeaders.Where(x => x.Deleted == false)).
+                                ThenInclude(x => x.CustomerAuthorizationListDetails.Where(x => x.Deleted == false)).
+                                FirstOrDefaultAsync(x => x.TrackingId == customerId && x.Deleted == false));
+
+            if (customerList != null)
+            {
+                customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
+
+                customerList.DocketCopies = _tcContext.ViewCustomerDocketCopies.Where(x => x.CustomerCode == customerList.CustomerCode).Select(x => x.DocketType).ToList();
+            }
+            else
+            {
+                throw new ServiceException(new ErrorMessage[]
+                    {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to find customer by {customerId}"
+                        }
+                    });
+            }
+            return customerList;
+        }
+
     }
 }
