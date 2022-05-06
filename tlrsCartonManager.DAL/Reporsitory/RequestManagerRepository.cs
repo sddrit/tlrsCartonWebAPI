@@ -414,11 +414,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerPortalRequestApproveStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
         }
 
-        public async Task<PagedResponse<RequestSearchDto>> SearchRequestCustomerPortal(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        public async Task<PagedResponse<RequestSearchDto>> SearchRequestCustomerPortal(string customerCode, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("requestSearchcustomerPortal", searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("requestSearchcustomerPortal",customerCode, searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
 
-            var cartonList = await _tcContext.Set<RequestSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
+            var cartonList = await _tcContext.Set<RequestSearch>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
             var postResponse = _mapper.Map<List<RequestSearchDto>>(cartonList);

@@ -34,7 +34,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         
         bool ApproveCustomerPortalRequest(CustomerPortaRequestApprove request);
 
-        Task<PagedResponse<RequestSearchDto>> SearchRequestCustomerPortal(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize);
+        Task<PagedResponse<RequestSearchDto>> SearchRequestCustomerPortal(string customerCode, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize);
 
         //
 

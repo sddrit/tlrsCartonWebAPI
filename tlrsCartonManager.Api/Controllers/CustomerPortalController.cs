@@ -52,10 +52,10 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("searchRequest")]
-        public async Task<ActionResult> searchRequest( string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        public async Task<ActionResult> searchRequest(string customerCode, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
 
-            var requestList = await _requestRepository.SearchRequestCustomerPortal( searchText, searchColumn, sortOrder, pageIndex, pageSize);
+            var requestList = await _requestRepository.SearchRequestCustomerPortal(customerCode, searchText, searchColumn, sortOrder, pageIndex, pageSize);
             return Ok(requestList);
         }
 
