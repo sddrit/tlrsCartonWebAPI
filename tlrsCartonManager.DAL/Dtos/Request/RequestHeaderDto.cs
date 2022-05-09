@@ -55,6 +55,18 @@ namespace tlrsCartonManager.DAL.Dtos
         public int DeliveryDate { get; set; }
     }
 
+    public class RequestSearchCustomerPortalDto
+    {
+        public string RequestNo { get; set; }
+        public string CustomerCode { get; set; }
+        public string CustomerName { get; set; }
+        public int CartonCount { get; set; }
+        public int DeliveryDate { get; set; }
+        public string RequestType { get; set; }
+        public string Type { get; set; }
+        public string ProcessStatus { get; set; }
+    }
+
     public class OriginalDocketSearchDto
     {
         public string RequestNo { get; set; }

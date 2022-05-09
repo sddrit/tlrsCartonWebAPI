@@ -137,5 +137,40 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return paginationResponse;
         }
+
+        public async Task<PagedResponse<UserSerachCustomerPortalDto>> SearchUserCustomerPortal(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[0].ToString(), Value = columnValue==null ? string.Empty :columnValue },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[1].ToString(), Value = searchColumn.AsDbValue() },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[2].ToString(), Value = sortOrder.AsDbValue() },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[3].ToString(), Value = pageIndex },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[4].ToString(), Value = pageSize },
+
+            };
+
+            var outParam = new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[5].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+
+            parms.Add(outParam);
+            var customerList = await _tcContext.Set<UserSerachCustomerPortalDto>().FromSqlRaw(UserStoredProcedureCustomerPortalSearch.Sql, parms.ToArray()).ToListAsync();
+            var totalRows = (int)outParam.Value;
+
+            #region paging
+            var postResponse = _mapper.Map<List<UserSerachCustomerPortalDto>>(customerList);
+
+            var paginationResponse = new PagedResponse<UserSerachCustomerPortalDto>
+            {
+                Data = postResponse,
+                pageNumber = pageIndex,
+                pageSize = pageSize,
+                totalCount = totalRows,
+                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+
+            };
+            #endregion
+
+            return paginationResponse;
+        }
     }
 }

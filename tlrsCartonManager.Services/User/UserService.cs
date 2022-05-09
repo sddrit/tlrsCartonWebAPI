@@ -143,6 +143,25 @@ namespace tlrsCartonManager.Services.User
             return userList;
 
         }
+
+        public Task<PagedResponse<UserSerachCustomerPortalDto>> SearchUserCustomerPortal(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        {
+            var userList = _userManagerRepository.SearchUserCustomerPortal(columnValue, searchColumn, sortOrder, pageIndex, pageSize);
+            if (userList == null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+              {
+                    new ErrorMessage()
+                    {
+                        Message = $"Unable to find user "
+                    }
+              });
+
+            }
+            return userList;
+
+        }
+
         public async Task<DAL.Dtos.UserDto> GetUserById(int userId)
         {
            var user=await _userManagerRepository.GetUserById(userId);
