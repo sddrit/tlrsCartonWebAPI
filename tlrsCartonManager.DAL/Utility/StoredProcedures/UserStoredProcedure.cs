@@ -54,7 +54,11 @@ namespace tlrsCartonManager.DAL.Utility
             "@statementType" ,
             "@createdId",
             "@passwordEncryptionMobile",
-            "@lock"
+            "@lock",
+            "@customerCode" ,
+            "@type" ,
+            "@authorizationId",
+            "@customerPortalRole" 
         };
         public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters) ;
     }

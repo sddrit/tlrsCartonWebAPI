@@ -61,6 +61,40 @@ namespace tlrsCartonManager.Services.User
 
             return await _userManagerRepository.GetUserById(userId);
         }
+
+        public async Task<bool> CreateUserCustomerPortal(DAL.Dtos.UserCustomerPortalDto request)
+        {
+            DAL.Dtos.UserDto user = new UserDto()
+            {
+                UserFullName = request.UserFullName,
+                UserId = request.UserId,
+                UserName = request.UserName,
+                Type = request.Type,
+                Email = request.Email,
+                Active = request.Active,
+                AuthorizationId = request.AuthorizationId,
+                CustomerCode = request.CustomerCode,
+                CustomerPortalRole = request.CustomerPortalRole,
+                UserPassword = "Tlr@1234",
+                EmpId = "00000"
+            };
+
+             var response=await CreateUser(user);
+
+            if(response==null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Message = $"Unable to create user {user.UserName}"
+                    }
+               });
+
+            }
+            return true;
+        }
+
         public async Task<DAL.Dtos.UserDto> UpdateUser(DAL.Dtos.UserDto user)
         {
             using var hmac = new HMACSHA512();
@@ -81,9 +115,70 @@ namespace tlrsCartonManager.Services.User
 
             return await _userManagerRepository.GetUserById(userId);
         }
-       
 
-        public async Task<DAL.Dtos.UserDto> ResetUser(DAL.Dtos.UserDto user)
+
+        public async Task<bool> UpdateUserCustomerPortal(DAL.Dtos.UserCustomerPortalDto request)
+        {
+            DAL.Dtos.UserDto user = new UserDto()
+            {
+                UserFullName = request.UserFullName,
+                UserId = request.UserId,
+                UserName = request.UserName,
+                Type = request.Type,
+                Email = request.Email,
+                Active = request.Active,
+                AuthorizationId = request.AuthorizationId,
+                CustomerCode = request.CustomerCode,
+                CustomerPortalRole = request.CustomerPortalRole,
+                UserPassword = "Tlr@1234",
+                EmpId = "00000"
+            };
+
+            var response = await UpdateUser(user);
+
+            if (response == null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Message = $"Unable to update user {user.UserId}"
+                    }
+               });
+
+            }
+            return true;
+        }
+
+        public async Task<bool> ActiveInactiveUserCustomerPortal(int userId, TransactionType transactionType )
+        {
+            DAL.Dtos.UserDto user = new UserDto()
+            {
+               UserId=userId
+            };
+            using var hmac = new HMACSHA512();
+            var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(string.Empty));
+            var passwordSalt = hmac.Key;
+
+            var uId = _userManagerRepository.SaveUser(user, passwordHash, passwordSalt, transactionType.ToString(), _environment.GetCurrentEnvironment().UserId);
+
+            if (uId == 0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                    new ErrorMessage()
+                    {
+                        Message = $"Unable to update user status {user.UserId}"
+                    }
+                });
+            }
+
+            return true;
+        }
+
+        
+
+            public async Task<DAL.Dtos.UserDto> ResetUser(DAL.Dtos.UserDto user)
         {
             await ValidateUser(user, TransactionType.Reset.ToString());
             using var hmac = new HMACSHA512();

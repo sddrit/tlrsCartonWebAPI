@@ -97,7 +97,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[10].ToString() , Value =trasactionType },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[11].ToString(), Value = userId.AsDbValue() },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[12].ToString(), Value =PasswordManagerMobile.EncryptPlainTextToCipherText( user.UserPassword).AsDbValue()},
-                  new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[13].ToString(), Value =user.Lock.AsDbValue()}
+                  new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[13].ToString(), Value =user.Lock.AsDbValue()},
+                   new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[14].ToString(), Value =user.CustomerCode.AsDbValue()},
+                    new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[15].ToString(), Value =user.Type.AsDbValue()},
+                     new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[16].ToString(), Value =user.AuthorizationId.AsDbValue()},
+                      new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[17].ToString(), Value =user.CustomerPortalRole.AsDbValue()}
 
             };            
 

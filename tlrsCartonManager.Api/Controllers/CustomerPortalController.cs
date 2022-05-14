@@ -15,7 +15,7 @@ namespace tlrsCartonManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class CustomerPortalController : Controller
     {
         private readonly IRequestManagerRepository _requestRepository;
@@ -31,96 +31,63 @@ namespace tlrsCartonManager.Api.Controllers
 
         [HttpPost("addRequest")]
         public ActionResult AddRequest(CustomerPortalRequestHeaderDto request)
-        {
-            if (!Authorize(request.RequestType, tlrsCartonManager.Core.Enums.ModulePermission.Add))
-            {
-                return Unauthorized();
-            }
+        {           
 
             var response = _requestRepository.AddRequestCustomerPortal(request);
-            if (response.OutList!=null && response.OutList.Count()>0)
+            if (response.OutList != null && response.OutList.Count() > 0)
                 return new JsonErrorResult(response, HttpStatusCode.PartialContent);
             else if (response.Ok)
                 return Ok(response);
             else
-                return new JsonErrorResult(new { Message =response.Message }, HttpStatusCode.InternalServerError);
+                return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);
         }
 
         [HttpPut("approveRequest")]
         public async Task<ActionResult> ApproveRequest(CustomerPortaRequestApprove request)
         {
-            
-            var response =  _requestRepository.ApproveCustomerPortalRequest(request);
+            var response = _requestRepository.ApproveCustomerPortalRequest(request);
             return Ok(response);
         }
 
         [HttpGet("searchRequest")]
-        public async Task<ActionResult> searchRequest(string customerCode,string type, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        public async Task<ActionResult> searchRequest(string customerCode, string type, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
 
-            var requestList = await _requestRepository.SearchRequestCustomerPortal(customerCode, type,searchText, searchColumn, sortOrder, pageIndex, pageSize);
+            var requestList = await _requestRepository.SearchRequestCustomerPortal(customerCode, type, searchText, searchColumn, sortOrder, pageIndex, pageSize);
             return Ok(requestList);
         }
 
+        [HttpPost("addUser")]
+        public async Task<ActionResult> AddUser(UserCustomerPortalDto request)
+        {
+            return Ok(await _userService.CreateUserCustomerPortal(request));
+        }
+
+        [HttpPut("updateUser")]
+        public async Task<ActionResult> UpdateUser(UserCustomerPortalDto request)
+        {
+            return Ok(await _userService.UpdateUserCustomerPortal(request));
+        }
+
+        [HttpPut("disableUser")]
+        public async Task<ActionResult> DisableUser(int userId)
+        {
+            return Ok(await _userService.ActiveInactiveUserCustomerPortal(userId, TransactionType.Disable));
+        }
+
+        [HttpPut("activateUser")]
+        public async Task<ActionResult> ActivateUser(int userId)
+        {
+            return Ok(await _userService.ActiveInactiveUserCustomerPortal(userId, TransactionType.Active));
+        }
 
         [HttpGet("getUser")]
-        
         public async Task<ActionResult<UserSerachCustomerPortalDto>> SearchUser(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
             return Ok(await _userService.SearchUserCustomerPortal(columnValue, searchColumn, sortOrder, pageIndex, pageSize));
         }
 
 
-
-        private bool Authorize(string type, tlrsCartonManager.Core.Enums.ModulePermission permission)
-        {
-            if (type.ToLower() == RequestTypes.empty.ToString().ToLower()
-               && !_authorizeService.HasPermission("Empty", permission))
-            {
-                return false;
-            }
-
-            if (type.ToLower() == RequestTypes.emptyallocate.ToString().ToLower()
-            && !_authorizeService.HasPermission("Empty Allocate", permission))
-            {
-                return false;
-            }
-            if (type.ToLower() == RequestTypes.emptydeallocate.ToString().ToLower()
-            && !_authorizeService.HasPermission("Empty Deallocate", permission))
-            {
-                return false;
-            }
-
-            if (type.ToLower() == RequestTypes.collection.ToString().ToLower()
-              && !_authorizeService.HasPermission("Collection", permission))
-            {
-                return false;
-            }
-
-            if (type.ToLower() == RequestTypes.retrieval.ToString().ToLower()
-              && !_authorizeService.HasPermission("Retrieval", permission))
-            {
-                return false;
-            }
-
-            if (type.ToLower() == RequestTypes.disposal.ToString().ToLower()
-             && !_authorizeService.HasPermission("Disposal", permission))
-            {
-                return false;
-            }
-
-            if (type.ToLower() == RequestTypes.permout.ToString().ToLower()
-            && !_authorizeService.HasPermission("PermOut", permission))
-            {
-                return false;
-            }
-            if (type.ToLower() == RequestTypes.container.ToString().ToLower()
-           && !_authorizeService.HasPermission("Secure-Valut-Container", permission))
-            {
-                return false;
-            }
-            return true;
-
-        }
+        
     }
 }
