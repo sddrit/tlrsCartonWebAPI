@@ -37,9 +37,9 @@ namespace tlrsCartonManager.Api.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Login(UserLoginModel model)
         {
-            var loginResponse = await _accountRepository.Login(model);
+            var loginResponse = await _accountRepository.Login(model, true);
 
-            var token = await GenerateToken(loginResponse, new[] { loginResponse.UserRole });
+            var token = await GenerateToken(loginResponse );
 
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
@@ -47,6 +47,34 @@ namespace tlrsCartonManager.Api.Controllers
 
             loginResponse.Token = jwtToken;
 
+            return Ok(loginResponse);
+        }
+
+        [HttpPost("loginCustomerPortal")]
+        [AllowAnonymous]
+        public async Task<ActionResult> LoginCustomerPortal(UserLoginModel model)
+        {
+            var loginResponse = await _accountRepository.LoginCustomerPortal(model);
+
+            UserLoginResponse userLoginResponse = new UserLoginResponse()
+            {
+                UserId = loginResponse.UserId,
+                UserName = model.UserName,
+                UserFirstName = loginResponse.UserFirstName,
+                UserLastName = loginResponse.UserLastName,                
+                TenantName = loginResponse.TenantName,
+                Id = loginResponse.Id.Value
+
+            };
+
+            var token = await GenerateToken(userLoginResponse);
+
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+            var lifeTime = new JwtSecurityTokenHandler().ReadToken(jwtToken).ValidTo;
+
+            loginResponse.Token = jwtToken;
+           
             return Ok(loginResponse);
         }
 
@@ -62,7 +90,7 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _accountRepository.ChangePasswordAsync(model));
         }
 
-        private async Task<JwtSecurityToken> GenerateToken(UserLoginResponse user, string[] roles)
+        private async Task<JwtSecurityToken> GenerateToken(UserLoginResponse user)
         {
             var claims = new List<Claim>()
             {
@@ -88,13 +116,14 @@ namespace tlrsCartonManager.Api.Controllers
 
         private void AddRolesToClaims(List<Claim> claims, UserLoginResponse response)
         {
-
-            foreach (var userRole in response.UserRoles)
+            if (response.UserRoles != null)
             {
-                var roleClaim = new Claim(ClaimTypes.Role, userRole.Id.ToString());
-                claims.Add(roleClaim);
+                foreach (var userRole in response.UserRoles)
+                {
+                    var roleClaim = new Claim(ClaimTypes.Role, userRole.Id.ToString());
+                    claims.Add(roleClaim);
+                }
             }
-
         }
 
         [HttpPost("LogOut")]
