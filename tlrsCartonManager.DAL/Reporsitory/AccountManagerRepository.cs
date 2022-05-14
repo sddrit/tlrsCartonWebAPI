@@ -145,7 +145,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                 var roleName = _tcContext.Roles.Where(x => x.Id == userRoles[0].Id).FirstOrDefault().Description;
 
-               var tenantName= _tcContext.Companies.FirstOrDefault().Country;
+               var tenantName= _tcContext.Companies.FirstOrDefault().TenantCode;
 
                 string[] userFullnames = result.UserFullName.Split(' ');
 
