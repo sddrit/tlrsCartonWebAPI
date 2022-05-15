@@ -104,5 +104,11 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(_customerRepository.SetCustomerStatus(customer));
         }
 
+        [HttpGet("getCustomerByCustomerCode/{customerCode}")]
+        public async Task<ActionResult<CustomerDto>> GetSingleSearch(string customerCode)
+        {
+            return Ok(await _customerRepository.GetCustomerByCode(customerCode));
+        }
+
     }
 }
