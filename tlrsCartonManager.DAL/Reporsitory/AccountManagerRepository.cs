@@ -63,7 +63,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     UserRoles = userInfo.UserRoles,
                     IsPasswordExpired = true,
                     TenantName = string.Empty,
-                    Id =result.FirstOrDefault().Id.Value
+                    Id =result.FirstOrDefault().Id.Value,
+                    CompanyName= userInfo.CompanyName
 
                 };
 
@@ -95,7 +96,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                         UserRoles= userInfo.UserRoles,
                         Permissions = resultPermission,
                         TenantName=userInfo.TenantName,
-                        Id = result.FirstOrDefault().Id.Value
+                        Id = result.FirstOrDefault().Id.Value,
+                        CompanyName= userInfo.CompanyName
 
                     };
                 }
@@ -145,7 +147,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                 var roleName = _tcContext.Roles.Where(x => x.Id == userRoles[0].Id).FirstOrDefault().Description;
 
-               var tenantName= _tcContext.Companies.FirstOrDefault().TenantCode;
+               var company= _tcContext.Companies.FirstOrDefault();
+               
 
                 string[] userFullnames = result.UserFullName.Split(' ');
 
@@ -156,7 +159,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     UserLastName = userFullnames.Length > 1 ? userFullnames[1] : string.Empty,
                     UserRole = roleName,
                     UserRoles=userRoles,
-                    TenantName=tenantName
+                    TenantName= company.TenantCode,
+                    CompanyName= company.CompanyName
                 };
             }
             catch (Exception ex)
