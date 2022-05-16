@@ -156,6 +156,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
             {
                 var result = _tcContext.Users.Where(x => x.UserName.ToLower() == model.UserName.ToLower() && x.Deleted == false && x.Type == "Customer Portal").FirstOrDefault();
 
+                if(result==null)
+                {
+                    throw new ServiceException(new ErrorMessage[]
+                  {
+                            new ErrorMessage()
+                            {
+                                Code = "1001",
+                                Message = "Invalid Portal User"
+                            }
+                  });
+
+                }
 
                 return new UserLoginResponseCustomerPortal()
                 {
