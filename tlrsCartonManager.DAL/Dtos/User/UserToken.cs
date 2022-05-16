@@ -55,6 +55,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string Type { get; set; }
         public int AuthorizationId { get; set; }
         public int CustomerPortalRole { get; set; }
+        public int CustomerId { get; set; }
 
 
     }
