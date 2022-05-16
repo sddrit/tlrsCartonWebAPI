@@ -20,6 +20,6 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<User> GetUserByName(string userName);
         int SaveUser(UserDto user, byte[] passwrodHash, byte[] passwordSalt, string trasactionType, int? userId);
 
-        Task<PagedResponse<UserSerachCustomerPortalDto>> SearchUserCustomerPortal(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize);
+        Task<PagedResponse<UserSerachCustomerPortalDto>> SearchUserCustomerPortal(string customerCode, string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize);
     }
 }

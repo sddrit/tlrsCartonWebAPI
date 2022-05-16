@@ -44,7 +44,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public string UserName { get; set; }
         public string UserFullName { get; set; }        
         public string Email { get; set; }
-        public bool Active { get; set; }       
+        public bool Active { get; set; }
+        public string UserPassword { get; set; }
         public string CustomerCode { get; set; }
         public string UserType { get; set; }
         public int AuthorizationId { get; set; }

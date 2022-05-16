@@ -82,9 +82,9 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getUser")]
-        public async Task<ActionResult<UserSerachCustomerPortalDto>> SearchUser(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        public async Task<ActionResult<UserSerachCustomerPortalDto>> SearchUser(string customerCode, string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            return Ok(await _userService.SearchUserCustomerPortal(columnValue, searchColumn, sortOrder, pageIndex, pageSize));
+            return Ok(await _userService.SearchUserCustomerPortal(customerCode, columnValue, searchColumn, sortOrder, pageIndex, pageSize));
         }
 
 

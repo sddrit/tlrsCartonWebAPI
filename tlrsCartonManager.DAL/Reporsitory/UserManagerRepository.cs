@@ -142,19 +142,20 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return paginationResponse;
         }
 
-        public async Task<PagedResponse<UserSerachCustomerPortalDto>> SearchUserCustomerPortal(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        public async Task<PagedResponse<UserSerachCustomerPortalDto>> SearchUserCustomerPortal(string customerCode,string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
-               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[0].ToString(), Value = columnValue==null ? string.Empty :columnValue },
-               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[1].ToString(), Value = searchColumn.AsDbValue() },
-               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[2].ToString(), Value = sortOrder.AsDbValue() },
-               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[3].ToString(), Value = pageIndex },
-               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[4].ToString(), Value = pageSize },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[0].ToString(), Value = customerCode.AsDbValue() },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[1].ToString(), Value = columnValue==null ? string.Empty :columnValue },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[2].ToString(), Value = searchColumn.AsDbValue() },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[3].ToString(), Value = sortOrder.AsDbValue() },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[4].ToString(), Value = pageIndex },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[5].ToString(), Value = pageSize },
 
             };
 
-            var outParam = new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[5].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            var outParam = new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[6].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
 
             parms.Add(outParam);
             var customerList = await _tcContext.Set<UserSerachCustomerPortalDto>().FromSqlRaw(UserStoredProcedureCustomerPortalSearch.Sql, parms.ToArray()).ToListAsync();

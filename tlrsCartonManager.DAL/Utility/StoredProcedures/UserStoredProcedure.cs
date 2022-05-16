@@ -26,6 +26,7 @@ namespace tlrsCartonManager.DAL.Utility
         public static string StoredProcedureName = "userSearchCustomerPortal";
         public static List<string> StoredProcedureParameters = new List<string>()
         {
+           "@customerCode",
            "@value",
            "@searColumn",
            "@sortOrder",

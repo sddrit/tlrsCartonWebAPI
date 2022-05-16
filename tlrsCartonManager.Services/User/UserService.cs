@@ -75,7 +75,7 @@ namespace tlrsCartonManager.Services.User
                 AuthorizationId = request.AuthorizationId,
                 CustomerCode = request.CustomerCode,
                 CustomerPortalRole = request.CustomerPortalRole,
-                UserPassword = "Tlr@1234",
+                UserPassword = request.UserPassword,
                 EmpId = "00000"
             };
 
@@ -239,9 +239,9 @@ namespace tlrsCartonManager.Services.User
 
         }
 
-        public Task<PagedResponse<UserSerachCustomerPortalDto>> SearchUserCustomerPortal(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        public Task<PagedResponse<UserSerachCustomerPortalDto>> SearchUserCustomerPortal(string customerCode, string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            var userList = _userManagerRepository.SearchUserCustomerPortal(columnValue, searchColumn, sortOrder, pageIndex, pageSize);
+            var userList = _userManagerRepository.SearchUserCustomerPortal(customerCode,columnValue, searchColumn, sortOrder, pageIndex, pageSize);
             if (userList == null)
             {
                 throw new ServiceException(new ErrorMessage[]
