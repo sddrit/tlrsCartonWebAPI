@@ -177,5 +177,15 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return paginationResponse;
         }
+
+        public async Task<UserCustomerPortalDto> GetUserByIdCustomerPortal(int id)
+        {
+            var user = _mapper.Map<UserCustomerPortalDto>(await _tcContext.Users.
+                           Include(x => x.UserRoles).
+                           Where(x => x.UserId == id && x.Deleted == false)
+                           .FirstOrDefaultAsync());
+
+            return user;
+        }
     }
 }

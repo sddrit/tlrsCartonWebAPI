@@ -280,6 +280,8 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<Sequence, SequenceModel>().ReverseMap();
 
             CreateMap<RequestCustomerPortalSearch, RequestSearchCustomerPortalDto>();
+
+            CreateMap<User, UserCustomerPortalDto>().ReverseMap();
         }
 
 

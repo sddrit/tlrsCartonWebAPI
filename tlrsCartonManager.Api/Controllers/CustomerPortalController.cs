@@ -87,7 +87,12 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _userService.SearchUserCustomerPortal(customerCode, columnValue, searchColumn, sortOrder, pageIndex, pageSize));
         }
 
+        [HttpGet("getUser/{id}")]
+        public async Task<ActionResult<UserSerachCustomerPortalDto>> GetUserById(int id)
+        {
+            return Ok(await _userService.GetUserByIdCustomerPortal(id));
+        }
 
-        
+
     }
 }
