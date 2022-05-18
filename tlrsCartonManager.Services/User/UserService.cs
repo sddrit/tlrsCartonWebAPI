@@ -117,7 +117,7 @@ namespace tlrsCartonManager.Services.User
         }
 
 
-        public async Task<bool> UpdateUserCustomerPortal(DAL.Dtos.UserCustomerPortalDto request)
+        public async Task<bool> UpdateUserCustomerPortal(DAL.Dtos.UserCustomerPortalUpdateDto request)
         {
             DAL.Dtos.UserDto user = new UserDto()
             {

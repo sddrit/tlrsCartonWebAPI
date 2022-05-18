@@ -64,7 +64,7 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpPut("updateUser")]
-        public async Task<ActionResult> UpdateUser(UserCustomerPortalDto request)
+        public async Task<ActionResult> UpdateUser(UserCustomerPortalUpdateDto request)
         {
             return Ok(await _userService.UpdateUserCustomerPortal(request));
         }
