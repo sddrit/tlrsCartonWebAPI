@@ -68,6 +68,14 @@ namespace tlrsCartonManager.DAL.Dtos
 
     }
 
+    public class UserCustomerPortalResetDto
+    {
+        [Key]
+        public int UserId { get; set; }
+        public string UserPassword { get; set; }
+
+    }
+
 
     public class UserRoleDto
     {

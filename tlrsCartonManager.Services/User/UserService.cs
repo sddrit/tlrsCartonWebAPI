@@ -1,25 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
 using tlrsCartonManager.Core;
 using tlrsCartonManager.Core.Enums;
 using tlrsCartonManager.Core.Environment;
 using tlrsCartonManager.DAL.Dtos;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.DAL.Helper;
-using tlrsCartonManager.DAL.Models.GenericReport;
-using tlrsCartonManager.DAL.Models.Report;
-using tlrsCartonManager.DAL.Reporsitory;
 using tlrsCartonManager.DAL.Reporsitory.IRepository;
-using tlrsCartonManager.Services.Report.Core;
-using tlrsCartonManager.Services.User;
 using TransnationalLanka.ThreePL.Services.User.Core;
 
 namespace tlrsCartonManager.Services.User
@@ -79,9 +70,9 @@ namespace tlrsCartonManager.Services.User
                 EmpId = "00000"
             };
 
-             var response=await CreateUser(user);
+            var response = await CreateUser(user);
 
-            if(response==null)
+            if (response == null)
             {
                 throw new ServiceException(new ErrorMessage[]
                {
@@ -150,11 +141,11 @@ namespace tlrsCartonManager.Services.User
             return true;
         }
 
-        public async Task<bool> ActiveInactiveUserCustomerPortal(int userId, TransactionType transactionType )
+        public async Task<bool> ActiveInactiveUserCustomerPortal(int userId, TransactionType transactionType)
         {
             DAL.Dtos.UserDto user = new UserDto()
             {
-               UserId=userId
+                UserId = userId
             };
             using var hmac = new HMACSHA512();
             var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(string.Empty));
@@ -176,9 +167,9 @@ namespace tlrsCartonManager.Services.User
             return true;
         }
 
-        
 
-            public async Task<DAL.Dtos.UserDto> ResetUser(DAL.Dtos.UserDto user)
+
+        public async Task<DAL.Dtos.UserDto> ResetUser(DAL.Dtos.UserDto user)
         {
             await ValidateUser(user, TransactionType.Reset.ToString());
             using var hmac = new HMACSHA512();
@@ -198,6 +189,42 @@ namespace tlrsCartonManager.Services.User
             }
 
             return await _userManagerRepository.GetUserById(userId);
+        }
+
+        public async Task<bool> ResetUserCustomerPortal(UserCustomerPortalResetDto request)
+        {
+            var userExisting =await _userManagerRepository.GetUserByIdCustomerPortal(request.UserId);
+
+            DAL.Dtos.UserDto user = new DAL.Dtos.UserDto()
+            {
+
+                UserId=request.UserId,
+                UserPassword=request.UserPassword,
+                UserFullName = userExisting.UserFullName,               
+                UserName = userExisting.UserName,
+                Type = userExisting.UserType,
+                Email = userExisting.Email,
+                Active = userExisting.Active,
+                AuthorizationId = userExisting.AuthorizationId,
+                CustomerCode = userExisting.CustomerCode,
+                CustomerPortalRole = userExisting.CustomerPortalRole,             
+                EmpId = "00000"
+            };
+
+            var response=await ResetUser(user);
+
+            if (response == null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+               {
+                    new ErrorMessage()
+                    {
+                        Message = $"Unable to reset user {user.UserId}"
+                    }
+               });
+
+            }
+            return true;
         }
 
         public async Task<DAL.Dtos.UserDto> DeleteUser(DAL.Dtos.UserDto user)
@@ -223,8 +250,8 @@ namespace tlrsCartonManager.Services.User
 
         public Task<PagedResponse<UserSerachDto>> SearchUser(string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            var userList= _userManagerRepository.SearchUser(columnValue,searchColumn,sortOrder, pageIndex , pageSize);
-            if(userList==null)
+            var userList = _userManagerRepository.SearchUser(columnValue, searchColumn, sortOrder, pageIndex, pageSize);
+            if (userList == null)
             {
                 throw new ServiceException(new ErrorMessage[]
               {
@@ -241,7 +268,7 @@ namespace tlrsCartonManager.Services.User
 
         public Task<PagedResponse<UserSerachCustomerPortalDto>> SearchUserCustomerPortal(string customerCode, string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            var userList = _userManagerRepository.SearchUserCustomerPortal(customerCode,columnValue, searchColumn, sortOrder, pageIndex, pageSize);
+            var userList = _userManagerRepository.SearchUserCustomerPortal(customerCode, columnValue, searchColumn, sortOrder, pageIndex, pageSize);
             if (userList == null)
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -277,7 +304,7 @@ namespace tlrsCartonManager.Services.User
 
         public async Task<DAL.Dtos.UserDto> GetUserById(int userId)
         {
-           var user=await _userManagerRepository.GetUserById(userId);
+            var user = await _userManagerRepository.GetUserById(userId);
 
             if (user == null)
             {
@@ -287,7 +314,7 @@ namespace tlrsCartonManager.Services.User
                     {
                         Message = $"Unable to find user by {userId}"
                     }
-               });;
+               }); ;
 
             }
             return user;
@@ -297,7 +324,7 @@ namespace tlrsCartonManager.Services.User
         {
             var userByName = await _userManagerRepository.GetUserByName(user.UserName);
 
-            if (transactionType==TransactionType.Insert.ToString() && userByName != null)
+            if (transactionType == TransactionType.Insert.ToString() && userByName != null)
             {
                 throw new ServiceException(new ErrorMessage[]
                {
@@ -308,7 +335,7 @@ namespace tlrsCartonManager.Services.User
                });
 
             }
-            if (transactionType == TransactionType.Reset.ToString() && userByName != null && userByName.UserId !=user.UserId)
+            if (transactionType == TransactionType.Reset.ToString() && userByName != null && userByName.UserId != user.UserId)
             {
                 throw new ServiceException(new ErrorMessage[]
                {
@@ -320,8 +347,8 @@ namespace tlrsCartonManager.Services.User
 
             }
 
-            var userValidator =  new UserValidator(transactionType);     
-             
+            var userValidator = new UserValidator(transactionType);
+
 
             var validateResult = await userValidator.ValidateAsync(user);
 

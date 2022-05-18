@@ -81,6 +81,12 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _userService.ActiveInactiveUserCustomerPortal(userId, TransactionType.Active));
         }
 
+        [HttpPost("resetUser")]       
+        public async Task<ActionResult> ResetUser(UserCustomerPortalResetDto request)
+        {
+            return Ok(await _userService.ResetUserCustomerPortal(request));
+        }
+
         [HttpGet("getUser")]
         public async Task<ActionResult<UserSerachCustomerPortalDto>> SearchUser(string customerCode, string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
