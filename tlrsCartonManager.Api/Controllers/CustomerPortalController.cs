@@ -10,6 +10,7 @@ using tlrsCartonManager.Core.Enums;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos.Request;
 using tlrsCartonManager.Services.User;
+using System;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -21,12 +22,14 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly IRequestManagerRepository _requestRepository;
         private readonly AuthorizeService _authorizeService;
         private readonly UserService _userService;
+        private readonly IInquiryManagerRepository _inquiryRepository;
 
-        public CustomerPortalController(IRequestManagerRepository requestRepository, AuthorizeService authorizeService, UserService userService)
+        public CustomerPortalController(IRequestManagerRepository requestRepository, AuthorizeService authorizeService, UserService userService, IInquiryManagerRepository inquiryRepository)
         {
             _requestRepository = requestRepository;
             _authorizeService = authorizeService;
             _userService = userService;
+            _inquiryRepository = inquiryRepository;
         }
 
         [HttpPost("addRequest")]
@@ -99,6 +102,11 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(await _userService.GetUserByIdCustomerPortal(id));
         }
 
+        [HttpGet("cartonHistory")]      
+        public ActionResult GetCartonHistory(string cartonNo, string customerCode)
+        {
+            return Ok(_inquiryRepository.GetCartonHistoryCustomerPortal(Convert.ToInt32(cartonNo), customerCode));
+        }
 
     }
 }

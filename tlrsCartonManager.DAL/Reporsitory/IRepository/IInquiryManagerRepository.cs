@@ -30,6 +30,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         List<CartonHistory> GetCartonHistory(int cartonNo,string rms);
 
         List<CartonDispatchViewModel> GetCartonDispatch(string requestNo);
+        List<CartonHistoryCustomerPortal> GetCartonHistoryCustomerPortal(int cartonNo, string customerCode);
 
     }
 }
