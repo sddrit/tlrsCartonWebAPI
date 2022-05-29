@@ -44,6 +44,7 @@ namespace tlrsCartonManager.DAL.Dtos
         public string ContactNo { get; set; }
         public string Type { get; set; } = string.Empty;//03.05.2022 customer portal
         public string ProcessStatus { get; set; } = string.Empty;//03.05.2022 customer portal
+        public string RejectReason { get; set; } = string.Empty;//03.05.2022 customer portal
     }
 
     public class RequestSearchDto

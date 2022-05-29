@@ -44,13 +44,7 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);
         }
-
-        [HttpPut("approveRequest")]
-        public async Task<ActionResult> ApproveRequest(CustomerPortaRequestApprove request)
-        {
-            var response = _requestRepository.ApproveCustomerPortalRequest(request);
-            return Ok(response);
-        }
+       
 
         [HttpGet("searchRequest")]
         public async Task<ActionResult> searchRequest(string customerCode, string type, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)

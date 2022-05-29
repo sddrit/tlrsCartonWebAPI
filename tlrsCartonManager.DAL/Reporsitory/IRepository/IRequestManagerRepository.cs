@@ -17,7 +17,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         Task<TableResponse<TableReturn>> UpdateRequest(RequestHeaderDto requestUpdate);
 
-        Task<TableResponse<TableReturn>> DeleteRequest(string requestNo, string requestType);           
+        Task<TableResponse<TableReturn>> DeleteRequest(string requestNo, string requestType, string rejectReason = "");           
 
         bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket);
 
@@ -30,11 +30,11 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<object> GetDocket(DocketPrintModel model);
 
         //Customer Portal
-        TableResponse<TableReturn> AddRequestCustomerPortal(CustomerPortalRequestHeaderDto requestInsert);
-        
-        bool ApproveCustomerPortalRequest(CustomerPortaRequestApprove request);
+        TableResponse<TableReturn> AddRequestCustomerPortal(CustomerPortalRequestHeaderDto requestInsert);     
 
         Task<PagedResponse<RequestSearchCustomerPortalDto>> SearchRequestCustomerPortal(string customerCode, string type, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize);
+
+ 
 
         //
 

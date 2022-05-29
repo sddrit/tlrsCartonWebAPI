@@ -87,12 +87,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
                               CartonCount = t.Count()
                           }).ToList();
 
+            var isPrintAlternativeNo = _tcContext.Customers.Where(x => x.CustomerCode == customerId.ToString()).FirstOrDefault().IsPrintAlternativeNo;
+
             var inventoryByCustomer = new InventoryByCustomerReponse()
             {
                 InventoryList = postResponse,
                 InventorySummary = inventorySummaryList,
-                RetreivalSummary = retreivalSummaryList
-
+                RetreivalSummary = retreivalSummaryList,
+                IsShowAlternativeNo = isPrintAlternativeNo == null ? false:true
             };
 
             return inventoryByCustomer;

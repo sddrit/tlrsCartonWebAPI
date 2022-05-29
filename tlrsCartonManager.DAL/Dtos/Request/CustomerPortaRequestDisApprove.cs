@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace tlrsCartonManager.DAL.Dtos.Request
 {
-    public class CustomerPortaRequestApprove
+    public class CustomerPortaRequestDisApprove
     {
         public string RequestNumber { get; set; }
+        public string RequestType { get; set; }
+        public string Reason { get; set; }
     }
 }

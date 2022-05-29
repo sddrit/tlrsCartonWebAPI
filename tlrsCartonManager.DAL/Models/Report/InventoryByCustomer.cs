@@ -21,7 +21,8 @@ namespace tlrsCartonManager.DAL.Models.Report
         public string StorageType { get; set; }
         public string WareHouseCode { get; set; }
         public string RetrievalType { get; set; }
-        
+        public string AlternativeCartonNo { get; set; }
+
     }
     public class InventoryByCustomerSummary
     {
@@ -40,7 +41,7 @@ namespace tlrsCartonManager.DAL.Models.Report
         public List<InventoryByCustomer> InventoryList { get; set; }
         public List<InventoryByCustomerSummary> InventorySummary { get; set; }
         public List<InventoryByRetreivalSummary> RetreivalSummary { get; set; }
-
+        public bool IsShowAlternativeNo { get; set; }
 
     }
 }

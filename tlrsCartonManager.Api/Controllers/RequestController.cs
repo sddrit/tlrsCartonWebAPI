@@ -8,6 +8,7 @@ using tlrsCartonManager.Api.Error;
 using System.Net;
 using tlrsCartonManager.Api.Util.Authorization;
 using tlrsCartonManager.Core.Enums;
+using tlrsCartonManager.DAL.Dtos.Request;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -26,21 +27,21 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<CartonStorageSearchDto>> SearchCarton(string requestType,string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        public async Task<ActionResult<CartonStorageSearchDto>> SearchCarton(string requestType, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
             if (!Authorize(requestType, tlrsCartonManager.Core.Enums.ModulePermission.View))
             {
                 return Unauthorized();
             }
 
-            var requestList = await _requestRepository.SearchRequest(requestType, searchText,searchColumn, sortOrder, pageIndex, pageSize);
+            var requestList = await _requestRepository.SearchRequest(requestType, searchText, searchColumn, sortOrder, pageIndex, pageSize);
             return Ok(requestList);
         }
 
         [HttpGet("{requestNo}")]
         public async Task<ActionResult<CartonStorageDto>> GetSingleSearch(string requestNo, string type)
         {
-            var request = await _requestRepository.GetRequestList(requestNo,type);
+            var request = await _requestRepository.GetRequestList(requestNo, type);
             if (request != null)
                 return Ok(request);
             else
@@ -57,14 +58,14 @@ namespace tlrsCartonManager.Api.Controllers
 
 
             var response = _requestRepository.AddRequest(request);
-            if (response.OutList!=null && response.OutList.Count()>0)
+            if (response.OutList != null && response.OutList.Count() > 0)
                 return new JsonErrorResult(response, HttpStatusCode.PartialContent);
             else if (response.Ok)
                 return Ok(response);
             else
-                return new JsonErrorResult(new { Message =response.Message }, HttpStatusCode.InternalServerError);
-        }             
-     
+                return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);
+        }
+
         [HttpPut]
         public async Task<ActionResult> UpdateRequestAsync(RequestHeaderDto request)
         {
@@ -73,13 +74,13 @@ namespace tlrsCartonManager.Api.Controllers
                 return Unauthorized();
             }
 
-            var response =await  _requestRepository.UpdateRequest(request);
+            var response = await _requestRepository.UpdateRequest(request);
             if (response.OutList != null && response.OutList.Count() > 0)
                 return new JsonErrorResult(response, HttpStatusCode.PartialContent);
             else if (response.Ok)
                 return Ok(response);
             else
-                return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);   
+                return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);
         }
 
         [HttpDelete]
@@ -98,7 +99,7 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPost("validateCarton")]
         public async Task<ActionResult> ValidateCarton(RequestValidationModel cartonValidationModel)
         {
-            return Ok(await _requestRepository.ValidateCartonsInRequest(cartonValidationModel));        
+            return Ok(await _requestRepository.ValidateCartonsInRequest(cartonValidationModel));
         }
 
         [HttpPost("validateAlternativeCarton")]
@@ -111,7 +112,7 @@ namespace tlrsCartonManager.Api.Controllers
         public async Task<ActionResult> GetDocketPrintAsync(string requestNo, string requestType, string printedBy)
         {
             DocketPrintModel model = new DocketPrintModel() { RequestNo = requestNo, RequestType = requestType, PrintedBy = printedBy };
-            return Ok( await _requestRepository.GetDocket(model));
+            return Ok(await _requestRepository.GetDocket(model));
 
         }
 
@@ -170,5 +171,27 @@ namespace tlrsCartonManager.Api.Controllers
             return true;
 
         }
+
+        [HttpPut("approveRequestCustomerPortal")]
+        public async Task<ActionResult> ApproveRequest(RequestHeaderDto request)
+        {
+
+            var response = await _requestRepository.UpdateRequest(request);
+            if (response.OutList != null && response.OutList.Count() > 0)
+                return new JsonErrorResult(response, HttpStatusCode.PartialContent);
+            else if (response.Ok)
+                return Ok(response);
+            else
+                return new JsonErrorResult(new { Message = response.Message }, HttpStatusCode.InternalServerError);
+        }
+
+        [HttpPut("rejectRequestCustomerPortal")]
+        public async Task<ActionResult> RejectRequest(CustomerPortaRequestDisApprove request)
+        {
+            var response =await _requestRepository.DeleteRequest(request.RequestNumber, request.RequestType, request.Reason);
+            return Ok(response);
+        }
+
+
     }
 }

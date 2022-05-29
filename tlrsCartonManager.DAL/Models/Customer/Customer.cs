@@ -187,6 +187,8 @@ namespace tlrsCartonManager.DAL.Models
         [Column("billingName")]
         public string BillingName { get; set; }
 
+        [Column("isPrintAlternativeNo")]
+        public bool? IsPrintAlternativeNo { get; set; }
 
         [NotMapped]       
         public string Address

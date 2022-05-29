@@ -133,13 +133,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return SaveRequest(requestUpdate, TransactionTypes.Update.ToString());
         }
-        public async Task<TableResponse<TableReturn>> DeleteRequest(string requestNo, string requestType)
+        public async Task<TableResponse<TableReturn>> DeleteRequest(string requestNo, string requestType, string rejectReason="")
         {
             var requestTransaction = new RequestHeaderDto
             {
                 RequestNo = requestNo,
                 RequestType = requestType,
-                RequestDetails = new List<RequestDetailDto>()
+                RequestDetails = new List<RequestDetailDto>(),
+                RejectReason= rejectReason
             };
 
             var result = await SearchRequest(requestTransaction.RequestType, requestTransaction.RequestNo, string.Empty, string.Empty, 1, 1);
@@ -207,7 +208,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[18].ToString(), Value = requestTransaction.ContactNo.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[19].ToString(), Value = requestTransaction.Priority.AsDbValue() },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[20].ToString(), Value = requestTransaction.Type.AsDbValue() }, //customer portal 03.05.2022
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[21].ToString(), Value = requestTransaction.ProcessStatus.AsDbValue() }  //customer portal 03.05.2022
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[21].ToString(), Value = requestTransaction.ProcessStatus.AsDbValue() } , //customer portal 03.05.2022,
+                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[22].ToString(), Value = requestTransaction.RejectReason.AsDbValue() }  //customer portal 03.05.2022
             };
             #endregion
             var resultTable = _tcContext.Set<TableReturn>().FromSqlRaw(RequestStoredProcedure.Sql, parms.ToArray()).ToList();
@@ -373,6 +375,22 @@ namespace tlrsCartonManager.DAL.Reporsitory
         //Customer Portal
         public TableResponse<TableReturn> AddRequestCustomerPortal(CustomerPortalRequestHeaderDto customerPortlRequestInsert)
         {
+            string woType = string.Empty;
+            if (RequestTypes.empty.ToString() == customerPortlRequestInsert.RequestType.ToLower())
+            {
+                woType = "EXXX";
+            }
+
+            if (RequestTypes.permout.ToString() == customerPortlRequestInsert.RequestType.ToLower())
+            {
+                woType = "PXXX";
+            }
+
+            if (RequestTypes.disposal.ToString() == customerPortlRequestInsert.RequestType.ToLower())
+            {
+                woType = "DXXX";
+            }
+
             RequestHeaderDto requestInsert = new RequestHeaderDto()
             {
                 AuthorizedOfficerId = customerPortlRequestInsert.AuthorizedOfficerId,
@@ -385,8 +403,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 DeliveryRoute = customerPortlRequestInsert.DeliveryRoute,
                 Remarks = customerPortlRequestInsert.Remarks,
                 RequestType = customerPortlRequestInsert.RequestType,
+                WorkOrderType = woType,
                 Type = customerPortlRequestInsert.Type,
                 ProcessStatus = customerPortlRequestInsert.ProcessStatus,
+                OrderReceivedBy = customerPortlRequestInsert.Type == "Customer Portal" ? 4 : 5,
                 RequestDetails = customerPortlRequestInsert.RequestDetails.Select(x => new RequestDetailDto()
                 {
                     //do your variable mapping here 
@@ -399,24 +419,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return SaveRequest(requestInsert, TransactionTypes.Insert.ToString());
         }
 
-        public bool ApproveCustomerPortalRequest(CustomerPortaRequestApprove request)
-        {
-            List<SqlParameter> parms = new List<SqlParameter>
-            {
-                new SqlParameter { ParameterName = CustomerPortalRequestApproveStoredProcedure.StoredProcedureParameters[0].ToString(),
-                    Value =  request.RequestNumber.AsDbValue()},
-                  new SqlParameter { ParameterName = CustomerPortalRequestApproveStoredProcedure.StoredProcedureParameters[1].ToString(),
-                    Value = "In Progress"},
-                new SqlParameter { ParameterName = CustomerPortalRequestApproveStoredProcedure.StoredProcedureParameters[2].ToString(),
-                    Value =  _environment.GetCurrentEnvironment().UserId.AsDbValue()}
-            };
 
-            return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerPortalRequestApproveStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
-        }
-
-        public async Task<PagedResponse<RequestSearchCustomerPortalDto>> SearchRequestCustomerPortal(string customerCode,string type, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        public async Task<PagedResponse<RequestSearchCustomerPortalDto>> SearchRequestCustomerPortal(string customerCode, string type, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.SearchSearchByTypeAndCustomerCode("requestSearchcustomerPortal",customerCode,type, searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.SearchSearchByTypeAndCustomerCode("requestSearchcustomerPortal", customerCode, type, searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
 
             var cartonList = await _tcContext.Set<RequestCustomerPortalSearch>().FromSqlRaw(SearchStoredProcedureCustomerCodeByType.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
@@ -436,5 +442,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return paginationResponse;
         }
+
+      
+
     }
 }
