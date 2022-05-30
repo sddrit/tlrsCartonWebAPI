@@ -280,5 +280,31 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
            return _tcContext.Set<CartonDispatchViewModel>().FromSqlRaw(InquiryCartonDispatchStoredProcedure.Sql, parms.ToArray()).ToList();
         }
+
+        public List<CartonHistoryCustomerPortal> GetCartonHistoryCustomerPortal(int cartonNo, string customerCode)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = InquiryCartonHistoryCustomerPortalStoredProcedure.StoredProcedureParameters[0].ToString(), Value = cartonNo.AsDbValue() },
+               new SqlParameter { ParameterName = InquiryCartonHistoryCustomerPortalStoredProcedure.StoredProcedureParameters[1].ToString(), Value = customerCode.AsDbValue() }
+
+            };
+            var cartonHistoryList = _tcContext.Set<CartonHistoryCustomerPortal>().FromSqlRaw(InquiryCartonHistoryCustomerPortalStoredProcedure.Sql, parms.ToArray()).ToList();
+
+            if (cartonHistoryList == null || cartonHistoryList.Count == 0)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                 {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to find carton history "
+                        }
+                 });
+
+
+            }
+            return cartonHistoryList;
+        }
     }
 }

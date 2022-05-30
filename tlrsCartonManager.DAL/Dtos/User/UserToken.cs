@@ -37,7 +37,30 @@ namespace tlrsCartonManager.DAL.Dtos
         public string TenantName { get; set; }
         public int? Id { get; set; }
         public string CompanyName { get; set; }
+
     }
+
+    public class UserLoginResponseCustomerPortal
+    {
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        public string UserFirstName { get; set; }
+        public string UserLastName { get; set; }      
+        public string Token { get; set; }
+        public bool IsPasswordExpired { get; set; }
+        public string TenantName { get; set; }
+        public int? Id { get; set; }     
+        public string Email { get; set; }
+        public bool Active { get; set; }
+        public string CustomerCode { get; set; }
+        public string Type { get; set; }
+        public int AuthorizationId { get; set; }
+        public int CustomerPortalRole { get; set; }
+        public int CustomerId { get; set; }
+
+
+    }
+
 
     public class UserLoginInfo
     {
@@ -53,6 +76,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public List<UserRole> UserRoles { get; set; }
 
         public string TenantName { get; set; }
+        public string Type { get; set; }
+
 
         public string CompanyName { get; set; }
 

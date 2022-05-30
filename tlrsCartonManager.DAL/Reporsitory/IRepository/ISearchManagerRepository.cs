@@ -27,5 +27,8 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         List<SqlParameter> SearchFromToSearchByType(string storedProcedure, string fromValue, string toValue,
        string searchBy, int pageIndex, int pageSize, string type, string searchColumn, string sortOrder, out SqlParameter outParam);
 
+        List<SqlParameter> SearchSearchByTypeAndCustomerCode(string storedProcedure, string customerCode, string type,
+             string searchBy, string searchColumn, string sortOrder, int pageIndex, int pageSize, out SqlParameter outParam);
+
     }
 }

@@ -38,7 +38,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _userManagerRepository = userManagerRepository;
         }
 
-        public async Task<UserLoginResponse> Login(UserLoginModel model)
+        public async Task<UserLoginResponse> Login(UserLoginModel model, bool check)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
@@ -50,7 +50,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             if (result.FirstOrDefault().Code == "1012")// password expired
             {
-               
+
                 var userInfo = GetUserOtherInfo(model.UserName);
 
                 return new UserLoginResponse()
@@ -70,6 +70,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             }
 
+
+
             if (string.IsNullOrEmpty(result.FirstOrDefault().Code))
             {
                 var systemUserPassword = await _userPasswordRepository.GetSystemUserPasswords(model.UserName);
@@ -86,6 +88,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                     var userInfo = GetUserOtherInfo(model.UserName);
 
+                    if (userInfo.Type == "Customer Portal" && check==true)
+                    {
+                        throw new ServiceException(new ErrorMessage[]
+                    {
+                            new ErrorMessage()
+                            {
+                                Code = "1001",
+                                Message = "Invalid Web User"
+                            }
+                    });
+
+                    }
                     return new UserLoginResponse()
                     {
                         UserId = userInfo.UserId,
@@ -93,7 +107,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                         UserFirstName = userInfo.UserFirstName,
                         UserLastName = userInfo.UserLastName,
                         UserRole = userInfo.UserRole,
-                        UserRoles= userInfo.UserRoles,
+                        UserRoles = userInfo.UserRoles,
                         Permissions = resultPermission,
                         TenantName=userInfo.TenantName,
                         Id = result.FirstOrDefault().Id.Value,
@@ -136,6 +150,61 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         }
 
+        public async Task<UserLoginResponseCustomerPortal> LoginCustomerPortal(UserLoginModel model)
+        {
+            var response = await Login(model, false);
+
+            if (response != null)
+            {
+                var result = _tcContext.Users.Where(x => x.UserName.ToLower() == model.UserName.ToLower() && x.Deleted == false && x.Type == "Customer Portal").FirstOrDefault();
+
+                if(result==null)
+                {
+                    throw new ServiceException(new ErrorMessage[]
+                  {
+                            new ErrorMessage()
+                            {
+                                Code = "1001",
+                                Message = "Invalid Portal User"
+                            }
+                  });
+
+                }
+
+                var customerId = _tcContext.Customers.Where(x => x.CustomerCode == result.CustomerCode).FirstOrDefault().TrackingId;
+
+                return new UserLoginResponseCustomerPortal()
+                {
+                    UserId = response.UserId,
+                    UserName = model.UserName,
+                    UserFirstName = response.UserFirstName,
+                    UserLastName = response.UserLastName,
+                    TenantName = response.TenantName,
+                    Id = response.Id,
+                    IsPasswordExpired = response.IsPasswordExpired,
+                    Token = response.Token,
+                    Active = result.Active.Value,
+                    AuthorizationId = result.AuthorizationId ?? 0,
+                    CustomerCode = result.CustomerCode,
+                    CustomerPortalRole = result.CustomerPortalRole ?? 0,
+                    Email = result.Email,
+                    Type = result.Type,
+                    CustomerId=customerId
+                };
+
+            }
+
+            throw new ServiceException(new ErrorMessage[]
+           {
+                new ErrorMessage()
+                {
+                    Code = response.UserName,
+                    Message = "Invalid"
+                }
+           });
+
+        }
+
         private UserLoginInfo GetUserOtherInfo(string userName)
         {
             try
@@ -143,13 +212,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                 var result = _tcContext.Users.Where(x => x.UserName.ToLower() == userName.ToLower() && x.Deleted == false).FirstOrDefault();
 
-               var userRoles = _tcContext.UserRoles.Where(x => x.UserId == result.UserId).OrderBy(x => x.Id).ToList();
+                var userRoles = _tcContext.UserRoles.Where(x => x.UserId == result.UserId).OrderBy(x => x.Id).ToList();
 
-                var roleName = _tcContext.Roles.Where(x => x.Id == userRoles[0].Id).FirstOrDefault().Description;
+                var roles = _tcContext.Roles.Where(x => x.Id == userRoles[0].Id).FirstOrDefault();               
 
                var company= _tcContext.Companies.FirstOrDefault();
                
-
                 string[] userFullnames = result.UserFullName.Split(' ');
 
                 return new UserLoginInfo()
@@ -161,6 +229,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     UserRoles=userRoles,
                     TenantName= company.TenantCode,
                     CompanyName= company.CompanyName
+
                 };
             }
             catch (Exception ex)
@@ -256,7 +325,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return true;
 
         }
-        public  int GetUserRolePermissionsInt(int userId, string moduleName)
+        public int GetUserRolePermissionsInt(int userId, string moduleName)
         {
             List<SqlParameter> parms = new List<SqlParameter>
             {
@@ -265,7 +334,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             };
 
-          return _tcContext.Set<IntReturn>().FromSqlRaw(UserPermissionOnAuthorized.Sql, parms.ToArray()).AsEnumerable().First().Value;        
+            return _tcContext.Set<IntReturn>().FromSqlRaw(UserPermissionOnAuthorized.Sql, parms.ToArray()).AsEnumerable().First().Value;
 
         }
 
@@ -276,8 +345,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(string.Empty));
             var passwordSalt = hmac.Key;
 
-            _userManagerRepository.SaveUser(model, passwordHash, passwordSalt, TransactionType.LogOut.ToString(), model.UserId);          
-           
+            _userManagerRepository.SaveUser(model, passwordHash, passwordSalt, TransactionType.LogOut.ToString(), model.UserId);
+
             return true;
 
         }

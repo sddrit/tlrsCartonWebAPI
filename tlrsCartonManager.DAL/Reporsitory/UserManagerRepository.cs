@@ -97,7 +97,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[10].ToString() , Value =trasactionType },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[11].ToString(), Value = userId.AsDbValue() },
                 new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[12].ToString(), Value =PasswordManagerMobile.EncryptPlainTextToCipherText( user.UserPassword).AsDbValue()},
-                  new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[13].ToString(), Value =user.Lock.AsDbValue()}
+                  new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[13].ToString(), Value =user.Lock.AsDbValue()},
+                   new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[14].ToString(), Value =user.CustomerCode.AsDbValue()},
+                    new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[15].ToString(), Value =user.Type.AsDbValue()},
+                     new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[16].ToString(), Value =user.AuthorizationId.AsDbValue()},
+                      new SqlParameter { ParameterName =UserInsertUpdateDeleteStoredProcedureSearch.StoredProcedureParameters[17].ToString(), Value =user.CustomerPortalRole.AsDbValue()}
 
             };            
 
@@ -136,6 +140,52 @@ namespace tlrsCartonManager.DAL.Reporsitory
             #endregion
 
             return paginationResponse;
+        }
+
+        public async Task<PagedResponse<UserSerachCustomerPortalDto>> SearchUserCustomerPortal(string customerCode,string columnValue, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[0].ToString(), Value = customerCode.AsDbValue() },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[1].ToString(), Value = columnValue==null ? string.Empty :columnValue },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[2].ToString(), Value = searchColumn.AsDbValue() },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[3].ToString(), Value = sortOrder.AsDbValue() },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[4].ToString(), Value = pageIndex },
+               new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[5].ToString(), Value = pageSize },
+
+            };
+
+            var outParam = new SqlParameter { ParameterName = UserStoredProcedureCustomerPortalSearch.StoredProcedureParameters[6].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+
+            parms.Add(outParam);
+            var customerList = await _tcContext.Set<UserSerachCustomerPortalDto>().FromSqlRaw(UserStoredProcedureCustomerPortalSearch.Sql, parms.ToArray()).ToListAsync();
+            var totalRows = (int)outParam.Value;
+
+            #region paging
+            var postResponse = _mapper.Map<List<UserSerachCustomerPortalDto>>(customerList);
+
+            var paginationResponse = new PagedResponse<UserSerachCustomerPortalDto>
+            {
+                Data = postResponse,
+                pageNumber = pageIndex,
+                pageSize = pageSize,
+                totalCount = totalRows,
+                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+
+            };
+            #endregion
+
+            return paginationResponse;
+        }
+
+        public async Task<UserCustomerPortalDto> GetUserByIdCustomerPortal(int id)
+        {
+            var user = _mapper.Map<UserCustomerPortalDto>(await _tcContext.Users.
+                           Include(x => x.UserRoles).
+                           Where(x => x.UserId == id && x.Deleted == false)
+                           .FirstOrDefaultAsync());
+
+            return user;
         }
     }
 }

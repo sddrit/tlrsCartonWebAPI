@@ -17,6 +17,8 @@ namespace tlrsCartonManager.Core.Enums
         ChangeProfile,
         PreView,
         Cancel,
-        LogOut
+        LogOut,
+        Active,
+        Disable
     }
 }

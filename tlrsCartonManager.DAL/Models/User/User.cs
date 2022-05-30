@@ -63,6 +63,19 @@ namespace tlrsCartonManager.DAL.Models
             }
             set { }
         }
+
+        [Column("customerCode")]
+        public string CustomerCode { get; set; }
+
+        [Column("type")]
+        public string Type { get; set; }
+
+        [Column("authorizationId")]
+        public int? AuthorizationId { get; set; }
+
+        [Column("customerPortalRole")]
+        public int? CustomerPortalRole { get; set; }
+
         [InverseProperty(nameof(MenuRightUser.User))]
         public virtual ICollection<MenuRightUser> MenuRightUsers { get; set; }
         [InverseProperty(nameof(UserPassword.User))]

@@ -36,5 +36,13 @@ namespace tlrsCartonManager.DAL.Dtos
 
         public int? ToCartonNo { get; set; }
     }
-    
+
+
+    public class CustomerPortalRequestDetailDto
+    {
+       
+        public int CartonNo { get; set; }       
+       
+    }
+
 }

@@ -205,6 +205,13 @@ namespace tlrsCartonManager.Api.Controllers
 
         }
 
+        [HttpGet("CustomerPortalLog")]
+        //[RmsAuthorization("Customer Loyality", tlrsCartonManager.Core.Enums.ModulePermission.View)]
+        public async Task<ActionResult> CustomerPortalLog(DateTime fromDate, DateTime toDate)
+        {
+            return Ok(await _reportRepository.WordOrderLogCustomerPortal(fromDate, toDate));
+
+        }
     }
 
 }
