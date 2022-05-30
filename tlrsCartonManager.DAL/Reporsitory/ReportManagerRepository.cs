@@ -370,7 +370,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var fromDateInt = fromDate.DateToInt();
             var toDateInt = toDate.DateToInt();
 
-            return await _tcContext.ViewDailyProcessingWosCustomerPortals.Where(x=>x.DeliveryDate>= fromDateInt && x.DeliveryDate<=toDateInt).ToListAsync();
+            return await _tcContext.ViewDailyProcessingWosCustomerPortals.Where(x=>x.DeliveryDate>= fromDateInt && x.DeliveryDate<=toDateInt).OrderBy(x=>x.ProcessStatus).ToListAsync();
 
         }
 

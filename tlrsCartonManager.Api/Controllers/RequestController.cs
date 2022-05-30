@@ -175,6 +175,7 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPut("approveRequestCustomerPortal")]
         public async Task<ActionResult> ApproveRequest(RequestHeaderDto request)
         {
+            request.ProcessStatus = "Approved";
 
             var response = await _requestRepository.UpdateRequest(request);
             if (response.OutList != null && response.OutList.Count() > 0)
