@@ -63,7 +63,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     UserRoles = userInfo.UserRoles,
                     IsPasswordExpired = true,
                     TenantName = string.Empty,
-                    Id = result.FirstOrDefault().Id.Value
+                    Id =result.FirstOrDefault().Id.Value,
+                    CompanyName= userInfo.CompanyName
 
                 };
 
@@ -108,8 +109,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
                         UserRole = userInfo.UserRole,
                         UserRoles = userInfo.UserRoles,
                         Permissions = resultPermission,
-                        TenantName = userInfo.TenantName,
-                        Id = result.FirstOrDefault().Id.Value
+                        TenantName=userInfo.TenantName,
+                        Id = result.FirstOrDefault().Id.Value,
+                        CompanyName= userInfo.CompanyName
 
                     };
                 }
@@ -212,10 +214,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                 var userRoles = _tcContext.UserRoles.Where(x => x.UserId == result.UserId).OrderBy(x => x.Id).ToList();
 
-                var roles = _tcContext.Roles.Where(x => x.Id == userRoles[0].Id).FirstOrDefault();                
+                var roles = _tcContext.Roles.Where(x => x.Id == userRoles[0].Id).FirstOrDefault();               
 
-                var tenantName = _tcContext.Companies.FirstOrDefault().Country;
-
+               var company= _tcContext.Companies.FirstOrDefault();
+               
                 string[] userFullnames = result.UserFullName.Split(' ');
 
                 return new UserLoginInfo()
@@ -223,11 +225,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     UserId = result.UserId,
                     UserFirstName = userFullnames.Length >= 1 ? userFullnames[0] : userName,
                     UserLastName = userFullnames.Length > 1 ? userFullnames[1] : string.Empty,
-                    UserRole = roles != null?roles.Description :string.Empty,
-                    UserRoles = userRoles,
-                    TenantName = tenantName,
-                    Type = result.Type,
-                    UserName = result.UserName
+                    UserRole = roleName,
+                    UserRoles=userRoles,
+                    TenantName= company.TenantCode,
+                    CompanyName= company.CompanyName
+
                 };
             }
             catch (Exception ex)

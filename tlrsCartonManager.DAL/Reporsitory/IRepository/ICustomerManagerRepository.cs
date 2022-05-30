@@ -30,5 +30,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         bool UpdateCustomer(CustomerDto customerUpdate);
         bool DeleteCustomer(CustomerDeleteDto customerDelete);
         bool SetCustomerStatus(CustomerDto cutomerTransaction);
+
+        Task<CustomerDto> GetCustomerByCode(string customerCode);
     }
 }

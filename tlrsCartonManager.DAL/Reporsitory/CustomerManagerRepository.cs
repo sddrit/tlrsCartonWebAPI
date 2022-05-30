@@ -47,7 +47,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
                                 FirstOrDefaultAsync(x => x.TrackingId == customerId && x.Deleted == false));
 
             if (customerList != null)
+            {
                 customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
+
+                customerList.DocketCopies = _tcContext.ViewCustomerDocketCopies.Where(x => x.CustomerCode == customerList.CustomerCode).Select(x=>x.DocketType).ToList();
+            }
             else
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -449,7 +453,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 },
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[53].ToString(), Value =customerTransaction.IncludeMainAccountAuthorization.AsDbValue() } ,
                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[54].ToString(), Value =customerTransaction.IsManualInvoice.AsDbValue() } ,
-                 new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[55].ToString(), Value =customerTransaction.BillingName.AsDbValue() } ,
+                new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[55].ToString(), Value =customerTransaction.BillingName.AsDbValue() } ,
+                new SqlParameter { ParameterName = CustomerStoredProcedure.StoredProcedureParameters[56].ToString(), Value = customerTransaction.DocketCopies!=null? string.Join(",",customerTransaction.DocketCopies.Select(x => x.ToString()).ToArray()): string.Empty } ,
             };
             #endregion
             return _tcContext.Set<BoolReturn>().FromSqlRaw(CustomerStoredProcedure.Sql, parms.ToArray()).AsEnumerable().First().Value;
@@ -487,6 +492,39 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 });
             }
             return paginationResponse;
+        }
+
+        public async Task<CustomerDto> GetCustomerByCode(string customerCode)
+        {
+            var customerId = _tcContext.Customers.Where(x => x.CustomerCode == customerCode && x.Deleted==false).First().TrackingId;
+
+
+            var subAccList = _mapper.Map<IEnumerable<CustomerSubAccountListDto>>(await _tcContext.Customers.
+                                Where(x => x.MainCustomerCode == customerId && x.AccountType != "M" && x.Deleted == false).ToListAsync());
+
+            var customerList = _mapper.Map<CustomerDto>(await _tcContext.Customers.
+                                Include(x => x.CustomerAuthorizationListHeaders.Where(x => x.Deleted == false)).
+                                ThenInclude(x => x.CustomerAuthorizationListDetails.Where(x => x.Deleted == false)).
+                                FirstOrDefaultAsync(x => x.TrackingId == customerId && x.Deleted == false));
+
+            if (customerList != null)
+            {
+                customerList.CustomerSubAccountLists = (ICollection<CustomerSubAccountListDto>)subAccList;
+
+                customerList.DocketCopies = _tcContext.ViewCustomerDocketCopies.Where(x => x.CustomerCode == customerList.CustomerCode).Select(x => x.DocketType).ToList();
+            }
+            else
+            {
+                throw new ServiceException(new ErrorMessage[]
+                    {
+                        new ErrorMessage()
+                        {
+                            Code = string.Empty,
+                            Message = $"Unable to find customer by {customerId}"
+                        }
+                    });
+            }
+            return customerList;
         }
 
     }

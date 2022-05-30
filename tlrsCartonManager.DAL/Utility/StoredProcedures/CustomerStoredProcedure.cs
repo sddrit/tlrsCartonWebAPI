@@ -80,7 +80,8 @@ namespace tlrsCartonManager.DAL.Utility
             "@authorizationDetail",
             "@includeMainAccountAuthorization",
             "@isManualInvoice",
-            "@billingName"
+            "@billingName",
+            "@docketCopies"
 
         };
         public static List<string> StoredProcedureTypeNames = new List<string>()

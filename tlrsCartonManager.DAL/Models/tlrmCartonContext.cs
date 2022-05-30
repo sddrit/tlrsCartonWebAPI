@@ -137,6 +137,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewPickList> ViewPickLists { get; set; }
         public virtual DbSet<ViewDailyProcessingWosCustomerPortal> ViewDailyProcessingWosCustomerPortals { get; set; }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -1292,13 +1293,6 @@ namespace tlrsCartonManager.DAL.Models
                 entity.Property(e => e.PickListNo).IsUnicode(false);
             });
 
-            modelBuilder.Entity<ViewDailyProcessingWosCustomerPortal>(entity =>
-            {
-                entity.ToView("viewDailyProcessingWosCustomerPortal");
-
-              
-            });
-
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
             modelBuilder.Entity<UserSearch>();
@@ -1377,10 +1371,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<InvoiceNotGeneratedCustomerList>().HasNoKey();
             modelBuilder.Entity<AuditTrailUserActivityModel>().HasNoKey();
             modelBuilder.Entity<AuditTrailUserLoginModel>().HasNoKey();
-            modelBuilder.Entity<RequestCustomerPortalSearch>();
-            modelBuilder.Entity<UserSerachCustomerPortalDto>();
-            modelBuilder.Entity<CartonHistoryCustomerPortal>();
-           
+
+
             OnModelCreatingPartial(modelBuilder);
         }
 
