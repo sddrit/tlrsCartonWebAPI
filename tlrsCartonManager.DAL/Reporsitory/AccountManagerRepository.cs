@@ -214,9 +214,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                 var userRoles = _tcContext.UserRoles.Where(x => x.UserId == result.UserId).OrderBy(x => x.Id).ToList();
 
-                var roles = _tcContext.Roles.Where(x => x.Id == userRoles[0].Id).FirstOrDefault();               
+                var roleName = _tcContext.Roles.Where(x => x.Id == userRoles[0].Id).FirstOrDefault().Description;
 
-               var company= _tcContext.Companies.FirstOrDefault();
+                var company= _tcContext.Companies.FirstOrDefault();
                
                 string[] userFullnames = result.UserFullName.Split(' ');
 

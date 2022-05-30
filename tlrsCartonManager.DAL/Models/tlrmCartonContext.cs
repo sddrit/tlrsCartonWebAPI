@@ -136,7 +136,7 @@ namespace tlrsCartonManager.DAL.Models
         public virtual DbSet<ViewCartonOwnershipTransfer> ViewCartonOwnershipTransfers { get; set; }
         public virtual DbSet<ViewPickList> ViewPickLists { get; set; }
         public virtual DbSet<ViewDailyProcessingWosCustomerPortal> ViewDailyProcessingWosCustomerPortals { get; set; }
-
+        public virtual DbSet<ViewCustomerDocketCopy> ViewCustomerDocketCopies { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -1292,6 +1292,19 @@ namespace tlrsCartonManager.DAL.Models
 
                 entity.Property(e => e.PickListNo).IsUnicode(false);
             });
+
+            modelBuilder.Entity<ViewCustomerDocketCopy>(entity =>
+            {
+                entity.ToView("viewCustomerDocketCopy");
+
+            });
+
+            modelBuilder.Entity<ViewDailyProcessingWosCustomerPortal>(entity =>
+            {
+                entity.ToView("viewDailyProcessingWosCustomerPortal");
+
+            });
+            
 
             modelBuilder.Entity<CustomerSearch>();
             modelBuilder.Entity<CartonStorageSearch>();
