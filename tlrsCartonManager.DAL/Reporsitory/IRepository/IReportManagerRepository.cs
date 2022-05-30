@@ -31,7 +31,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         Task<IEnumerable<CartonsEnteredByCs>> CartonEnteredByCs(DateTime fromDate, DateTime toDate);
         Task<IEnumerable<ViewCustomerLoyality>> CustomerLoyality();
         Task<IEnumerable<DateWiseCollectionSummaryByCustomer>> DateWiseCollectionSummaryByCustomer(DateTime fromDate, DateTime toDate);
-
         Task<IEnumerable<InvoiceNotGeneratedCustomerList>> InvoiceNotGeneratedCustomerList(DateTime fromDate, DateTime toDate, string billingCycle);
+        Task<IEnumerable<ViewDailyProcessingWosCustomerPortal>> WordOrderLogCustomerPortal(DateTime fromDate, DateTime toDate);
     }
 }
