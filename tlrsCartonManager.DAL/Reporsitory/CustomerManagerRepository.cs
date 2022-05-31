@@ -126,6 +126,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
             return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
         }
+
         public async Task<IEnumerable<CustomerSearchDto>> GetCustomerByName(string customerName, bool isAll)
         {
             var mainAccList = await _tcContext.Customers.
@@ -527,5 +528,24 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return customerList;
         }
 
+        public async Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerofMainAccount(string customerCode)
+        {
+            var customerId = _tcContext.Customers.Where(x => x.CustomerCode == customerCode).FirstOrDefault().TrackingId;
+
+            var mainAccList = await _tcContext.Customers.
+                Where(x => x.MainCustomerCode == customerId && x.Deleted == false && x.Active==true).ToListAsync();
+            if (mainAccList == null)
+            {
+                throw new ServiceException(new ErrorMessage[]
+                {
+                     new ErrorMessage()
+                     {
+                            Code = string.Empty,
+                            Message = $"Unable to find sub customers  {customerId}"
+                     }
+                });
+            }
+            return _mapper.Map<IEnumerable<CustomerMainCodeSearchDto>>(mainAccList);
+        }
     }
 }

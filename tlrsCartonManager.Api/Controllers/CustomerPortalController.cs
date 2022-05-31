@@ -23,13 +23,15 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly AuthorizeService _authorizeService;
         private readonly UserService _userService;
         private readonly IInquiryManagerRepository _inquiryRepository;
+        private readonly ICustomerManagerRepository _customerRepository;
 
-        public CustomerPortalController(IRequestManagerRepository requestRepository, AuthorizeService authorizeService, UserService userService, IInquiryManagerRepository inquiryRepository)
+        public CustomerPortalController(IRequestManagerRepository requestRepository, AuthorizeService authorizeService, UserService userService, IInquiryManagerRepository inquiryRepository, ICustomerManagerRepository customerRepository)
         {
             _requestRepository = requestRepository;
             _authorizeService = authorizeService;
             _userService = userService;
             _inquiryRepository = inquiryRepository;
+            _customerRepository = customerRepository;
         }
 
         [HttpPost("addRequest")]
@@ -102,5 +104,10 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(_inquiryRepository.GetCartonHistoryCustomerPortal(Convert.ToInt32(cartonNo), customerCode));
         }
 
+        [HttpGet("getcustomersofMainAccount")]
+        public async Task<ActionResult<UserSerachCustomerPortalDto>> GetcustomersofMainAccount(string customerCode)
+        {
+            return Ok(await _customerRepository.GetCustomerofMainAccount(customerCode));
+        }
     }
 }

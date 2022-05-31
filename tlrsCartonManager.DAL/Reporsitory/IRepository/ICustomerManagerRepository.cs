@@ -32,5 +32,6 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         bool SetCustomerStatus(CustomerDto cutomerTransaction);
 
         Task<CustomerDto> GetCustomerByCode(string customerCode);
+        Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerofMainAccount(string customerCode);
     }
 }

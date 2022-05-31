@@ -1384,8 +1384,8 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<InvoiceNotGeneratedCustomerList>().HasNoKey();
             modelBuilder.Entity<AuditTrailUserActivityModel>().HasNoKey();
             modelBuilder.Entity<AuditTrailUserLoginModel>().HasNoKey();
-
-
+            modelBuilder.Entity<RequestCustomerPortalSearch>();
+            modelBuilder.Entity<UserSerachCustomerPortalDto>();
             OnModelCreatingPartial(modelBuilder);
         }
 

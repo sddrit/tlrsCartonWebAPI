@@ -171,7 +171,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
                 }
 
-                var customerId = _tcContext.Customers.Where(x => x.CustomerCode == result.CustomerCode).FirstOrDefault().TrackingId;
+                var customer = _tcContext.Customers.Where(x => x.CustomerCode == result.CustomerCode).FirstOrDefault();
 
                 return new UserLoginResponseCustomerPortal()
                 {
@@ -189,7 +189,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     CustomerPortalRole = result.CustomerPortalRole ?? 0,
                     Email = result.Email,
                     Type = result.Type,
-                    CustomerId=customerId
+                    CustomerId= customer.TrackingId,
+                    AccountType=customer.AccountType
                 };
 
             }
@@ -228,7 +229,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                     UserRole = roleName,
                     UserRoles=userRoles,
                     TenantName= company.TenantCode,
-                    CompanyName= company.CompanyName
+                    CompanyName= company.CompanyName,
+                    Type= result.Type
 
                 };
             }
