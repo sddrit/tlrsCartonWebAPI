@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace tlrsCartonManager.DAL.Models.Carton
 
     }
 
-
+    [Keyless]
     public class CartonHistoryCustomerPortal
     {
         public int Id { get; set; }

@@ -1386,6 +1386,7 @@ namespace tlrsCartonManager.DAL.Models
             modelBuilder.Entity<AuditTrailUserLoginModel>().HasNoKey();
             modelBuilder.Entity<RequestCustomerPortalSearch>();
             modelBuilder.Entity<UserSerachCustomerPortalDto>();
+            modelBuilder.Entity<CartonHistoryCustomerPortal>();
             OnModelCreatingPartial(modelBuilder);
         }
 
