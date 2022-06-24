@@ -131,7 +131,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
                             new ErrorMessage()
                             {
                                 Code = "1010",
-                                Message = "Invalid Password"
+                                Message = "Invalid User Name/Password"
                             }
                      });
 
