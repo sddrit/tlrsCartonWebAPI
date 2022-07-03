@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Text;
 using tlrsCartonManager.Api.Extensions;
 using tlrsCartonManager.Api.Middleware;
+using tlrsCartonManager.Api.Util.Email;
 using tlrsCartonManager.Api.Util.Options;
 
 namespace tlrsCartonManager.Api
@@ -30,6 +31,13 @@ namespace tlrsCartonManager.Api
         {
             var authorizationConfiguration = Configuration.GetSection("Token");
             services.Configure<TokenConfiguration>(Configuration.GetSection("Token"));
+
+            var emailConfig = Configuration.GetSection("Email");
+
+            services.AddScoped<IEmailService, EmailService>(provider => new EmailService(emailConfig["Host"],
+                (int)(emailConfig.GetValue<int>("Port")),
+                emailConfig.GetValue<bool>("EnableSSL"), emailConfig["FromEmail"], 
+                emailConfig["UserName"], emailConfig["Password"]));
 
             services.AddHttpContextAccessor();
 

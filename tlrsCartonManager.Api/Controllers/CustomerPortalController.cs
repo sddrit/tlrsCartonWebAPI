@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos.Request;
 using tlrsCartonManager.Services.User;
 using System;
+using System.IO;
+using tlrsCartonManager.Api.Util.Email;
 
 namespace tlrsCartonManager.Api.Controllers
 {
@@ -24,14 +26,18 @@ namespace tlrsCartonManager.Api.Controllers
         private readonly UserService _userService;
         private readonly IInquiryManagerRepository _inquiryRepository;
         private readonly ICustomerManagerRepository _customerRepository;
+        private readonly IEmailService _emailService;
 
-        public CustomerPortalController(IRequestManagerRepository requestRepository, AuthorizeService authorizeService, UserService userService, IInquiryManagerRepository inquiryRepository, ICustomerManagerRepository customerRepository)
+        public CustomerPortalController(IRequestManagerRepository requestRepository, AuthorizeService authorizeService, 
+            UserService userService, IInquiryManagerRepository inquiryRepository, ICustomerManagerRepository customerRepository,
+            IEmailService emailService)
         {
             _requestRepository = requestRepository;
             _authorizeService = authorizeService;
             _userService = userService;
             _inquiryRepository = inquiryRepository;
             _customerRepository = customerRepository;
+            _emailService = emailService;
         }
 
         [HttpPost("addRequest")]
@@ -59,7 +65,27 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPost("addUser")]
         public async Task<ActionResult> AddUser(UserCustomerPortalDto request)
         {
-            return Ok(await _userService.CreateUserCustomerPortal(request));
+            var userCreatedResult = await _userService.CreateUserCustomerPortal(request);
+
+            if (userCreatedResult == false)
+            {
+                return Ok(userCreatedResult);
+            }
+
+            string body = string.Empty;
+
+            using (StreamReader reader = new StreamReader(Path.Combine("Templates", "UserCreateEmailTemplate.html")))
+            {
+                body = await reader.ReadToEndAsync();
+            }
+
+            var emailContent = body.Replace("{{UserName}}", request.UserName)
+                .Replace("{{Password}}", request.UserPassword);
+
+            _emailService.SendEmail(request.Email, "Thanks for Registering at Transnational Lanka Customer Portal!",
+                emailContent);
+
+            return Ok(userCreatedResult);
         }
 
         [HttpPut("updateUser")]
