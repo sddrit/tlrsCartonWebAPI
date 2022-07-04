@@ -43,8 +43,6 @@ namespace tlrsCartonManager.Api.Util.Email
             client.Credentials = new System.Net.NetworkCredential(_username, _password);
             client.EnableSsl = true;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.TargetName = "STARTTLS/smtp.office365.com";
-
 
             client.Send(mail);
         }
