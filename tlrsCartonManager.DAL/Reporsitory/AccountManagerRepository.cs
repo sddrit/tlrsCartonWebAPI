@@ -156,7 +156,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             if (response != null)
             {
-                var result = _tcContext.Users.Where(x => x.UserName.ToLower() == model.UserName.ToLower() && x.Deleted == false && x.Type == "Customer Portal").FirstOrDefault();
+                var result = _tcContext.Users.Where(x => x.UserName.ToLower() == model.UserName.ToLower() && x.Deleted == false && x.Type == "Customer Portal" && x.AuthorizationId>0).FirstOrDefault();
 
                 if(result==null)
                 {
