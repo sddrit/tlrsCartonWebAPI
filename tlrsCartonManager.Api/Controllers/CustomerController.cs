@@ -28,9 +28,9 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet("getCustomerById/{customerId}")]
-        public async Task<ActionResult<CustomerDto>> GetSingleSearch(int customerId)
+        public async Task<ActionResult<CustomerDto>> GetSingleSearch(int customerId, bool isCustPortal=false)
         {
-            return Ok(await _customerRepository.GetCustomerById(customerId));          
+            return Ok(await _customerRepository.GetCustomerById(customerId, isCustPortal));          
         }
 
         [HttpGet("getAuthorizationById/{customerId}")]
