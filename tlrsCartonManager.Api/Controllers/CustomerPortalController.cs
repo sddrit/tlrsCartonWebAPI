@@ -109,7 +109,31 @@ namespace tlrsCartonManager.Api.Controllers
         [HttpPost("resetUser")]       
         public async Task<ActionResult> ResetUser(UserCustomerPortalResetDto request)
         {
-            return Ok(await _userService.ResetUserCustomerPortal(request));
+
+            var userResetResult = await _userService.ResetUserCustomerPortal(request);
+
+            if (userResetResult == false)
+            {
+                return Ok(userResetResult);
+            }
+            
+            var user=await _userService.GetUserById(request.UserId);
+
+            string body = string.Empty;
+
+            using (StreamReader reader = new StreamReader(Path.Combine("Templates", "UserResetEmailTemplate.html")))
+            {
+                body = await reader.ReadToEndAsync();
+            }
+
+            var emailContent = body.Replace("{{UserName}}", user.UserName)
+                .Replace("{{Password}}", request.UserPassword);
+
+            _emailService.SendEmail(user.Email, "Account Reset Alert", emailContent);
+
+            return Ok(userResetResult);
+
+            //return Ok(await _userService.ResetUserCustomerPortal(request));
         }
 
         [HttpGet("getUser")]

@@ -80,7 +80,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 {
                     TrackingId = p.TrackingId,
                     Name = p.Name,
-                    ContactNo=p.ContactNo
+                    ContactNo=p.ContactNo,
+                    Email=p.Email
 
                 }).ToListAsync());
             if(authorizedList==null || (authorizedList!=null && authorizedList.Count==0))
