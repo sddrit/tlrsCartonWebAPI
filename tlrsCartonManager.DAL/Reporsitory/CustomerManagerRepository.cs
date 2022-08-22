@@ -540,7 +540,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var customerId = _tcContext.Customers.Where(x => x.CustomerCode == customerCode).FirstOrDefault().TrackingId;
 
             var mainAccList = await _tcContext.Customers.
-                Where(x => x.MainCustomerCode == customerId && x.Deleted == false && x.Active==true).ToListAsync();
+                Where(x => x.MainCustomerCode == customerId && x.Deleted == false && x.Active==true).OrderBy(x=>x.TrackingId).ToListAsync();
             if (mainAccList == null)
             {
                 throw new ServiceException(new ErrorMessage[]
