@@ -12,7 +12,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
     public interface ICustomerManagerRepository
     {
         Task<IEnumerable<CustomerDto>> GetCustomerList();
-        Task<CustomerDto> GetCustomerById(int customerId);
+        Task<CustomerDto> GetCustomerById(int customerId,bool isCustPortal= false);
         Task<IEnumerable<CustomerSearchDto>> GetCustomerByName(string customerName, bool isAll);
         Task<IEnumerable<CustomerSearchDto>> GetCustomerByCode(string customerName, bool isAll);
         Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerByMainName(string customerName);
@@ -32,5 +32,6 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
         bool SetCustomerStatus(CustomerDto cutomerTransaction);
 
         Task<CustomerDto> GetCustomerByCode(string customerCode);
+        Task<IEnumerable<CustomerMainCodeSearchDto>> GetCustomerofMainAccount(string customerCode);
     }
 }

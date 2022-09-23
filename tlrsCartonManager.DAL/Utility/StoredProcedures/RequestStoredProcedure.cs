@@ -31,7 +31,10 @@ namespace tlrsCartonManager.DAL.Utility
 			"@requestDetail",
 			"@storageType",
 			"@contactNo",
-			"@priority"
+			"@priority",
+			"@type",
+			"@processStaus",
+			"@rejectReason"
 
 
 		};
@@ -96,4 +99,5 @@ namespace tlrsCartonManager.DAL.Utility
 		public static string Sql = "EXEC " + StoredProcedureName + " " + string.Join(",", StoredProcedureParameters);
 	}
 	
+
 }

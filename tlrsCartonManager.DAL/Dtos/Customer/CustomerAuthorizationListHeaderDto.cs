@@ -26,7 +26,8 @@ namespace tlrsCartonManager.DAL.Dtos
         public int TrackingId { get; set; } = 0;       
         public string Name { get; set; } = string.Empty;
 
-        public string ContactNo { get; set; } 
+        public string ContactNo { get; set; }
+        public string  Email { get; set; }
 
     }
 

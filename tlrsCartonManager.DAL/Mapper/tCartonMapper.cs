@@ -278,6 +278,10 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap < PickListHeaderSingleSearchDto, ViewPickListByNo>().ReverseMap();
 
             CreateMap<Sequence, SequenceModel>().ReverseMap();
+
+            CreateMap<RequestCustomerPortalSearch, RequestSearchCustomerPortalDto>();
+
+            CreateMap<User, UserCustomerPortalDto>().ReverseMap();
         }
 
 

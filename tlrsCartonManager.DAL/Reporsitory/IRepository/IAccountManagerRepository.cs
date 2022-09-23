@@ -12,11 +12,11 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 {
     public interface IAccountManagerRepository
     {
-        Task<UserLoginResponse> Login(UserLoginModel model);
+        Task<UserLoginResponse> Login(UserLoginModel model, bool check);
         bool ChangeProfile(UserDto model);
         int GetUserRolePermissionsInt(int userId, string moduleName);
         Task<bool> ChangePasswordAsync(UserPasswordExpiredModel model);
-
         bool LogOutUser(UserDto model);
+        Task<UserLoginResponseCustomerPortal> LoginCustomerPortal(UserLoginModel model);
     }
 }

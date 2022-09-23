@@ -26,9 +26,7 @@ namespace tlrsCartonManager.DAL.Models
         public decimal RentalQty { get; set; }
         [Column("rentalAmount", TypeName = "decimal(18, 2)")]
         public decimal RentalAmount { get; set; }
-
-        [Column("fromdate")]
-       
+        [Column("fromdate")]       
         public int FromDate { get; set; }
     }
 }

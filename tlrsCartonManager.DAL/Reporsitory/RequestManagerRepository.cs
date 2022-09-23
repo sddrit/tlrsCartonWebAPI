@@ -16,6 +16,7 @@ using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Exceptions;
 using tlrsCartonManager.Core.Enums;
 using tlrsCartonManager.Core.Environment;
+using tlrsCartonManager.DAL.Dtos.Request;
 
 namespace tlrsCartonManager.DAL.Reporsitory
 {
@@ -37,9 +38,9 @@ namespace tlrsCartonManager.DAL.Reporsitory
             _environment = environment;
         }
         public async Task<RequestHeaderDto> GetRequestList(string requestNo, string type)
-        {          
+        {
             var result = await SearchRequest(type, requestNo, string.Empty, string.Empty, 1, 1);// call search function to check the request is valid to get data.
-            if (result.Data == null || result.Data!=null && result.Data.Count()==0)
+            if (result.Data == null || result.Data != null && result.Data.Count() == 0)
             {
                 throw new ServiceException(new ErrorMessage[]
                 {
@@ -51,12 +52,12 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 });
             }
 
-            if (type.ToLower() == RequestTypes.emptyallocate.ToString() || type.ToLower()== RequestTypes.emptydeallocate.ToString() || type.ToLower()== RequestTypes.container.ToString())            
-                type = "Empty";   
+            if (type.ToLower() == RequestTypes.emptyallocate.ToString() || type.ToLower() == RequestTypes.emptydeallocate.ToString() || type.ToLower() == RequestTypes.container.ToString())
+                type = "Empty";
 
-                var request = await _tcContext.RequestHeaders.
-                                 Include(x => x.RequestDetails.Where(x=>x.RequestNo==requestNo & x.Deleted==false)).
-                                 FirstOrDefaultAsync(x => x.RequestNo == requestNo & x.RequestType==type & x.Deleted==false);
+            var request = await _tcContext.RequestHeaders.
+                             Include(x => x.RequestDetails.Where(x => x.RequestNo == requestNo & x.Deleted == false)).
+                             FirstOrDefaultAsync(x => x.RequestNo == requestNo & x.RequestType == type & x.Deleted == false);
             if (request == null)
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -67,28 +68,28 @@ namespace tlrsCartonManager.DAL.Reporsitory
                          Message = $"Unable to find request by {requestNo}"
                      }
                 });
-            }          
+            }
 
             var requestDto = _mapper.Map<RequestHeaderDto>(request);
-           
-                var customer = await _tcContext.Customers.Where(x => x.TrackingId == request.CustomerId).FirstOrDefaultAsync();
-                requestDto.CustomerName = customer.Name;
-                requestDto.CustomerCode = customer.CustomerCode;
-                requestDto.CustomerAddress = customer.Address1 + " " + customer.Address2 + " " + customer.Address3;
-                var authorizationList = await _tcContext.CustomerAuthorizationListHeaders.
-                    Where(x => x.CustomerId == request.CustomerId)
-                 .Select(p => new CustomerAuthorizationHeaderDto()
-                 {
-                     TrackingId = p.TrackingId,
-                     Name = p.Name
-                 }).ToListAsync();
-                requestDto.AuthorizedOfficers = authorizationList;
+
+            var customer = await _tcContext.Customers.Where(x => x.TrackingId == request.CustomerId).FirstOrDefaultAsync();
+            requestDto.CustomerName = customer.Name;
+            requestDto.CustomerCode = customer.CustomerCode;
+            requestDto.CustomerAddress = customer.Address1 + " " + customer.Address2 + " " + customer.Address3;
+            var authorizationList = await _tcContext.CustomerAuthorizationListHeaders.
+                Where(x => x.CustomerId == request.CustomerId)
+             .Select(p => new CustomerAuthorizationHeaderDto()
+             {
+                 TrackingId = p.TrackingId,
+                 Name = p.Name
+             }).ToListAsync();
+            requestDto.AuthorizedOfficers = authorizationList;
             return requestDto;
         }
 
         public async Task<PagedResponse<RequestSearchDto>> SearchRequest(string requestType, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("requestSearch", requestType, searchText,searchColumn,sortOrder, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("requestSearch", requestType, searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<RequestSearch>().FromSqlRaw(SearchStoredProcedureByType.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
@@ -112,10 +113,11 @@ namespace tlrsCartonManager.DAL.Reporsitory
         {
             return SaveRequest(requestInsert, TransactionTypes.Insert.ToString());
         }
+
         public async Task<TableResponse<TableReturn>> UpdateRequest(RequestHeaderDto requestUpdate)
         {
-            var result =await  SearchRequest(requestUpdate.RequestType, requestUpdate.RequestNo, string.Empty, string.Empty, 1, 1);
-            
+            var result = await SearchRequest(requestUpdate.RequestType, requestUpdate.RequestNo, string.Empty, string.Empty, 1, 1);
+
             if (result.Data == null || result.Data != null && result.Data.Count() == 0)
             {
                 throw new ServiceException(new ErrorMessage[]
@@ -131,13 +133,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
             return SaveRequest(requestUpdate, TransactionTypes.Update.ToString());
         }
-        public async Task<TableResponse<TableReturn>> DeleteRequest(string requestNo, string requestType)
+        public async Task<TableResponse<TableReturn>> DeleteRequest(string requestNo, string requestType, string rejectReason="")
         {
             var requestTransaction = new RequestHeaderDto
             {
                 RequestNo = requestNo,
-                RequestType= requestType,
-                RequestDetails = new List<RequestDetailDto>()
+                RequestType = requestType,
+                RequestDetails = new List<RequestDetailDto>(),
+                RejectReason= rejectReason
             };
 
             var result = await SearchRequest(requestTransaction.RequestType, requestTransaction.RequestNo, string.Empty, string.Empty, 1, 1);
@@ -203,7 +206,10 @@ namespace tlrsCartonManager.DAL.Reporsitory
                 },
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[17].ToString(), Value = requestTransaction.StorageType.AsDbValue() } ,
                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[18].ToString(), Value = requestTransaction.ContactNo.AsDbValue() },
-                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[19].ToString(), Value = requestTransaction.Priority.AsDbValue() }
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[19].ToString(), Value = requestTransaction.Priority.AsDbValue() },
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[20].ToString(), Value = requestTransaction.Type.AsDbValue() }, //customer portal 03.05.2022
+                new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[21].ToString(), Value = requestTransaction.ProcessStatus.AsDbValue() } , //customer portal 03.05.2022,
+                 new SqlParameter { ParameterName = RequestStoredProcedure.StoredProcedureParameters[22].ToString(), Value = requestTransaction.RejectReason.AsDbValue() }  //customer portal 03.05.2022
             };
             #endregion
             var resultTable = _tcContext.Set<TableReturn>().FromSqlRaw(RequestStoredProcedure.Sql, parms.ToArray()).ToList();
@@ -211,7 +217,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             {
                 Message = resultTable.Where(x => x.Reason == "OK" || x.Reason == "NOK").FirstOrDefault().OutValue,
                 Ok = resultTable.Where(x => x.Reason == "OK").FirstOrDefault() != null ? true : false,
-                OutList = resultTable.Where(x => x.Reason != "OK" && x.Reason!="NOK").ToList()
+                OutList = resultTable.Where(x => x.Reason != "OK" && x.Reason != "NOK").ToList()
             };
             return tableResponse;
         }
@@ -237,7 +243,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
             var result = await _tcContext.Set<CartonValidationResult>().FromSqlRaw(RequestValidateStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
             if (result == null)
-            { 
+            {
                 throw new ServiceException(new ErrorMessage[]
                 {
                         new ErrorMessage()
@@ -282,8 +288,8 @@ namespace tlrsCartonManager.DAL.Reporsitory
             }
             return result;
         }
-        
-    
+
+
 
         public bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket)
         {
@@ -303,7 +309,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
 
         public async Task<PagedResponse<OriginalDocketSearchDto>> SearchOriginalDockets(string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
         {
-            List<SqlParameter> parms = _searchManager.Search("originalDocketSearch", searchText,searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
+            List<SqlParameter> parms = _searchManager.Search("originalDocketSearch", searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
             var cartonList = await _tcContext.Set<OriginalDocketSearch>().FromSqlRaw(SearchStoredProcedure.Sql, parms.ToArray()).ToListAsync();
             var totalRows = (int)outParam.Value;
             #region paging
@@ -325,7 +331,7 @@ namespace tlrsCartonManager.DAL.Reporsitory
         public async Task<object> GetDocket(DocketPrintModel model)
         {
             int serialNo = 0;
-            var authorizedDocket = await SearchRequest(model.RequestType,model.RequestNo,string.Empty, string.Empty, 1, 1);
+            var authorizedDocket = await SearchRequest(model.RequestType, model.RequestNo, string.Empty, string.Empty, 1, 1);
 
             if (authorizedDocket == null || authorizedDocket != null && authorizedDocket.Data.Count() == 0)
             {
@@ -339,21 +345,21 @@ namespace tlrsCartonManager.DAL.Reporsitory
                });
 
             }
-            
+
 
             var headerResult = _mapper.Map<DocketPrintResultModel>(_tcContext.ViewRequestSummaries.Where(x => x.RequestNo == model.RequestNo)
                 .FirstOrDefault());
 
             if (headerResult == null)
             {
-               throw new ServiceException(new ErrorMessage[]
-               {
+                throw new ServiceException(new ErrorMessage[]
+                {
                     new ErrorMessage()
                     {
                         Code = string.Empty,
                         Message = $"Unable to find docket by {model.RequestNo}"
                     }
-               });
+                });
 
             }
             if (model.RequestType.ToLower() == RequestTypes.empty.ToString())
@@ -365,6 +371,79 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return headerResult;
 
         }
+
+        //Customer Portal
+        public TableResponse<TableReturn> AddRequestCustomerPortal(CustomerPortalRequestHeaderDto customerPortlRequestInsert)
+        {
+            string woType = string.Empty;
+            if (RequestTypes.empty.ToString() == customerPortlRequestInsert.RequestType.ToLower())
+            {
+                woType = "EXXX";
+            }
+
+            if (RequestTypes.permout.ToString() == customerPortlRequestInsert.RequestType.ToLower())
+            {
+                woType = "PXXX";
+            }
+
+            if (RequestTypes.disposal.ToString() == customerPortlRequestInsert.RequestType.ToLower())
+            {
+                woType = "DXXX";
+            }
+
+            RequestHeaderDto requestInsert = new RequestHeaderDto()
+            {
+                AuthorizedOfficerId = customerPortlRequestInsert.AuthorizedOfficerId,
+                CartonCount = customerPortlRequestInsert.CartonCount,
+                ContactNo = customerPortlRequestInsert.ContactNo,
+                ContactPersonName = customerPortlRequestInsert.ContactPersonName,
+                CustomerCode = customerPortlRequestInsert.CustomerCode,
+                DeliveryDate = customerPortlRequestInsert.DeliveryDate,
+                DeliveryLocation = customerPortlRequestInsert.DeliveryLocation,
+                DeliveryRoute = customerPortlRequestInsert.DeliveryRoute,
+                Remarks = customerPortlRequestInsert.Remarks,
+                RequestType = customerPortlRequestInsert.RequestType,
+                WorkOrderType = woType,
+                Type = customerPortlRequestInsert.Type,
+                ProcessStatus = customerPortlRequestInsert.ProcessStatus,
+                OrderReceivedBy = customerPortlRequestInsert.Type == "Customer Portal" ? 4 : 5,
+                RequestDetails = customerPortlRequestInsert.RequestDetails.Select(x => new RequestDetailDto()
+                {
+                    //do your variable mapping here 
+                    CartonNo = x.CartonNo,
+                    ToCartonNo = x.CartonNo
+                }).ToList()
+
+            };
+
+            return SaveRequest(requestInsert, TransactionTypes.Insert.ToString());
+        }
+
+
+        public async Task<PagedResponse<RequestSearchCustomerPortalDto>> SearchRequestCustomerPortal(string customerCode, string type, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize)
+        {
+            List<SqlParameter> parms = _searchManager.SearchSearchByTypeAndCustomerCode("requestSearchcustomerPortal", customerCode, type, searchText, searchColumn, sortOrder, pageIndex, pageSize, out SqlParameter outParam);
+
+            var cartonList = await _tcContext.Set<RequestCustomerPortalSearch>().FromSqlRaw(SearchStoredProcedureCustomerCodeByType.Sql, parms.ToArray()).ToListAsync();
+            var totalRows = (int)outParam.Value;
+            #region paging
+            var postResponse = _mapper.Map<List<RequestSearchCustomerPortalDto>>(cartonList);
+
+            var paginationResponse = new PagedResponse<RequestSearchCustomerPortalDto>
+            {
+                Data = postResponse,
+                pageNumber = pageIndex,
+                pageSize = pageSize,
+                totalCount = totalRows,
+                totalPages = (int)Math.Ceiling(totalRows / (double)pageSize),
+
+            };
+            #endregion
+
+            return paginationResponse;
+        }
+
+      
 
     }
 }

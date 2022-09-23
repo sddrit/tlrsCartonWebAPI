@@ -160,5 +160,29 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
             return parms;
 
         }
+
+
+        public List<SqlParameter> SearchSearchByTypeAndCustomerCode(string storedProcedure,string customerCode, string type, 
+     string searchBy, string searchColumn, string sortOrder, int pageIndex, int pageSize,  out SqlParameter outParam)
+        {
+            SearchStoredProcedureCustomerCodeByType.StoredProcedureName = storedProcedure;
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+               new SqlParameter { ParameterName = SearchStoredProcedureCustomerCodeByType.StoredProcedureParameters[0].ToString(), Value = customerCode.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureCustomerCodeByType.StoredProcedureParameters[1].ToString(), Value = type.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureCustomerCodeByType.StoredProcedureParameters[2].ToString(), Value = searchBy.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureCustomerCodeByType.StoredProcedureParameters[3].ToString(), Value = searchColumn.AsDbValue()},
+               new SqlParameter { ParameterName = SearchStoredProcedureCustomerCodeByType.StoredProcedureParameters[4].ToString(), Value = sortOrder.AsDbValue() },
+                new SqlParameter { ParameterName = SearchStoredProcedureCustomerCodeByType.StoredProcedureParameters[5].ToString(), Value = pageIndex },
+               new SqlParameter { ParameterName = SearchStoredProcedureCustomerCodeByType.StoredProcedureParameters[6].ToString(), Value = pageSize },
+
+            };
+            outParam = new SqlParameter { ParameterName = SearchStoredProcedureCustomerCodeByType.StoredProcedureParameters[7].ToString(), SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            parms.Add(outParam);
+            return parms;
+
+        }
+
+
     }
 }

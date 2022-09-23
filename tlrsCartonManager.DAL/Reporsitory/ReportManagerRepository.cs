@@ -87,12 +87,14 @@ namespace tlrsCartonManager.DAL.Reporsitory
                               CartonCount = t.Count()
                           }).ToList();
 
+            var isPrintAlternativeNo = _tcContext.Customers.Where(x => x.CustomerCode == customerId.ToString()).FirstOrDefault().IsPrintAlternativeNo;
+
             var inventoryByCustomer = new InventoryByCustomerReponse()
             {
                 InventoryList = postResponse,
                 InventorySummary = inventorySummaryList,
-                RetreivalSummary = retreivalSummaryList
-
+                RetreivalSummary = retreivalSummaryList,
+                IsShowAlternativeNo = isPrintAlternativeNo == null ? false:true
             };
 
             return inventoryByCustomer;
@@ -361,6 +363,18 @@ namespace tlrsCartonManager.DAL.Reporsitory
             return await _tcContext.Set<InvoiceNotGeneratedCustomerList>().FromSqlRaw(InvoiceNotGeneratedCustomerListStoredProcedure.Sql, parms.ToArray()).ToListAsync();
 
         }
+
+        public async Task<IEnumerable<ViewDailyProcessingWosCustomerPortal>> WordOrderLogCustomerPortal(DateTime fromDate, DateTime toDate)
+        {
+
+            var fromDateInt = fromDate.DateToInt();
+            var toDateInt = toDate.DateToInt();
+
+            return await _tcContext.ViewDailyProcessingWosCustomerPortals.Where(x=>x.DeliveryDate>= fromDateInt && x.DeliveryDate<=toDateInt).OrderBy(x=>x.ProcessStatus).ToListAsync();
+
+        }
+
+
     }
 
 

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using tlrsCartonManager.DAL.Dtos;
+using tlrsCartonManager.DAL.Dtos.Request;
 using tlrsCartonManager.DAL.Helper;
 using tlrsCartonManager.DAL.Models;
 
@@ -19,7 +17,7 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         Task<TableResponse<TableReturn>> UpdateRequest(RequestHeaderDto requestUpdate);
 
-        Task<TableResponse<TableReturn>> DeleteRequest(string requestNo, string requestType);           
+        Task<TableResponse<TableReturn>> DeleteRequest(string requestNo, string requestType, string rejectReason = "");           
 
         bool AddOriginalDocketNoAsync(RequestOriginalDocket originalDocket);
 
@@ -31,8 +29,14 @@ namespace tlrsCartonManager.DAL.Reporsitory.IRepository
 
         Task<object> GetDocket(DocketPrintModel model);
 
+        //Customer Portal
+        TableResponse<TableReturn> AddRequestCustomerPortal(CustomerPortalRequestHeaderDto requestInsert);     
 
+        Task<PagedResponse<RequestSearchCustomerPortalDto>> SearchRequestCustomerPortal(string customerCode, string type, string searchText, string searchColumn, string sortOrder, int pageIndex, int pageSize);
 
+ 
+
+        //
 
     }
 }

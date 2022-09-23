@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,25 @@ namespace tlrsCartonManager.DAL.Models.Carton
         public string DocketNo { get; set; }
         public string WareHouseCode { get; set; }
         public string InOut { get; set; }
+
+    }
+
+    [Keyless]
+    public class CartonHistoryCustomerPortal
+    {
+        public int Id { get; set; }
+        public int? CartonNo { get; set; }
+        public string AlternativeCartonNo { get; set; }
+        public string CustomerCode { get; set; }
+       
+        public int? LastTransactionDate { get; set; }
+        public string LastRequestNo { get; set; }
+        public string Status { get; set; }
+        public DateTime? CreateDate { get; set; }
+      
+        public string Name { get; set; }
+        public string DocketNo { get; set; }
+       
 
     }
 }
