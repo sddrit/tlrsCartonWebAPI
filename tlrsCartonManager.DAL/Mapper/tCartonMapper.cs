@@ -11,6 +11,7 @@ using tlrsCartonManager.DAL.Dtos.Pick;
 using tlrsCartonManager.DAL.Models;
 using tlrsCartonManager.DAL.Models.Carton;
 using tlrsCartonManager.DAL.Models.Invoice;
+using tlrsCartonManager.DAL.Models.MetaData;
 using tlrsCartonManager.DAL.Models.Ownership;
 using tlrsCartonManager.DAL.Models.Pick;
 
@@ -130,8 +131,13 @@ namespace tlrsCartonManager.DAL.Mapper
             CreateMap<PickListSearchDto, PickListSearch>();
             CreateMap<PickListSearch, PickListSearchDto>();
 
+            CreateMap<PickListHeaderDto, PickList>().ReverseMap();
+            CreateMap<PickListDetailItemDto, PickList>().ReverseMap();
+
             CreateMap<PickListDto, PickList>();
             CreateMap<PickList, PickListDto>();
+
+            // CreateMap<PickList, PickListHeaderDto>();
 
             CreateMap<CartonOverview, CartonOverviewDto>();
             CreateMap<CartonOverviewDto, CartonOverview>();
@@ -151,6 +157,14 @@ namespace tlrsCartonManager.DAL.Mapper
 
             CreateMap<CartonOwnerShip, CartonOwnerShipDto>();
             CreateMap<CartonOwnerShipDto, CartonOwnerShip>();
+
+            CreateMap<PickListPendingListItem, PickListDetailItemDto>();
+            CreateMap<PickListDetailItemDto, PickListPendingListItem>();
+
+            CreateMap<MobileDevice, MobileDeviceDto>().ReverseMap();
+            CreateMap<WorkerDto, User>().ReverseMap();
+
+
 
             //ruv
         }

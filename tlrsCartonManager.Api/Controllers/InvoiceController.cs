@@ -35,7 +35,7 @@ namespace tlrsCartonManager.Api.Controllers
             return Ok(invoiceList);
         }
 
-        [HttpGet("{invoiceId}")]
+        [HttpGet("getInvoicePrintList/{invoiceid}")]
         public async Task<ActionResult<InvoiceHeaderDto>> GetSingleSearch(string invoiceId)
         {
             var invoice = await _invoiceRepository.GetInvoiceList(invoiceId);
@@ -44,11 +44,21 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Invoice Not Found" }, HttpStatusCode.NotFound);
         }
+
+        [HttpGet("{invoiceId}")]
+        public  ActionResult<InvoiceReturn> GetInvoiceById(string invoiceId)
+        {
+            var invoice =  _invoiceRepository.GetInvoiceById(invoiceId);
+            if (invoice != null)
+                return Ok(invoice);
+            else
+                return new JsonErrorResult(new { Message = "Invoice Not Found" }, HttpStatusCode.NotFound);
+        }
         [HttpPost]
-        public ActionResult CreateInvoice(int fromDate, int toDate, int customerId)
+        public ActionResult CreateInvoice(int fromDate, int toDate, string customerCode)
         {
             //var invoiceList =  _invoiceRepository.CreateInvoice(fromDate, toDate, customerId);
-            return Ok(_invoiceRepository.CreateInvoice(fromDate, toDate, customerId));
+            return Ok(_invoiceRepository.CreateInvoice(fromDate, toDate, customerCode));
 
         }
 

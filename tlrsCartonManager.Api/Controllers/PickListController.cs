@@ -30,14 +30,14 @@ namespace tlrsCartonManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PickListSearchDto>> SearchPickList(string searchtext, int pageIndex, int pageSize)
+        public async Task<ActionResult<PickListSearchDto>> SearchPickList(string searchText, int pageIndex, int pageSize)
         {
-            var pickList = await _pickListRepository.SearchPickList(searchtext, pageIndex, pageSize);
+            var pickList = await _pickListRepository.SearchPickList(searchText, pageIndex, pageSize);
             return Ok(pickList);
         }
 
         [HttpGet("{pickListNo}")]
-        public async Task<ActionResult<PickListDto>> GetSingleSearch(string pickListNo)
+        public async Task<ActionResult<PickListHeaderDto>> GetSingleSearch(string pickListNo)
         {
             var request = await _pickListRepository.GetPickList(pickListNo);
             if (request != null)
@@ -45,23 +45,47 @@ namespace tlrsCartonManager.Api.Controllers
             else
                 return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
         }
-
-        [HttpPost]
-        public ActionResult AddPickList(List<PickListDto> pickList)
+        [HttpGet("pendingPickList")]
+        public async Task<ActionResult<PickListDetailItemDto>> GetPendingPickList(string fromValue, string toValue, string searchText, 
+            int pageIndex, int pageSize)
         {
-            return Ok(_pickListRepository.AddPickList(pickList));            
-          
+            var request = await _pickListRepository.GetPendingPickList(fromValue, toValue, searchText, pageIndex, pageSize);
+            if (request != null)
+                return Ok(request);
+            else
+                return new JsonErrorResult(new { Message = "Pick List Not Found" }, HttpStatusCode.NotFound);
+        }
+        [HttpPost]
+        public ActionResult AddPickList(PickListResponseDto pickList)
+        {
+           var request=_pickListRepository.AddPickList(pickList);            
+
+            if(request.Reason=="OK")
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
+
+
         }
         [HttpPut]
-        public ActionResult UpdatePickList(string pickListNo, int userId, string deviceId)
+        public ActionResult UpdatePickList(PickListResponseDto pickList)
         {
-            return Ok(_pickListRepository.UpdatePickList(pickListNo, userId, deviceId));
+            var request = _pickListRepository.UpdatePickList(pickList);
+            if (request.Reason == "OK")
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
+            
 
         }
         [HttpDelete]
-        public ActionResult DeletePickList(string pickListNo, int userId)
+        public ActionResult DeletePickList(PickListResponseDto pickList)
         {
-            return Ok(_pickListRepository.DeletePickList(pickListNo, userId));
+            var request = _pickListRepository.DeletePickList(pickList);
+            if (request.Reason == "OK")
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.OK);
+            else
+                return new JsonErrorResult(new { Message = request.OutValue }, HttpStatusCode.BadRequest);
 
         }
 

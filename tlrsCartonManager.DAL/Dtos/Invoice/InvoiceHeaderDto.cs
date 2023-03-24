@@ -32,7 +32,7 @@ namespace tlrsCartonManager.DAL.Dtos
 
         public string CustomerName { get; set; }
         public string InvoicePeriod { get; set; }
-
+        public decimal InvoiceValue { get; set; }
 
     }
 }

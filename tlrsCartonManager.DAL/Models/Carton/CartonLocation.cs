@@ -43,7 +43,7 @@ namespace tlrsCartonManager.DAL.Models
         [Column("isVerified")]
         public bool? IsVerified { get; set; }
         [Column("createdUserId")]
-        public int? CreatedUserId { get; set; }
+        public string CreatedUserId { get; set; }
         [Column("createdDate", TypeName = "datetime")]
         public DateTime? CreatedDate { get; set; }
         [Column("luUserId")]
